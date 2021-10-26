@@ -1,0 +1,15 @@
+<Context>
+
+    <Resource name="jdbc/training-java-project-final"
+              auth="Container"
+              type="javax.sql.DataSource"
+              username="training-java-project-final"
+              password="training-java-project-final"
+              driverClassName="org.postgresql.Driver"
+              url="jdbc:postgresql://localhost:5432/training-java-project-final"
+              maxTotal="10"
+              maxIdle="10"
+              maxWaitMillis="-1"
+              validationQuery="select 1"/>
+
+</Context>
