@@ -11,13 +11,13 @@
     </resource-ref>
 
     <servlet>
-        <servlet-name>userServlet</servlet-name>
-        <servlet-class>by.hrachyshkin.servlet.UserServlet</servlet-class>
+        <servlet-name>accountServlet</servlet-name>
+        <servlet-class>by.hrachyshkin.servlet.AccountServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>userServlet</servlet-name>
-        <url-pattern>/user</url-pattern>
+        <servlet-name>accountServlet</servlet-name>
+        <url-pattern>/account</url-pattern>
     </servlet-mapping>
 
 </web-app>

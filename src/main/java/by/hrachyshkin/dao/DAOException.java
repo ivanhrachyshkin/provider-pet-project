@@ -1,24 +1,26 @@
 package by.hrachyshkin.dao;
 
-public class DAOException extends Exception{
+public class DAOException extends Exception {
 
-    //todo finals
     public DAOException() {
     }
 
-    public DAOException(String message) {
+    public DAOException(final String message) {
         super(message);
     }
 
-    public DAOException(String message, Throwable cause) {
+    public DAOException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
-    public DAOException(Throwable cause) {
+    public DAOException(final Throwable cause) {
         super(cause);
     }
 
-    public DAOException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public DAOException(final String message,
+                        final Throwable cause,
+                        final boolean enableSuppression,
+                        final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
