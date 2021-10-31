@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.management.relation.Role;
+import java.math.BigDecimal;
 
 
 @Data
@@ -11,34 +12,28 @@ import javax.management.relation.Role;
 public class Account {
 
     private final int id;
-    private final String login;
+    private final String name;
+    private final String email;
     private final String password;
-    private final int role;
-    private final int profileId;
-    private final int tariffId;
-    private final int balanceId;
-    private final boolean blocked;
+    private final String phone;
+    private final String address;
+    private final Role role;
+    private final double balance;
 
-    public Account(String login, String password, int role, int profileId, int tariffId, int balanceId, boolean blocked) {
+    public enum Role {
+        ADMIN,
+        USER,
+        BLOCKED
+    }
+
+    public Account(String name, String email, String password, String phone, String address, Role role, double balance) {
         this.id = -1;
-        this.login = login;
+        this.name = name;
+        this.email = email;
         this.password = password;
+        this.phone = phone;
+        this.address = address;
         this.role = role;
-        this.profileId = profileId;
-        this.tariffId = tariffId;
-        this.balanceId = balanceId;
-        this.blocked = blocked;
+        this.balance = balance;
     }
-
-    public Account(int id, String login, int role, int profileId, int tariffId, int balanceId, boolean blocked) {
-        this.id = id;
-        this.login = login;
-        this.password = null;
-        this.role = role;
-        this.profileId = profileId;
-        this.tariffId = tariffId;
-        this.balanceId = balanceId;
-        this.blocked = blocked;
-    }
-
 }

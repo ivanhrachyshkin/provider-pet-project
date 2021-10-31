@@ -1,7 +1,7 @@
 package by.hrachyshkin.dao;
 
 import by.hrachyshkin.Constants;
-import by.hrachyshkin.dao.entity_dao.user_dao.UserDAOImpl;
+import by.hrachyshkin.dao.entity_dao.account_dao.AccountDaoImpl;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,18 +13,18 @@ import java.nio.file.Paths;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public final class DAOFactory {
+public final class DaoFactory {
 
     @Getter
-    private static final DAOFactory INSTANCE = new DAOFactory();
+    private static final DaoFactory INSTANCE = new DaoFactory();
 
     @Getter(AccessLevel.NONE)
     private final Path schemaPath = getSchemaPath();
     @Getter(AccessLevel.NONE)
     private final DataSource dataSource = getDataSource();
 
-    private final SchemaDAO schemaDAO = new SchemaDAO(dataSource, schemaPath);
-    private final UserDAOImpl userDAOImpl = new UserDAOImpl(dataSource);
+    private final SchemaDao schemaDAO = new SchemaDao(dataSource, schemaPath);
+    private final AccountDaoImpl accountDAOImpl = new AccountDaoImpl(dataSource);
 
     private Path getSchemaPath() {
 

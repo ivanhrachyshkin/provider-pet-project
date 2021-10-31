@@ -1,16 +1,16 @@
 package by.hrachyshkin.listener;
 
 import by.hrachyshkin.Constants;
-import by.hrachyshkin.dao.DAOException;
-import by.hrachyshkin.dao.DAOFactory;
-import by.hrachyshkin.dao.SchemaDAO;
+import by.hrachyshkin.dao.DaoException;
+import by.hrachyshkin.dao.DaoFactory;
+import by.hrachyshkin.dao.SchemaDao;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 public class StartupListener implements ServletContextListener {
 
-    private final SchemaDAO schemaDAO = DAOFactory.getINSTANCE().getSchemaDAO();
+    private final SchemaDao schemaDAO = DaoFactory.getINSTANCE().getSchemaDAO();
 
     @Override
     public void contextInitialized(final ServletContextEvent servletContextEvent) {
@@ -18,7 +18,7 @@ public class StartupListener implements ServletContextListener {
         try {
             schemaDAO.init();
 
-        } catch (DAOException e) {
+        } catch (DaoException e) {
             throw new ListenerException(Constants.STARTUP_LISTENER_INIT_ERROR);
         }
     }

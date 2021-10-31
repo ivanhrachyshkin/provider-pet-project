@@ -1,8 +1,14 @@
 package by.hrachyshkin.servlet;
 
-import by.hrachyshkin.dao.DAOFactory;
-import by.hrachyshkin.dao.entity_dao.user_dao.UserDAOImpl;
+import by.hrachyshkin.dao.DaoException;
+import by.hrachyshkin.dao.DaoFactory;
+import by.hrachyshkin.dao.entity_dao.EntityDao;
+import by.hrachyshkin.dao.entity_dao.account_dao.AccountDaoImpl;
+import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDao;
+import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDaoImpl;
 import by.hrachyshkin.entity.Account;
+import by.hrachyshkin.entity.Criteria;
+import by.hrachyshkin.entity.Discount;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;
@@ -14,7 +20,8 @@ import java.util.List;
 
 public class AccountServlet extends HttpServlet {
 
-    private final UserDAOImpl userDAOImpl = DAOFactory.getINSTANCE().getUserDAOImpl();
+
+    private final AccountDaoImpl accountDAOImpl = DaoFactory.getINSTANCE().getAccountDAOImpl();
 
     @SneakyThrows
     @Override
@@ -37,8 +44,10 @@ public class AccountServlet extends HttpServlet {
 // userDAO.create(user2);
 // userDAO.create(user4);
 //
-        final List<Account> all = userDAOImpl.findAll();
-        resp.getOutputStream().println(all.toString());
+  final List<Account> all = accountDAOImpl.findAllSortedByLogin();
+  resp.getOutputStream().println(all.toString());
+
+
 //
 // final Account account = userDAOImpl.findOneByLogin("login3");
 // resp.getOutputStream().println(account.toString());

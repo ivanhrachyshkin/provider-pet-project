@@ -10,17 +10,17 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class SchemaDAO extends BaseDAO {
+public class SchemaDao extends BaseDao {
 
     private final Path schemaPath;
 
-    public SchemaDAO(final DataSource dataSource, final Path schemaPath) {
+    public SchemaDao(final DataSource dataSource, final Path schemaPath) {
 
         super(dataSource);
         this.schemaPath = schemaPath;
     }
 
-    public void init() throws DAOException {
+    public void init() throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
              final Statement statement = connection.createStatement()) {
@@ -29,7 +29,7 @@ public class SchemaDAO extends BaseDAO {
             statement.executeUpdate(query);
 
         } catch (SQLException | IOException e) {
-            throw new DAOException(Constants.SCHEMA_DAO_INIT_ERROR, e);
+            throw new DaoException(Constants.SCHEMA_DAO_INIT_ERROR, e);
         }
     }
 }

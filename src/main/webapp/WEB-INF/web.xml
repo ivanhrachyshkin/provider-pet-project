@@ -17,7 +17,7 @@
 
     <servlet-mapping>
         <servlet-name>accountServlet</servlet-name>
-        <url-pattern>/account</url-pattern>
+        <url-pattern>/accounts</url-pattern>
     </servlet-mapping>
 
 </web-app>

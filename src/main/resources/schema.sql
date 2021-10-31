@@ -1,71 +1,94 @@
 BEGIN;
 
-CREATE TABLE IF NOT EXISTS promotion
+CREATE TABLE IF NOT EXISTS discounts
 (
-    id               SERIAL PRIMARY KEY,
-    name             CHARACTER VARYING(35) NOT NULL UNIQUE,
-    description      TEXT                  NOT NULL,
-    discount_percent INTEGER DEFAULT 0
+    id    SERIAL PRIMARY KEY,
+    name  CHARACTER VARYING(35) NOT NULL UNIQUE,
+    type  INTEGER               NOT NULL,
+    value INTEGER DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS tariffs
 (
-    id               SERIAL PRIMARY KEY,
-    name             CHARACTER VARYING(35) NOT NULL UNIQUE,
-    type             INTEGER               NOT NULL,
-    speed            INTEGER          DEFAULT 0,
-    traffic_capacity INTEGER          DEFAULT 0,
-    price            DOUBLE PRECISION DEFAULT 0,
-    promotion_id     BIGINT                NOT NULL REFERENCES promotion (id)
+    id    SERIAL PRIMARY KEY,
+    name  CHARACTER VARYING(70) NOT NULL UNIQUE,
+    type  INTEGER               NOT NULL,
+    speed INTEGER               NOT NULL,
+    price DOUBLE PRECISION      NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS balances
+CREATE TABLE IF NOT EXISTS promotions
 (
-    id                SERIAL PRIMARY KEY,
-    bill              DOUBLE PRECISION DEFAULT 0,
-    last_deposit_date TIMESTAMP WITHOUT TIME ZONE NOT NULL,
-    traffic_quantity  INTEGER          DEFAULT 0
-);
-
-CREATE TABLE IF NOT EXISTS profiles
-(
-    id              SERIAL PRIMARY KEY,
-    name            CHARACTER VARYING(35)  NOT NULL,
-    surname         CHARACTER VARYING(35)  NOT NULL,
-    email           CHARACTER VARYING(255) NOT NULL,
-    identity_number CHARACTER VARYING(15)  NOT NULL UNIQUE
+    id          SERIAL PRIMARY KEY,
+    tariff_id   INTEGER REFERENCES tariffs (id),
+    discount_id INTEGER REFERENCES discounts (id),
+    from_date   DATE,
+    to_date     DATE
 );
 
 CREATE TABLE IF NOT EXISTS accounts
 (
-    id         SERIAL PRIMARY KEY,
-    login      CHARACTER VARYING(256) NOT NULL UNIQUE,
-    password   CHARACTER VARYING(32)  NOT NULL,
-    role       INTEGER                NOT NULL,
-    profile_id BIGINT                 NOT NULL REFERENCES profiles (id),
-    tariff_id  BIGINT                 NOT NULL REFERENCES tariffs (id),
-    balance_id BIGINT                 NOT NULL REFERENCES balances (id),
-    blocked    BOOLEAN DEFAULT FALSE
+    id       SERIAL PRIMARY KEY,
+    name     CHARACTER VARYING(70)  NOT NULL UNIQUE,
+    email    CHARACTER VARYING(255) NOT NULL UNIQUE,
+    password CHARACTER VARYING(64)  NOT NULL,
+    phone    INTEGER                NOT NULL,
+    role     INTEGER                NOT NULL,
+    balance  DOUBLE PRECISION       NOT NULL
 );
 
-INSERT INTO promotion (id, name, description, discount_percent)
-VALUES (1, '', '', 0)
+CREATE TABLE IF NOT EXISTS traffics
+(
+    id           SERIAL PRIMARY KEY,
+    promotion_id INTEGER,
+    value        DOUBLE PRECISION,
+    date         DATE
+);
+
+CREATE TABLE IF NOT EXISTS subscriptions
+(
+    id         SERIAL PRIMARY KEY,
+    account_id INTEGER REFERENCES accounts (id),
+    tariff_id  INTEGER REFERENCES tariffs (id),
+    from_date  DATE,
+    to_date    DATE
+);
+
+CREATE TABLE IF NOT EXISTS bills
+(
+    id              SERIAL PRIMARY KEY,
+    subscription_id INTEGER REFERENCES subscriptions (id),
+    price           DOUBLE PRECISION,
+    status          BOOLEAN DEFAULT FALSE
+);
+
+
+INSERT INTO discounts (name, type, value)
+VALUES ('', 1, 0)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO tariffs (id, name, type, speed, traffic_capacity, price, promotion_id)
-VALUES (1, '', 1, 0, 0, 0, 1)
+INSERT INTO tariffs (name, type, speed, price)
+VALUES ('', 1, 0, 0)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO balances (id, bill, last_deposit_date, traffic_quantity)
-VALUES (1, 0, NOW(), 0)
+INSERT INTO promotions (tariff_id, discount_id, from_date, to_date)
+VALUES (1, 1, '2000-10-10', '2000-10-10')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO profiles (id, name, surname, email, identity_number)
-VALUES (1, 'Admin', 'Admin', 'admin@gmail.com', '12345678')
+INSERT INTO accounts (name, email, password, phone, role, balance)
+VALUES ('Admin', '@admin', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO accounts (id, login, password, role, profile_id, tariff_id, balance_id)
-VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 1, 1)
+INSERT INTO traffics (promotion_id, value, date)
+VALUES (1, 1.0, '2000-10-10')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO subscriptions (account_id, tariff_id, from_date, to_date)
+VALUES (1, 1, '2000-10-10', '2000-10-10')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO bills (subscription_id, price, status)
+VALUES (1, 1.0, false)
 ON CONFLICT DO NOTHING;
 
 END;

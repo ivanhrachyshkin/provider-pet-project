@@ -6,7 +6,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import javax.sql.DataSource;
 
 @RequiredArgsConstructor
-public abstract class BaseDAO {
+public abstract class BaseDao {
 
     protected final DataSource dataSource;
 
