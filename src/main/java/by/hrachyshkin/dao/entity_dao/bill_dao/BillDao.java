@@ -6,5 +6,4 @@ import by.hrachyshkin.entity.Bill;
 
 public interface BillDao extends EntityDao<Bill> {
 
-    Bill findOneByID(final int id) throws DaoException;
 }

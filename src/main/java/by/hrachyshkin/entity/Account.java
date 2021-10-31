@@ -16,7 +16,6 @@ public class Account {
     private final String email;
     private final String password;
     private final String phone;
-    private final String address;
     private final Role role;
     private final double balance;
 
@@ -26,13 +25,12 @@ public class Account {
         BLOCKED
     }
 
-    public Account(String name, String email, String password, String phone, String address, Role role, double balance) {
+    public Account(String name, String email, String password, String phone, Role role, double balance) {
         this.id = -1;
         this.name = name;
         this.email = email;
         this.password = password;
         this.phone = phone;
-        this.address = address;
         this.role = role;
         this.balance = balance;
     }

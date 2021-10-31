@@ -1,14 +1,7 @@
 package by.hrachyshkin.servlet;
 
-import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.DaoFactory;
-import by.hrachyshkin.dao.entity_dao.EntityDao;
-import by.hrachyshkin.dao.entity_dao.account_dao.AccountDaoImpl;
-import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDao;
-import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDaoImpl;
 import by.hrachyshkin.entity.Account;
-import by.hrachyshkin.entity.Criteria;
-import by.hrachyshkin.entity.Discount;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;

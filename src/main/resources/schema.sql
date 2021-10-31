@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS accounts
 CREATE TABLE IF NOT EXISTS traffics
 (
     id           SERIAL PRIMARY KEY,
-    promotion_id INTEGER,
+    subscription_id INTEGER,
     value        DOUBLE PRECISION,
     date         DATE
 );
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS bills
 (
     id              SERIAL PRIMARY KEY,
     subscription_id INTEGER REFERENCES subscriptions (id),
-    price           DOUBLE PRECISION,
+    sum           DOUBLE PRECISION,
     status          BOOLEAN DEFAULT FALSE
 );
 
@@ -79,7 +79,7 @@ INSERT INTO accounts (name, email, password, phone, role, balance)
 VALUES ('Admin', '@admin', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO traffics (promotion_id, value, date)
+INSERT INTO traffics (subscription_id, value, date)
 VALUES (1, 1.0, '2000-10-10')
 ON CONFLICT DO NOTHING;
 
@@ -87,7 +87,7 @@ INSERT INTO subscriptions (account_id, tariff_id, from_date, to_date)
 VALUES (1, 1, '2000-10-10', '2000-10-10')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO bills (subscription_id, price, status)
+INSERT INTO bills (subscription_id, sum, status)
 VALUES (1, 1.0, false)
 ON CONFLICT DO NOTHING;
 

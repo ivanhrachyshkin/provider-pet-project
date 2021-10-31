@@ -1,7 +1,6 @@
 package by.hrachyshkin.dao;
 
 import by.hrachyshkin.Constants;
-import by.hrachyshkin.dao.entity_dao.account_dao.AccountDaoImpl;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
