@@ -111,12 +111,23 @@ public class AccountServiceImpl implements AccountService {
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
 
+            if (account.getId() == null
+                    || account.getEmail() == null
+                    || account.getPassword() == null
+                    || account.getRole() == null
+                    || account.getName() == null
+                    || account.getPhone() == null
+                    || account.getAddress() == null
+                    || account.getBalance() == null) {
+                throw new ServiceException("Can't add account because of empty input");
+            }
+
             if (accountDao.isExistByEmail(account.getEmail())) {
                 transactionImpl.rollback();
                 throw new ServiceException("Can't add account because account is already exist");
             }
 
-            if(!Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).*[A-Za-z0-9].{7,}$",
+            if (!Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).*[A-Za-z0-9].{7,}$",
                     account.getPassword())) {
                 transactionImpl.rollback();
                 throw new ServiceException("Can't add account check password");
@@ -136,6 +147,17 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+
+            if (account.getId() == null
+                    || account.getEmail() == null
+                    || account.getPassword() == null
+                    || account.getRole() == null
+                    || account.getName() == null
+                    || account.getPhone() == null
+                    || account.getAddress() == null
+                    || account.getBalance() == null) {
+                throw new ServiceException("Can't update account because of empty input");
+            }
 
             if (!accountDao.isExistById(account.getId())) {
                 transactionImpl.rollback();
@@ -163,6 +185,11 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+
+            if (!accountDao.isExistById(accountId)) {
+                transactionImpl.rollback();
+                throw new ServiceException("Can't deposit because account doesn't exist exist");
+            }
 
             if (!accountDao.isExistById(accountId)) {
                 transactionImpl.rollback();

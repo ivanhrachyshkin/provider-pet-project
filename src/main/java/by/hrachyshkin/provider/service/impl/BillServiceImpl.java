@@ -119,9 +119,19 @@ public class BillServiceImpl implements BillService {
         try {
             final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
 
+            if (bill.getValue() == null
+            || bill.getDate() == null) {
+                throw new ServiceException("Can't add bill because of empty inptu");
+            }
+
             if (billDao.isExists(bill.getSubscriptionId(), bill.getValue(), bill.getDate())) {
                 transactionImpl.rollback();
                 throw new ServiceException("Can't add bill because is already exists");
+            }
+
+            if (bill.getValue() < 0) {
+                transactionImpl.rollback();
+                throw new ServiceException("Can't add bill because of negative value");
             }
 
             billDao.add(bill);

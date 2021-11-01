@@ -133,8 +133,24 @@ public class DiscountServiceImpl implements DiscountService {
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
 
+            if (discount.getName() == null
+                    || discount.getType() == null
+                    || discount.getValue() == null
+                    || discount.getDateFrom() == null
+                    || discount.getDateTo() == null) {
+                throw new ServiceException("Can't add discount because of empty input");
+            }
+
             if (discountDao.isExistByName(discount.getName())) {
                 throw new ServiceException("Can't add discount because discount is already exists");
+            }
+
+            if (discount.getDateFrom().isAfter(discount.getDateTo())) {
+                throw new ServiceException("Can't add discount because start date is later than end date");
+            }
+
+            if (discount.getValue() < 0) {
+                throw new ServiceException("Can't add discount because of negative value");
             }
 
             discountDao.add(discount);
@@ -152,12 +168,28 @@ public class DiscountServiceImpl implements DiscountService {
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
 
+            if (discount.getName() == null
+                    || discount.getType() == null
+                    || discount.getValue() == null
+                    || discount.getDateFrom() == null
+                    || discount.getDateTo() == null) {
+                throw new ServiceException("Can't update discount because of empty input");
+            }
+
             if (!discountDao.isExistById(discount.getId())) {
-                throw new ServiceException("Can't update discount because discount doesn't exist ");
+                throw new ServiceException("Can't update discount because discount doesn't exist");
             }
 
             if (discountDao.isExistByNotIdAndName(discount.getId(), discount.getName())) {
                 throw new ServiceException("Can't update discount");
+            }
+
+            if (discount.getDateFrom().isAfter(discount.getDateTo())) {
+                throw new ServiceException("Can't update discount because start date is later than end date");
+            }
+
+            if (discount.getValue() < 0) {
+                throw new ServiceException("Can't add discount because of negative value");
             }
 
             discountDao.update(discount);

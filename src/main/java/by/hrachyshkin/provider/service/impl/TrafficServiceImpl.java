@@ -119,9 +119,19 @@ public class TrafficServiceImpl implements TrafficService {
         try {
             final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
 
+            if (traffic.getValue() == null
+                    || traffic.getDate() == null) {
+                throw new ServiceException("Can't add traffic because of empty input");
+            }
+
             if (trafficDao.isExists(traffic)) {
                 transactionImpl.rollback();
                 throw new ServiceException("Can't add traffic because is already exists");
+            }
+
+            if (traffic.getValue() < 0) {
+                transactionImpl.rollback();
+                throw new ServiceException("Can't add traffic because of negative value");
             }
 
             trafficDao.add(traffic);

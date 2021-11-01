@@ -25,11 +25,10 @@ public class SecurityFilter implements Filter {
         if (session.getAttribute("accountId") == null
                 && session.getAttribute("accountRole") == null
                 && !path.startsWith("/login")) {
-            System.out.println("in filter");
             httpRequest.getRequestDispatcher("/login.jsp").forward(request, response);
         }
 
-        if(path.equals("/")) {
+        if (path.equals("/")) {
             httpRequest.getRequestDispatcher("/cabinet").forward(request, response);
         }
         chain.doFilter(request, response);

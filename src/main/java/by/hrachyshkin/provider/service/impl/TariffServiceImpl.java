@@ -144,8 +144,23 @@ public class TariffServiceImpl implements TariffService {
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
-            if (tariffDao.isExistByName(tariff.getName())) {
-                throw new ServiceException("Can't add tariff because is already exists");
+            if (tariff.getName() == null
+                    || tariff.getType() == null
+                    || tariff.getSpeed() == null
+                    || tariff.getPrice() == null) {
+                throw new ServiceException("Can't add tariff because of empty input");
+            }
+
+                if (tariffDao.isExistByName(tariff.getName())) {
+                    throw new ServiceException("Can't add tariff because is already exists");
+                }
+
+            if (tariff.getPrice() < 0) {
+                throw new ServiceException("Can't add tariff because of negative price");
+            }
+
+            if (tariff.getSpeed() < 0) {
+                throw new ServiceException("Can't add tariff because of negative speed");
             }
 
             tariffDao.add(tariff);
@@ -163,12 +178,27 @@ public class TariffServiceImpl implements TariffService {
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
+            if (tariff.getName() == null
+                    || tariff.getType() == null
+                    || tariff.getSpeed() == null
+                    || tariff.getPrice() == null) {
+                throw new ServiceException("Can't update tariff because of empty input");
+            }
+
             if (!tariffDao.isExistById(tariff.getId())) {
                 throw new ServiceException("Can't update current tariff because tariff doesn't exist");
             }
 
             if (tariffDao.isExistByNotIdAndName(tariff.getId(), tariff.getName())) {
                 throw new ServiceException("Can't update current tariff");
+            }
+
+            if (tariff.getPrice() < 0) {
+                throw new ServiceException("Can't add tariff because of negative price");
+            }
+
+            if (tariff.getSpeed() < 0) {
+                throw new ServiceException("Can't add tariff because of negative speed");
             }
 
             tariffDao.update(tariff);
