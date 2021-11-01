@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS promotions
     id          SERIAL PRIMARY KEY,
     tariff_id   INTEGER REFERENCES tariffs (id),
     discount_id INTEGER REFERENCES discounts (id),
-    from_date   DATE,
-    to_date     DATE
+    date_from   DATE,
+    date_to     DATE
 );
 
 CREATE TABLE IF NOT EXISTS accounts
@@ -39,10 +39,10 @@ CREATE TABLE IF NOT EXISTS accounts
 
 CREATE TABLE IF NOT EXISTS traffics
 (
-    id           SERIAL PRIMARY KEY,
+    id              SERIAL PRIMARY KEY,
     subscription_id INTEGER,
-    value        DOUBLE PRECISION,
-    date         DATE
+    value           DOUBLE PRECISION,
+    date            DATE
 );
 
 CREATE TABLE IF NOT EXISTS subscriptions
@@ -50,15 +50,16 @@ CREATE TABLE IF NOT EXISTS subscriptions
     id         SERIAL PRIMARY KEY,
     account_id INTEGER REFERENCES accounts (id),
     tariff_id  INTEGER REFERENCES tariffs (id),
-    from_date  DATE,
-    to_date    DATE
+    date_from  DATE,
+    date_to    DATE
 );
 
 CREATE TABLE IF NOT EXISTS bills
 (
     id              SERIAL PRIMARY KEY,
     subscription_id INTEGER REFERENCES subscriptions (id),
-    sum           DOUBLE PRECISION,
+    sum             DOUBLE PRECISION,
+    date            DATE,
     status          BOOLEAN DEFAULT FALSE
 );
 
@@ -71,7 +72,7 @@ INSERT INTO tariffs (name, type, speed, price)
 VALUES ('', 1, 0, 0)
 ON CONFLICT DO NOTHING;
 
-INSERT INTO promotions (tariff_id, discount_id, from_date, to_date)
+INSERT INTO promotions (tariff_id, discount_id, date_from, date_to)
 VALUES (1, 1, '2000-10-10', '2000-10-10')
 ON CONFLICT DO NOTHING;
 
@@ -83,7 +84,7 @@ INSERT INTO traffics (subscription_id, value, date)
 VALUES (1, 1.0, '2000-10-10')
 ON CONFLICT DO NOTHING;
 
-INSERT INTO subscriptions (account_id, tariff_id, from_date, to_date)
+INSERT INTO subscriptions (account_id, tariff_id, date_from, date_to)
 VALUES (1, 1, '2000-10-10', '2000-10-10')
 ON CONFLICT DO NOTHING;
 

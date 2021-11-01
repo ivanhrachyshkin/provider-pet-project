@@ -2,16 +2,21 @@ package by.hrachyshkin.dao.entity_dao.discount_dao;
 
 import by.hrachyshkin.dao.BaseDao;
 import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.entity.Account;
 import by.hrachyshkin.entity.Criteria;
 import by.hrachyshkin.entity.Discount;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DiscountDaoImpl extends BaseDao implements DiscountDao {
+
+    private static final String IS_EXIST_DISCOUNT_QUERY =
+            "SELECT EXISTS(SELECT 1 FROM discounts WHERE name = ?) ";
 
     private static final String CREATE_DISCOUNT_QUERY =
             "INSERT " +
@@ -31,10 +36,15 @@ public class DiscountDaoImpl extends BaseDao implements DiscountDao {
     private static final String FIND_ALL_DISCOUNTS_QUERY_BY_FILTER =
             "SELECT id, name, type, value " +
                     "FROM discounts " +
-                    "WHERE ? = ?";
+                    "WHERE ? LIKE ?%";
+
+    private static final String FIND_ONE_DISCOUNT_QUERY_BY_ID =
+            "SELECT id, name, type, value " +
+                    "FROM discounts " +
+                    "WHERE id = ?";
 
     private static final String UPDATE_DISCOUNT_QUERY =
-            "INSERT INTO accounts (name, type, value) " +
+            "INSERT INTO discounts (name, type, value) " +
                     "VALUES ?, ?, ?" +
                     "WHERE id = ? " +
                     "ON CONFLICT DO UPDATE";
@@ -49,6 +59,20 @@ public class DiscountDaoImpl extends BaseDao implements DiscountDao {
         super(dataSource);
     }
 
+    @Override
+    public boolean isExist(final String name) throws DaoException {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement statement = connection.prepareStatement(IS_EXIST_DISCOUNT_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setString(1, name);
+            resultSet.next();
+            return resultSet.getBoolean(1);
+
+        } catch (SQLException e) {
+            throw new DaoException("Can't find account by id", e);
+        }
+    }
 
     @Override
     public void create(final Discount discount) throws DaoException {
@@ -105,6 +129,26 @@ public class DiscountDaoImpl extends BaseDao implements DiscountDao {
             }
         } catch (Exception e) {
             throw new DaoException("Can't find required discounts");
+        }
+    }
+
+    @Override
+    public Discount findOneById(int id) throws DaoException {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_DISCOUNT_QUERY_BY_ID);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setInt(1, id);
+            resultSet.next();
+
+            return new Discount(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    Discount.Type.values()[resultSet.getInt(3)],
+                    resultSet.getInt(4));
+
+        } catch (SQLException e) {
+            throw new DaoException("Can't find discount by id", e);
         }
     }
 

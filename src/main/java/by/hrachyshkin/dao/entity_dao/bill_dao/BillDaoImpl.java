@@ -4,15 +4,16 @@ import by.hrachyshkin.dao.BaseDao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Bill;
 import by.hrachyshkin.entity.Criteria;
-import by.hrachyshkin.entity.Tariff;
 
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BillDaoImpl extends BaseDao implements BillDao {
-
 
     public BillDaoImpl(DataSource dataSource) {
         super(dataSource);
@@ -20,23 +21,28 @@ public class BillDaoImpl extends BaseDao implements BillDao {
 
     private static final String CREATE_BILL_QUERY =
             "INSERT " +
-                    "INTO bills (subscription_id, sum, status) " +
-                    "VALUES (?, ?, ?) " +
+                    "INTO bills (subscription_id, sum, date, status) " +
+                    "VALUES (?, ?, ?, ?) " +
                     "ON CONFLICT DO NOTHING";
 
     private static final String FIND_ALL_BILLS_QUERY =
-            "SELECT id, subscription_id, sum, status " +
+            "SELECT id, subscription_id, sum, data, status " +
                     "FROM bills";
 
     private static final String FIND_ALL_BILLS_QUERY_WITH_SORT =
-            "SELECT id, subscription_id, sum, status " +
+            "SELECT id, subscription_id, sum, date, status " +
                     "FROM bills " +
                     "ORDER BY ? ?";
 
     private static final String FIND_ALL_BILLS_QUERY_BY_FILTER =
-            "SELECT id, subscription_id, sum, status " +
+            "SELECT id, subscription_id, sum, date, status " +
                     "FROM bills " +
-                    "WHERE ? = ?";
+                    "WHERE ? LIKE ?%";
+
+    private static final String FIND_ONE_BILL_QUERY_BY_ID =
+            "SELECT id, subscription_id, sum, status " +
+                    "FROM accounts " +
+                    "WHERE id = ?";
 
     private static final String UPDATE_BILL_QUERY =
             "INSERT INTO accounts (subscription_id, sum, status) " +
@@ -62,7 +68,7 @@ public class BillDaoImpl extends BaseDao implements BillDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't create tariff", e);
+            throw new DaoException("Can't create bill", e);
         }
     }
 
@@ -95,14 +101,36 @@ public class BillDaoImpl extends BaseDao implements BillDao {
                             resultSet.getInt(1),
                             resultSet.getInt(2),
                             resultSet.getDouble(3),
-                            resultSet.getBoolean(4));
+                            resultSet.getDate(4),
+                            resultSet.getBoolean(5));
                     bills.add(tariff);
                 }
 
                 return bills;
             }
         } catch (Exception e) {
-            throw new DaoException("Can't find required discounts");
+            throw new DaoException("Can't find required bills");
+        }
+    }
+
+    @Override
+    public Bill findOneById(int id) throws DaoException {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_BILL_QUERY_BY_ID);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setInt(1, id);
+            resultSet.next();
+
+            return new Bill(
+                    resultSet.getInt(1),
+                    resultSet.getInt(2),
+                    resultSet.getDouble(3),
+                    resultSet.getDate(4),
+                    resultSet.getBoolean(5));
+
+        } catch (SQLException e) {
+            throw new DaoException("Can't find tariff by id", e);
         }
     }
 
@@ -114,14 +142,15 @@ public class BillDaoImpl extends BaseDao implements BillDao {
 
             statement.setInt(1, bill.getSubscriptionId());
             statement.setDouble(2, bill.getSum());
-            statement.setBoolean(3, bill.isStatus());
+            statement.setDate(3, bill.getDate());
+            statement.setBoolean(4, bill.isStatus());
 
-            statement.setInt(4, bill.getId());
+            statement.setInt(5, bill.getId());
 
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add tariff", e);
+            throw new DaoException("Can't add bill", e);
         }
     }
 
@@ -135,7 +164,7 @@ public class BillDaoImpl extends BaseDao implements BillDao {
             statement.executeQuery();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete tariff", e);
+            throw new DaoException("Can't delete bill", e);
         }
     }
 }

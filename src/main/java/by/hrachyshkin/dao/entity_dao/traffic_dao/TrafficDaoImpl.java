@@ -3,7 +3,6 @@ package by.hrachyshkin.dao.entity_dao.traffic_dao;
 import by.hrachyshkin.dao.BaseDao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Criteria;
-import by.hrachyshkin.entity.Discount;
 import by.hrachyshkin.entity.Traffic;
 
 import javax.sql.DataSource;
@@ -31,7 +30,12 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
     private static final String FIND_ALL_TRAFFICS_QUERY_BY_FILTER =
             "SELECT id, subscription_id, value, date " +
                     "FROM traffics " +
-                    "WHERE ? = ?";
+                    "WHERE ? LIKE ?%";
+
+    private static final String FIND_ONE_TRAFFIC_QUERY_BY_ID =
+            "SELECT id, subscription_id, value, date " +
+                    "FROM traffics " +
+                    "WHERE id = ?";
 
     private static final String UPDATE_TRAFFIC_QUERY =
             "INSERT INTO traffics (subscription_id, value, date) " +
@@ -63,7 +67,7 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't create discount", e);
+            throw new DaoException("Can't create traffic", e);
         }
     }
 
@@ -104,7 +108,27 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
                 return traffics;
             }
         } catch (Exception e) {
-            throw new DaoException("Can't find required discounts");
+            throw new DaoException("Can't find required traffic");
+        }
+    }
+
+    @Override
+    public Traffic findOneById(int id) throws DaoException {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TRAFFIC_QUERY_BY_ID);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setInt(1, id);
+            resultSet.next();
+
+            return new Traffic(
+                    resultSet.getInt(1),
+                    resultSet.getInt(2),
+                    resultSet.getInt(3),
+                    resultSet.getDate(4));
+
+        } catch (SQLException e) {
+            throw new DaoException("Can't find tariff by id", e);
         }
     }
 
@@ -123,7 +147,7 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add discount", e);
+            throw new DaoException("Can't add traffic", e);
         }
     }
 
@@ -136,7 +160,7 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
             statement.executeQuery();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete discount", e);
+            throw new DaoException("Can't delete traffic", e);
         }
     }
 }

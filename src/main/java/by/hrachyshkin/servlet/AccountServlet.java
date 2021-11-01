@@ -14,7 +14,6 @@ import java.util.List;
 public class AccountServlet extends HttpServlet {
 
 
-    private final AccountDaoImpl accountDAOImpl = DaoFactory.getINSTANCE().getAccountDAOImpl();
 
     @SneakyThrows
     @Override
@@ -37,8 +36,6 @@ public class AccountServlet extends HttpServlet {
 // userDAO.create(user2);
 // userDAO.create(user4);
 //
-  final List<Account> all = accountDAOImpl.findAllSortedByLogin();
-  resp.getOutputStream().println(all.toString());
 
 
 //

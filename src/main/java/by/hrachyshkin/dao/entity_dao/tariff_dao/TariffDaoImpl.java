@@ -15,6 +15,9 @@ import java.util.List;
 
 public class TariffDaoImpl extends BaseDao implements TariffDao {
 
+    private static final String IS_EXIST_TARIFF_QUERY =
+            "SELECT EXISTS(SELECT 1 FROM tariffs WHERE name = ?) ";
+
     private static final String CREATE_TARIFF_QUERY =
             "INSERT " +
                     "INTO tariffs (name, type, speed, price) " +
@@ -33,10 +36,15 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     private static final String FIND_ALL_TARIFFS_QUERY_BY_FILTER =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
-                    "WHERE ? = ?";
+                    "WHERE ? LIKE ?%";
+
+    private static final String FIND_ONE_TARIFF_QUERY_BY_ID =
+            "SELECT id, name, type, speed, price " +
+                    "FROM tariffs " +
+                    "WHERE id = ?";
 
     private static final String UPDATE_TARIFF_QUERY =
-            "INSERT INTO accounts (name, type, speed, price) " +
+            "INSERT INTO tariffs (name, type, speed, price) " +
                     "VALUES ?, ?, ?, ?" +
                     "WHERE id = ? " +
                     "ON CONFLICT DO UPDATE";
@@ -48,6 +56,21 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
 
     public TariffDaoImpl(DataSource dataSource) {
         super(dataSource);
+    }
+
+    @Override
+    public boolean isExist(final String name) throws DaoException {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement statement = connection.prepareStatement(IS_EXIST_TARIFF_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setString(1, name);
+            resultSet.next();
+            return resultSet.getBoolean(1);
+
+        } catch (SQLException e) {
+            throw new DaoException("Can't find account by id", e);
+        }
     }
 
     @Override
@@ -106,7 +129,28 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
                 return tariffs;
             }
         } catch (Exception e) {
-            throw new DaoException("Can't find required discounts");
+            throw new DaoException("Can't find required tariffs");
+        }
+    }
+
+    @Override
+    public Tariff findOneById(int id) throws DaoException {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setInt(1, id);
+            resultSet.next();
+
+            return new Tariff(
+                    resultSet.getInt(1),
+                    resultSet.getString(2),
+                    Tariff.Type.values()[resultSet.getInt(3)],
+                    resultSet.getInt(4),
+                    resultSet.getDouble(5));
+
+        } catch (SQLException e) {
+            throw new DaoException("Can't find tariff by id", e);
         }
     }
 
