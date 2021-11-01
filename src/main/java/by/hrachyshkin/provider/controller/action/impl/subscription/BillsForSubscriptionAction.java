@@ -16,13 +16,9 @@ public class BillsForSubscriptionAction extends BaseAction {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
-        try {
-            checkGetHTTPMethod(request);
-            setTariffIdAttributeToSession(request, request.getParameter("tariffId"));
+        checkGetHTTPMethod(request);
+        setTariffIdAttributeToSession(request, request.getParameter("tariffId"));
 
-        } catch (NumberFormatException e) {
-            setErrorAttributeToSession(request, e.getMessage());
-        }
         return "/cabinet/subscriptions/bills-for-subscription";
     }
 

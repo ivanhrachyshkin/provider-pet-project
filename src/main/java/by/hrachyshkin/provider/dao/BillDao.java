@@ -13,7 +13,7 @@ public interface BillDao extends Dao<Bill> {
 
     List<Bill> findAndFilterBySubscriptionId(Integer subscriptionId) throws DaoException;
 
-    List<Bill> findAndFilterAndSort(Integer subscriptionId) throws DaoException;
+    List<Bill> findAndFilterAndSortOffset(Integer subscriptionId, int offset) throws DaoException;
 
     void updateBillStatus(final Integer subscriptionId, final Float value, final LocalDate date) throws DaoException;
 }

@@ -21,10 +21,11 @@ public class PayBillForSubscriptionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
+            checkGetHTTPMethod(request);
+
             final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
 
             final Integer accountId = getAccountId(request);
-
             final Integer subscriptionId = Integer.valueOf(request.getParameter("subscriptionId"));
             final Float value = Float.valueOf(request.getParameter("value"));
             final LocalDate date = LocalDate.parse(request.getParameter("date"));
@@ -36,6 +37,11 @@ public class PayBillForSubscriptionAction extends BaseAction {
         }
         request.setAttribute("tariffId", request.getParameter("tariffId"));
 
-        return "/cabinet/subscriptions/bills";
+        return "/cabinet/subscriptions/bills-for-subscription";
+    }
+
+    @Override
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+        response.sendRedirect(request.getContextPath() + path);
     }
 }

@@ -16,23 +16,15 @@ import java.util.List;
 
 public class ShowDiscountsForPromotionAction extends BaseAction {
 
-    public static final String DISCOUNTS_FOR_PROMOTION = "/tariffs/discounts";
+    public static final String SHOW_DISCOUNTS_FOR_PROMOTION = "/tariffs/discounts-for-promotion";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
-        final String tariffId;
-
-        if (request.getMethod().equals("GET")) {
-            HttpSession session = request.getSession();
-            tariffId = (String) session.getAttribute("tariffId");
-        } else {
-            tariffId = request.getParameter("tariffId");
-        }
+        final String tariffId = getTariffIdAttributeSession(request);
 
         final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
         final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-
 
         final Tariff tariff = tariffService.findOneById(Integer.valueOf(tariffId));
 

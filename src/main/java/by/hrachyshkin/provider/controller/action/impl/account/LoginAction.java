@@ -25,6 +25,7 @@ public class LoginAction extends BaseAction {
 
         try {
             checkGetHTTPMethod(request);
+
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final String email = request.getParameter("email");

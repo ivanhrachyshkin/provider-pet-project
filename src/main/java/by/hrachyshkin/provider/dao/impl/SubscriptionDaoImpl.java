@@ -51,11 +51,6 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                     "FROM subscriptions " +
                     "WHERE account_id = ? ";
 
-    private static final String FIND_AND_FILTER_BY_ACCOUNT_AND_TARIFF_ID_OFFSET_QUERY =
-            "SELECT id, account_id, tariff_id " +
-                    "FROM subscriptions " +
-                    "WHERE account_id = ? AND tariff_id = ? " +
-                    "LIMIT 5 OFFSET ?";
 
     private static final String FIND_ONE_SUBSCRIPTION_QUERY_BY_ID =
             "SELECT id, account_id, tariff_id " +
@@ -260,14 +255,14 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     @Override
     public void deleteByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
-            statement.setInt(1, accountId);
-            statement.setInt(2, tariffId);
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException(rb.getString("subscription.delete.by.account.id.and.tariff.id.exception"), e);
-        }
+//        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
+//            statement.setInt(1, accountId);
+//            statement.setInt(2, tariffId);
+//            statement.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            throw new DaoException(rb.getString("subscription.delete.by.account.id.and.tariff.id.exception"), e);
+//        }
     }
 
     private Subscription buildSubscription(final ResultSet resultSet) throws SQLException {

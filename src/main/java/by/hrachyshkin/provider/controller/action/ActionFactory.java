@@ -9,6 +9,7 @@ import by.hrachyshkin.provider.controller.action.impl.discount.ShowDiscountActio
 import by.hrachyshkin.provider.controller.action.impl.discount.UpdateDiscountAction;
 import by.hrachyshkin.provider.controller.action.impl.promotion.CreatePromotionAction;
 import by.hrachyshkin.provider.controller.action.impl.promotion.DeletePromotionAction;
+import by.hrachyshkin.provider.controller.action.impl.promotion.DiscountsForPromotionAction;
 import by.hrachyshkin.provider.controller.action.impl.promotion.ShowDiscountsForPromotionAction;
 import by.hrachyshkin.provider.controller.action.impl.subscription.*;
 import by.hrachyshkin.provider.controller.action.impl.tariff.*;
@@ -40,7 +41,8 @@ public class ActionFactory {
 
             put(CreatePromotionAction.CREATE_PROMOTION, new CreatePromotionAction());
             put(DeletePromotionAction.DELETE_PROMOTION, new DeletePromotionAction());
-            put(ShowDiscountsForPromotionAction.DISCOUNTS_FOR_PROMOTION, new ShowDiscountsForPromotionAction());
+            put(ShowDiscountsForPromotionAction.SHOW_DISCOUNTS_FOR_PROMOTION, new ShowDiscountsForPromotionAction());
+            put(DiscountsForPromotionAction.DISCOUNTS_FOR_PROMOTION, new DiscountsForPromotionAction());
 
             put(CreateSubscriptionAction.CREATE_SUBSCRIPTION, new CreateSubscriptionAction());
             put(PayBillForSubscriptionAction.PAY_BILL_FOR_SUBSCRIPTION, new PayBillForSubscriptionAction());
@@ -56,7 +58,6 @@ public class ActionFactory {
             put(UpdateTariffAction.UPDATE_TARIFF, new UpdateTariffAction());
         }
     };
-
 
     @Getter
     private static final ActionFactory INSTANCE = new ActionFactory();

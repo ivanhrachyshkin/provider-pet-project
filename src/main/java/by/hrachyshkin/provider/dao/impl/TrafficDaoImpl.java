@@ -35,11 +35,12 @@ public class TrafficDaoImpl implements TrafficDao {
                     "FROM traffics " +
                     "WHERE subscription_id = ? ";
 
-    private static final String FIND_AND_FILTER_AND_SORT_QUERY =
+    private static final String FIND_AND_FILTER_AND_SORT_OFFSET_QUERY =
             "SELECT subscription_id, value, date " +
                     "FROM traffics " +
                     "WHERE subscription_id = ? " +
-                    "ORDER BY date ASC ";
+                    "ORDER BY date ASC " +
+                    "LIMIT 5 OFFSET ?";
 
     private static final String ADD_QUERY =
             "INSERT " +
@@ -133,10 +134,11 @@ public class TrafficDaoImpl implements TrafficDao {
     }
 
     @Override
-    public List<Traffic> findAndFilterAndSort(final Integer subscriptionId) throws DaoException {
+    public List<Traffic> findAndFilterAndSortOffset(final Integer subscriptionId, final int offset) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_OFFSET_QUERY)) {
             statement.setInt(1, subscriptionId);
+            statement.setInt(2, offset);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Traffic> traffics = new ArrayList<>();
@@ -181,14 +183,14 @@ public class TrafficDaoImpl implements TrafficDao {
     @Override
     public void delete(final Integer subscriptionId) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_SUBSCRIPTION_ID_QUERY)) {
-            statement.setInt(1, subscriptionId);
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException(rb.getString("traffic.delete.exception"), e);
-        }
+//        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_SUBSCRIPTION_ID_QUERY)) {
+//            statement.setInt(1, subscriptionId);
+//
+//            statement.executeUpdate();
+//
+//        } catch (SQLException e) {
+//            throw new DaoException(rb.getString("traffic.delete.exception"), e);
+//        }
     }
 
 

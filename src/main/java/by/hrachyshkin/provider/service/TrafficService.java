@@ -9,9 +9,7 @@ public interface TrafficService extends Service<Traffic> {
 
     List<Traffic> findAndSortByDate() throws ServiceException, TransactionException;
 
-    List<Traffic> findAndFilterBySubscriptionId(final Integer subscriptionId) throws ServiceException, TransactionException;
+    List<Traffic> findAndFilterBySubscriptionId( Integer subscriptionId) throws ServiceException, TransactionException;
 
-    List<Traffic> findAndFilterBySubscriptionIdAndSortByDate(final Integer subscriptionId) throws ServiceException, TransactionException;
-
-    List<Traffic> findTrafficForSubscription(final Integer accountId, final Integer tariffId, Integer offset) throws ServiceException, TransactionException;
+    List<Traffic> findAndFilterAndSortOffset(Integer subscriptionId, int offset) throws ServiceException, TransactionException;
 }

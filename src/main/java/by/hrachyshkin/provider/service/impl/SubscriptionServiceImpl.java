@@ -137,14 +137,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public void deleteByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
 
-        try {
-            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            subscriptionDao.deleteByAccountAndTariffId(accountId, tariffId);
-            transactionImpl.commit();
-
-        } catch (TransactionException | DaoException e) {
-            transactionImpl.rollback();
-            throw new ServiceException(e.getMessage(), e);
-        }
+//        try {
+//            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
+//            subscriptionDao.deleteByAccountAndTariffId(accountId, tariffId);
+//            transactionImpl.commit();
+//
+//        } catch (TransactionException | DaoException e) {
+//            transactionImpl.rollback();
+//            throw new ServiceException(e.getMessage(), e);
+//        }
     }
 }

@@ -13,6 +13,6 @@ public interface TrafficDao extends Dao<Traffic> {
 
     List<Traffic> findAndFilterBySubscriptionId(Integer subscriptionId) throws DaoException;
 
-    List<Traffic> findAndFilterAndSort(Integer subscriptionId) throws DaoException;
+    List<Traffic> findAndFilterAndSortOffset(Integer subscriptionId, final int offset) throws DaoException;
     
 }

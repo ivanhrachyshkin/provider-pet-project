@@ -25,7 +25,7 @@ public class UpdateAccountAction extends BaseAction {
 
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
-            final Integer id = Integer.valueOf(request.getParameter("accountId"));
+            final Integer accountId = Integer.valueOf(request.getParameter("accountId"));
             final String email = request.getParameter("email");
             final String password = request.getParameter("password");
             final Account.Role role = Account.Role.valueOf(request.getParameter("role"));
@@ -34,12 +34,11 @@ public class UpdateAccountAction extends BaseAction {
             final String address = request.getParameter("address");
             final Float balance = Float.valueOf(request.getParameter("balance"));
 
-            accountService.update(new Account(id, email, password, role, name, phone, address, balance));
+            accountService.update(new Account(accountId, email, password, role, name, phone, address, balance));
 
         } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-
         return "/cabinet";
     }
 
