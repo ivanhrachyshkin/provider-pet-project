@@ -2,6 +2,7 @@ package by.hrachyshkin.provider.controller.action.impl.subscription;
 
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
+import by.hrachyshkin.provider.model.Subscription;
 import by.hrachyshkin.provider.service.*;
 
 import javax.servlet.ServletException;
@@ -25,11 +26,9 @@ public class DeleteSubscriptionAction extends BaseAction {
 
             final Integer accountId = getAccountId(request);
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
-            final Integer subscriptionId = subscriptionService.findOneByAccountIdAndTariffId(accountId, tariffId).getId();
+            final Subscription subscription = subscriptionService.findOneByAccountIdAndTariffId(accountId, tariffId);
 
-            billService.delete(subscriptionId);
-            trafficService.delete(subscriptionId);
-            subscriptionService.deleteByAccountAndTariffId(accountId, tariffId);
+            subscriptionService.delete(subscription);
 
         } catch (ServiceException | NumberFormatException e) {
             setErrorAttributeToSession(request, e.getMessage());

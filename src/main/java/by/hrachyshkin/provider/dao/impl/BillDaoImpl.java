@@ -22,6 +22,13 @@ public class BillDaoImpl implements BillDao {
                     "WHERE subscription_id = ? AND value = ? AND date = ?" +
                     ")";
 
+    private static final String EXISTS_UNPAID_BILLS_QUERY =
+            "SELECT EXISTS (" +
+                    "SELECT * " +
+                    "FROM bills " +
+                    "WHERE subscription_id = ? AND status = false" +
+                    ")";
+
     private static final String FIND_QUERY =
             "SELECT subscription_id, value, date, status " +
                     "FROM bills ";
@@ -75,6 +82,24 @@ public class BillDaoImpl implements BillDao {
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
+                return resultSet.getBoolean(1);
+            }
+
+        } catch (SQLException e) {
+            throw new DaoException(rb.getString("bill.exist.exception"), e);
+        }
+    }
+
+    @Override
+    public boolean isExistsOpenBills(final Integer subscriptionId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_UNPAID_BILLS_QUERY)) {
+            statement.setInt(1, subscriptionId);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                System.out.println(resultSet.getBoolean(1));
+
                 return resultSet.getBoolean(1);
             }
 

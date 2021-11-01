@@ -125,25 +125,5 @@ public class BillServiceImpl implements BillService {
     @Override
     public void delete(final Integer subscriptionId) throws ServiceException, TransactionException {
 
-//        try {
-//            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
-//            final List<Bill> bills = billDao.findAndFilterAndSortOffset(subscriptionId);
-//
-//            final List<Boolean> billStatuses = bills.stream()
-//                    .map(Bill::getStatus)
-//                    .collect(Collectors.toList());
-//
-//            if (billStatuses.contains(false)) {
-//                transactionImpl.rollback();
-//                throw new ServiceException(rb.getString("bill.delete.unpaid.exception"));
-//            }
-//
-//            billDao.delete(subscriptionId);
-//            transactionImpl.commit();
-//
-//        } catch (DaoException | TransactionException e) {
-//            transactionImpl.rollback();
-//            throw new ServiceException(e.getMessage(), e);
-//        }
     }
 }

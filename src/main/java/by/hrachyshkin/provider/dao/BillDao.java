@@ -9,6 +9,8 @@ public interface BillDao extends Dao<Bill> {
 
     boolean isExists(final Integer subscriptionId, final Float value, final LocalDate date) throws DaoException;
 
+    boolean isExistsOpenBills(Integer subscriptionId) throws DaoException;
+
     List<Bill> findAndSortByDate() throws DaoException;
 
     List<Bill> findAndFilterBySubscriptionId(Integer subscriptionId) throws DaoException;

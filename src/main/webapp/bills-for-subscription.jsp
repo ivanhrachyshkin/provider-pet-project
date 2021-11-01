@@ -42,7 +42,7 @@
                                         <input name="value" type="hidden" value="${bill.value}">
                                         <input name="date" type="hidden" value="${bill.date}">
                                         <input name="tariffId" type="hidden" value="${tariff.id}">
-                                        <button type="submit" class="btn btn-danger"><fmt:message
+                                        <button type="submit" class="btn btn-danger btn-sm"><fmt:message
                                                 key="payLabel"/></button>
                                     </c:when>
                                     <c:otherwise>

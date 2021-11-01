@@ -13,7 +13,7 @@ public interface SubscriptionService extends Service<Subscription> {
 
     Subscription findOneByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException;
 
-    void deleteByAccountAndTariffId(Integer accountId, final Integer tariffId) throws ServiceException, TransactionException;
+    void delete(final Subscription subscription) throws ServiceException, TransactionException;
 
     void payBillForSubscription(Integer accountId, Integer subscriptionIdForBill, Float value, LocalDate date) throws ServiceException, TransactionException;
 

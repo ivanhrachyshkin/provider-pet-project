@@ -60,7 +60,8 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     private static final String FIND_ONE_SUBSCRIPTION_BY_ACCOUNT_AND_TARIFF_ID_QUERY =
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions " +
-                    "WHERE account_id = ? and tariff_id = ?";;
+                    "WHERE account_id = ? and tariff_id = ?";
+    ;
 
     private static final String ADD_QUERY =
             "INSERT " +
@@ -72,10 +73,10 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                     "FROM subscriptions " +
                     "WHERE id = ?";
 
-    private static final String DELETE_BY_ACCOUNT_AND_TARIFF_ID_QUERY =
+    private static final String DELETE_BY_ID_QUERY =
             "DELETE " +
                     "FROM subscriptions " +
-                    "WHERE account_id = ? AND tariff_id = ?";
+                    "WHERE id = ?";
 
     private final Connection connection;
     private final ResourceBundle rb;
@@ -253,16 +254,16 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     }
 
     @Override
-    public void deleteByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException {
+    public void deleteByAccountIdAndTariffId(final Integer subscriptionId) throws DaoException {
 
-//        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
-//            statement.setInt(1, accountId);
-//            statement.setInt(2, tariffId);
-//            statement.executeUpdate();
-//
-//        } catch (SQLException e) {
-//            throw new DaoException(rb.getString("subscription.delete.by.account.id.and.tariff.id.exception"), e);
-//        }
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY)) {
+            statement.setInt(1, subscriptionId);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DaoException(rb.getString("subscription.delete.by.account.id.and.tariff.id.exception"), e);
+        }
     }
 
     private Subscription buildSubscription(final ResultSet resultSet) throws SQLException {

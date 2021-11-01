@@ -183,14 +183,14 @@ public class TrafficDaoImpl implements TrafficDao {
     @Override
     public void delete(final Integer subscriptionId) throws DaoException {
 
-//        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_SUBSCRIPTION_ID_QUERY)) {
-//            statement.setInt(1, subscriptionId);
-//
-//            statement.executeUpdate();
-//
-//        } catch (SQLException e) {
-//            throw new DaoException(rb.getString("traffic.delete.exception"), e);
-//        }
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_SUBSCRIPTION_ID_QUERY)) {
+            statement.setInt(1, subscriptionId);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DaoException(rb.getString("traffic.delete.exception"), e);
+        }
     }
 
 

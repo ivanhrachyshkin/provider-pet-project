@@ -1,11 +1,6 @@
 package by.hrachyshkin.provider.service.impl;
 
-import by.hrachyshkin.provider.dao.DaoException;
-import by.hrachyshkin.provider.dao.DaoKeys;
-import by.hrachyshkin.provider.dao.SubscriptionDao;
-import by.hrachyshkin.provider.dao.TrafficDao;
-import by.hrachyshkin.provider.dao.Transaction;
-import by.hrachyshkin.provider.dao.TransactionException;
+import by.hrachyshkin.provider.dao.*;
 import by.hrachyshkin.provider.model.Bill;
 import by.hrachyshkin.provider.model.Subscription;
 import by.hrachyshkin.provider.model.Traffic;
@@ -128,15 +123,6 @@ public class TrafficServiceImpl implements TrafficService {
     @Override
     public void delete(final Integer subscriptionId) throws ServiceException, TransactionException {
 
-//        try {
-//            final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
-//
-//            trafficDao.delete(subscriptionId);
-//            transactionImpl.commit();
-//
-//        } catch (TransactionException | DaoException e) {
-//            transactionImpl.rollback();
-//            throw new ServiceException(e.getMessage(), e);
-//        }
+
     }
 }

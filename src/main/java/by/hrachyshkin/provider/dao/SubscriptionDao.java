@@ -18,5 +18,5 @@ public interface SubscriptionDao extends Dao<Subscription> {
 
     Subscription findOneByAccountIdAndTariffId( Integer accountId,  Integer tariffId) throws DaoException;
 
-    void deleteByAccountAndTariffId( Integer accountId,  Integer tariffId) throws DaoException;
+    void deleteByAccountIdAndTariffId(final Integer subscriptionId) throws DaoException;
 }
