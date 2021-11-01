@@ -19,7 +19,7 @@ public class LoginAction extends BaseAction {
     public static final String LOGIN = "/login";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         String path;
 
@@ -45,7 +45,7 @@ public class LoginAction extends BaseAction {
                 path = "/";
             }
 
-        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             path = "/";
         }

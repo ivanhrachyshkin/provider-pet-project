@@ -18,7 +18,7 @@ public class UpdateAccountAction extends BaseAction {
     public static final String UPDATE_ACCOUNT = "/cabinet/accounts/update";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         try {
             checkGetHTTPMethod(request);
@@ -36,7 +36,7 @@ public class UpdateAccountAction extends BaseAction {
 
             accountService.update(new Account(accountId, email, password, role, name, phone, address, balance));
 
-        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet";

@@ -1,17 +1,13 @@
 package by.hrachyshkin.provider.service.impl;
 
-import by.hrachyshkin.provider.dao.DaoException;
-import by.hrachyshkin.provider.dao.DaoKeys;
-import by.hrachyshkin.provider.dao.PromotionDao;
-import by.hrachyshkin.provider.dao.SubscriptionDao;
-import by.hrachyshkin.provider.dao.TariffDao;
-import by.hrachyshkin.provider.dao.Transaction;
-import by.hrachyshkin.provider.dao.TransactionException;
+import by.hrachyshkin.provider.dao.*;
 import by.hrachyshkin.provider.model.Subscription;
 import by.hrachyshkin.provider.model.Tariff;
 import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.TariffService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,95 +16,122 @@ import java.util.ResourceBundle;
 @RequiredArgsConstructor
 public class TariffServiceImpl implements TariffService {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(TariffServiceImpl.class);
     private final Transaction transactionImpl;
     private final ResourceBundle rb;
 
     @Override
-    public boolean isExist(final Integer id) throws ServiceException {
+    public boolean isExist(final Integer id) throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method isExist starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
             final boolean value = tariffDao.isExistById(id);
+            LOGGER.debug("method isExist finish ");
             transactionImpl.commit();
             return value;
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
+            transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public List<Tariff> find() throws ServiceException {
+    public List<Tariff> find() throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method find starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
             final List<Tariff> tariffs = tariffDao.find();
+            LOGGER.debug("method find finish ");
             transactionImpl.commit();
             return tariffs;
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
+            transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public List<Tariff> findAndSortBySpeedAndPrice(final Integer offset) throws ServiceException {
+    public List<Tariff> findAndSortBySpeedAndPrice(final Integer offset) throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method findAndSortBySpeedAndPrice starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
             final List<Tariff> tariffs = tariffDao.findAndSortBySpeedAndPrice(offset);
+            LOGGER.debug("method findAndSortBySpeedAndPrice finish ");
             transactionImpl.commit();
             return tariffs;
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
+            transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public List<Tariff> findAndFilterByType(final Tariff.Type type, final int offset) throws ServiceException {
+    public List<Tariff> findAndFilterByType(final Tariff.Type type, final int offset) throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method findAndFilterByType starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
             final List<Tariff> tariffs = tariffDao.findAndFilterByType(type, offset);
+            LOGGER.debug("method findAndFilterByType finish ");
             transactionImpl.commit();
             return tariffs;
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
+            transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public List<Tariff> findAndFilterByTypeAndSortBySpeedAndPrice(final Tariff.Type type) throws ServiceException {
+    public List<Tariff> findAndFilterByTypeAndSortBySpeedAndPrice(final Tariff.Type type) throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method findAndFilterByTypeAndSortBySpeedAndPrice starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
             final List<Tariff> tariffs = tariffDao.findAndFilterAndSort(type);
+            LOGGER.debug("method findAndFilterByTypeAndSortBySpeedAndPrice finish ");
             transactionImpl.commit();
             return tariffs;
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
+            transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
 
     @Override
-    public Tariff findOneById(final Integer id) throws ServiceException {
+    public Tariff findOneById(final Integer id) throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method findOneById starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
             if (!tariffDao.isExistById(id)) {
+                LOGGER.error(rb.getString("tariff.find.one.by.id.exist.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.find.one.by.id.exist.exception"));
             }
 
             final Tariff tariff = tariffDao.findOneById(id);
+            LOGGER.debug("method findOneById finish ");
             transactionImpl.commit();
             return tariff;
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
+            transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
     }
@@ -117,6 +140,7 @@ public class TariffServiceImpl implements TariffService {
     public List<Tariff> findTariffsForSubscription(final Integer accountId) throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method findTariffsForSubscription starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
 
@@ -132,9 +156,11 @@ public class TariffServiceImpl implements TariffService {
                 }
             }
             transactionImpl.commit();
+            LOGGER.debug("method findTariffsForSubscription finish ");
             return accountTariffs;
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
@@ -144,31 +170,42 @@ public class TariffServiceImpl implements TariffService {
     public void add(final Tariff tariff) throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method isExistByEmailAndPassword starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
             if (tariff.getName().isEmpty()
                     || tariff.getType() == null
                     || tariff.getSpeed() == null
                     || tariff.getPrice() == null) {
+                LOGGER.error(rb.getString("tariff.add.empty.input.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.add.empty.input.exception"));
             }
 
-                if (tariffDao.isExistByName(tariff.getName())) {
-                    throw new ServiceException(rb.getString("tariff.add.exist.exception"));
-                }
+            if (tariffDao.isExistByName(tariff.getName())) {
+                LOGGER.error(rb.getString("tariff.add.exist.exception"));
+                transactionImpl.rollback();
+                throw new ServiceException(rb.getString("tariff.add.exist.exception"));
+            }
 
             if (tariff.getPrice() < 0) {
+                LOGGER.error(rb.getString("tariff.add.negative.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.add.negative.exception"));
             }
 
             if (tariff.getSpeed() < 0) {
+                LOGGER.error(rb.getString("tariff.add.negative.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.add.negative.exception"));
             }
 
             tariffDao.add(tariff);
+            LOGGER.debug("method isExistByEmailAndPassword finish ");
             transactionImpl.commit();
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
@@ -178,35 +215,48 @@ public class TariffServiceImpl implements TariffService {
     public void update(final Tariff tariff) throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method update starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
             if (tariff.getName().isEmpty()
                     || tariff.getType() == null
                     || tariff.getSpeed() == null
                     || tariff.getPrice() == null) {
+                LOGGER.error(rb.getString("tariff.update.empty.input.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.update.empty.input.exception"));
             }
 
             if (!tariffDao.isExistById(tariff.getId())) {
+                LOGGER.error(rb.getString("tariff.update.exist.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.update.exist.exception"));
             }
 
             if (tariffDao.isExistByNotIdAndName(tariff.getId(), tariff.getName())) {
+                LOGGER.error(rb.getString("tariff.update.exist.not.id.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.update.exist.not.id.exception"));
             }
 
             if (tariff.getPrice() < 0) {
+                LOGGER.error(rb.getString("tariff.update.negative.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.update.negative.exception"));
             }
 
             if (tariff.getSpeed() < 0) {
+                LOGGER.error(rb.getString("tariff.update.negative.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.update.negative.exception"));
             }
 
             tariffDao.update(tariff);
+            LOGGER.debug("method update finish ");
             transactionImpl.commit();
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
@@ -216,26 +266,35 @@ public class TariffServiceImpl implements TariffService {
     public void delete(final Integer id) throws ServiceException, TransactionException {
 
         try {
+            LOGGER.debug("method delete starts ");
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
             final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
 
             if (!tariffDao.isExistById(id)) {
+                LOGGER.error(rb.getString("tariff.delete.exist.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.delete.exist.exception"));
             }
 
             if (subscriptionDao.isExistByTariffId(id)) {
+                LOGGER.error(rb.getString("tariff.delete.subscriptions.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.delete.subscriptions.exception"));
             }
 
             if (promotionDao.isExistByTariffId(id)) {
+                LOGGER.error(rb.getString("tariff.delete.promotions.exception"));
+                transactionImpl.rollback();
                 throw new ServiceException(rb.getString("tariff.delete.promotions.exception"));
             }
 
             tariffDao.delete(id);
+            LOGGER.debug("method delete finish ");
             transactionImpl.commit();
 
         } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }

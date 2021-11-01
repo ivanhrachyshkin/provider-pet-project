@@ -17,7 +17,7 @@ public class DeleteDiscountAction extends BaseAction {
     public static final String DELETE_DISCOUNT = "/discounts/delete";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         try {
             checkGetHTTPMethod(request);
@@ -27,7 +27,7 @@ public class DeleteDiscountAction extends BaseAction {
             final Integer discountId = Integer.valueOf(request.getParameter("discountId"));
             discountService.delete(discountId);
 
-        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException  e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/discounts";

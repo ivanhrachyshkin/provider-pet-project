@@ -18,7 +18,7 @@ public class CreateAccountAction extends BaseAction {
     public static final String CREATE_ACCOUNT = "/cabinet/accounts/create";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         try {
             checkGetHTTPMethod(request);
@@ -34,7 +34,7 @@ public class CreateAccountAction extends BaseAction {
             final Float balance = 0.0f;
 
             accountService.add(new Account(email, password, role, name, phone, address, balance));
-        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
+        } catch (ServiceException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet/accounts";

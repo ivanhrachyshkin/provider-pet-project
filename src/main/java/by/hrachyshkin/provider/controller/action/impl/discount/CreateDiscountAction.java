@@ -19,7 +19,7 @@ public class CreateDiscountAction extends BaseAction {
     public static final String CREATE_DISCOUNT = "/discounts/create";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         try {
             checkGetHTTPMethod(request);
@@ -34,7 +34,7 @@ public class CreateDiscountAction extends BaseAction {
 
             discountService.add(new Discount(name, type, value, dateFrom, dateTo));
 
-        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/discounts";

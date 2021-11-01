@@ -1,5 +1,9 @@
 package by.hrachyshkin.provider.controller.listener;
 
+import by.hrachyshkin.provider.dao.pool.ConnectionPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.HttpSessionAttributeListener;
 import javax.servlet.http.HttpSessionBindingEvent;
@@ -7,21 +11,23 @@ import javax.servlet.http.HttpSessionBindingEvent;
 @WebListener
 public class SessionListener implements HttpSessionAttributeListener {
 
+    private final static Logger LOGGER = LoggerFactory.getLogger(SessionListener.class);
+
     public void attributeRemoved(HttpSessionBindingEvent ev) {
-        System.out.println("remove: " + ev.getClass().getSimpleName() + " : " + ev.getName()
+        LOGGER.info("remove: " + ev.getClass().getSimpleName() + " : " + ev.getName()
                 + " : " + ev.getValue());
     }
 
     //TODO refactor sout to logs
     public void attributeAdded(HttpSessionBindingEvent ev) {
 
-        System.out.println("add: " + ev.getClass().getSimpleName() + " : " + ev.getName()
+        LOGGER.info("add: " + ev.getClass().getSimpleName() + " : " + ev.getName()
                 + " : " + ev.getValue());
     }
 
     public void attributeReplaced(HttpSessionBindingEvent ev) {
 
-        System.out.println("replace: " + ev.getClass().getSimpleName() + " : " + ev.getName()
+        LOGGER.info("replace: " + ev.getClass().getSimpleName() + " : " + ev.getName()
                 + " : " + ev.getValue());
     }
 }

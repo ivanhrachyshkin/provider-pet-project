@@ -18,7 +18,7 @@ public class DepositMoneyForAccount extends BaseAction {
     public static final String DEPOSIT = "/cabinet/deposit";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
         try {
             checkGetHTTPMethod(request);
@@ -32,7 +32,7 @@ public class DepositMoneyForAccount extends BaseAction {
 
             accountService.deposit(accountId, card, deposit, validity);
 
-        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet";
