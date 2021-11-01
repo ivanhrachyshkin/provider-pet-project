@@ -144,7 +144,7 @@ public class TariffServiceImpl implements TariffService {
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
-            if (tariff.getName() == null
+            if (tariff.getName().isEmpty()
                     || tariff.getType() == null
                     || tariff.getSpeed() == null
                     || tariff.getPrice() == null) {
@@ -178,7 +178,7 @@ public class TariffServiceImpl implements TariffService {
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
-            if (tariff.getName() == null
+            if (tariff.getName().isEmpty()
                     || tariff.getType() == null
                     || tariff.getSpeed() == null
                     || tariff.getPrice() == null) {

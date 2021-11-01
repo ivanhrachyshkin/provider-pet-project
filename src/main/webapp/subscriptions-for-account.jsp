@@ -49,7 +49,7 @@
                     </td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
-                <form action="${url}/cabinet/subscriptions/remove" method="POST">
+                <form action="${url}/cabinet/subscriptions/delete" method="POST">
                     <td>
                         <button type="submit" class="btn btn-danger">remove</button>
                     </td>
@@ -61,7 +61,7 @@
 </div>
 
 <span class="text-center">
-<form action="${url}/cabinet/subscriptions/add" method="POST">
+<form action="${url}/cabinet/subscriptions/create" method="POST">
     <label>Choose a tariff:</label>
     <select name="tariffId">
         <c:forEach var="tariff" items="${tariffs}">

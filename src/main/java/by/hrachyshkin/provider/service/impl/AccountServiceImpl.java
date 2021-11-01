@@ -111,14 +111,14 @@ public class AccountServiceImpl implements AccountService {
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
 
-            if (account.getId() == null
-                    || account.getEmail() == null
-                    || account.getPassword() == null
+            if (account.getEmail().isEmpty()
+                    || account.getPassword().isEmpty()
                     || account.getRole() == null
-                    || account.getName() == null
-                    || account.getPhone() == null
-                    || account.getAddress() == null
-                    || account.getBalance() == null) {
+                    || account.getName().isEmpty()
+                    || account.getPhone().isEmpty()
+                    || account.getAddress().isEmpty()) {
+
+                System.out.println(account.toString());
                 throw new ServiceException("Can't add account because of empty input");
             }
 
@@ -149,13 +149,11 @@ public class AccountServiceImpl implements AccountService {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
 
             if (account.getId() == null
-                    || account.getEmail() == null
-                    || account.getPassword() == null
+                    || account.getEmail().isEmpty()
                     || account.getRole() == null
-                    || account.getName() == null
-                    || account.getPhone() == null
-                    || account.getAddress() == null
-                    || account.getBalance() == null) {
+                    || account.getName().isEmpty()
+                    || account.getPhone().isEmpty()
+                    || account.getAddress().isEmpty()) {
                 throw new ServiceException("Can't update account because of empty input");
             }
 

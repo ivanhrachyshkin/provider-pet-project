@@ -133,7 +133,7 @@ public class DiscountServiceImpl implements DiscountService {
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
 
-            if (discount.getName() == null
+            if (discount.getName().isEmpty()
                     || discount.getType() == null
                     || discount.getValue() == null
                     || discount.getDateFrom() == null
@@ -168,7 +168,7 @@ public class DiscountServiceImpl implements DiscountService {
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
 
-            if (discount.getName() == null
+            if (discount.getName().isEmpty()
                     || discount.getType() == null
                     || discount.getValue() == null
                     || discount.getDateFrom() == null

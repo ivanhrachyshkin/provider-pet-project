@@ -38,7 +38,7 @@
                     <td>${discount.value}</td>
                     <td>${discount.dateFrom}</td>
                     <td>${discount.dateTo}</td>
-                <form action="${url}/tariffs/discounts/remove" method="POST">
+                <form action="${url}/tariffs/discounts/delete" method="POST">
                     <td><button type="submit" class="btn btn-info">remove</button></td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                     <input name="discountId" type="hidden" value="${discount.id}">
@@ -49,7 +49,7 @@
 </div>
 
 <span class="text-center">
-<form action="${url}/tariffs/discounts/add" method="POST">
+<form action="${url}/tariffs/discounts/create" method="POST">
     <label>Choose a discount:</label>
     <select name="discountId">
         <c:forEach var="discount" items="${discounts}">
