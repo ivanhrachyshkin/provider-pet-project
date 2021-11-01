@@ -1,7 +1,6 @@
 package by.hrachyshkin.provider.service.impl;
 
 import by.hrachyshkin.provider.dao.*;
-import by.hrachyshkin.provider.model.Bill;
 import by.hrachyshkin.provider.model.Subscription;
 import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.SubscriptionService;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
@@ -38,7 +36,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         try {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            final List<Subscription> subscriptions = subscriptionDao.findAndFilter(accountId);
+            final List<Subscription> subscriptions = subscriptionDao.findAndFilterByAccountId(accountId);
             transactionImpl.commit();
             return subscriptions;
 

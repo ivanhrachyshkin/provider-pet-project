@@ -23,7 +23,7 @@
 <body>
 <jsp:include page="navbar.jsp" />
 <div class="container">
-    <h1 class="text-center">Bills for "${account.email}" for "${tariff.name}"</h1>
+    <h1 class="text-center"><fmt:message key="billsForSubscriptionLabel"/> "${account.email}" <fmt:message key="subscriptionLabel"/> "${tariff.name}"</h1>
     <br>
 </div>
 <div class="row">
@@ -48,10 +48,10 @@
                                     <input name="value" type="hidden" value="${bill.value}">
                                     <input name="date" type="hidden" value="${bill.date}">
                                     <input name="tariffId" type="hidden" value="${tariff.id}">
-                                    <button type="submit" class="btn btn-danger">pay</button>
+                                    <button type="submit" class="btn btn-danger"><fmt:message key="payLabel"/></button>
                                 </c:when>
                                 <c:otherwise>
-                                    <button disabled class="btn btn-success">PAID</button>
+                                    <button disabled class="btn btn-success"><fmt:message key="paidLabel"/></button>
                                 </c:otherwise>
                             </c:choose>
                         </form>

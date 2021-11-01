@@ -96,7 +96,7 @@ public class TariffDaoImpl implements TariffDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Tariff doesn't exist by id", e);
+            throw new DaoException(rb.getString("tariff.exist.by.id.exception"), e);
         }
     }
 
@@ -112,7 +112,7 @@ public class TariffDaoImpl implements TariffDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Tariff doesn't exist by name", e);
+            throw new DaoException(rb.getString("tariff.exist.by.name.exception"), e);
         }
     }
 
@@ -129,7 +129,7 @@ public class TariffDaoImpl implements TariffDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Tariff doesn't exist", e);
+            throw new DaoException(rb.getString("tariff.exist.by.not.name.and.id.exception"), e);
         }
     }
 
@@ -147,7 +147,7 @@ public class TariffDaoImpl implements TariffDao {
             return tariffs;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find tariffs");
+            throw new DaoException(rb.getString("tariff.find.exception"));
         }
     }
 
@@ -167,7 +167,7 @@ public class TariffDaoImpl implements TariffDao {
                 return tariffs;
             }
         } catch (Exception e) {
-            throw new DaoException("Can't find or sort by speed and price tariffs");
+            throw new DaoException(rb.getString("tariff.find.or.sort.by.speed.and.price.exception"));
         }
     }
 
@@ -187,7 +187,7 @@ public class TariffDaoImpl implements TariffDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter by type tariffs");
+            throw new DaoException(rb.getString("tariff.find.or.filter.by.type.exception"));
         }
     }
 
@@ -207,7 +207,7 @@ public class TariffDaoImpl implements TariffDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter by type or sort by speed and price tariffs");
+            throw new DaoException(rb.getString("tariff.find.or.filter.by.type.or.sort.by.speed.exception"));
         }
     }
 
@@ -222,7 +222,7 @@ public class TariffDaoImpl implements TariffDao {
                 return buildTariff(resultSet);
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException e) {rb.getString("tariff.find.one.by.id.exception");
             throw new DaoException("Can't find tariff by id", e);
         }
     }
@@ -239,7 +239,7 @@ public class TariffDaoImpl implements TariffDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add tariff", e);
+            throw new DaoException(rb.getString("tariff.add.exception"), e);
         }
     }
 
@@ -257,7 +257,7 @@ public class TariffDaoImpl implements TariffDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't update tariff", e);
+            throw new DaoException(rb.getString("tariff.update.exception"), e);
         }
     }
 
@@ -269,7 +269,7 @@ public class TariffDaoImpl implements TariffDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete tariff", e);
+            throw new DaoException(rb.getString("tariff.delete.exception"), e);
         }
     }
 

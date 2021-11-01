@@ -122,7 +122,7 @@ public class TariffServiceImpl implements TariffService {
 
             final List<Tariff> tariffs = tariffDao.find();
             final List<Tariff> accountTariffs = new ArrayList<>();
-            final List<Subscription> subscriptions = subscriptionDao.findAndFilter(accountId);
+            final List<Subscription> subscriptions = subscriptionDao.findAndFilterByAccountId(accountId);
 
             for (Subscription subs : subscriptions) {
                 for (Tariff tariff : tariffs) {

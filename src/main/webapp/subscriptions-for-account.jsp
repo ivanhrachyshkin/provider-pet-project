@@ -22,7 +22,7 @@
 <body>
 <jsp:include page="navbar.jsp"/>
 <div class="container">
-    <h1 class="text-center">Subscriptions for "${account.email}" account</h1>
+    <h1 class="text-center"><fmt:message key="subscriptionsForAccountLabel"/> "${account.email}"</h1>
     <br>
     <table class="table table-hover table-stripped">
         <tr>

@@ -94,7 +94,7 @@ public class DiscountDaoImpl implements DiscountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Discount doesn't exist by id", e);
+            throw new DaoException(rb.getString("discount.exist.by.id.exception"), e);
         }
     }
 
@@ -110,7 +110,7 @@ public class DiscountDaoImpl implements DiscountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Discount doesn't exist by name", e);
+            throw new DaoException(rb.getString("discount.exist.by.name.exception"), e);
         }
     }
 
@@ -127,7 +127,7 @@ public class DiscountDaoImpl implements DiscountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Discount doesn't exist", e);
+            throw new DaoException(rb.getString("discount.exist.exception"), e);
         }
     }
 
@@ -146,7 +146,7 @@ public class DiscountDaoImpl implements DiscountDao {
             return discounts;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find discounts");
+            throw new DaoException(rb.getString("discount.find.exception"), e);
         }
     }
 
@@ -167,7 +167,7 @@ public class DiscountDaoImpl implements DiscountDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or sort by value discounts");
+            throw new DaoException(rb.getString("discount.find.or.sort.by.value.exception"), e);
         }
     }
 
@@ -187,7 +187,7 @@ public class DiscountDaoImpl implements DiscountDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter by type discounts");
+            throw new DaoException(rb.getString("discount.find.or.filter.by.type.exception"));
         }
     }
 
@@ -207,7 +207,7 @@ public class DiscountDaoImpl implements DiscountDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter by type or sort by value discounts");
+            throw new DaoException(rb.getString("discount.find.or.sort.by.value.or.filter.type.id.exception"));
         }
     }
 
@@ -222,7 +222,7 @@ public class DiscountDaoImpl implements DiscountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Can't find discount by id", e);
+            throw new DaoException(rb.getString("discount.find.one.by.id.exception"));
         }
     }
 
@@ -240,7 +240,7 @@ public class DiscountDaoImpl implements DiscountDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add discount", e);
+            throw new DaoException(rb.getString("discount.add.exception"), e);
         }
     }
 
@@ -259,7 +259,7 @@ public class DiscountDaoImpl implements DiscountDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't update discount", e);
+            throw new DaoException(rb.getString("discount.update.exception"), e);
         }
     }
 
@@ -271,7 +271,7 @@ public class DiscountDaoImpl implements DiscountDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete discount", e);
+            throw new DaoException(rb.getString("discount.delete.exception"), e);
         }
     }
 

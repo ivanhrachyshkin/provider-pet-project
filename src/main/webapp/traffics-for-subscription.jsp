@@ -23,15 +23,15 @@
 <jsp:include page="navbar.jsp"/>
 
 <div class="container">
-    <h2 class="text-center">Traffics for "${account.email}" for "${tariff.name}" subscription</h2>
+    <h2 class="text-center"><fmt:message key="trafficForSubscriptionLabel"/> "${account.email}" <fmt:message key="subscriptionLabel"/> "${tariff.name}"</h2>
     <br>
     <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
             <table class="table table-hover table-stripped">
                 <tr>
-                    <th>Value</th>
-                    <th>Date</th>
+                    <th><fmt:message key="valueLabel"/></th>
+                    <th><fmt:message key="dateLabel"/></th>
                 </tr>
                 <c:forEach var="subscriptionTraffic" items="${subscriptionTraffics}">
                     <tr>

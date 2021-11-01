@@ -74,7 +74,7 @@ public class PromotionDaoImpl implements PromotionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Promotion doesn't exist by tariff id", e);
+            throw new DaoException(rb.getString("promotion.exist.by.tariff.id.exception"), e);
         }
     }
 
@@ -90,7 +90,7 @@ public class PromotionDaoImpl implements PromotionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Promotion doesn't exist by discount id", e);
+            throw new DaoException(rb.getString("promotion.exist.by.discount.id.exception"), e);
         }
     }
 
@@ -107,7 +107,7 @@ public class PromotionDaoImpl implements PromotionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Promotion doesn't exist by tariff id and discount id", e);
+            throw new DaoException(rb.getString("promotion.exist.by.tariff.id.and.discount.id.exception"), e);
         }
     }
 
@@ -125,7 +125,7 @@ public class PromotionDaoImpl implements PromotionDao {
             return promotions;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find promotions");
+            throw new DaoException(rb.getString("promotion.find.exception"), e);
         }
     }
 
@@ -145,13 +145,13 @@ public class PromotionDaoImpl implements PromotionDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter by tariff id promotions");
+            throw new DaoException(rb.getString("promotion.find.or.filter.by.tariff.id.exception"), e);
         }
     }
 
     @Override
     public Promotion findOneById(final Integer id) throws DaoException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException(rb.getString("promotion.find.one.by.id.unsupported.exception"));
     }
 
     @Override
@@ -164,18 +164,18 @@ public class PromotionDaoImpl implements PromotionDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add promotion", e);
+            throw new DaoException(rb.getString("promotion.add.exception"), e);
         }
     }
 
     @Override
     public void update(final Promotion promotion) throws DaoException {
-        throw new UnsupportedOperationException("Update operation is not available for promotion");
+        throw new UnsupportedOperationException(rb.getString("promotion.update.unsupported.exception"));
     }
 
     @Override
     public void delete(Integer id) throws DaoException {
-        throw new UnsupportedOperationException("Delete operation is not available for promotion");
+        throw new UnsupportedOperationException(rb.getString("promotion.delete.unsupported.exception"));
     }
 
     @Override
@@ -187,7 +187,7 @@ public class PromotionDaoImpl implements PromotionDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete promotion by tariff id and discount id", e);
+            throw new DaoException(rb.getString("promotion.delete.by.tariff.and.discount.exception"), e);
         }
     }
 

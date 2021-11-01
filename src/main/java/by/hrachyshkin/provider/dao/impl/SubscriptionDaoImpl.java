@@ -97,7 +97,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Subscription doesn't exist by id", e);
+            throw new DaoException(rb.getString("subscription.exist.by.id.exception"), e);
         }
     }
 
@@ -113,7 +113,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Subscription doesn't exist by account id", e);
+            throw new DaoException(rb.getString("subscription.exist.by.account.id.exception"), e);
         }
     }
 
@@ -129,7 +129,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Subscription doesn't exist by tariff id", e);
+            throw new DaoException(rb.getString("subscription.exist.by.tariff.id.exception"), e);
         }
     }
 
@@ -146,7 +146,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Subscription doesn't exist by account and tariff id", e);
+            throw new DaoException(rb.getString("subscription.exist.by.account.id.and.tariff.id.exception"), e);
         }
     }
 
@@ -164,12 +164,12 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             return subscriptions;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find subscriptions");
+            throw new DaoException(rb.getString("subscription.find.exception"));
         }
     }
 
     @Override
-    public List<Subscription> findAndFilter(Integer accountId) throws DaoException {
+    public List<Subscription> findAndFilterByAccountId(Integer accountId) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_ACCOUNT_ID_QUERY)) {
             statement.setInt(1, accountId);
@@ -184,7 +184,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter by account subscriptions");
+            throw new DaoException(rb.getString("subscription.find.or.filter.by.account.id.exception"));
         }
     }
 
@@ -206,7 +206,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find and filter subscription by account id and tariff id");
+            throw new DaoException(rb.getString("subscription.find.or.filter.by.account.id.and.tariff.id.exception"));
         }
     }
 
@@ -222,7 +222,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Can't find subscription by id", e);
+            throw new DaoException(rb.getString("subscription.find.one.by.id.exception"), e);
         }
     }
 
@@ -236,13 +236,13 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add subscription", e);
+            throw new DaoException(rb.getString("subscription.add.exception"), e);
         }
     }
 
     @Override
     public void update(final Subscription subscription) throws DaoException {
-        throw new UnsupportedOperationException("Update operation is not available for subscription");
+        throw new UnsupportedOperationException(rb.getString("subscription.update.unsupported.exception"));
     }
 
     @Override
@@ -253,7 +253,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete subscription", e);
+            throw new DaoException(rb.getString("subscription.delete.exception"), e);
         }
     }
 
@@ -266,7 +266,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete subscription by account id and tariff id because there are connected traffics and bills", e);
+            throw new DaoException(rb.getString("subscription.delete.by.account.id.and.tariff.id.exception"), e);
         }
     }
 

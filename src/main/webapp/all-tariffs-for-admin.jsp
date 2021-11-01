@@ -29,7 +29,7 @@
     <br>
     <a href="${url}/tariffs?filter=trafficked" class="btn btn-info"><fmt:message key="traffickedLabel"/></a>
     <a href="${url}/tariffs?filter=unlimited" class="btn btn-info"><fmt:message key="unlimitedLabel"/></a>
-    <a href="${url}/tariffs?filter=all" class="btn btn-info">all</a>
+    <a href="${url}/tariffs?filter=all" class="btn btn-info"><fmt:message key="allLabel"/></a>
 </div>
 
 <div class="container">

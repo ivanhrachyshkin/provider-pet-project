@@ -23,7 +23,7 @@
 
 <jsp:include page="navbar.jsp" />
 <div class="container">
-    <h1 class="text-center">Discounts for "${tariff.name}" tariff plan</h1>
+    <h1 class="text-center"><fmt:message key="discountsForLabel"/>" ${tariff.name}"</h1>
     <br>
     <table class="table table-hover table-stripped">
         <tr>

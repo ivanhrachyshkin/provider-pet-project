@@ -75,7 +75,7 @@ public class BillDaoImpl implements BillDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Bill doesn't exist", e);
+            throw new DaoException(rb.getString("bill.exist.exception"), e);
         }
     }
 
@@ -93,7 +93,7 @@ public class BillDaoImpl implements BillDao {
             return bills;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find bills");
+            throw new DaoException(rb.getString("bill.find.exception"));
         }
     }
 
@@ -111,7 +111,7 @@ public class BillDaoImpl implements BillDao {
             return bills;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or sort by date bills");
+            throw new DaoException(rb.getString("bill.find.or.sort.by.date.exception"));
         }
     }
 
@@ -131,7 +131,7 @@ public class BillDaoImpl implements BillDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter by subscription id bills");
+            throw new DaoException(rb.getString("bill.find.or.filter.by.subscription.id.exception"));
         }
     }
 
@@ -151,13 +151,13 @@ public class BillDaoImpl implements BillDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter or sort by subscription id bills");
+            throw new DaoException(rb.getString("bill.find.or.sort.by.date.or.filter.by.subscription.id.exception"));
         }
     }
 
     @Override
     public Bill findOneById(final Integer id) throws DaoException {
-        throw new UnsupportedOperationException("Find one by id operation is not available for traffic");
+        throw new UnsupportedOperationException(rb.getString("bill.find.one.by.id.unsupported.exception"));
     }
 
     @Override
@@ -172,7 +172,7 @@ public class BillDaoImpl implements BillDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add bill", e);
+            throw new DaoException(rb.getString("bill.add.exception"), e);
         }
     }
 
@@ -187,13 +187,13 @@ public class BillDaoImpl implements BillDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't update bill", e);
+            throw new DaoException(rb.getString("bill.update.exception"), e);
         }
     }
 
     @Override
     public void delete(final Integer subscriptionId) throws DaoException {
-        throw new UnsupportedOperationException("Delete operation is not available for bill");
+        throw new UnsupportedOperationException(rb.getString("bill.delete.unsupported.exception"));
     }
 
     @Override
@@ -207,7 +207,7 @@ public class BillDaoImpl implements BillDao {
             statement.executeUpdate();
 
         } catch (Exception e) {
-            throw new DaoException("Can't update status for current bill");
+            throw new DaoException(rb.getString("bill.update.status.exception"), e);
         }
     }
 

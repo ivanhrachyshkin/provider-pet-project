@@ -65,8 +65,8 @@
             <div class="col-md-2">
             </div>
             <div class="col-md-4 text-center">
-                <h3>Subscriptions</h3>
-                <a href="${url}/cabinet/subscriptions" class="btn btn-info">my subscriptions</a>
+                <h3><fmt:message key="mySubscriptionsLabel"/></h3>
+                <a href="${url}/cabinet/subscriptions" class="btn btn-info"><fmt:message key="mySubscriptionsLabel"/></a>
             </div>
             <div class="col-md-4">
                 <form action="${url}/cabinet/deposit" method="POST">
@@ -74,7 +74,7 @@
                            placeholder="card number xxxx xxxx xxxx xxxx"/>
                     <input class="form-control input-sm" name="sum" type="number" value="sum" placeholder="sum"/>
                     <input class="form-control input-sm" name="validity" type="date" placeholder="VALID THRU"/>
-                    <button type="submit" class="btn btn-info">deposit</button>
+                    <button type="submit" class="btn btn-info"><fmt:message key="depositLabel"/></button>
                 </form>
 
             </div>

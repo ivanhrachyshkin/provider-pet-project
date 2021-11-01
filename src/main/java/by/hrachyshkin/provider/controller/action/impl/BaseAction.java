@@ -44,7 +44,11 @@ public abstract class BaseAction implements Action {
 
     protected void setTotalPagesAttribute(final HttpServletRequest request, final List<? extends Model> list) {
 
-        request.setAttribute("totalPages", list.size() / 5 + 1);
+        if (list.size() % 5 == 0) {
+            request.setAttribute("totalPages", list.size() / 5);
+        } else {
+            request.setAttribute("totalPages", list.size() / 5 + 1);
+        }
     }
 
     protected void pagination(final HttpServletRequest request) {

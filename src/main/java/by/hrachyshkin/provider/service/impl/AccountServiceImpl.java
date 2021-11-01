@@ -8,7 +8,6 @@ import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.service.AccountService;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactory;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
@@ -73,7 +72,7 @@ public class AccountServiceImpl implements AccountService {
 
             if (!accountDao.isExistById(id)) {
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.find.by.id.exception"));
+                throw new ServiceException(rb.getString("account.find.by.id.exist.exception"));
             }
 
             final Account account = accountDao.findOneById(id);

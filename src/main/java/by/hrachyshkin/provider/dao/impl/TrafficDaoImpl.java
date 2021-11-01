@@ -68,7 +68,7 @@ public class TrafficDaoImpl implements TrafficDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Traffic doesn't exist", e);
+            throw new DaoException(rb.getString("traffic.exist.exception"), e);
         }
     }
 
@@ -86,7 +86,7 @@ public class TrafficDaoImpl implements TrafficDao {
             return traffics;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find traffics");
+            throw new DaoException(rb.getString("traffic.find.exception"));
         }
     }
 
@@ -104,7 +104,7 @@ public class TrafficDaoImpl implements TrafficDao {
             return traffics;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or sort by date traffics");
+            throw new DaoException(rb.getString("traffic.find.or.sort.by.date.exception"));
         }
     }
 
@@ -124,7 +124,7 @@ public class TrafficDaoImpl implements TrafficDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter by subscription id traffics");
+            throw new DaoException(rb.getString("traffic.find.or.filter.by.subscription.id.exception"));
         }
     }
 
@@ -144,14 +144,14 @@ public class TrafficDaoImpl implements TrafficDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter by subscription id or sort by date traffics");
+            throw new DaoException(rb.getString("traffic.find.or.filter.by.subscription.id.or.sort.by.date.exception"));
         }
     }
 
     @Override
     public Traffic findOneById(Integer id) {
 
-        throw new UnsupportedOperationException("Find one by id operation is not available for traffic");
+        throw new UnsupportedOperationException(rb.getString("traffic.find.one.by.id.unsupported.exception"));
     }
 
     @Override
@@ -165,18 +165,18 @@ public class TrafficDaoImpl implements TrafficDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add traffic", e);
+            throw new DaoException(rb.getString("traffic.add.exception"), e);
         }
     }
 
     @Override
     public void update(final Traffic traffic) {
-        throw new UnsupportedOperationException("Update operation is not available for traffic");
+        throw new UnsupportedOperationException(rb.getString("traffic.update.unsupported.exception"));
     }
 
     @Override
     public void delete(final Integer id) {
-        throw new UnsupportedOperationException("Delete operation is not available for traffic");
+        throw new UnsupportedOperationException(rb.getString("traffic.delete.unsupported.exception"));
     }
 
 

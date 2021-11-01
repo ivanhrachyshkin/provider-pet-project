@@ -100,7 +100,7 @@ public class AccountDaoImpl implements AccountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Account doesn't exist by id", e);
+            throw new DaoException(rb.getString("account.exist.exception"), e);
         }
     }
 
@@ -116,7 +116,7 @@ public class AccountDaoImpl implements AccountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Account doesn't exist email", e);
+            throw new DaoException(rb.getString("account.exist.by.email.exception"), e);
         }
     }
 
@@ -133,7 +133,7 @@ public class AccountDaoImpl implements AccountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Account doesn't exist by email and password", e);
+            throw new DaoException(rb.getString("account.exist.by.email.and.password.exception"), e);
         }
     }
 
@@ -150,7 +150,7 @@ public class AccountDaoImpl implements AccountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Account doesn't exist", e);
+            throw new DaoException(rb.getString("account.exist.exception"), e);
         }
     }
 
@@ -168,7 +168,7 @@ public class AccountDaoImpl implements AccountDao {
             return accounts;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find accounts");
+            throw new DaoException(rb.getString("account.find.exception"), e);
         }
     }
 
@@ -188,7 +188,7 @@ public class AccountDaoImpl implements AccountDao {
                 return accounts;
             }
         } catch (Exception e) {
-            throw new DaoException("Can't find or sort by name accounts");
+            throw new DaoException(rb.getString("account.find.or.sort.by.name.exception"), e);
         }
     }
 
@@ -205,7 +205,7 @@ public class AccountDaoImpl implements AccountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Can't find account by id", e);
+            throw new DaoException(rb.getString("account.find.by.id.exception"), e);
         }
     }
 
@@ -221,7 +221,7 @@ public class AccountDaoImpl implements AccountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Can't find account by email", e);
+            throw new DaoException(rb.getString("account.find.by.email.exception"), e);
         }
     }
 
@@ -240,7 +240,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add account", e);
+            throw new DaoException(rb.getString("account.add.exception"), e);
         }
     }
 
@@ -259,13 +259,13 @@ public class AccountDaoImpl implements AccountDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't update account", e);
+            throw new DaoException(rb.getString("account.update.exception"), e);
         }
     }
 
     @Override
     public void delete(final Integer id) throws DaoException {
-        throw new UnsupportedOperationException("Delete operation is not available for account");
+        throw new UnsupportedOperationException(rb.getString("account.delete.unsupported.exception"));
     }
 
     @Override
@@ -277,7 +277,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't update balance for account", e);
+            throw new DaoException(rb.getString("account.update.balance.exception"), e);
         }
     }
 
