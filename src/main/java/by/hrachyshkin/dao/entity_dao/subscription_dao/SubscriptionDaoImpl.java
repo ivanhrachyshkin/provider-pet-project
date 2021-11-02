@@ -1,6 +1,7 @@
 package by.hrachyshkin.dao.entity_dao.subscription_dao;
 
 import by.hrachyshkin.dao.BaseDao;
+import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Subscription;
 
 import javax.sql.DataSource;
@@ -73,7 +74,7 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
     }
 
     @Override
-    public void create(final Subscription subscription) throws DaoException {
+    public void add(final Subscription subscription) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement statement = connection.prepareStatement(CREATE_SUBSCRIPTION_QUERY)) {

@@ -1,7 +1,11 @@
 package by.hrachyshkin.dao.entity_dao.promotion_dao;
 
 import by.hrachyshkin.dao.BaseDao;
+import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Promotion;
+import by.hrachyshkin.entity.Tariff;
+import by.hrachyshkin.entity.criteria.Filter;
+import by.hrachyshkin.entity.criteria.Sort;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -13,156 +17,161 @@ import java.util.List;
 
 public class PromotionDaoImpl extends BaseDao implements PromotionDao {
 
-    private static final String IS_EXIST_PROMOTION_QUERY =
-            "SELECT EXISTS(SELECT 1 FROM accounts WHERE tariff_id = ? AND discount_id = ?) ";
+    private static final String EXISTS_BY_ID_QUERY =
+            "EXISTS (" +
+                    "SELECT * " +
+                    "FROM promotions " +
+                    "WHERE tariff_id = ? AND discount_id = ?" +
+                    ")";
 
-    private static final String CREATE_PROMOTION_QUERY =
+    private static final String ADD_QUERY =
             "INSERT " +
-                    "INTO promotions (tariff_id, discount_id, date_from, date_to) " +
-                    "VALUES (?, ?, ?, ?) " +
-                    "ON CONFLICT DO NOTHING";
+                    "INTO promotions (tariff_id, discount_id) " +
+                    "VALUES (?, ?)";
 
-    private static final String FIND_ALL_PROMOTIONS_QUERY =
-            "SELECT id, tariff_id, discount_id, date_from, date_to " +
-                    "FROM promotions";
+    private static final String FIND_QUERY =
+            "SELECT tariff_id, discount_id " +
+                    "FROM promotions ";
 
-    private static final String FIND_ALL_PROMOTIONS_QUERY_WITH_SORT =
-            "SELECT id, tariff_id, discount_id, date_from, date_to " +
+    private static final String FIND_AND_SORT_QUERY =
+            "SELECT tariff_id, discount_id " +
                     "FROM promotions " +
-                    "ORDER BY ? ?";
+                    "ORDER BY ? ? ";
 
-    private static final String FIND_ALL_PROMOTIONS_QUERY_BY_FILTER =
-            "SELECT id, tariff_id, discount_id, date_from, date_to " +
+    private static final String FIND_AND_FILTER_QUERY =
+            "SELECT tariff_id, discount_id " +
                     "FROM promotions " +
-                    "WHERE ? LIKE ?%";
+                    "WHERE ? = ? ";
 
-    private static final String FIND_ONE_PROMOTION_QUERY_BY_ID =
-            "SELECT id, tariff_id, discount_id, date_from, date_to " +
+    private static final String UPDATE_QUERY =
+            "INSERT INTO promotions (tariff_id, discount_id) " +
+                    "VALUES ?, ?";
+
+    private static final String DELETE_QUERY =
+            "DELETE " +
                     "FROM promotions " +
-                    "WHERE id = ?";
-
-    private static final String UPDATE_PROMOTION_QUERY =
-            "INSERT INTO promotions (tariff_id, discount_id, date_from, date_to) " +
-                    "VALUES ?, ?, ?, ?, ?, ?" +
-                    "WHERE id = ? " +
-                    "ON CONFLICT DO UPDATE";
-
-    private static final String DELETE_PROMOTION_BY_ID_QUERY =
-            "DELETE id, tariff_id, discount_id, date_from, date_to " +
-                    "FROM promotions " +
-                    "WHERE id = ?";
+                    "WHERE discount_id = ?";
 
     public PromotionDaoImpl(DataSource dataSource) {
         super(dataSource);
     }
 
     @Override
-    public boolean isExist(int tariffId, int discountId) throws DaoException {
+    public boolean isExistById(final Integer tariffId, final Integer discountId) throws DaoException {
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(IS_EXIST_PROMOTION_QUERY);
+             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, tariffId);
-            statement.setInt(2, discountId);
+            statement.setInt(1, discountId);
             resultSet.next();
             return resultSet.getBoolean(1);
 
         } catch (SQLException e) {
-            throw new DaoException("Can't find account by id", e);
+            throw new DaoException("Can't find tariff by id", e);
         }
     }
 
-    @Override
-    public void create(final Promotion promotion) throws DaoException {
+    public void add(final Promotion promotion) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(CREATE_PROMOTION_QUERY)) {
+             final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
 
             statement.setInt(1, promotion.getTariffId());
             statement.setInt(2, promotion.getDiscountId());
-            statement.setDate(3, promotion.getDateFrom());
-            statement.setDate(4, promotion.getDateTo());
 
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't create promotion", e);
+            throw new DaoException("Can't create tariff", e);
         }
     }
 
     @Override
-    public List<Promotion> find(final Criteria criteria) throws DaoException {
+    public List<Promotion> find() throws DaoException {
 
         try (final Connection connection = dataSource.getConnection()) {
 
-            String query;
-            if (criteria.getSorting() != null) {
-                query = FIND_ALL_PROMOTIONS_QUERY_WITH_SORT;
-            } else if (criteria.getFilter() != null) {
-                query = FIND_ALL_PROMOTIONS_QUERY_BY_FILTER;
-            } else query = FIND_ALL_PROMOTIONS_QUERY;
-
-            try (final PreparedStatement statement = connection.prepareStatement(query);
+            try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
                  final ResultSet resultSet = statement.executeQuery()) {
-
-                if (criteria.getSorting() != null) {
-                    statement.setString(1, criteria.getSorting().getColumn());
-                    statement.setString(2, criteria.getSorting().getDirection().name());
-                } else if (criteria.getFilter() != null) {
-                    statement.setString(1, criteria.getFilter().getColumn());
-                    statement.setString(2, criteria.getFilter().getPattern());
-                }
 
                 final List<Promotion> promotions = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Promotion promotion
-                            = new Promotion(
+                    final Promotion promotion = new Promotion(
                             resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getDate(3),
-                            resultSet.getDate(4));
+                            resultSet.getInt(2));
                     promotions.add(promotion);
                 }
 
                 return promotions;
             }
         } catch (Exception e) {
-            throw new DaoException("Can't find required promotions", e);
+            throw new DaoException("Can't find required promotions");
         }
     }
 
     @Override
-    public Promotion findOneById(int id) throws DaoException {
+    public List<Promotion> findAndSort(final Sort sort) throws DaoException {
+
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_PROMOTION_QUERY_BY_ID);
+             final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
-            statement.setInt(1, id);
-            resultSet.next();
+            statement.setString(1, sort.getColumn());
+            statement.setString(2, sort.getDirection().name());
 
-            return new Promotion(
-                    resultSet.getInt(1),
-                    resultSet.getInt(2),
-                    resultSet.getDate(3),
-                    resultSet.getDate(4));
+            final List<Promotion> promotions = new ArrayList<>();
+            while (resultSet.next()) {
+                final Promotion promotion = new Promotion(
+                        resultSet.getInt(1),
+                        resultSet.getInt(2));
+                promotions.add(promotion);
+            }
 
-        } catch (SQLException e) {
-            throw new DaoException("Can't find promotion by id", e);
+            return promotions;
+        } catch (Exception e) {
+            throw new DaoException("Can't find or sort promotions");
         }
+    }
+
+    @Override
+    public List<Promotion> findAndFilter(final Filter filter) throws DaoException {
+
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setString(1, filter.getColumn());
+            statement.setString(2, filter.getPattern());
+
+            final List<Promotion> promotions = new ArrayList<>();
+            while (resultSet.next()) {
+                final Promotion promotion = new Promotion(
+                        resultSet.getInt(1),
+                        resultSet.getInt(2));
+                promotions.add(promotion);
+            }
+
+            return promotions;
+        } catch (Exception e) {
+            throw new DaoException("Can't find or filter promotions");
+        }
+    }
+
+
+    @Override
+    public Promotion findOneById(int id) throws DaoException {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void update(final Promotion promotion) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(UPDATE_PROMOTION_QUERY)) {
+             final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
 
             statement.setInt(1, promotion.getTariffId());
             statement.setInt(2, promotion.getDiscountId());
-            statement.setDate(3, promotion.getDateFrom());
-            statement.setDate(4, promotion.getDateTo());
-
-            statement.setInt(5, promotion.getId());
 
             statement.executeUpdate();
 
@@ -173,14 +182,15 @@ public class PromotionDaoImpl extends BaseDao implements PromotionDao {
 
     @Override
     public void delete(final int id) throws DaoException {
+
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(DELETE_PROMOTION_BY_ID_QUERY)) {
+             final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
 
             statement.setInt(1, id);
             statement.executeQuery();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete promotion", e);
+            throw new DaoException("Can't delete tariff", e);
         }
     }
 }

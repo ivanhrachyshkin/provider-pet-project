@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface EntityDao<T> {
 
-    void create(T t) throws DaoException;
+    void add(T t) throws DaoException;
 
     List<T> find() throws DaoException;
 

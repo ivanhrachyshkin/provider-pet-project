@@ -106,7 +106,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     }
 
     @Override
-    public void create(final Tariff tariff) throws DaoException {
+    public void add(final Tariff tariff) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
@@ -114,7 +114,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
             statement.setString(1, tariff.getName());
             statement.setInt(2, tariff.getType().ordinal());
             statement.setInt(3, tariff.getSpeed());
-            statement.setDouble(3, tariff.getPrice());
+            statement.setDouble(4, tariff.getPrice());
 
             statement.executeUpdate();
 
@@ -264,7 +264,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
             statement.setInt(3, tariff.getSpeed());
             statement.setDouble(4, tariff.getPrice());
 
-            statement.setInt(6, tariff.getId());
+            statement.setInt(5, tariff.getId());
 
             statement.executeUpdate();
 

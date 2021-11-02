@@ -54,7 +54,7 @@ public class BillDaoImpl extends BaseDao implements BillDao {
                     "WHERE id = ?";
 
     @Override
-    public void create(final Bill bill) throws DaoException {
+    public void add(final Bill bill) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement statement = connection.prepareStatement(CREATE_BILL_QUERY)) {
