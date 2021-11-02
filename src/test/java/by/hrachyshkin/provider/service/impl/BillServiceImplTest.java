@@ -105,4 +105,6 @@ public class BillServiceImplTest {
         final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
         billService.delete(1);
     }
+
+
 }

@@ -100,4 +100,18 @@ public class PromotionServiceImplTest {
         final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
         promotionService.deleteByTariffAndDiscount(8,8);
     }
+
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void ShouldThrowException_On_Update_Exception() throws ServiceException, TransactionException {
+
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        promotionService.update(new Promotion(1,1));
+    }
+
+    @Test(expectedExceptions = UnsupportedOperationException.class)
+    public void ShouldThrowException_On_Delete_Exception() throws ServiceException, TransactionException {
+
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        promotionService.delete(1);
+    }
 }

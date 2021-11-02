@@ -1,6 +1,5 @@
 package by.hrachyshkin.provider.service.impl;
 
-import by.hrachyshkin.provider.controller.listener.SessionListener;
 import by.hrachyshkin.provider.dao.*;
 import by.hrachyshkin.provider.model.Subscription;
 import by.hrachyshkin.provider.service.ServiceException;
@@ -99,8 +98,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         try {
             LOGGER.debug("method add starts ");
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
+            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
-            if (subscriptionDao.isExistByAccountAndTariffId(subscription.getAccountId(), subscription.getTariffId())) {
+            if (subscriptionDao.isExistByAccountAndTariffId(subscription.getAccountId(), subscription.getTariffId())
+                    || !accountDao.isExistById(subscription.getAccountId())
+                    || !tariffDao.isExistById(subscription.getTariffId())) {
                 LOGGER.error(rb.getString("subscription.add.exist.exception"));
                 transactionImpl.rollback();
                 throw new ServiceException(rb.getString("subscription.add.exist.exception"));
@@ -125,13 +128,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
             final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
 
-            if (!accountDao.isExistById(accountId)) {
+            if (accountId == null || !accountDao.isExistById(accountId)) {
                 LOGGER.error(rb.getString("subscription.payBill.account.exist.exception"));
                 transactionImpl.rollback();
                 throw new ServiceException(rb.getString("subscription.payBill.account.exist.exception"));
             }
 
-            if (!billDao.isExists(subscriptionIdForBill, value, date)) {
+            if (subscriptionIdForBill == null || !billDao.isExists(subscriptionIdForBill, value, date)) {
                 LOGGER.error(rb.getString("subscription.payBill.bill.exist.exception"));
                 transactionImpl.rollback();
                 throw new ServiceException(rb.getString("subscription.payBill.bill.exist.exception"));
@@ -170,7 +173,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
             final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
 
-            if (billDao.isExistsOpenBills(subscription.getId())) {
+            if (!billDao.isExistsOpenBills(subscription.getId())) {
                 LOGGER.error(rb.getString("bill.delete.open.exception"));
                 transactionImpl.rollback();
                 throw new ServiceException(rb.getString("bill.delete.open.exception"));

@@ -46,13 +46,13 @@ public class AccountServiceImplTest {
             9500.0f));
 
     Account addedAccount = new Account(
-                "added@outlook.com",
-                        "9372273Aaa",
-                Account.Role.USER,
-                "Added name",
-                        "+1-914-733-7350",
-                        "60441 Piper Inlet Wilfredton, GA 46024",
-                        100.0f);
+            "added@outlook.com",
+            "9372273Aaa",
+            Account.Role.USER,
+            "Added name",
+            "+1-914-733-7350",
+            "60441 Piper Inlet Wilfredton, GA 46024",
+            100.0f);
 
     @Test
     public void ShouldReturnAccount_On_IsExistByEmailAndPassword_Pos() throws ServiceException, TransactionException {
@@ -236,8 +236,8 @@ public class AccountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Add_EmptyAddress_Exception() throws ServiceException, TransactionException {
 
-     final    AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-       final Account testAccount = (new Account(
+        final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+        final Account testAccount = (new Account(
                 "added@outlook.com",
                 "9372273Aaa",
                 Account.Role.USER,
@@ -383,28 +383,28 @@ public class AccountServiceImplTest {
     public void ShouldThrowException_On_Deposit_EmptyCard_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-        accountService.deposit(1, "", 10.0f, LocalDate.of(2040, 10,10));
+        accountService.deposit(1, "", 10.0f, LocalDate.of(2040, 10, 10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Deposit_InvalidCard_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-        accountService.deposit(1, "11111111", 10.0f, LocalDate.of(2040, 10,10));
+        accountService.deposit(1, "11111111", 10.0f, LocalDate.of(2040, 10, 10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Deposit_NullDeposit_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-        accountService.deposit(1, "4496550182593597", null, LocalDate.of(2040, 10,10));
+        accountService.deposit(1, "4496550182593597", null, LocalDate.of(2040, 10, 10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Deposit_NegativeDeposit_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-        accountService.deposit(1, "4496550182593597", -10.0f, LocalDate.of(2040, 10,10));
+        accountService.deposit(1, "4496550182593597", -10.0f, LocalDate.of(2040, 10, 10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
@@ -418,14 +418,14 @@ public class AccountServiceImplTest {
     public void ShouldThrowException_On_Deposit_ValidityIsBefore_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-        accountService.deposit(1, "4496550182593597", 10.0f, LocalDate.of(2010, 10,10));
+        accountService.deposit(1, "4496550182593597", 10.0f, LocalDate.of(2010, 10, 10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Deposit_AccountExist_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-        accountService.deposit(10000, "4496550182593597", 10.0f, LocalDate.of(2040, 10,10));
+        accountService.deposit(10000, "4496550182593597", 10.0f, LocalDate.of(2040, 10, 10));
     }
 
 }
