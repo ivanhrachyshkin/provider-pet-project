@@ -4,6 +4,7 @@ import by.hrachyshkin.provider.dao.pool.ConnectionPool;
 import by.hrachyshkin.provider.dao.pool.PoolException;
 import lombok.Getter;
 
+import javax.servlet.ServletContextEvent;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -28,5 +29,9 @@ public class DataBaseConnection {
         } catch (IOException | PoolException e) {
             throw new ExceptionInInitializerError();
         }
+    }
+
+    public void contextDestroyed() {
+        ConnectionPool.getINSTANCE().destroy();
     }
 }
