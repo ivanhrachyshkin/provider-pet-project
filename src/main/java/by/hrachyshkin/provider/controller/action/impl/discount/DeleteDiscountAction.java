@@ -7,8 +7,10 @@ import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 public class DeleteDiscountAction extends BaseAction {
 
@@ -22,8 +24,14 @@ public class DeleteDiscountAction extends BaseAction {
             discountService.delete(id);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/discounts";
+    }
+
+    @Override
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+
+        response.sendRedirect(request.getContextPath() + path);
     }
 }

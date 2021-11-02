@@ -54,7 +54,7 @@ public abstract class BaseAction implements Action {
     protected void pagination(final HttpServletRequest request) {
 
         if (request.getParameter("page") == null) {
-            request.setAttribute("page", request.getParameter("page"));
+            request.setAttribute("page", 1);
         } else {
             request.setAttribute("page", Integer.valueOf(request.getParameter("page")));
         }

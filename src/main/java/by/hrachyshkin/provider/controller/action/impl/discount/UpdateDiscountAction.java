@@ -40,6 +40,6 @@ public class UpdateDiscountAction extends BaseAction {
     @Override
     public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
 
-        response.sendRedirect(request.getContextPath() + "/discounts");
+        response.sendRedirect(request.getContextPath() + path);
     }
 }

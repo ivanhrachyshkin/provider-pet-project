@@ -30,4 +30,10 @@ public class DeleteSubscriptionAction extends BaseAction {
         }
         return "/cabinet/subscriptions";
     }
+
+    @Override
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+
+        response.sendRedirect(request.getContextPath() + path);
+    }
 }

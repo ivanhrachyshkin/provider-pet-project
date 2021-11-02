@@ -24,8 +24,14 @@ public class DeleteTariffAction extends BaseAction  {
             tariffService.delete(tariffId);
 
         } catch (ServiceException | NumberFormatException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request,e.getMessage());
         }
         return "/tariffs";
+    }
+
+    @Override
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+
+        response.sendRedirect(request.getContextPath() + path);
     }
 }
