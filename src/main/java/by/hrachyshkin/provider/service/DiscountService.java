@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface DiscountService extends Service<Discount> {
 
+    boolean isExistByName(final String name) throws ServiceException, TransactionException;
+
     List<Discount> findAndSortByValue(Integer offset) throws ServiceException, TransactionException;
 
     List<Discount> findAndFilterByType(final Discount.Type type, int offset) throws ServiceException, TransactionException;

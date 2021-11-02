@@ -21,6 +21,25 @@ public class DiscountServiceImpl implements DiscountService {
     private final ResourceBundle rb;
 
     @Override
+    public boolean isExistByName(final String name) throws ServiceException, TransactionException {
+
+        try {
+            LOGGER.debug("method isExistByName starts ");
+            final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
+            boolean existByName = discountDao.isExistByName(name);
+            LOGGER.debug("method isExistByName finish ");
+            transactionImpl.commit();
+            return existByName;
+
+        } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
+            transactionImpl.rollback();
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+    @Override
     public List<Discount> find() throws ServiceException, TransactionException {
 
         try {
