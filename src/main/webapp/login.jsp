@@ -45,7 +45,7 @@
             <form role="form" action="${url}/login" method="POST">
                 <div class="form-group">
                     <label><fmt:message key="emailLabel"/></label>
-                    <input type="text" class="form-control" name="email" placeholder="<fmt:message key="emailLabel"/>">
+                    <input type="email" class="form-control" name="email" placeholder="<fmt:message key="emailLabel"/>">
                 </div>
                 <div class="form-group">
                     <label><fmt:message key="passwordLabel"/></label>

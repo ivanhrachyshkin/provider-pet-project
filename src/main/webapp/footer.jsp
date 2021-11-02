@@ -8,7 +8,8 @@
                     <form action="${url}?page=${i}" method="POST" style="display:inline-block;">
                         <input class="form-control input-sm" name="filter" type="hidden"
                                value="${requestScope.filter}"/>
-                        <button type="submit" class="btn ${i == requestScope.page ? 'btn-info btn-sm' : ''}">${i}</button>
+                        <button type="submit"
+                                class="btn ${i == requestScope.page ? 'btn-info btn-sm' : ''}">${i}</button>
                     </form>
                 </li>
             </c:forEach>
@@ -27,5 +28,11 @@
 </c:if>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+        crossorigin="anonymous"></script>
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>

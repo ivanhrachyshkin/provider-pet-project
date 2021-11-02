@@ -44,6 +44,7 @@
                                         <input name="tariffId" type="hidden" value="${tariff.id}">
                                         <button type="submit" class="btn btn-danger btn-sm"><fmt:message
                                                 key="payLabel"/></button>
+                                        <input name="page" type="hidden" value="${requestScope.page}">
                                     </c:when>
                                     <c:otherwise>
                                         <button disabled class="btn btn-success"><fmt:message key="paidLabel"/></button>

@@ -11,6 +11,7 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class UpdateAccountAction extends BaseAction {
@@ -37,8 +38,11 @@ public class UpdateAccountAction extends BaseAction {
 
             accountService.update(new Account(accountId, email, password, role, name, phone, address, balance));
 
+            setPageNumberAttributeToSession(request);
+
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
+            setPageNumberAttributeToSession(request);
         }
 
         if (request.getServletPath().equals(UPDATE_ACCOUNT_CABINET)) {

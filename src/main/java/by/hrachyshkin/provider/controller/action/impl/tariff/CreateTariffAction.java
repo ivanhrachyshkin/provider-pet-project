@@ -11,6 +11,7 @@ import by.hrachyshkin.provider.service.TariffService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CreateTariffAction extends BaseAction {
@@ -32,8 +33,11 @@ public class CreateTariffAction extends BaseAction {
 
             tariffService.add(new Tariff(name, Tariff.Type.valueOf(type.toUpperCase()), Integer.valueOf(speed), Float.valueOf(price)));
 
+            setPageNumberAttributeToSession(request);
+
         } catch (ServiceException | NumberFormatException | NullPointerException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
+            setPageNumberAttributeToSession(request);
         }
         return ShowTariffsAction.TARIFFS;
     }

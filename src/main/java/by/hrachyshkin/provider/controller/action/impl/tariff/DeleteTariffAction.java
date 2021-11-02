@@ -10,6 +10,7 @@ import by.hrachyshkin.provider.service.TariffService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class DeleteTariffAction extends BaseAction {
@@ -27,8 +28,11 @@ public class DeleteTariffAction extends BaseAction {
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
             tariffService.delete(tariffId);
 
+            setPageNumberAttributeToSession(request);
+
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
+            setPageNumberAttributeToSession(request);
         }
         return ShowTariffsAction.TARIFFS;
     }

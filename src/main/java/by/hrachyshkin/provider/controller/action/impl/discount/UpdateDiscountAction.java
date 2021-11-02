@@ -11,6 +11,7 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -34,8 +35,11 @@ public class UpdateDiscountAction extends BaseAction {
 
             discountService.update(new Discount(id, name, type, value, dateFrom, dateTo));
 
+            setPageNumberAttributeToSession(request);
+
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
+            setPageNumberAttributeToSession(request);
         }
         return ShowDiscountAction.DISCOUNTS;
     }

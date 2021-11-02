@@ -38,11 +38,13 @@ public class ShowBillsForSubscriptionAction extends BaseAction {
             final Subscription subscription = subscriptionService.findOneByAccountIdAndTariffId(accountId, tariffId);
             final List<Bill> subscriptionBills = billService.findAndFilterAndSortOffset(subscription.getId(), offset);
 
-            setPage(request);
+            setPageNumber(request);
             setTotalPagesAttribute(request, billService.findAndFilterBySubscriptionId(subscription.getId()));
             request.setAttribute("tariff", tariff);
             request.setAttribute("account", account);
             request.setAttribute("subscriptionBills", subscriptionBills);
+
+            removeAttribute(request, "page");
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());

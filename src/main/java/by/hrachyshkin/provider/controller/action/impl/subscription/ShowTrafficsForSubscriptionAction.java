@@ -38,7 +38,7 @@ public class ShowTrafficsForSubscriptionAction extends BaseAction {
             final Subscription subscription = subscriptionService.findOneByAccountIdAndTariffId(accountId, tariffId);
             final List<Traffic> subscriptionTraffics = trafficService.findAndFilterAndSortOffset(subscription.getId(), offset);
 
-            setPage(request);
+            setPageNumber(request);
             setTotalPagesAttribute(request, trafficService.findAndFilterBySubscriptionId(subscription.getId()));
             request.setAttribute("account", account);
             request.setAttribute("tariff", tariff);

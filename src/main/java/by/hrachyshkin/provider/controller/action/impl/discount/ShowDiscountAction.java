@@ -38,7 +38,7 @@ public class ShowDiscountAction extends BaseAction {
                 setTotalPagesAttribute(request, discountService.findAndFilterByTypeAndSortByValue(type));
             }
 
-            setPage(request);
+            setPageNumber(request);
             request.setAttribute("discounts", discounts);
 
             if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {

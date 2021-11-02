@@ -60,12 +60,14 @@
                             <button type="submit" class="btn btn-info btn-sm"><fmt:message key="updateLabel"/></button>
                         </td>
                         <input name="id" type="hidden" value="${discount.id}">
+                        <input name="page" type="hidden" value="${requestScope.page}">
                     </form>
                     <form action="${url}/discounts/delete" method="POST">
                         <td>
                             <button type="submit" class="btn btn-info btn-sm"><fmt:message key="deleteLabel"/></button>
                         </td>
                         <input name="discountId" type="hidden" value="${discount.id}">
+                        <input name="page" type="hidden" value="${requestScope.page}">
                     </form>
                 </tr>
             </c:forEach>
@@ -84,6 +86,7 @@
                     <td>
                         <button type="submit" class="btn btn-info btn-sm"><fmt:message key="createLabel"/></button>
                     </td>
+                    <input name="page" type="hidden" value="${requestScope.page}">
                 </form>
             </tr>
         </table>

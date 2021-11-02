@@ -54,12 +54,14 @@
                             <button type="submit" class="btn btn-info btn-sm"><fmt:message key="updateLabel"/></button>
                         </td>
                         <input name="tariffId" type="hidden" value="${tariff.id}">
+                        <input name="page" type="hidden" value="${requestScope.page}">
                     </form>
                     <form action="${url}/tariffs/delete" method="POST">
                         <td>
                             <button type="submit" class="btn btn-info btn-sm"><fmt:message key="deleteLabel"/></button>
                         </td>
                         <input name="tariffId" type="hidden" value="${tariff.id}">
+                        <input name="page" type="hidden" value="${requestScope.page}">
                     </form>
                     <form action="${url}/tariffs/discounts" method="POST">
                         <td>
@@ -83,6 +85,7 @@
                     <td>
                         <button type="submit" class="btn btn-info btn-sm"><fmt:message key="createLabel"/></button>
                     </td>
+                    <input name="page" type="hidden" value="${requestScope.page}">
                 </form>
             </tr>
         </table>

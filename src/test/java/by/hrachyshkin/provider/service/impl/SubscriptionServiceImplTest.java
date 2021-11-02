@@ -101,11 +101,11 @@ public class SubscriptionServiceImplTest {
         subscriptionService.delete(1);
     }
 
-    @Test(expectedExceptions = ServiceException.class)
+    @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_DeleteSubscription_Exception() throws ServiceException, TransactionException {
 
         final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
-        subscriptionService.delete(new Subscription(-1, 1, 1));
+        subscriptionService.delete(-1);
     }
 
     @Test(expectedExceptions = ServiceException.class)

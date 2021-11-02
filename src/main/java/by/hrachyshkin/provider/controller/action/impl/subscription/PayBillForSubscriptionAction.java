@@ -10,6 +10,7 @@ import by.hrachyshkin.provider.service.SubscriptionService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -31,8 +32,11 @@ public class PayBillForSubscriptionAction extends BaseAction {
 
             subscriptionService.payBillForSubscription(accountId, subscriptionId, value, date);
 
+            setPageNumberAttributeToSession(request);
+
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
+            setPageNumberAttributeToSession(request);
         }
         request.setAttribute("tariffId", request.getParameter("tariffId"));
 
