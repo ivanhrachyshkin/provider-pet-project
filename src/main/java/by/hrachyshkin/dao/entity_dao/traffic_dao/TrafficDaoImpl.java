@@ -1,8 +1,6 @@
 package by.hrachyshkin.dao.entity_dao.traffic_dao;
 
 import by.hrachyshkin.dao.BaseDao;
-import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.entity.Criteria;
 import by.hrachyshkin.entity.Traffic;
 
 import javax.sql.DataSource;

@@ -1,9 +1,7 @@
 package by.hrachyshkin.dao.entity_dao.bill_dao;
 
 import by.hrachyshkin.dao.BaseDao;
-import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Bill;
-import by.hrachyshkin.entity.Criteria;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

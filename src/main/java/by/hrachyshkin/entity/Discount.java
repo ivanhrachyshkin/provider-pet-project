@@ -1,26 +1,34 @@
 package by.hrachyshkin.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+import java.math.BigDecimal;
+import java.sql.Date;
+
+@Getter
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-public class Discount {
+public final class Discount {
 
-    private final int id;
-    private final String name;
-    private final Type type;
-    private final int value;
-
+    @ToString
     public enum Type {
         PERCENTAGE,
-        FIXED
+        COEFFICIENT
     }
 
-    public Discount(String name, Type type, int value) {
-        this.id = -1;
-        this.name = name;
-        this.type = type;
-        this.value = value;
+    private final Integer id;
+    private final String name;
+    private final Type type;
+    private final Integer value;
+    private final Date dateFrom;
+    private final Date dateTo;
+
+    public Discount(final String name,
+                    final Type type,
+                    final Integer value,
+                    final Date dateFrom,
+                    final Date dateTo) {
+        this(null, name, type, value, dateFrom, dateTo);
     }
 }

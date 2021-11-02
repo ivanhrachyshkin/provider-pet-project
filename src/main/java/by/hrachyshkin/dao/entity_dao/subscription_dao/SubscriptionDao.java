@@ -2,7 +2,6 @@ package by.hrachyshkin.dao.entity_dao.subscription_dao;
 
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.EntityDao;
-import by.hrachyshkin.entity.Account;
 import by.hrachyshkin.entity.Subscription;
 
 public interface SubscriptionDao extends EntityDao<Subscription> {

@@ -1,6 +1,5 @@
 package by.hrachyshkin.listener;
 
-import by.hrachyshkin.Constants;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.DaoFactory;
 import by.hrachyshkin.dao.SchemaDao;
@@ -19,7 +18,7 @@ public class StartupListener implements ServletContextListener {
             schemaDAO.init();
 
         } catch (DaoException e) {
-            throw new ListenerException(Constants.STARTUP_LISTENER_INIT_ERROR);
+            throw new ListenerException("Cant's initialize listener", e);
         }
     }
 

@@ -1,15 +1,12 @@
 package by.hrachyshkin.dao.entity_dao.account_dao;
 
 import by.hrachyshkin.dao.BaseDao;
-import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.entity.Account;
-import by.hrachyshkin.entity.Criteria;
+import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
+import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,141 +55,175 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         super(dataSource);
     }
 
-    @Override
-    public boolean isExist(final String name) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(IS_EXIST_ACCOUNT_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
-
-            statement.setString(1, name);
-            resultSet.next();
-           return resultSet.getBoolean(1);
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't find account by id", e);
+    public final List<Discount> find(final Page page) {
+        try {
+            return executeQuery(
+                    FIND_QUERY,
+                    preparedStatement -> prepareFind(preparedStatement, page),
+                    resultSet -> extractDiscounts(resultSet));
+        } catch (final Exception e) {
+            throw new RepositoryException(FIND_ERROR, e);
         }
     }
 
-    @Override
-    public void create(final Account account) throws DaoException {
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(CREATE_ACCOUNT_QUERY)) {
-
-            statement.setString(1, account.getName());
-            statement.setString(2, account.getEmail());
-            statement.setString(3, encrypt(account.getPassword()));
-            statement.setString(4, account.getPhone());
-            statement.setInt(5, account.getRole().ordinal());
-            statement.setDouble(6, account.getBalance());
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't create account", e);
+    public final List<Discount> find(final Filter filter, final Page page) {
+        try {
+            return executeQuery(
+                    FIND_AND_FILTER_QUERY,
+                    preparedStatement -> prepareFind(preparedStatement, filter, page),
+                    resultSet -> extractDiscounts(resultSet));
+        } catch (final Exception e) {
+            throw new RepositoryException(FIND_AND_FILTER_ERROR, e);
         }
     }
 
-    @Override
-    public List<Account> find(final Criteria criteria) throws DaoException {
-
-        try (final Connection connection = dataSource.getConnection()) {
-
-            String query;
-            if (criteria.getSorting() != null) {
-                query = FIND_ALL_ACCOUNTS_QUERY_WITH_SORT;
-            } else if (criteria.getFilter() != null) {
-                query = FIND_ALL_ACCOUNTS_QUERY_BY_FILTER;
-            } else query = FIND_ALL_ACCOUNTS_QUERY;
-
-            try (final PreparedStatement statement = connection.prepareStatement(query);
-                 final ResultSet resultSet = statement.executeQuery()) {
-
-                if (criteria.getSorting() != null) {
-                    statement.setString(1, criteria.getSorting().getColumn());
-                    statement.setString(2, criteria.getSorting().getDirection().name());
-                } else if (criteria.getFilter() != null) {
-                    statement.setString(1, criteria.getFilter().getColumn());
-                    statement.setString(2, criteria.getFilter().getPattern());
-                }
-
-
-                final List<Account> accounts = new ArrayList<>();
-                while (resultSet.next()) {
-                    final Account account = new Account(
-                            resultSet.getInt(1),
-                            resultSet.getString(2),
-                            resultSet.getString(3),
-                            resultSet.getString(4),
-                            resultSet.getString(5),
-                            Account.Role.values()[resultSet.getInt(6)],
-                            resultSet.getDouble(5));
-                    accounts.add(account);
-                }
-
-                return accounts;
-            }
-        } catch (Exception e) {
-            throw new DaoException("Can't find required accounts");
+    public final List<Discount> find(final Sort sort, final Page page) {
+        try {
+            return executeQuery(
+                    FIND_AND_SORT_QUERY,
+                    preparedStatement -> prepareFind(preparedStatement, sort, page),
+                    resultSet -> extractDiscounts(resultSet));
+        } catch (final Exception e) {
+            throw new RepositoryException(FIND_AND_SORT_ERROR, e);
         }
     }
 
-    @Override
-    public Account findOneById(final int id) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_ACCOUNT_QUERY_BY_ID);
-             final ResultSet resultSet = statement.executeQuery()) {
-
-            statement.setInt(1, id);
-            resultSet.next();
-
-            return new Account(
-                    resultSet.getInt(1),
-                    resultSet.getString(2),
-                    resultSet.getString(3),
-                    resultSet.getString(4),
-                    resultSet.getString(5),
-                    Account.Role.values()[resultSet.getInt(6)],
-                    resultSet.getDouble(5));
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't find account by id", e);
+    public final List<Discount> find(final Filter filter, final Sort sort, final Page page) {
+        try {
+            return executeQuery(
+                    FIND_AND_FILTER_AND_SORT_QUERY,
+                    preparedStatement -> prepareFind(preparedStatement, filter, sort, page),
+                    this::extractDiscounts);
+        } catch (final Exception e) {
+            throw new RepositoryException(FIND_AND_FILTER_AND_SORT_ERROR, e);
         }
     }
 
-    @Override
-    public void update(final Account account) throws DaoException {
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(UPDATE_ACCOUNT_QUERY)) {
-
-            statement.setString(1, account.getName());
-            statement.setString(2, account.getEmail());
-            statement.setString(3, account.getPassword());
-            statement.setString(4, account.getPhone());
-            statement.setInt(5, account.getRole().ordinal());
-            statement.setDouble(6, account.getBalance());
-
-            statement.setInt(7, account.getId());
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't add account", e);
+    public final boolean exists(final String name) {
+        try {
+            return executeQuery(
+                    EXISTS_BY_NAME_QUERY,
+                    preparedStatement -> prepareExists(preparedStatement, name),
+                    this::extractExistence);
+        } catch (final Exception e) {
+            throw new RepositoryException(EXISTS_BY_NAME_ERROR, e);
         }
     }
 
-    @Override
-    public void delete(final int id) throws DaoException {
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(DELETE_ACCOUNT_BY_ID_QUERY)) {
-
-            statement.setInt(1, id);
-            statement.executeQuery();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't delete account", e);
+    public final boolean exists(final BigDecimal id) {
+        try {
+            return executeQuery(
+                    EXISTS_BY_ID_QUERY,
+                    preparedStatement -> prepareExists(preparedStatement, id),
+                    this::extractExistence);
+        } catch (final Exception e) {
+            throw new RepositoryException(EXISTS_BY_ID_ERROR, e);
         }
+    }
+
+    public final void add(final Discount discount) {
+        try {
+            executeUpdate(ADD_QUERY, preparedStatement -> prepareAdd(preparedStatement, discount));
+        } catch (final Exception e) {
+            throw new RepositoryException(ADD_ERROR, e);
+        }
+    }
+
+    public final void update(final Discount discount) {
+        try {
+            executeUpdate(UPDATE_QUERY, preparedStatement -> prepareUpdate(preparedStatement, discount));
+        } catch (final Exception e) {
+            throw new RepositoryException(UPDATE_ERROR, e);
+        }
+    }
+
+    public final void delete(final BigDecimal id) {
+        try {
+            executeUpdate(DELETE_QUERY, preparedStatement -> prepareDelete(preparedStatement, id));
+        } catch (final Exception e) {
+            throw new RepositoryException(DELETE_ERROR, e);
+        }
+    }
+
+    @SneakyThrows
+    private void prepareFind(final PreparedStatement preparedStatement, final Page page) {
+        preparedStatement.setLong(FIND_QUERY__PAGE_SIZE_INDEX, page.getSize());
+        preparedStatement.setLong(FIND_QUERY__PAGE_NUMBER_INDEX, page.getNumber());
+    }
+
+    @SneakyThrows
+    private void prepareFind(final PreparedStatement preparedStatement, final Filter filter, final Page page) {
+        preparedStatement.setString(FIND_AND_FILTER_QUERY__FILTER_COLUMN_INDEX, filter.getColumn());
+        preparedStatement.setString(FIND_AND_FILTER_QUERY__FILTER_PATTERN_INDEX, filter.getPattern());
+        preparedStatement.setLong(FIND_AND_FILTER_QUERY__PAGE_SIZE_INDEX, page.getSize());
+        preparedStatement.setLong(FIND_AND_FILTER_QUERY__PAGE_NUMBER_INDEX, page.getNumber());
+    }
+
+    @SneakyThrows
+    private void prepareFind(final PreparedStatement preparedStatement, final Sort sort, final Page page) {
+        preparedStatement.setString(FIND_AND_SORT_QUERY__SORT_COLUMN_INDEX, sort.getColumn());
+        preparedStatement.setString(FIND_AND_SORT_QUERY__SORT_DIRECTION_INDEX, sort.getDirection().name());
+        preparedStatement.setLong(FIND_AND_SORT_QUERY__PAGE_SIZE_INDEX, page.getSize());
+        preparedStatement.setLong(FIND_AND_SORT_QUERY__PAGE_NUMBER_INDEX, page.getNumber());
+    }
+
+    @SneakyThrows
+    private void prepareFind(final PreparedStatement preparedStatement, final Filter filter, final Sort sort, final Page page) {
+        preparedStatement.setString(FIND_AND_FILTER_AND_SORT_QUERY__FILTER_COLUMN_INDEX, filter.getColumn());
+        preparedStatement.setString(FIND_AND_FILTER_AND_SORT_QUERY__FILTER_PATTERN_INDEX, filter.getPattern());
+        preparedStatement.setString(FIND_AND_FILTER_AND_SORT_QUERY__SORT_COLUMN_INDEX, sort.getColumn());
+        preparedStatement.setString(FIND_AND_FILTER_AND_SORT_QUERY__SORT_DIRECTION_INDEX, sort.getDirection().name());
+        preparedStatement.setLong(FIND_AND_FILTER_AND_SORT_QUERY__PAGE_SIZE_INDEX, page.getSize());
+        preparedStatement.setLong(FIND_AND_FILTER_AND_SORT_QUERY__PAGE_NUMBER_INDEX, page.getNumber());
+    }
+
+    @SneakyThrows
+    private List<Discount> extractDiscounts(final ResultSet resultSet) {
+        final List<Discount> discounts = new ArrayList<>();
+        while (resultSet.next()) {
+            final Discount discount = new Discount(
+                    resultSet.getBigDecimal(DISCOUNT_ID_LABEL),
+                    resultSet.getString(DISCOUNT_NAME_LABEL),
+                    Type.values()[resultSet.getInt(DISCOUNT_TYPE_LABEL)],
+                    resultSet.getInt(DISCOUNT_VALUE_LABEL)
+            );
+            discounts.add(discount);
+        }
+        return discounts;
+    }
+
+    @SneakyThrows
+    private void prepareExists(final PreparedStatement preparedStatement, final String name) {
+        preparedStatement.setString(EXISTS_BY_NAME_QUERY__NAME_INDEX, name);
+    }
+
+    @SneakyThrows
+    private void prepareExists(final PreparedStatement preparedStatement, final BigDecimal id) {
+        preparedStatement.setBigDecimal(EXISTS_BY_ID_QUERY__ID_INDEX, id);
+    }
+
+    @SneakyThrows
+    private boolean extractExistence(final ResultSet resultSet) {
+        return resultSet.next();
+    }
+
+    @SneakyThrows
+    private void prepareAdd(final PreparedStatement preparedStatement, final Discount discount) {
+        preparedStatement.setString(ADD_QUERY__NAME_INDEX, discount.getName());
+        preparedStatement.setInt(ADD_QUERY__TYPE_INDEX, discount.getType().ordinal());
+        preparedStatement.setInt(ADD_QUERY__VALUE_INDEX, discount.getValue());
+    }
+
+    @SneakyThrows
+    private void prepareUpdate(final PreparedStatement preparedStatement, final Discount discount) {
+        preparedStatement.setString(UPDATE_QUERY__NAME_INDEX, discount.getName());
+        preparedStatement.setInt(UPDATE_QUERY__TYPE_INDEX,  discount.getType().ordinal());
+        preparedStatement.setInt(UPDATE_QUERY__VALUE_INDEX, discount.getValue());
+        preparedStatement.setBigDecimal(UPDATE_QUERY__ID_INDEX, discount.getId());
+    }
+
+    @SneakyThrows
+    private void prepareDelete(final PreparedStatement preparedStatement, final BigDecimal id) {
+        preparedStatement.setBigDecimal(DELETE_QUERY__ID_INDEX, id);
     }
 }

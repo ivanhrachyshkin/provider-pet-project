@@ -9,18 +9,14 @@ import java.sql.Date;
 @AllArgsConstructor
 public class Subscription {
 
-    private final int id;
-    private final int accountId;
-    private final int tariffId;
-    private final Date dateFrom;
-    private final Date dateTo;
+    private final Integer id;
+    private final Integer accountId;
+    private final Integer tariffId;
 
-
-    public Subscription(int accountId, int tariffId, Date dateFrom, Date dateTo) {
+    public Subscription(final Integer accountId,
+                        final Integer tariffId) {
         this.id = -1;
         this.accountId = accountId;
         this.tariffId = tariffId;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
     }
 }

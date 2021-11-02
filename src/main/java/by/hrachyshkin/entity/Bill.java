@@ -1,25 +1,31 @@
 package by.hrachyshkin.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-public class Bill {
+public final class Bill {
 
-    private final int id;
-    private final int subscriptionId;
-    private final double sum;
+    private final Integer id;
+    private final Integer subscription_id;
     private final Date date;
-    private final boolean status;
+    private final Float value;
+    private final Boolean status;
 
-    public Bill(int subscriptionId, double sum, Date date, boolean status) {
-        this.id = -1;
-        this.subscriptionId = subscriptionId;
-        this.sum = sum;
-        this.date = date;
-        this.status = status;
+    public Bill(final Integer subscription_id,
+                final Date date,
+                final Float value,
+                final Boolean status
+                ) {
+        this(null, subscription_id, date, value, status);
     }
 }

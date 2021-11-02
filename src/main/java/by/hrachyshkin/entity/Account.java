@@ -1,37 +1,39 @@
 package by.hrachyshkin.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 import javax.management.relation.Role;
 import java.math.BigDecimal;
 
-
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-public class Account {
+public final class Account {
 
-    private final int id;
-    private final String name;
-    private final String email;
-    private final String password;
-    private final String phone;
-    private final Role role;
-    private final double balance;
-
+    @ToString
     public enum Role {
-        ADMIN,
-        USER,
-        BLOCKED
+        ADMINISTRATOR,
+        BLOCKED,
+        USER
     }
 
-    public Account(String name, String email, String password, String phone, Role role, double balance) {
-        this.id = -1;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.role = role;
-        this.balance = balance;
+    private final BigDecimal id;
+    private final String email;
+    private final String password;
+    private final Role role;
+    private final String name;
+    private final Integer phone;
+    private final String address;
+    private final Float balance;
+
+    public Account(final String email,
+                   final String password,
+                   final Role role,
+                   final String name,
+                   final Integer phone,
+                   final String address,
+                   final Float balance) {
+        this(null, email, password, role, name, phone, address, balance);
     }
 }

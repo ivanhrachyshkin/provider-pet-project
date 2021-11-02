@@ -1,7 +1,5 @@
 package by.hrachyshkin.dao;
 
-import by.hrachyshkin.Constants;
-
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,7 +27,7 @@ public class SchemaDao extends BaseDao {
             statement.executeUpdate(query);
 
         } catch (SQLException | IOException e) {
-            throw new DaoException(Constants.SCHEMA_DAO_INIT_ERROR, e);
+            throw new DaoException("Cant's initialize scheme", e);
         }
     }
 }

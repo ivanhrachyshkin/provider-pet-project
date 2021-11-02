@@ -1,95 +1,134 @@
-BEGIN;
+------------------------------------------------------------------------------------------------------------------------
+-- Database
+------------------------------------------------------------------------------------------------------------------------
 
-CREATE TABLE IF NOT EXISTS discounts
+DROP
+    DATABASE IF EXISTS provider;
+
+CREATE
+    DATABASE provider;
+
+------------------------------------------------------------------------------------------------------------------------
+-- User
+------------------------------------------------------------------------------------------------------------------------
+
+DROP
+    USER IF EXISTS provider;
+
+CREATE
+    USER provider WITH ENCRYPTED PASSWORD 'provider';
+
+GRANT ALL PRIVILEGES ON DATABASE
+    provider TO provider;
+
+------------------------------------------------------------------------------------------------------------------------
+-- Tables
+------------------------------------------------------------------------------------------------------------------------
+
+-- Discounts
+
+DROP TABLE IF EXISTS discounts;
+
+CREATE TABLE discounts
+(
+    id        SERIAL PRIMARY KEY,
+    name      CHARACTER(70) NOT NULL,
+    type      INTEGER       NOT NULL,
+    value     INTEGER       NOT NULL,
+    date_from DATE          NOT NULL,
+    date_to   DATE          NOT NULL,
+    UNIQUE (name)
+);
+
+-- Tariffs
+
+DROP TABLE IF EXISTS tariffs;
+
+CREATE TABLE tariffs
 (
     id    SERIAL PRIMARY KEY,
-    name  CHARACTER VARYING(35) NOT NULL UNIQUE,
-    type  INTEGER               NOT NULL,
-    value INTEGER DEFAULT 0
+    name  CHARACTER(70) NOT NULL,
+    type  INTEGER       NOT NULL,
+    speed INTEGER       NOT NULL,
+    price REAL          NOT NULL,
+    UNIQUE (name)
 );
 
-CREATE TABLE IF NOT EXISTS tariffs
+-- Promotions
+
+DROP TABLE IF EXISTS promotions;
+
+CREATE TABLE promotions
 (
-    id    SERIAL PRIMARY KEY,
-    name  CHARACTER VARYING(70) NOT NULL UNIQUE,
-    type  INTEGER               NOT NULL,
-    speed INTEGER               NOT NULL,
-    price DOUBLE PRECISION      NOT NULL
+    tariff_id   INTEGER NOT NULL REFERENCES tariffs (id),
+    discount_id INTEGER NOT NULL REFERENCES discounts (id),
+    UNIQUE (tariff_id, discount_id)
 );
 
-CREATE TABLE IF NOT EXISTS promotions
+-- Accounts
+
+DROP TABLE IF EXISTS accounts;
+
+CREATE TABLE accounts
 (
-    id          SERIAL PRIMARY KEY,
-    tariff_id   INTEGER REFERENCES tariffs (id),
-    discount_id INTEGER REFERENCES discounts (id),
-    date_from   DATE,
-    date_to     DATE
+    id       SERIAL         NOT NULL PRIMARY KEY,
+    email    CHARACTER(255) NOT NULL,
+    password CHARACTER(64)  NOT NULL,
+    role     INTEGER        NOT NULL,
+    name     CHARACTER(70)  NOT NULL,
+    phone    CHARACTER(35)  NOT NULL,
+    address  CHARACTER(255) NOT NULL,
+    balance  REAL           NOT NULL,
+    UNIQUE (email)
 );
 
-CREATE TABLE IF NOT EXISTS accounts
+-- Subscriptions
+
+DROP TABLE IF EXISTS subscriptions;
+
+CREATE TABLE subscriptions
 (
-    id       SERIAL PRIMARY KEY,
-    name     CHARACTER VARYING(70)  NOT NULL UNIQUE,
-    email    CHARACTER VARYING(255) NOT NULL UNIQUE,
-    password CHARACTER VARYING(64)  NOT NULL,
-    phone    INTEGER                NOT NULL,
-    role     INTEGER                NOT NULL,
-    balance  DOUBLE PRECISION       NOT NULL
+    id SERIAL PRIMARY KEY,
+    account_id BIGINT NOT NULL REFERENCES accounts (id),
+    tariff_id  BIGINT NOT NULL REFERENCES tariffs (id),
+    UNIQUE (account_id, tariff_id)
 );
 
-CREATE TABLE IF NOT EXISTS traffics
+-- Traffics
+
+DROP TABLE IF EXISTS traffics;
+
+CREATE TABLE traffics
 (
-    id              SERIAL PRIMARY KEY,
-    subscription_id INTEGER,
-    value           DOUBLE PRECISION,
-    date            DATE
+    id              SERIAL  NOT NULL PRIMARY KEY,
+    subscription_id BIGINT  NOT NULL REFERENCES subscriptions (id),
+    value           INTEGER NOT NULL,
+    date            DATE    NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS subscriptions
+-- Bills
+
+DROP TABLE IF EXISTS bills;
+
+CREATE TABLE bills
 (
-    id         SERIAL PRIMARY KEY,
-    account_id INTEGER REFERENCES accounts (id),
-    tariff_id  INTEGER REFERENCES tariffs (id),
-    date_from  DATE,
-    date_to    DATE
+    id              SERIAL  NOT NULL PRIMARY KEY,
+    subscription_id BIGINT  NOT NULL REFERENCES accounts (id),
+    value           INTEGER NOT NULL,
+    date            DATE    NOT NULL,
+    status          BOOLEAN NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS bills
-(
-    id              SERIAL PRIMARY KEY,
-    subscription_id INTEGER REFERENCES subscriptions (id),
-    sum             DOUBLE PRECISION,
-    date            DATE,
-    status          BOOLEAN DEFAULT FALSE
-);
+------------------------------------------------------------------------------------------------------------------------
+-- Data
+------------------------------------------------------------------------------------------------------------------------
 
-
-INSERT INTO discounts (name, type, value)
-VALUES ('', 1, 0)
-ON CONFLICT DO NOTHING;
-
-INSERT INTO tariffs (name, type, speed, price)
-VALUES ('', 1, 0, 0)
-ON CONFLICT DO NOTHING;
-
-INSERT INTO promotions (tariff_id, discount_id, date_from, date_to)
-VALUES (1, 1, '2000-10-10', '2000-10-10')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO accounts (name, email, password, phone, role, balance)
-VALUES ('Admin', '@admin', '21232f297a57a5a743894a0e4a801fc3', 1, 1, 0)
-ON CONFLICT DO NOTHING;
-
-INSERT INTO traffics (subscription_id, value, date)
-VALUES (1, 1.0, '2000-10-10')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO subscriptions (account_id, tariff_id, date_from, date_to)
-VALUES (1, 1, '2000-10-10', '2000-10-10')
-ON CONFLICT DO NOTHING;
-
-INSERT INTO bills (subscription_id, sum, status)
-VALUES (1, 1.0, false)
-ON CONFLICT DO NOTHING;
-
-END;
+INSERT
+INTO accounts (email, password, role, name, phone, address, balance)
+VALUES ('admin',
+        '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918',
+        1,
+        'Administrator',
+        '+12029861805',
+        '1619 New Hampshire Avenue., N.W. Washington, DC 20009',
+        100.0)

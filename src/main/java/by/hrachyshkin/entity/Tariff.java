@@ -1,28 +1,31 @@
 package by.hrachyshkin.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+import java.math.BigDecimal;
+
+@Getter
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-public class Tariff {
+public final class Tariff {
 
-    private final int id;
-    private final String name;
-    private final Type type;
-    private final int speed;
-    private final double price;
-
+    @ToString
     public enum Type {
-        LIMITED,
+        TRAFFICKED,
         UNLIMITED
     }
 
-    public Tariff(String name, Type type, int speed, double price) {
-        this.id = -1;
-        this.name = name;
-        this.type = type;
-        this.speed = speed;
-        this.price = price;
+    private final Integer id;
+    private final String name;
+    private final Type type;
+    private final Integer speed;
+    private final Float price;
+
+    public Tariff(final String name,
+                  final Type type,
+                  final Integer speed,
+                  final Float price) {
+        this(null, name, type, speed, price);
     }
 }
