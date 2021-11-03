@@ -72,9 +72,6 @@
     <input name="tariffId" type="hidden" value="${tariff.id}">
 </form>
 </span>
-<br>
-<br>
-<br>
 <jsp:include page="footer.jsp"/>
 </body>
 </html>

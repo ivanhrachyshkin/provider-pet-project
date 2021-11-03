@@ -58,9 +58,6 @@
     </div>
     <div class="col-md-3"></div>
 </div>
-<br>
-<br>
-<br>
 <jsp:include page="footer.jsp" />
 </body>
 </html>

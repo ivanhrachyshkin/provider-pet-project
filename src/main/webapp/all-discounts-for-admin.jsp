@@ -76,9 +76,6 @@
         </tr>
     </table>
 </div>
-<br>
-<br>
-<br>
 <jsp:include page="footer.jsp" />
 </body>
 </html>

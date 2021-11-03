@@ -3,6 +3,7 @@ package by.hrachyshkin.provider.controller.action.tariff_action;
 import by.hrachyshkin.provider.controller.action.BaseAction;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Tariff;
+import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
 import by.hrachyshkin.provider.service.TariffService;
@@ -21,6 +22,7 @@ public class ShowTariffsAction extends BaseAction {
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
 
         final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
@@ -43,5 +45,6 @@ public class ShowTariffsAction extends BaseAction {
             request.setAttribute("accountTariffs", accountTariffs);
             request.getRequestDispatcher("/all-tariffs-for-user.jsp").forward(request, response);
         }
+
     }
 }
