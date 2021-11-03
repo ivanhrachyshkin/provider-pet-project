@@ -28,7 +28,7 @@ public class LoginAction extends BaseAction {
             if (accountService.isExistByEmailAndPassword(email, password)) {
                 final Account account = accountService.findOneByEmail(email);
 
-                final HttpSession session = request.getSession();
+                final HttpSession session = request.getSession(false);
                 session.setAttribute("accountId", account.getId());
                 session.setAttribute("accountRole", account.getRole());
 
@@ -36,12 +36,12 @@ public class LoginAction extends BaseAction {
 
             } else {
                 request.setAttribute("error", "Check Email and Password");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/").forward(request, response);
             }
 
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/").forward(request, response);
         }
     }
 }

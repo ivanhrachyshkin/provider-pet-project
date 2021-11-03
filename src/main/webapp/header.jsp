@@ -4,7 +4,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
-            <a href="${url}/index" class="navbar-brand">Provider</a>
+            <a href="${url}/main" class="navbar-brand">Provider</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="${url}/tariffs"><b>Tariff plans</b></a></li>

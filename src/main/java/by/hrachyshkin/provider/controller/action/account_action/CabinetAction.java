@@ -29,7 +29,7 @@ public class CabinetAction extends BaseAction {
 
             if (getRole(request).equals(Account.Role.BLOCKED)) {
                 request.setAttribute("error", "Account is blocked");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
+                request.getRequestDispatcher("/").forward(request, response);
             }
 
             if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
@@ -44,7 +44,7 @@ public class CabinetAction extends BaseAction {
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
+            request.getRequestDispatcher("/").forward(request, response);
         }
     }
 }
