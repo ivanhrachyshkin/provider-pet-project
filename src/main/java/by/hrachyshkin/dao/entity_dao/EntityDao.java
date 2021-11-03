@@ -10,10 +10,10 @@ public interface EntityDao<T> {
 
     List<T> find() throws DaoException;
 
-    T findOneById(int id) throws DaoException;
+    T findOneById(Integer id) throws DaoException;
 
     void update(T t) throws DaoException, DaoException;
 
-    void delete(int id) throws DaoException;
+    void delete(Integer id) throws DaoException;
 
 }

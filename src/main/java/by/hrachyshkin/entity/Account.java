@@ -18,7 +18,7 @@ public final class Account {
         USER
     }
 
-    private final BigDecimal id;
+    private final Integer id;
     private final String email;
     private final String password;
     private final Role role;

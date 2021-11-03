@@ -5,9 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import java.math.BigDecimal;
 import java.sql.Date;
-import java.time.LocalDate;
 
 @Getter
 @ToString
@@ -16,16 +14,16 @@ import java.time.LocalDate;
 public final class Bill {
 
     private final Integer id;
-    private final Integer subscription_id;
-    private final Date date;
+    private final Integer subscriptionId;
     private final Float value;
+    private final Date date;
     private final Boolean status;
 
-    public Bill(final Integer subscription_id,
-                final Date date,
+    public Bill(final Integer subscriptionId,
                 final Float value,
+                final Date date,
                 final Boolean status
-                ) {
-        this(null, subscription_id, date, value, status);
+    ) {
+        this(null, subscriptionId, value, date, status);
     }
 }

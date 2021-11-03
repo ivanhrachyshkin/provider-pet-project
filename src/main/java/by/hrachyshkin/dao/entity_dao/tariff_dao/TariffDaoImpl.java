@@ -233,7 +233,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     }
 
     @Override
-    public Tariff findOneById(int id) throws DaoException {
+    public Tariff findOneById(final Integer id) throws DaoException {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID);
              final ResultSet resultSet = statement.executeQuery()) {
@@ -274,7 +274,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     }
 
     @Override
-    public void delete(final int id) throws DaoException {
+    public void delete(final Integer id) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {

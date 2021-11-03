@@ -160,7 +160,7 @@ public class PromotionDaoImpl extends BaseDao implements PromotionDao {
 
 
     @Override
-    public Promotion findOneById(int id) throws DaoException {
+    public Promotion findOneById(final Integer id) throws DaoException {
         throw new UnsupportedOperationException();
     }
 
@@ -181,7 +181,7 @@ public class PromotionDaoImpl extends BaseDao implements PromotionDao {
     }
 
     @Override
-    public void delete(final int id) throws DaoException {
+    public void delete(final Integer id) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {

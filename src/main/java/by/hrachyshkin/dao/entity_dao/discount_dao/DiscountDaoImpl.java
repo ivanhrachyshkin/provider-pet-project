@@ -3,13 +3,10 @@ package by.hrachyshkin.dao.entity_dao.discount_dao;
 import by.hrachyshkin.dao.BaseDao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Discount;
-import by.hrachyshkin.entity.Tariff;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
-import lombok.SneakyThrows;
 
 import javax.sql.DataSource;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -241,7 +238,7 @@ public class DiscountDaoImpl extends BaseDao implements DiscountDao {
     }
 
     @Override
-    public Discount findOneById(int id) throws DaoException {
+    public Discount findOneById(final Integer id) throws DaoException {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID);
              final ResultSet resultSet = statement.executeQuery()) {
@@ -284,7 +281,7 @@ public class DiscountDaoImpl extends BaseDao implements DiscountDao {
     }
 
     @Override
-    public void delete(final int id) throws DaoException {
+    public void delete(final Integer id) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {

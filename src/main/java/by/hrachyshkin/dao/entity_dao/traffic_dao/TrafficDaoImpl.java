@@ -1,7 +1,10 @@
 package by.hrachyshkin.dao.entity_dao.traffic_dao;
 
 import by.hrachyshkin.dao.BaseDao;
+import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Traffic;
+import by.hrachyshkin.entity.criteria.Filter;
+import by.hrachyshkin.entity.criteria.Sort;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -10,55 +13,65 @@ import java.util.List;
 
 public class TrafficDaoImpl extends BaseDao implements TrafficDao {
 
-    private static final String CREATE_TRAFFIC_QUERY =
+
+    private static final String EXISTS_BY_SUBSCRIPTION_ID_QUERY =
+            "EXISTS (" +
+                    "SELECT * " +
+                    "FROM traffics " +
+                    "WHERE subscription_id = ? " +
+                    ")";
+
+    private static final String FIND_QUERY =
+            "SELECT id, email, password, role, name, phone, address, balance " +
+                    "FROM traffics ";
+
+    private static final String FIND_AND_SORT_QUERY =
+            "SELECT id, email, password, role, name, phone, address, balance " +
+                    "FROM traffics " +
+                    "ORDER BY ? ? ";
+
+    private static final String FIND_AND_FILTER_QUERY =
+            "SELECT id, email, password, role, name, phone, address, balance " +
+                    "FROM traffics " +
+                    "WHERE ? LIKE ? ";
+
+    private static final String FIND_AND_FILTER_AND_SORT_QUERY =
+            "SELECT id, email, password, role, name, phone, address, balance " +
+                    "FROM traffics " +
+                    "WHERE ? LIKE ? " +
+                    "ORDER BY ? ? ";
+
+    private static final String ADD_QUERY =
             "INSERT " +
-                    "INTO traffics (subscription_id, value, date) " +
-                    "VALUES (?, ?, ?) " +
-                    "ON CONFLICT DO NOTHING";
-
-    private static final String FIND_ALL_TRAFFICS_QUERY =
-            "SELECT id, name, type, value " +
-                    "FROM traffics";
-
-    private static final String FIND_ALL_TRAFFICS_QUERY_WITH_SORT =
-            "SELECT id, subscription_id, value, date " +
-                    "FROM traffics " +
-                    "ORDER BY ? ?";
-
-    private static final String FIND_ALL_TRAFFICS_QUERY_BY_FILTER =
-            "SELECT id, subscription_id, value, date " +
-                    "FROM traffics " +
-                    "WHERE ? LIKE ?%";
-
-    private static final String FIND_ONE_TRAFFIC_QUERY_BY_ID =
-            "SELECT id, subscription_id, value, date " +
-                    "FROM traffics " +
-                    "WHERE id = ?";
-
-    private static final String UPDATE_TRAFFIC_QUERY =
-            "INSERT INTO traffics (subscription_id, value, date) " +
-                    "VALUES ?, ?, ?" +
-                    "WHERE id = ? " +
-                    "ON CONFLICT DO UPDATE";
-
-    private static final String DELETE_TRAFFIC_BY_ID_QUERY =
-            "DELETE id, subscription_id, value, date " +
-                    "FROM traffics " +
-                    "WHERE id = ?";
-
+                    "INTO traffics (email, password, role, name, phone, address, balance) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     public TrafficDaoImpl(DataSource dataSource) {
         super(dataSource);
     }
 
+    @Override
+    public boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException {
+        try (final Connection connection = dataSource.getConnection();
+             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_SUBSCRIPTION_ID_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setInt(1, subscriptionId);
+            resultSet.next();
+            return resultSet.getBoolean(1);
+
+        } catch (SQLException e) {
+            throw new DaoException("Required traffic doesn't exist", e);
+        }
+    }
 
     @Override
-    public void create(final Traffic traffic) throws DaoException {
+    public void add(final Traffic traffic) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(CREATE_TRAFFIC_QUERY)) {
+             final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
 
-            statement.setInt(1, traffic.getSubscription_id());
+            statement.setInt(1, traffic.getSubscriptionId());
             statement.setInt(2, traffic.getValue());
             statement.setDate(3, traffic.getDate());
 
@@ -70,95 +83,121 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
     }
 
     @Override
-    public List<Traffic> find(final Criteria criteria) throws DaoException {
+    public List<Traffic> find() throws DaoException {
 
         try (final Connection connection = dataSource.getConnection()) {
 
-            String query;
-            if (criteria.getSorting() != null) {
-                query = FIND_ALL_TRAFFICS_QUERY_WITH_SORT;
-            } else if (criteria.getFilter() != null) {
-                query = FIND_ALL_TRAFFICS_QUERY_BY_FILTER;
-            } else query = FIND_ALL_TRAFFICS_QUERY;
-
-            try (final PreparedStatement statement = connection.prepareStatement(query);
+            try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
                  final ResultSet resultSet = statement.executeQuery()) {
-
-                if (criteria.getSorting() != null) {
-                    statement.setString(1, criteria.getSorting().getColumn());
-                    statement.setString(2, criteria.getSorting().getDirection().name());
-                } else if (criteria.getFilter() != null) {
-                    statement.setString(1, criteria.getFilter().getColumn());
-                    statement.setString(2, criteria.getFilter().getPattern());
-                }
-
 
                 final List<Traffic> traffics = new ArrayList<>();
                 while (resultSet.next()) {
                     final Traffic traffic = new Traffic(
                             resultSet.getInt(1),
                             resultSet.getInt(2),
-                            resultSet.getInt(3),
-                            resultSet.getDate(4));
+                            resultSet.getDate(3));
                     traffics.add(traffic);
                 }
 
                 return traffics;
             }
         } catch (Exception e) {
-            throw new DaoException("Can't find required traffic");
+            throw new DaoException("Can't find traffics");
         }
     }
 
     @Override
-    public Traffic findOneById(int id) throws DaoException {
+    public List<Traffic> findAndSort(final Sort sort) throws DaoException {
+
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TRAFFIC_QUERY_BY_ID);
+             final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
-            statement.setInt(1, id);
-            resultSet.next();
+            statement.setString(1, sort.getColumn());
+            statement.setString(2, sort.getDirection().name());
 
-            return new Traffic(
-                    resultSet.getInt(1),
-                    resultSet.getInt(2),
-                    resultSet.getInt(3),
-                    resultSet.getDate(4));
+            final List<Traffic> traffics = new ArrayList<>();
+            while (resultSet.next()) {
+                final Traffic traffic = new Traffic(
+                        resultSet.getInt(1),
+                        resultSet.getInt(2),
+                        resultSet.getDate(3));
+                traffics.add(traffic);
+            }
 
-        } catch (SQLException e) {
-            throw new DaoException("Can't find tariff by id", e);
+            return traffics;
+        } catch (Exception e) {
+            throw new DaoException("Can't find or sort traffics");
         }
     }
 
     @Override
-    public void update(final Traffic traffic) throws DaoException {
+    public List<Traffic> findAndFilter(final Filter filter) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(UPDATE_TRAFFIC_QUERY)) {
+             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
 
-            statement.setInt(1, traffic.getSubscription_id());
-            statement.setInt(2, traffic.getValue());
-            statement.setDate(3, traffic.getDate());
+            statement.setString(1, filter.getColumn());
+            statement.setString(2, filter.getPattern());
 
-            statement.setInt(4, traffic.getId());
+            final List<Traffic> traffics = new ArrayList<>();
+            while (resultSet.next()) {
+                final Traffic traffic = new Traffic(
+                        resultSet.getInt(1),
+                        resultSet.getInt(2),
+                        resultSet.getDate(3));
+                traffics.add(traffic);
+            }
 
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't add traffic", e);
+            return traffics;
+        } catch (Exception e) {
+            throw new DaoException("Can't find or filter traffics");
         }
     }
 
     @Override
-    public void delete(final int id) throws DaoException {
+    public List<Traffic> findAndFilterAndSort(final Filter filter, final Sort sort) throws DaoException {
+
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(DELETE_TRAFFIC_BY_ID_QUERY)) {
+             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
 
-            statement.setInt(1, id);
-            statement.executeQuery();
+            statement.setString(1, filter.getColumn());
+            statement.setString(2, filter.getPattern());
+            statement.setString(3, sort.getColumn());
+            statement.setString(4, sort.getDirection().name());
 
-        } catch (SQLException e) {
-            throw new DaoException("Can't delete traffic", e);
+            final List<Traffic> traffics = new ArrayList<>();
+            while (resultSet.next()) {
+                final Traffic traffic = new Traffic(
+                        resultSet.getInt(1),
+                        resultSet.getInt(2),
+                        resultSet.getDate(3));
+                traffics.add(traffic);
+            }
+
+            return traffics;
+        } catch (Exception e) {
+            throw new DaoException("Can't find or filter or sort traffics");
         }
+    }
+
+    @Override
+    public Traffic findOneById(Integer id) {
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void update(final Traffic traffic) {
+
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void delete(final Integer id) {
+
+        throw new UnsupportedOperationException();
     }
 }
