@@ -19,5 +19,4 @@ public interface TariffDao extends EntityDao<Tariff> {
     List<Tariff> findAndFilter(Filter filter) throws DaoException;
 
     List<Tariff> findAndFilterAndSort(Filter filter, Sort sort) throws DaoException;
-
 }

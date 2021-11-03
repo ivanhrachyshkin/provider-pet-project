@@ -18,6 +18,5 @@ public interface TrafficDao extends EntityDao<Traffic> {
     List<Traffic> findAndFilter(Filter filter) throws DaoException;
 
     List<Traffic> findAndFilterAndSort(Filter filter, Sort sort) throws DaoException;
-
-
+    
 }

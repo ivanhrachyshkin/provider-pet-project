@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------------------------------------------------
 -- Database
 ------------------------------------------------------------------------------------------------------------------------
-
+// разбить на 2 и в корень, избавться от схема дао и листенери датасурс с3по контекст удалить
 DROP
     DATABASE IF EXISTS provider;
 
@@ -89,8 +89,8 @@ DROP TABLE IF EXISTS subscriptions;
 CREATE TABLE subscriptions
 (
     id SERIAL PRIMARY KEY,
-    account_id BIGINT NOT NULL REFERENCES accounts (id),
-    tariff_id  BIGINT NOT NULL REFERENCES tariffs (id),
+    account_id INTEGER NOT NULL REFERENCES accounts (id),
+    tariff_id  INTEGER NOT NULL REFERENCES tariffs (id),
     UNIQUE (account_id, tariff_id)
 );
 
@@ -100,8 +100,7 @@ DROP TABLE IF EXISTS traffics;
 
 CREATE TABLE traffics
 (
-    id              SERIAL  NOT NULL PRIMARY KEY,
-    subscription_id BIGINT  NOT NULL REFERENCES subscriptions (id),
+    subscription_id INTEGER  NOT NULL REFERENCES subscriptions (id),
     value           INTEGER NOT NULL,
     date            DATE    NOT NULL
 );
@@ -113,7 +112,7 @@ DROP TABLE IF EXISTS bills;
 CREATE TABLE bills
 (
     id              SERIAL  NOT NULL PRIMARY KEY,
-    subscription_id BIGINT  NOT NULL REFERENCES accounts (id),
+    subscription_id INTEGER  NOT NULL REFERENCES accounts (id),
     value           INTEGER NOT NULL,
     date            DATE    NOT NULL,
     status          BOOLEAN NOT NULL

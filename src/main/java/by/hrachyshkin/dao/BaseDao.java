@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 
 @RequiredArgsConstructor
 public abstract class BaseDao {
 
-    protected final DataSource dataSource;
+    protected final Connection connection;
 
     protected String encrypt(final String password) {
 

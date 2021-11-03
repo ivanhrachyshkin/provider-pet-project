@@ -111,30 +111,6 @@ public class PromotionDaoImpl extends BaseDao implements PromotionDao {
     }
 
     @Override
-    public List<Promotion> findAndSort(final Sort sort) throws DaoException {
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
-
-            statement.setString(1, sort.getColumn());
-            statement.setString(2, sort.getDirection().name());
-
-            final List<Promotion> promotions = new ArrayList<>();
-            while (resultSet.next()) {
-                final Promotion promotion = new Promotion(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2));
-                promotions.add(promotion);
-            }
-
-            return promotions;
-        } catch (Exception e) {
-            throw new DaoException("Can't find or sort promotions");
-        }
-    }
-
-    @Override
     public List<Promotion> findAndFilter(final Filter filter) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
@@ -158,7 +134,6 @@ public class PromotionDaoImpl extends BaseDao implements PromotionDao {
         }
     }
 
-
     @Override
     public Promotion findOneById(final Integer id) throws DaoException {
         throw new UnsupportedOperationException();
@@ -167,17 +142,7 @@ public class PromotionDaoImpl extends BaseDao implements PromotionDao {
     @Override
     public void update(final Promotion promotion) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
-
-            statement.setInt(1, promotion.getTariffId());
-            statement.setInt(2, promotion.getDiscountId());
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't add promotion", e);
-        }
+        throw new UnsupportedOperationException();
     }
 
     @Override

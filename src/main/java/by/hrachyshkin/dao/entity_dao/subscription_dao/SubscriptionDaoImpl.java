@@ -148,30 +148,6 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
     }
 
     @Override
-    public List<Subscription> findAndSort(final Sort sort) throws DaoException {
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
-
-            statement.setString(1, sort.getColumn());
-            statement.setString(2, sort.getDirection().name());
-
-            final List<Subscription> subscriptions = new ArrayList<>();
-            while (resultSet.next()) {
-                final Subscription subscription = new Subscription(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2));
-                subscriptions.add(subscription);
-            }
-
-            return subscriptions;
-        } catch (Exception e) {
-            throw new DaoException("Can't find or sort subscriptions");
-        }
-    }
-
-    @Override
     public List<Subscription> findAndFilter(final Filter filter) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
@@ -196,32 +172,6 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
     }
 
     @Override
-    public List<Subscription> findAndFilterAndSort(final Filter filter, final Sort sort) throws DaoException {
-
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
-
-            statement.setString(1, filter.getColumn());
-            statement.setString(2, filter.getPattern());
-            statement.setString(3, sort.getColumn());
-            statement.setString(4, sort.getDirection().name());
-
-            final List<Subscription> subscriptions = new ArrayList<>();
-            while (resultSet.next()) {
-                final Subscription subscription = new Subscription(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2));
-                subscriptions.add(subscription);
-            }
-
-            return subscriptions;
-        } catch (Exception e) {
-            throw new DaoException("Can't find or filter or sort subscriptions");
-        }
-    }
-
-    @Override
     public Subscription findOneById(final Integer id) throws DaoException {
         try (final Connection connection = dataSource.getConnection();
              final PreparedStatement statement = connection.prepareStatement(FIND_ONE_SUBSCRIPTION_QUERY_BY_ID);
@@ -242,19 +192,7 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
     @Override
     public void update(final Subscription subscription) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
-
-            statement.setInt(1, subscription.getAccountId());
-            statement.setInt(2, subscription.getTariffId());
-
-            statement.setInt(3, subscription.getId());
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't add subscription", e);
-        }
+      throw new UnsupportedOperationException();
     }
 
     @Override

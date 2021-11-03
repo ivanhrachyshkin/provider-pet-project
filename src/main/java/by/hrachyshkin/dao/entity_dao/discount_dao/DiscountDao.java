@@ -3,7 +3,6 @@ package by.hrachyshkin.dao.entity_dao.discount_dao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.EntityDao;
 import by.hrachyshkin.entity.Discount;
-import by.hrachyshkin.entity.Tariff;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
 

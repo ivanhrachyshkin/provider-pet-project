@@ -14,9 +14,9 @@ public interface AccountDao extends EntityDao<Account> {
 
     boolean isExistByEmailAndPassword(final String email, final String password) throws DaoException;
 
-    boolean isExistByName(String name) throws DaoException;
+    boolean isExistByEmail(String email) throws DaoException;
 
-    List<Account> findAndSort(Sort sort) throws DaoException;
+    List<Account> findAndSort(Sort sort) throws DaoException;//hardcode
 
     List<Account> findAndFilter(Filter filter) throws DaoException;
 

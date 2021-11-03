@@ -38,7 +38,7 @@ public final class DaoFactory {
         try {
             final InitialContext initialContext = new InitialContext();
             return (DataSource) initialContext.lookup("java:/comp/env/jdbc/training-java-project-final");
-
+// datasource creation
         } catch (final Exception e) {
             throw new ExceptionInInitializerError(e);
         }

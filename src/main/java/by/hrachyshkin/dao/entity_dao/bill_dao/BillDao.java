@@ -11,12 +11,11 @@ import java.util.List;
 
 public interface BillDao extends EntityDao<Bill> {
 
-    boolean isExistById(Integer id) throws DaoException;
-
-    List<Bill> findAndSort(Sort sort) throws DaoException;
-
+    boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException;
     List<Bill> findAndFilter(Filter filter) throws DaoException;
 
-    List<Bill> findAndFilterAndSort(Filter filter, Sort sort) throws DaoException;
 
+    List<Bill> findAndSort(Sort sort) throws DaoException;//hardcode
+
+    List<Bill> findAndFilterAndSort(Filter filter, Sort sort) throws DaoException;
 }

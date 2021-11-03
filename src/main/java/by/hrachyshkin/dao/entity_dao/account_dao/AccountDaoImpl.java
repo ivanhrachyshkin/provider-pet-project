@@ -6,7 +6,6 @@ import by.hrachyshkin.entity.Account;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -31,12 +30,11 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
                     "WHERE email = ? AND password = ?" +
                     ")";
 
-
-    private static final String EXISTS_BY_NAME_QUERY =
+    private static final String EXISTS_BY_EMAIL_QUERY =
             "EXISTS (" +
                     "SELECT * " +
                     "FROM accounts " +
-                    "WHERE name = ?" +
+                    "WHERE email = ?" +
                     ")";
 
     private static final String FIND_QUERY =
@@ -80,14 +78,13 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
                     "FROM accounts " +
                     "WHERE id = ?";
 
-    public AccountDaoImpl(DataSource dataSource) {
-        super(dataSource);
+    public AccountDaoImpl(Connection connection) {
+        super(connection);
     }
 
     @Override
     public boolean isExistById(final Integer id) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, id);
@@ -101,8 +98,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
 
     @Override
     public boolean isExistByEmailAndPassword(final String email, final String password) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_EMAIL_AND_PASSWORD);
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_EMAIL_AND_PASSWORD);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, email);
@@ -116,9 +112,8 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     }
 
     @Override
-    public boolean isExistByName(final String name) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY);
+    public boolean isExistByEmail(final String name) throws DaoException {
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_EMAIL_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, name);
@@ -133,8 +128,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     @Override
     public void add(final Account account) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
 
             statement.setString(1, account.getEmail());
             statement.setString(2, account.getPassword());
@@ -154,8 +148,6 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     @Override
     public List<Account> find() throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection()) {
-
             try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
                  final ResultSet resultSet = statement.executeQuery()) {
 
@@ -173,7 +165,6 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
                 }
 
                 return accounts;
-            }
         } catch (Exception e) {
             throw new DaoException("Can't find accounts");
         }
@@ -182,8 +173,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     @Override
     public List<Account> findAndSort(final Sort sort) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, sort.getColumn());
@@ -211,8 +201,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     @Override
     public List<Account> findAndFilter(final Filter filter) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, filter.getColumn());
@@ -240,8 +229,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     @Override
     public List<Account> findAndFilterAndSort(final Filter filter, final Sort sort) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, filter.getColumn());
@@ -270,8 +258,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
 
     @Override
     public Account findOneById(final Integer id) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_ACCOUNT_QUERY_BY_ID);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_ACCOUNT_QUERY_BY_ID);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, id);
@@ -294,8 +281,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     @Override
     public void update(final Account account) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
 
             statement.setString(1, account.getEmail());
             statement.setString(2, account.getPassword());
@@ -317,8 +303,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
     @Override
     public void delete(final Integer id) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
 
             statement.setInt(1, id);
             statement.executeQuery();

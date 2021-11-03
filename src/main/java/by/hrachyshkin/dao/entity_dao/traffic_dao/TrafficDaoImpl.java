@@ -69,13 +69,13 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
     public void add(final Traffic traffic) throws DaoException {
 
         try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+            final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
 
-            statement.setInt(1, traffic.getSubscriptionId());
-            statement.setInt(2, traffic.getValue());
-            statement.setDate(3, traffic.getDate());
+                statement.setInt(1, traffic.getSubscriptionId());
+                statement.setInt(2, traffic.getValue());
+                statement.setDate(3, traffic.getDate());
 
-            statement.executeUpdate();
+                statement.executeUpdate();
 
         } catch (SQLException e) {
             throw new DaoException("Can't create traffic", e);
