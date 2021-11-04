@@ -5,7 +5,7 @@ import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Tariff;
 import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.TariffService;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.ServletException;
@@ -18,7 +18,7 @@ public class CreateTariffAction extends BaseAction  {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
         try {
-            final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
             final String name = request.getParameter("name");
             final Tariff.Type type = Tariff.Type.valueOf(request.getParameter("type").toUpperCase());

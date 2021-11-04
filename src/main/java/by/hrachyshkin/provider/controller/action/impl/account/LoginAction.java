@@ -5,7 +5,7 @@ import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.service.AccountService;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.ServletException;
@@ -22,7 +22,7 @@ public class LoginAction extends BaseAction {
         String path;
 
         try {
-            final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final String email = request.getParameter("email");
             final String password = request.getParameter("password");

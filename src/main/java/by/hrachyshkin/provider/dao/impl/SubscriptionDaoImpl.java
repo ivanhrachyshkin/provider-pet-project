@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class SubscriptionDaoImpl implements SubscriptionDao {
 
@@ -76,9 +77,11 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                     "WHERE account_id = ? AND tariff_id = ?";
 
     private final Connection connection;
+    private final ResourceBundle rb;
 
-    public SubscriptionDaoImpl(Connection connection) {
+    public SubscriptionDaoImpl(Connection connection, ResourceBundle rb) {
         this.connection = connection;
+        this.rb = rb;
     }
 
     @Override

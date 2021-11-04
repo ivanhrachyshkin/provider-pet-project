@@ -15,11 +15,13 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
 public class TariffServiceImpl implements TariffService {
 
     private final Transaction transactionImpl;
+    private final ResourceBundle rb;
 
     @Override
     public boolean isExist(final Integer id) throws ServiceException {

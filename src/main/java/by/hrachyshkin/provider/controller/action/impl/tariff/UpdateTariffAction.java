@@ -4,7 +4,7 @@ import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Tariff;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 import by.hrachyshkin.provider.service.TariffService;
 
@@ -19,7 +19,7 @@ public class UpdateTariffAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
-            final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
             final Integer id = Integer.valueOf(request.getParameter("tariffId"));
             final String name = request.getParameter("name");

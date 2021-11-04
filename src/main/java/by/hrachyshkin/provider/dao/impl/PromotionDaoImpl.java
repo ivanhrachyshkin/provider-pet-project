@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class PromotionDaoImpl implements PromotionDao {
 
@@ -54,9 +55,11 @@ public class PromotionDaoImpl implements PromotionDao {
                     "WHERE tariff_id = ? AND discount_id = ? ";
 
     private final Connection connection;
+    private final ResourceBundle rb;
 
-    public PromotionDaoImpl(Connection connection) {
+    public PromotionDaoImpl(Connection connection, ResourceBundle rb) {
         this.connection = connection;
+        this.rb = rb;
     }
 
     @Override

@@ -15,8 +15,8 @@ public class ShowSubscriptionsForAccountAction extends BaseAction {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         try {
-            final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-            final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final Integer accountId = getAccountId(request);
             final Account account = accountService.findOneById(accountId);

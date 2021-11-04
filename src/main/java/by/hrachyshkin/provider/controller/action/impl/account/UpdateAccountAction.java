@@ -5,7 +5,7 @@ import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.service.AccountService;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ public class UpdateAccountAction extends BaseAction{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         try {
-            final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final Integer id = Integer.valueOf(request.getParameter("accountId"));
             final String email = request.getParameter("email");

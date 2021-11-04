@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class TariffDaoImpl implements TariffDao {
 
@@ -76,9 +77,11 @@ public class TariffDaoImpl implements TariffDao {
                     "WHERE id = ?";
 
     private final Connection connection;
+    private final ResourceBundle rb;
 
-    public TariffDaoImpl(Connection connection) {
+    public TariffDaoImpl(Connection connection, ResourceBundle rb) {
         this.connection = connection;
+        this.rb = rb;
     }
 
     @Override

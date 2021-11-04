@@ -3,6 +3,7 @@ package by.hrachyshkin.provider.dao.impl;
 import by.hrachyshkin.provider.dao.DaoException;
 import by.hrachyshkin.provider.dao.AccountDao;
 import by.hrachyshkin.provider.model.Account;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Connection;
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class AccountDaoImpl implements AccountDao {
 
@@ -78,10 +80,13 @@ public class AccountDaoImpl implements AccountDao {
                     "WHERE id = ?";
 
     private final Connection connection;
+    private final ResourceBundle rb;
 
-    public AccountDaoImpl(Connection connection) {
+    public AccountDaoImpl(Connection connection, ResourceBundle rb) {
         this.connection = connection;
+        this.rb = rb;
     }
+
 
     @Override
     public boolean isExistById(final Integer id) throws DaoException {

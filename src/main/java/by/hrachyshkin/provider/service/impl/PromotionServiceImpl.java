@@ -11,11 +11,13 @@ import by.hrachyshkin.provider.service.ServiceException;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
 public class PromotionServiceImpl implements PromotionService {
 
     private final Transaction transactionImpl;
+    private final ResourceBundle rb;
 
     @Override
     public List<Promotion> find() throws ServiceException, TransactionException {

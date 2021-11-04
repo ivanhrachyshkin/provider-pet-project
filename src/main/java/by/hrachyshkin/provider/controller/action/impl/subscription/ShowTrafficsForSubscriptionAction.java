@@ -19,9 +19,9 @@ public class ShowTrafficsForSubscriptionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
-            final TrafficService trafficService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
-            final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-            final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
             final Tariff tariff = tariffService.findOneById(tariffId);

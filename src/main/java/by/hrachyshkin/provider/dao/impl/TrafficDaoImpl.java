@@ -10,9 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class TrafficDaoImpl implements TrafficDao {
-
 
     private static final String EXISTS_BY_SUBSCRIPTION_ID_QUERY =
             "SELECT EXISTS (" +
@@ -47,9 +47,11 @@ public class TrafficDaoImpl implements TrafficDao {
                     "VALUES (?, ?, ?)";
 
     private final Connection connection;
+    private final ResourceBundle rb;
 
-    public TrafficDaoImpl(Connection connection) {
+    public TrafficDaoImpl(Connection connection, ResourceBundle rb) {
         this.connection = connection;
+        this.rb = rb;
     }
 
     @Override

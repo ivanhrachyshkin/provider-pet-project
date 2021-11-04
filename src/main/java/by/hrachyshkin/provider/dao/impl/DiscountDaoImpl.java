@@ -3,10 +3,12 @@ package by.hrachyshkin.provider.dao.impl;
 import by.hrachyshkin.provider.dao.DaoException;
 import by.hrachyshkin.provider.dao.DiscountDao;
 import by.hrachyshkin.provider.model.Discount;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class DiscountDaoImpl implements DiscountDao {
 
@@ -72,9 +74,11 @@ public class DiscountDaoImpl implements DiscountDao {
                     "WHERE id = ?";
 
     private final Connection connection;
+    private final ResourceBundle rb;
 
-    public DiscountDaoImpl(Connection connection) {
+    public DiscountDaoImpl(Connection connection, ResourceBundle rb) {
         this.connection = connection;
+        this.rb = rb;
     }
 
     @Override

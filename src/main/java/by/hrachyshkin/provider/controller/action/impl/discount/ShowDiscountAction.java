@@ -6,7 +6,7 @@ import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Discount;
 import by.hrachyshkin.provider.service.DiscountService;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +20,7 @@ public class ShowDiscountAction extends BaseAction {
 
         String path = null;
         try {
-            final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+            final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 
             final String rawType = request.getParameter("filter");
             final List<Discount> discounts;

@@ -15,11 +15,13 @@ import lombok.RequiredArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
 
     private final Transaction transactionImpl;
+    private final ResourceBundle rb;
 
     @Override
     public List<Bill> find() throws ServiceException, TransactionException {
@@ -121,17 +123,17 @@ public class BillServiceImpl implements BillService {
 
             if (bill.getValue() == null
             || bill.getDate() == null) {
-                throw new ServiceException("Can't add bill because of empty inptu");
+                throw new ServiceException(rb.getString("bill.add.empty.input.exception"));
             }
 
             if (billDao.isExists(bill.getSubscriptionId(), bill.getValue(), bill.getDate())) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't add bill because is already exists");
+                throw new ServiceException(rb.getString("bill.add.exist.exception"));
             }
 
             if (bill.getValue() < 0) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't add bill because of negative value");
+                throw new ServiceException(rb.getString("bill.add.negative.exception"));
             }
 
             billDao.add(bill);
@@ -145,11 +147,11 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public void update(final Bill bill) throws ServiceException, TransactionException {
-        throw new UnsupportedOperationException("Update operation is not available for bill");
+        throw new UnsupportedOperationException(rb.getString("bill.update.unsupported.exception"));
     }
 
     @Override
     public void delete(final Integer id) throws ServiceException {
-        throw new UnsupportedOperationException("Delete operation is not available for bill");
+        throw new UnsupportedOperationException(rb.getString("bill.delete.unsupported.exception"));
     }
 }

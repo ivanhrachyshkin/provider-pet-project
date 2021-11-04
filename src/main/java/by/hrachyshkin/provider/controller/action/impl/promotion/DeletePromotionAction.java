@@ -4,7 +4,7 @@ import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.service.PromotionService;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.ServletException;
@@ -18,7 +18,7 @@ public class DeletePromotionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            final PromotionService promotionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+            final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
 
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
             final Integer discountId = Integer.valueOf(request.getParameter("discountId"));

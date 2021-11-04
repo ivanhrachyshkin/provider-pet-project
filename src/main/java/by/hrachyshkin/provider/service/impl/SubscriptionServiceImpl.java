@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final Transaction transactionImpl;
+    private final ResourceBundle rb;
 
     @Override
     public List<Subscription> find() throws ServiceException, TransactionException {

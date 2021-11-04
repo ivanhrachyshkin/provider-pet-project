@@ -5,7 +5,7 @@ import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Tariff;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 import by.hrachyshkin.provider.service.TariffService;
 
@@ -20,7 +20,7 @@ public class ShowTariffsAction extends BaseAction {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
-        final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
         final int offset = getOffset(request);
         final String rawType = request.getParameter("filter");

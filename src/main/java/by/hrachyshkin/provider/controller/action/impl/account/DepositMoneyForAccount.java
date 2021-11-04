@@ -4,7 +4,7 @@ import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.service.AccountService;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +17,7 @@ public class DepositMoneyForAccount extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final Integer accountId = getAccountId(request);
             final String card = request.getParameter("card");

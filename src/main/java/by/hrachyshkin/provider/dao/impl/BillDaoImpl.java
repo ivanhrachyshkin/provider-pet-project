@@ -3,6 +3,7 @@ package by.hrachyshkin.provider.dao.impl;
 import by.hrachyshkin.provider.dao.DaoException;
 import by.hrachyshkin.provider.dao.BillDao;
 import by.hrachyshkin.provider.model.Bill;
+import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,6 +12,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public class BillDaoImpl implements BillDao {
 
@@ -52,9 +54,11 @@ public class BillDaoImpl implements BillDao {
                     "WHERE subscription_id = ? AND value = ? AND date = ?";
 
     private final Connection connection;
+    private final ResourceBundle rb;
 
-    public BillDaoImpl(Connection connection) {
+    public BillDaoImpl(Connection connection, ResourceBundle rb) {
         this.connection = connection;
+        this.rb = rb;
     }
 
     @Override

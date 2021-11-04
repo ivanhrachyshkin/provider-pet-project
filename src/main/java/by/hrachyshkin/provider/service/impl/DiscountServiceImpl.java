@@ -14,11 +14,13 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
 public class DiscountServiceImpl implements DiscountService {
 
     private final Transaction transactionImpl;
+    private final ResourceBundle rb;
 
     @Override
     public List<Discount> find() throws ServiceException, TransactionException {

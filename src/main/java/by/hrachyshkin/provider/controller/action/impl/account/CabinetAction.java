@@ -5,7 +5,7 @@ import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.service.AccountService;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ public class CabinetAction extends BaseAction {
         String page = null;
 
         try {
-            final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final Account account = accountService.findOneById(getAccountId(request));
 

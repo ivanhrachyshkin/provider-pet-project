@@ -5,7 +5,7 @@ import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Discount;
 import by.hrachyshkin.provider.service.DiscountService;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactoryImpl;
+import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.ServletException;
@@ -20,7 +20,7 @@ public class UpdateDiscountAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+            final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 
             final Integer id = Integer.valueOf(request.getParameter("id"));
             final String name = request.getParameter("name");

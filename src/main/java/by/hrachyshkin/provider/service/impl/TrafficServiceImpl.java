@@ -14,11 +14,13 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 @RequiredArgsConstructor
 public class TrafficServiceImpl implements TrafficService {
 
     private final Transaction transactionImpl;
+    private final ResourceBundle rb;
 
     @Override
     public List<Traffic> find() throws ServiceException, TransactionException {
