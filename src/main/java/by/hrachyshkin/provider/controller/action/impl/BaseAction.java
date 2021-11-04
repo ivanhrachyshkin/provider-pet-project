@@ -60,4 +60,11 @@ public abstract class BaseAction implements Action {
         final HttpSession session = request.getSession(false);
         session.setAttribute("error", value);
     }
+
+    protected void checkHttpMethod(final HttpServletRequest request) throws ServletException {
+
+      if (request.getMethod().equals("GET")){
+         throw new ServletException("Unsupported get operation");
+      }
+    }
 }

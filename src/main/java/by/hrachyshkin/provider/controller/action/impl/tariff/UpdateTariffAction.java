@@ -21,6 +21,8 @@ public class UpdateTariffAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
+            checkHttpMethod(request);
+
             final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
             final Integer id = Integer.valueOf(request.getParameter("tariffId"));

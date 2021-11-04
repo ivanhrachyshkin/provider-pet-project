@@ -11,7 +11,6 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CreateAccountAction extends BaseAction {
@@ -22,6 +21,8 @@ public class CreateAccountAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         try {
+            checkHttpMethod(request);
+
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final String email = request.getParameter("email");
@@ -33,7 +34,7 @@ public class CreateAccountAction extends BaseAction {
             final Float balance = 0.0f;
 
             accountService.add(new Account(email, password, role, name, phone, address, balance));
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet/accounts";

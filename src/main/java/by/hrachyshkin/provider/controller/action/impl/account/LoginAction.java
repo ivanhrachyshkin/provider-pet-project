@@ -24,6 +24,7 @@ public class LoginAction extends BaseAction {
         String path;
 
         try {
+            checkHttpMethod(request);
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final String email = request.getParameter("email");
@@ -43,7 +44,7 @@ public class LoginAction extends BaseAction {
                 path = "/";
             }
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
             setErrorAttributeToSession(request, e.getMessage());
             path = "/";
         }

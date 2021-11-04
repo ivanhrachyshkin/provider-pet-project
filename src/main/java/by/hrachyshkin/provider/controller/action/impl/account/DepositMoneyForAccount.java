@@ -21,6 +21,8 @@ public class DepositMoneyForAccount extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         try {
+            checkHttpMethod(request);
+
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final Integer accountId = getAccountId(request);
@@ -30,7 +32,7 @@ public class DepositMoneyForAccount extends BaseAction {
 
             accountService.deposit(accountId, card, deposit, validity);
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet";

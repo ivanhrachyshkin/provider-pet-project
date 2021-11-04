@@ -21,6 +21,8 @@ public class CreatePromotionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
+            checkHttpMethod(request);
+
             final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
 
             final String tariffId = request.getParameter("tariffId");

@@ -22,6 +22,8 @@ public class UpdateDiscountAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
+            checkHttpMethod(request);
+
             final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 
             final Integer id = Integer.valueOf(request.getParameter("id"));

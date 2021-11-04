@@ -21,6 +21,8 @@ public class CreateSubscriptionAction extends BaseAction{
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
+            checkHttpMethod(request);
+
             final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
 
             final Integer accountId = getAccountId(request);

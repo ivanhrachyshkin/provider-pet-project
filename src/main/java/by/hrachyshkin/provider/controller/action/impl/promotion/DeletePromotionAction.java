@@ -20,6 +20,8 @@ public class DeletePromotionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
+            checkHttpMethod(request);
+
             final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
 
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));

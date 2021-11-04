@@ -22,6 +22,8 @@ public class CreateDiscountAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         try {
+            checkHttpMethod(request);
+
             final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 
             final String name = request.getParameter("name");
@@ -32,7 +34,7 @@ public class CreateDiscountAction extends BaseAction {
 
             discountService.add(new Discount(name, type, value, dateFrom, dateTo));
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/discounts";

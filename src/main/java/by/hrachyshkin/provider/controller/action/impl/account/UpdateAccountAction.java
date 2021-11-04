@@ -19,7 +19,10 @@ public class UpdateAccountAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+
         try {
+            checkHttpMethod(request);
+
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final Integer id = Integer.valueOf(request.getParameter("accountId"));
@@ -33,7 +36,7 @@ public class UpdateAccountAction extends BaseAction {
 
             accountService.update(new Account(id, email, password, role, name, phone, address, balance));
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
 

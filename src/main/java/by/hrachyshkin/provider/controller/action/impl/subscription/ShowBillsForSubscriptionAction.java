@@ -21,6 +21,8 @@ public class ShowBillsForSubscriptionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
+            checkHttpMethod(request);
+
             final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
             final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);

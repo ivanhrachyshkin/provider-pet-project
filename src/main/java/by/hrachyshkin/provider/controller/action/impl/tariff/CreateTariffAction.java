@@ -19,7 +19,10 @@ public class CreateTariffAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+
         try {
+            checkHttpMethod(request);
+
             final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
             final String name = request.getParameter("name");
