@@ -72,7 +72,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
             if (subscriptionDao.isExistByAccountAndTariffId(subscription.getAccountId(), subscription.getTariffId())) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't add subscription because is already exists");
+                throw new ServiceException(rb.getString("subscription.add.exist.exception"));
             }
 
             subscriptionDao.add(subscription);
@@ -93,12 +93,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
             if (!accountDao.isExistById(accountId)) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't pay the bill because account doesn't exist");
+                throw new ServiceException(rb.getString("subscription.payBill.account.exist.exception"));
             }
 
             if (!billDao.isExists(subscriptionIdForBill, value, date)) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't pay the bill because bill doesn't exist");
+                throw new ServiceException(rb.getString("subscription.payBill.bill.exist.exception"));
             }
 
             billDao.updateBillStatus(subscriptionIdForBill, value, date);
@@ -113,12 +113,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public void update(Subscription subscription) throws ServiceException {
-        throw new UnsupportedOperationException("Update operation is not available for subscription");
+        throw new UnsupportedOperationException(rb.getString("subscription.update.unsupported.exception"));
     }
 
     @Override
     public void delete(Integer id) throws ServiceException, TransactionException {
-        throw new UnsupportedOperationException("Delete operation is not available for subscription");
+        throw new UnsupportedOperationException(rb.getString("subscription.delete.unsupported.exception"));
     }
 
     @Override

@@ -112,7 +112,7 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     public Traffic findOneById(final Integer id) throws ServiceException {
-        throw new UnsupportedOperationException("Find one by id operation is not available for traffic");
+        throw new UnsupportedOperationException(rb.getString("traffic.find.one.by.id.unsupported.exception"));
     }
 
     @Override
@@ -123,17 +123,17 @@ public class TrafficServiceImpl implements TrafficService {
 
             if (traffic.getValue() == null
                     || traffic.getDate() == null) {
-                throw new ServiceException("Can't add traffic because of empty input");
+                throw new ServiceException(rb.getString("traffic.add.empty.input.exception"));
             }
 
             if (trafficDao.isExists(traffic)) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't add traffic because is already exists");
+                throw new ServiceException(rb.getString("traffic.add.exist.exception"));
             }
 
             if (traffic.getValue() < 0) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't add traffic because of negative value");
+                throw new ServiceException(rb.getString("traffic.add.negative.exception"));
             }
 
             trafficDao.add(traffic);
@@ -147,11 +147,11 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     public void update(final Traffic traffic) throws ServiceException {
-        throw new UnsupportedOperationException("Update operation is not available for traffic");
+        throw new UnsupportedOperationException(rb.getString("traffic.update.unsupported.exception"));
     }
 
     @Override
     public void delete(final Integer id) throws ServiceException {
-        throw new UnsupportedOperationException("Delete operation is not available for traffic");
+        throw new UnsupportedOperationException(rb.getString("traffic.delete.unsupported.exception"));
     }
 }

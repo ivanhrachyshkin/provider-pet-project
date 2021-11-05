@@ -101,7 +101,7 @@ public class TariffServiceImpl implements TariffService {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
             if (!tariffDao.isExistById(id)) {
-                throw new ServiceException("Can't find tariff by id because tariff doesn't exist");
+                throw new ServiceException(rb.getString("tariff.find.one.by.id.exist.exception"));
             }
 
             final Tariff tariff = tariffDao.findOneById(id);
@@ -150,19 +150,19 @@ public class TariffServiceImpl implements TariffService {
                     || tariff.getType() == null
                     || tariff.getSpeed() == null
                     || tariff.getPrice() == null) {
-                throw new ServiceException("Can't add tariff because of empty input");
+                throw new ServiceException(rb.getString("tariff.add.empty.input.exception"));
             }
 
                 if (tariffDao.isExistByName(tariff.getName())) {
-                    throw new ServiceException("Can't add tariff because is already exists");
+                    throw new ServiceException(rb.getString("tariff.add.exist.exception"));
                 }
 
             if (tariff.getPrice() < 0) {
-                throw new ServiceException("Can't add tariff because of negative price");
+                throw new ServiceException(rb.getString("tariff.add.negative.exception"));
             }
 
             if (tariff.getSpeed() < 0) {
-                throw new ServiceException("Can't add tariff because of negative speed");
+                throw new ServiceException(rb.getString("tariff.add.negative.exception"));
             }
 
             tariffDao.add(tariff);
@@ -184,23 +184,23 @@ public class TariffServiceImpl implements TariffService {
                     || tariff.getType() == null
                     || tariff.getSpeed() == null
                     || tariff.getPrice() == null) {
-                throw new ServiceException("Can't update tariff because of empty input");
+                throw new ServiceException(rb.getString("tariff.update.empty.input.exception"));
             }
 
             if (!tariffDao.isExistById(tariff.getId())) {
-                throw new ServiceException("Can't update current tariff because tariff doesn't exist");
+                throw new ServiceException(rb.getString("tariff.update.exist.exception"));
             }
 
             if (tariffDao.isExistByNotIdAndName(tariff.getId(), tariff.getName())) {
-                throw new ServiceException("Can't update current tariff");
+                throw new ServiceException(rb.getString("tariff.update.exist.not.id.exception"));
             }
 
             if (tariff.getPrice() < 0) {
-                throw new ServiceException("Can't add tariff because of negative price");
+                throw new ServiceException(rb.getString("tariff.update.negative.exception"));
             }
 
             if (tariff.getSpeed() < 0) {
-                throw new ServiceException("Can't add tariff because of negative speed");
+                throw new ServiceException(rb.getString("tariff.update.negative.exception"));
             }
 
             tariffDao.update(tariff);
@@ -221,15 +221,15 @@ public class TariffServiceImpl implements TariffService {
             final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
 
             if (!tariffDao.isExistById(id)) {
-                throw new ServiceException("Can't delete current tariff because tariff doesn't exist");
+                throw new ServiceException(rb.getString("tariff.delete.exist.exception"));
             }
 
             if (subscriptionDao.isExistByTariffId(id)) {
-                throw new ServiceException("Can't delete current tariff because tariff has subscriptions");
+                throw new ServiceException(rb.getString("tariff.delete.subscriptions.exception"));
             }
 
             if (promotionDao.isExistByTariffId(id)) {
-                throw new ServiceException("Can't delete current tariff because tariff has promotions");
+                throw new ServiceException(rb.getString("tariff.delete.promotions.exception"));
             }
 
             tariffDao.delete(id);

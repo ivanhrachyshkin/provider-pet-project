@@ -91,7 +91,7 @@ public class DiscountServiceImpl implements DiscountService {
 
             if (!discountDao.isExistById(id)) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't find discount by id because discount doesn't exist");
+                throw new ServiceException(rb.getString("discount.find.one.by.id.exist.exception"));
             }
 
             final Discount discount = discountDao.findOneById(id);
@@ -140,19 +140,19 @@ public class DiscountServiceImpl implements DiscountService {
                     || discount.getValue() == null
                     || discount.getDateFrom() == null
                     || discount.getDateTo() == null) {
-                throw new ServiceException("Can't add discount because of empty input");
+                throw new ServiceException(rb.getString("discount.add.empty.input.exception"));
             }
 
             if (discountDao.isExistByName(discount.getName())) {
-                throw new ServiceException("Can't add discount because discount is already exists");
+                throw new ServiceException(rb.getString("discount.add.exist.exception"));
             }
 
             if (discount.getDateFrom().isAfter(discount.getDateTo())) {
-                throw new ServiceException("Can't add discount because start date is later than end date");
+                throw new ServiceException(rb.getString("discount.add.date.invalid.exception"));
             }
 
             if (discount.getValue() < 0) {
-                throw new ServiceException("Can't add discount because of negative value");
+                throw new ServiceException(rb.getString("discount.add.negative.exception"));
             }
 
             discountDao.add(discount);
@@ -175,23 +175,23 @@ public class DiscountServiceImpl implements DiscountService {
                     || discount.getValue() == null
                     || discount.getDateFrom() == null
                     || discount.getDateTo() == null) {
-                throw new ServiceException("Can't update discount because of empty input");
+                throw new ServiceException(rb.getString("discount.update.empty.input.exception"));
             }
 
             if (!discountDao.isExistById(discount.getId())) {
-                throw new ServiceException("Can't update discount because discount doesn't exist");
+                throw new ServiceException(rb.getString("discount.update.exist.exception"));
             }
 
             if (discountDao.isExistByNotIdAndName(discount.getId(), discount.getName())) {
-                throw new ServiceException("Can't update discount");
+                throw new ServiceException(rb.getString("discount.update.exist.not.id.exception"));//
             }
 
             if (discount.getDateFrom().isAfter(discount.getDateTo())) {
-                throw new ServiceException("Can't update discount because start date is later than end date");
+                throw new ServiceException(rb.getString("discount.update.date.invalid.exception"));
             }
 
             if (discount.getValue() < 0) {
-                throw new ServiceException("Can't add discount because of negative value");
+                throw new ServiceException(rb.getString("discount.update.negative.exception"));
             }
 
             discountDao.update(discount);
@@ -211,10 +211,10 @@ public class DiscountServiceImpl implements DiscountService {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
 
             if (!discountDao.isExistById(id)) {
-                throw new ServiceException("Can't delete discount because discount ");
+                throw new ServiceException(rb.getString("discount.delete.exist.exception"));
             }
             if (promotionDao.isExistByDiscountId(id)) {
-                throw new ServiceException("Can't delete discount because there are connected promotions");
+                throw new ServiceException(rb.getString("discount.delete.promotions.exception"));
             }
 
             discountDao.delete(id);

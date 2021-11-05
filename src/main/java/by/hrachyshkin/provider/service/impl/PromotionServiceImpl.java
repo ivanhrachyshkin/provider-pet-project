@@ -62,7 +62,7 @@ public class PromotionServiceImpl implements PromotionService {
 
             if (promotionDao.isExistByTariffAndDiscountId(promotion.getTariffId(), promotion.getDiscountId())) {
                 transactionImpl.rollback();
-                throw new ServiceException("Discount is already added to current tariff");
+                throw new ServiceException(rb.getString("promotion.add.added.exception"));
             }
 
             promotionDao.add(promotion);
@@ -76,12 +76,12 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public void update(final Promotion promotion) throws ServiceException {
-        throw new UnsupportedOperationException("Update operation is not available for promotion");
+        throw new UnsupportedOperationException(rb.getString("promotion.update.unsupported.exception"));
     }
 
     @Override
     public void delete(Integer id) throws ServiceException {
-        throw new UnsupportedOperationException("Delete operation is not available for promotion");
+        throw new UnsupportedOperationException(rb.getString("promotion.delete.unsupported.exception"));
     }
 
     @Override
@@ -92,7 +92,7 @@ public class PromotionServiceImpl implements PromotionService {
 
             if (!promotionDao.isExistByTariffAndDiscountId(tariffId, discountId)) {
                 transactionImpl.rollback();
-                throw new ServiceException("There is no such discount for current tariff");
+                throw new ServiceException(rb.getString("promotion.delete.by.tariff.discount.promotions.exception"));
             }
 
             promotionDao.deleteByTariffAndDiscount(tariffId, discountId);
