@@ -1,12 +1,11 @@
 package by.hrachyshkin.dao.entity_dao.bill_dao;
 
-import by.hrachyshkin.dao.BaseDao;
+import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Bill;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BillDaoImpl extends BaseDao implements BillDao {
+public class BillDaoImpl extends AbstractDao implements BillDao {
 
     private static final String EXISTS_BY_SUBSCRIPTION_ID_QUERY =
             "EXISTS (" +
@@ -64,15 +63,30 @@ public class BillDaoImpl extends BaseDao implements BillDao {
                     "FROM bills " +
                     "WHERE id = ?";
 
-    public BillDaoImpl(DataSource dataSource) {
-        super(dataSource);
+    public BillDaoImpl(final Connection connection) {
+        super(connection);
     }
+
+
+    @Override
+    public boolean isExistBySubscriptionId(Integer subscriptionId) throws DaoException {
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_SUBSCRIPTION_ID_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setInt(1, subscriptionId);
+            resultSet.next();
+            return resultSet.getBoolean(1);
+
+        } catch (SQLException e) {
+            throw new DaoException("Required subscription doesn't exist", e);
+        }
+    }
+
 
     @Override
     public void add(final Bill bill) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
 
             statement.setInt(1, bill.getSubscriptionId());
             statement.setFloat(2, bill.getValue());
@@ -89,33 +103,54 @@ public class BillDaoImpl extends BaseDao implements BillDao {
     @Override
     public List<Bill> find() throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
 
-            try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
-                 final ResultSet resultSet = statement.executeQuery()) {
-
-                final List<Bill> bills = new ArrayList<>();
-                while (resultSet.next()) {
-                    final Bill bill = new Bill(
-                            resultSet.getInt(1),
-                            resultSet.getFloat(2),
-                            resultSet.getDate(3),
-                            resultSet.getBoolean(4));
-                    bills.add(bill);
-                }
-
-                return bills;
+            final List<Bill> bills = new ArrayList<>();
+            while (resultSet.next()) {
+                final Bill bill = new Bill(
+                        resultSet.getInt(1),
+                        resultSet.getFloat(2),
+                        resultSet.getDate(3),
+                        resultSet.getBoolean(4));
+                bills.add(bill);
             }
+
+            return bills;
         } catch (Exception e) {
             throw new DaoException("Can't find bills");
         }
     }
 
     @Override
+    public List<Bill> findAndSort(Sort sort) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setString(1, sort.getColumn());
+            statement.setString(2, sort.getDirection().name());
+
+            final List<Bill> bills = new ArrayList<>();
+            while (resultSet.next()) {
+                final Bill bill = new Bill(
+                        resultSet.getInt(1),
+                        resultSet.getFloat(2),
+                        resultSet.getDate(3),
+                        resultSet.getBoolean(4));
+                bills.add(bill);
+            }
+
+            return bills;
+        } catch (Exception e) {
+            throw new DaoException("Can't find or sort accounts");
+        }
+    }
+
+    @Override
     public List<Bill> findAndFilter(final Filter filter) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, filter.getColumn());
@@ -138,9 +173,34 @@ public class BillDaoImpl extends BaseDao implements BillDao {
     }
 
     @Override
+    public List<Bill> findAndFilterAndSort(Filter filter, Sort sort) throws DaoException {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setString(1, filter.getColumn());
+            statement.setString(2, filter.getPattern());
+            statement.setString(3, sort.getColumn());
+            statement.setString(4, sort.getDirection().name());
+
+            final List<Bill> bills = new ArrayList<>();
+            while (resultSet.next()) {
+                final Bill bill = new Bill(
+                        resultSet.getInt(1),
+                        resultSet.getFloat(2),
+                        resultSet.getDate(3),
+                        resultSet.getBoolean(4));
+                bills.add(bill);
+            }
+
+            return bills;
+        } catch (Exception e) {
+            throw new DaoException("Can't find or filter or sort accounts");
+        }
+    }
+
+    @Override
     public Bill findOneById(final Integer id) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_BILL_QUERY_BY_ID);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_BILL_QUERY_BY_ID);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, id);
@@ -160,8 +220,7 @@ public class BillDaoImpl extends BaseDao implements BillDao {
     @Override
     public void update(final Bill bill) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
 
             statement.setInt(1, bill.getSubscriptionId());
             statement.setFloat(2, bill.getValue());
@@ -180,8 +239,7 @@ public class BillDaoImpl extends BaseDao implements BillDao {
     @Override
     public void delete(final Integer id) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
 
             statement.setInt(1, id);
             statement.executeQuery();

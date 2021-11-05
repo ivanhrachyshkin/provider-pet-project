@@ -13,9 +13,9 @@ public interface SubscriptionDao extends EntityDao<Subscription> {
 
     boolean isExistById(final Integer id) throws DaoException;
 
-    boolean isExistByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException;
-
     boolean isExistByAccountId(Integer accountId) throws DaoException;
+
+    boolean isExistByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException;
 
     List<Subscription> findAndFilter(Filter filter) throws DaoException;
 }

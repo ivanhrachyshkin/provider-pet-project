@@ -1,17 +1,16 @@
 package by.hrachyshkin.dao.entity_dao.traffic_dao;
 
-import by.hrachyshkin.dao.BaseDao;
+import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Traffic;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
 
-import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrafficDaoImpl extends BaseDao implements TrafficDao {
+public class TrafficDaoImpl extends AbstractDao implements TrafficDao {
 
 
     private static final String EXISTS_BY_SUBSCRIPTION_ID_QUERY =
@@ -46,14 +45,13 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
                     "INTO traffics (email, password, role, name, phone, address, balance) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    public TrafficDaoImpl(DataSource dataSource) {
-        super(dataSource);
+    public TrafficDaoImpl(final Connection connection) {
+        super(connection);
     }
 
     @Override
     public boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_SUBSCRIPTION_ID_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_SUBSCRIPTION_ID_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, subscriptionId);
@@ -68,14 +66,13 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
     @Override
     public void add(final Traffic traffic) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-            final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
 
-                statement.setInt(1, traffic.getSubscriptionId());
-                statement.setInt(2, traffic.getValue());
-                statement.setDate(3, traffic.getDate());
+            statement.setInt(1, traffic.getSubscriptionId());
+            statement.setInt(2, traffic.getValue());
+            statement.setDate(3, traffic.getDate());
 
-                statement.executeUpdate();
+            statement.executeUpdate();
 
         } catch (SQLException e) {
             throw new DaoException("Can't create traffic", e);
@@ -85,22 +82,19 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
     @Override
     public List<Traffic> find() throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
 
-            try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
-                 final ResultSet resultSet = statement.executeQuery()) {
-
-                final List<Traffic> traffics = new ArrayList<>();
-                while (resultSet.next()) {
-                    final Traffic traffic = new Traffic(
-                            resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getDate(3));
-                    traffics.add(traffic);
-                }
-
-                return traffics;
+            final List<Traffic> traffics = new ArrayList<>();
+            while (resultSet.next()) {
+                final Traffic traffic = new Traffic(
+                        resultSet.getInt(1),
+                        resultSet.getInt(2),
+                        resultSet.getDate(3));
+                traffics.add(traffic);
             }
+
+            return traffics;
         } catch (Exception e) {
             throw new DaoException("Can't find traffics");
         }
@@ -109,8 +103,7 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
     @Override
     public List<Traffic> findAndSort(final Sort sort) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, sort.getColumn());
@@ -134,8 +127,7 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
     @Override
     public List<Traffic> findAndFilter(final Filter filter) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, filter.getColumn());
@@ -159,8 +151,7 @@ public class TrafficDaoImpl extends BaseDao implements TrafficDao {
     @Override
     public List<Traffic> findAndFilterAndSort(final Filter filter, final Sort sort) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, filter.getColumn());

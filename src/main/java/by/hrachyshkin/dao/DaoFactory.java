@@ -26,7 +26,7 @@ public final class DaoFactory {
     private Path getSchemaPath() {
 
         try {
-            return Paths.get(getClass().getClassLoader().getResource("schema.sql").toURI());
+            return Paths.get(getClass().getClassLoader().getResource("insert_data_database_provider.sql").toURI());
 
         } catch (final Exception e) {
             throw new ExceptionInInitializerError(e);

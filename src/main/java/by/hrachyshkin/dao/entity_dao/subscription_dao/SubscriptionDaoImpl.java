@@ -1,12 +1,10 @@
 package by.hrachyshkin.dao.entity_dao.subscription_dao;
 
-import by.hrachyshkin.dao.BaseDao;
+import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Subscription;
 import by.hrachyshkin.entity.criteria.Filter;
-import by.hrachyshkin.entity.criteria.Sort;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,13 +12,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
+public class SubscriptionDaoImpl extends AbstractDao implements SubscriptionDao {
 
     private static final String EXISTS_BY_ID_QUERY =
             "EXISTS (" +
                     "SELECT * " +
                     "FROM subscriptions " +
                     "WHERE id = ?" +
+                    ")";
+
+    private static final String EXISTS_BY_ACCOUNT_ID_QUERY =
+            "EXISTS (" +
+                    "SELECT * " +
+                    "FROM subscriptions " +
+                    "WHERE account_id = ? " +
                     ")";
 
     private static final String EXISTS_BY_ACCOUNT_ID_AND_TARIFF_ID =
@@ -34,21 +39,10 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions ";
 
-    private static final String FIND_AND_SORT_QUERY =
-            "SELECT id, account_id, tariff_id " +
-                    "FROM subscriptions " +
-                    "ORDER BY ? ? ";
-
     private static final String FIND_AND_FILTER_QUERY =
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions " +
                     "WHERE ? LIKE ? ";
-
-    private static final String FIND_AND_FILTER_AND_SORT_QUERY =
-            "SELECT id, account_id, tariff_id " +
-                    "FROM subscriptions " +
-                    "WHERE ? LIKE ? " +
-                    "ORDER BY ? ? ";
 
     private static final String FIND_ONE_SUBSCRIPTION_QUERY_BY_ID =
             "SELECT id, account_id, tariff_id " +
@@ -71,14 +65,13 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
                     "FROM subscriptions " +
                     "WHERE id = ?";
 
-    public SubscriptionDaoImpl(DataSource dataSource) {
-        super(dataSource);
+    public SubscriptionDaoImpl(final Connection connection) {
+        super(connection);
     }
 
     @Override
     public boolean isExistById(final Integer id) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, id);
@@ -90,10 +83,27 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
         }
     }
 
+
     @Override
-    public boolean isExistByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ACCOUNT_ID_AND_TARIFF_ID);
+    public boolean isExistByAccountId(final Integer accountId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ACCOUNT_ID_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+
+            statement.setInt(1, accountId);
+            resultSet.next();
+
+            return resultSet.getBoolean(1);
+
+        } catch (SQLException e) {
+            throw new DaoException("Required subscription doesn't exist", e);
+        }
+    }
+
+    @Override
+    public boolean isExistByAccountIdAndTariffId(final Integer accountId,
+                                                 final Integer tariffId) throws DaoException {
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ACCOUNT_ID_AND_TARIFF_ID);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, accountId);
@@ -107,12 +117,10 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
         }
     }
 
-
     @Override
     public void add(final Subscription subscription) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
 
             statement.setInt(1, subscription.getAccountId());
             statement.setInt(2, subscription.getAccountId());
@@ -127,21 +135,18 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
     @Override
     public List<Subscription> find() throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
 
-            try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
-                 final ResultSet resultSet = statement.executeQuery()) {
-
-                final List<Subscription> subscriptions = new ArrayList<>();
-                while (resultSet.next()) {
-                    final Subscription subscription = new Subscription(
-                            resultSet.getInt(1),
-                            resultSet.getInt(2));
-                    subscriptions.add(subscription);
-                }
-
-                return subscriptions;
+            final List<Subscription> subscriptions = new ArrayList<>();
+            while (resultSet.next()) {
+                final Subscription subscription = new Subscription(
+                        resultSet.getInt(1),
+                        resultSet.getInt(2));
+                subscriptions.add(subscription);
             }
+
+            return subscriptions;
         } catch (Exception e) {
             throw new DaoException("Can't find subscriptions");
         }
@@ -150,8 +155,7 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
     @Override
     public List<Subscription> findAndFilter(final Filter filter) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, filter.getColumn());
@@ -173,8 +177,7 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
 
     @Override
     public Subscription findOneById(final Integer id) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_SUBSCRIPTION_QUERY_BY_ID);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_SUBSCRIPTION_QUERY_BY_ID);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, id);
@@ -192,14 +195,13 @@ public class SubscriptionDaoImpl extends BaseDao implements SubscriptionDao {
     @Override
     public void update(final Subscription subscription) throws DaoException {
 
-      throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(final Integer id) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
 
             statement.setInt(1, id);
             statement.executeQuery();

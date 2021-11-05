@@ -12,6 +12,7 @@ import java.util.List;
 public interface PromotionDao extends EntityDao<Promotion> {
 
     boolean isExistById(Integer tariffId, Integer discountId) throws DaoException;
+
     boolean isExistByTariffId(Integer tariffId) throws DaoException;
 
     List<Promotion> findAndFilter(Filter filter) throws DaoException;

@@ -1,6 +1,6 @@
 package by.hrachyshkin.dao.entity_dao.account_dao;
 
-import by.hrachyshkin.dao.BaseDao;
+import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Account;
 import by.hrachyshkin.entity.criteria.Filter;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDaoImpl extends BaseDao implements AccountDao {
+public class AccountDaoImpl extends AbstractDao implements AccountDao {
 
 
     private static final String EXISTS_BY_ID_QUERY =
@@ -131,10 +131,10 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
         try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
 
             statement.setString(1, account.getEmail());
-            statement.setString(2, account.getPassword());
+            statement.setString(2, encrypt(account.getPassword()));
             statement.setInt(3, account.getRole().ordinal());
             statement.setString(4, account.getName());
-            statement.setInt(5, account.getPhone());
+            statement.setString(5, account.getPhone());
             statement.setString(6, account.getAddress());
             statement.setFloat(7, account.getBalance());
 
@@ -158,7 +158,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
                             resultSet.getString(2),
                             Account.Role.values()[resultSet.getInt(3)],
                             resultSet.getString(4),
-                            resultSet.getInt(4),
+                            resultSet.getString(4),
                             resultSet.getString(5),
                             resultSet.getFloat(6));
                     accounts.add(account);
@@ -186,7 +186,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
                         resultSet.getString(2),
                         Account.Role.values()[resultSet.getInt(3)],
                         resultSet.getString(4),
-                        resultSet.getInt(4),
+                        resultSet.getString(4),
                         resultSet.getString(5),
                         resultSet.getFloat(6));
                 accounts.add(account);
@@ -214,7 +214,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
                         resultSet.getString(2),
                         Account.Role.values()[resultSet.getInt(3)],
                         resultSet.getString(4),
-                        resultSet.getInt(4),
+                        resultSet.getString(4),
                         resultSet.getString(5),
                         resultSet.getFloat(6));
                 accounts.add(account);
@@ -244,7 +244,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
                         resultSet.getString(2),
                         Account.Role.values()[resultSet.getInt(3)],
                         resultSet.getString(4),
-                        resultSet.getInt(4),
+                        resultSet.getString(4),
                         resultSet.getString(5),
                         resultSet.getFloat(6));
                 accounts.add(account);
@@ -269,7 +269,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
                     resultSet.getString(2),
                     Account.Role.values()[resultSet.getInt(3)],
                     resultSet.getString(4),
-                    resultSet.getInt(4),
+                    resultSet.getString(4),
                     resultSet.getString(5),
                     resultSet.getFloat(6));
 
@@ -287,7 +287,7 @@ public class AccountDaoImpl extends BaseDao implements AccountDao {
             statement.setString(2, account.getPassword());
             statement.setInt(3, account.getRole().ordinal());
             statement.setString(4, account.getName());
-            statement.setInt(5, account.getPhone());
+            statement.setString(5, account.getPhone());
             statement.setString(6, account.getAddress());
             statement.setFloat(7, account.getBalance());
 

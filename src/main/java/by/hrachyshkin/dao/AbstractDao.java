@@ -7,7 +7,7 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 
 @RequiredArgsConstructor
-public abstract class BaseDao {
+public abstract class AbstractDao {
 
     protected final Connection connection;
 

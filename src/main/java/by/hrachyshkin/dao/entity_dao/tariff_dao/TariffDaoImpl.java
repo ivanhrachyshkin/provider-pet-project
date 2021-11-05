@@ -1,12 +1,11 @@
 package by.hrachyshkin.dao.entity_dao.tariff_dao;
 
-import by.hrachyshkin.dao.BaseDao;
+import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Tariff;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
 
-import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TariffDaoImpl extends BaseDao implements TariffDao {
+public class TariffDaoImpl extends AbstractDao implements TariffDao {
 
     private static final String EXISTS_BY_ID_QUERY =
             "EXISTS (" +
@@ -71,14 +70,13 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
                     "FROM tariffs " +
                     "WHERE id = ?";
 
-    public TariffDaoImpl(DataSource dataSource) {
-        super(dataSource);
+    public TariffDaoImpl(final Connection connection) {
+        super(connection);
     }
 
     @Override
     public boolean isExistById(final Integer id) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, id);
@@ -92,8 +90,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
 
     @Override
     public boolean isExistByName(final String name) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, name);
@@ -108,8 +105,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     @Override
     public void add(final Tariff tariff) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
 
             statement.setString(1, tariff.getName());
             statement.setInt(2, tariff.getType().ordinal());
@@ -126,8 +122,6 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     @Override
     public List<Tariff> find() throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection()) {
-
             try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
                  final ResultSet resultSet = statement.executeQuery()) {
 
@@ -143,7 +137,6 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
                 }
 
                 return tariffs;
-            }
         } catch (Exception e) {
             throw new DaoException("Can't find required tariffs");
         }
@@ -152,8 +145,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     @Override
     public List<Tariff> findAndSort(final Sort sort) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, sort.getColumn());
@@ -179,8 +171,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     @Override
     public List<Tariff> findAndFilter(final Filter filter) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, filter.getColumn());
@@ -206,8 +197,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     @Override
     public List<Tariff> findAndFilterAndSort(final Filter filter, final Sort sort) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setString(1, filter.getColumn());
@@ -234,8 +224,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
 
     @Override
     public Tariff findOneById(final Integer id) throws DaoException {
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID);
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID);
              final ResultSet resultSet = statement.executeQuery()) {
 
             statement.setInt(1, id);
@@ -256,8 +245,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     @Override
     public void update(final Tariff tariff) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
 
             statement.setString(1, tariff.getName());
             statement.setInt(2, tariff.getType().ordinal());
@@ -276,8 +264,7 @@ public class TariffDaoImpl extends BaseDao implements TariffDao {
     @Override
     public void delete(final Integer id) throws DaoException {
 
-        try (final Connection connection = dataSource.getConnection();
-             final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
 
             statement.setInt(1, id);
             statement.executeQuery();

@@ -12,8 +12,8 @@ import java.util.List;
 public interface BillDao extends EntityDao<Bill> {
 
     boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException;
-    List<Bill> findAndFilter(Filter filter) throws DaoException;
 
+    List<Bill> findAndFilter(Filter filter) throws DaoException;
 
     List<Bill> findAndSort(Sort sort) throws DaoException;//hardcode
 

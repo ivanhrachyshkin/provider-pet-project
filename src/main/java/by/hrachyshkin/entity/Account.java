@@ -1,9 +1,9 @@
 package by.hrachyshkin.entity;
 
-import lombok.*;
-
-import javax.management.relation.Role;
-import java.math.BigDecimal;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 @Getter
 @ToString
@@ -23,7 +23,7 @@ public final class Account {
     private final String password;
     private final Role role;
     private final String name;
-    private final Integer phone;
+    private final String phone;
     private final String address;
     private final Float balance;
 
@@ -31,7 +31,7 @@ public final class Account {
                    final String password,
                    final Role role,
                    final String name,
-                   final Integer phone,
+                   final String phone,
                    final String address,
                    final Float balance) {
         this(null, email, password, role, name, phone, address, balance);
