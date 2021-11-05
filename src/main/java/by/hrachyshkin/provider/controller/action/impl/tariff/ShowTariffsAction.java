@@ -34,6 +34,12 @@ public class ShowTariffsAction extends BaseAction {
             tariffs = tariffService.findAndFilterByType(type);
         }
 
+        if (request.getParameter("page") == null) {
+            request.setAttribute("page", 1);
+        } else {
+            request.setAttribute("page", Integer.valueOf(request.getParameter("page")));
+        }
+
 
         request.setAttribute("tariffs", tariffs);
 

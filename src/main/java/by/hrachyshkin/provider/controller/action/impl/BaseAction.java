@@ -30,9 +30,7 @@ public abstract class BaseAction implements Action {
     public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
 
         request.getRequestDispatcher(path).forward(request, response);
-
     }
-
 
     protected int getOffset(HttpServletRequest request) {
 
@@ -42,8 +40,6 @@ public abstract class BaseAction implements Action {
         }
         return offset;
     }
-
-
 
     protected void setTotalPagesAttribute(HttpServletRequest request, final List<? extends Model> list) {
 

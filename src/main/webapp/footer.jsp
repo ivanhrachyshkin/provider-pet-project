@@ -2,11 +2,11 @@
 
 <style type="text/css">
     #footer {
-        position: fixed; /* Фиксированное положение */
+        position: fixed;
         rght: 0;
-        bottom: 0; /* Правый нижний угол */
-        padding: 10px; /* Поля вокруг текста */
-        width: 100%; /* Ширина слоя */
+        bottom: 0;
+        padding: 10px;
+        width: 100%;
     }
 </style>
 
@@ -15,7 +15,12 @@
         <nav aria-label="pagination">
             <ul class="pagination">
                 <c:forEach var="i" begin="1" end="${totalPages}">
-                    <li class="page-item"><a href="?page=${i}">${i}</a></li>
+                    <c:if test="${i == requestScope.page}">
+                        <li class="page-item active"><a class="active" href="?page=${i}">${i}</a></li>
+                    </c:if>
+                    <c:if test="${i != requestScope.page}">
+                        <li class="page-item"><a href="?page=${i}">${i}</a></li>
+                    </c:if>
                 </c:forEach>
             </ul>
         </nav>
@@ -24,11 +29,11 @@
 
 <style type="text/css">
     #error {
-        position: fixed; /* Фиксированное положение */
+        position: fixed;
         left: 0;
-        bottom: 0; /* Правый нижний угол */
-        padding-top: 10px; /* Поля вокруг текста */
-        width: 20%; /* Ширина слоя */
+        bottom: 0;
+        padding-top: 10px;
+        width: 30%;
     }
 </style>
 
