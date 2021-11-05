@@ -54,7 +54,8 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     private static final String FIND_AND_FILTER_BY_ACCOUNT_AND_TARIFF_ID_QUERY =
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions " +
-                    "WHERE account_id = ? AND tariff_id = ? ";
+                    "WHERE account_id = ? AND tariff_id = ? " +
+                    "LIMIT 5 OFFSET ?";
 
     private static final String FIND_ONE_SUBSCRIPTION_QUERY_BY_ID =
             "SELECT id, account_id, tariff_id " +
@@ -188,11 +189,12 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     }
 
     @Override
-    public List<Subscription> findAndFilterByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException {
+    public List<Subscription> findAndFilterByAccountIdAndTariffId(final Integer accountId, final Integer tariffId, final Integer offset) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
             statement.setInt(1, accountId);
             statement.setInt(2, tariffId);
+            statement.setInt(3, offset);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Subscription> subscriptions = new ArrayList<>();

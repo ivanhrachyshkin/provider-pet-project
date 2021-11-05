@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class CreateTariffAction extends BaseAction  {
+public class CreateTariffAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
@@ -21,13 +21,13 @@ public class CreateTariffAction extends BaseAction  {
             final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
             final String name = request.getParameter("name");
-            final Tariff.Type type = Tariff.Type.valueOf(request.getParameter("type").toUpperCase());
-            final Integer speed = Integer.valueOf(request.getParameter("speed"));
-            final Float price = Float.valueOf(request.getParameter("price"));
+            final String type = request.getParameter("type");
+            final String speed = request.getParameter("speed");
+            final String price = request.getParameter("price");
 
-            tariffService.add(new Tariff(name, type, speed, price));
+            tariffService.add(new Tariff(name, Tariff.Type.valueOf(type.toUpperCase()), Integer.valueOf(speed), Float.valueOf(price)));
 
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException | NumberFormatException | NullPointerException e) {
             request.setAttribute("error", e.getMessage());
         }
         return "/tariffs";

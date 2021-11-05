@@ -22,11 +22,14 @@ public class ShowDiscountAction extends BaseAction {
         try {
             final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 
+            final int offset = getOffset(request);
+            setTotalPagesAttribute(request, discountService.find());
+
             final String rawType = request.getParameter("filter");
             final List<Discount> discounts;
 
             if (rawType == null || rawType.equals("all")) {
-                discounts = discountService.findAndSortByValue();
+                discounts = discountService.findAndSortByValue(offset);
             } else {
                 final Discount.Type type = Discount.Type.valueOf(rawType.toUpperCase());
                 discounts = discountService.findAndFilterByType(type);

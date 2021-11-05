@@ -12,9 +12,9 @@ public interface DiscountDao extends Dao<Discount> {
 
    boolean isExistByNotIdAndName(Integer id, String name) throws DaoException;
 
-   List<Discount> findAndSortByValue() throws DaoException;
+   List<Discount> findAndSortByValue(Integer offset) throws DaoException;
 
-   List<Discount> findAndFilterByType(final Discount.Type type) throws DaoException;
+   List<Discount> findAndFilterByType(Discount.Type type) throws DaoException;
 
-   List<Discount> findAndFilterAndSort(final Discount.Type type) throws DaoException;
+   List<Discount> findAndFilterAndSort( Discount.Type type) throws DaoException;
 }

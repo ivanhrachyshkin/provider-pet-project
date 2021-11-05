@@ -88,7 +88,7 @@ public class BillServiceImpl implements BillService {
         throw new UnsupportedOperationException();
     }
 
-    public List<Bill> findBillsForSubscription(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
+    public List<Bill> findBillsForSubscription(final Integer accountId, final Integer tariffId, final Integer offset) throws ServiceException, TransactionException {
 
         try {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
@@ -96,7 +96,7 @@ public class BillServiceImpl implements BillService {
 
             final List<Bill> bills = billDao.find();
             final List<Bill> subscriptionBills = new ArrayList<>();
-            final List<Subscription> subscriptions = subscriptionDao.findAndFilterByAccountIdAndTariffId(accountId, tariffId);
+            final List<Subscription> subscriptions = subscriptionDao.findAndFilterByAccountIdAndTariffId(accountId, tariffId, offset);
 
             for (Subscription subs : subscriptions) {
                 for (Bill bill : bills) {

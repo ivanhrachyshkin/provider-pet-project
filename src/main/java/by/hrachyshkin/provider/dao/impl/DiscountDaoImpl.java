@@ -40,7 +40,8 @@ public class DiscountDaoImpl implements DiscountDao {
     private static final String FIND_AND_SORT_BY_VALUE_QUERY =
             "SELECT id, name, type, value, date_from, date_to " +
                     "FROM discounts " +
-                    "ORDER BY value DESC";
+                    "ORDER BY value DESC " +
+                    "LIMIT 5 OFFSET ?";
 
     private static final String FIND_AND_FILTER_BY_TYPE_QUERY =
             "SELECT id, name, type, value, date_from, date_to " +
@@ -149,17 +150,21 @@ public class DiscountDaoImpl implements DiscountDao {
         }
     }
 
-    public List<Discount> findAndSortByValue() throws DaoException {
+    @Override
+    public List<Discount> findAndSortByValue(final Integer offset) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_VALUE_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_VALUE_QUERY)) {
+            statement.setInt(1, offset);
 
-            final List<Discount> discounts = new ArrayList<>();
-            while (resultSet.next()) {
-                final Discount discount = buildDiscount(resultSet);
-                discounts.add(discount);
+            try (final ResultSet resultSet = statement.executeQuery()) {
+
+                final List<Discount> discounts = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Discount discount = buildDiscount(resultSet);
+                    discounts.add(discount);
+                }
+                return discounts;
             }
-            return discounts;
 
         } catch (Exception e) {
             throw new DaoException("Can't find or sort by value discounts");

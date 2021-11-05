@@ -53,8 +53,8 @@
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
 
-                <c:forEach var="tariff" items="${tariffs}">
-                    <c:if test="${tariff.id == tariff.id}">
+                <c:forEach var="accountTariff" items="${accountTariffs}">
+                    <c:if test="${tariff.id == accountTariff.id}">
                         <td><button disabled class="btn btn-success">connected</button></td>
                     </c:if>
                 </c:forEach>

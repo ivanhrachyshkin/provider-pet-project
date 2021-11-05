@@ -82,33 +82,33 @@ public class TrafficServiceImpl implements TrafficService {
         }
     }
 
-    @Override
-    public List<Traffic> findTrafficForSubscription(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
+   @Override
+   public List<Traffic> findTrafficForSubscription(final Integer accountId, final Integer tariffId, final Integer offset) throws ServiceException, TransactionException {
 
-        try {
-            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
+       try {
+           final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
+           final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
 
-            final List<Traffic> traffics = trafficDao.find();
-            final List<Traffic> subscriptionTraffics = new ArrayList<>();
-            final List<Subscription> subscriptions = subscriptionDao.findAndFilterByAccountIdAndTariffId(accountId, tariffId);
+           final List<Traffic> traffics = trafficDao.find();
+           final List<Traffic> subscriptionTraffics = new ArrayList<>();
+           final List<Subscription> subscriptions = subscriptionDao.findAndFilterByAccountIdAndTariffId(accountId, tariffId, offset);
 
-            for (Subscription subs : subscriptions) {
-                for (Traffic traffic : traffics) {
-                    if (subs.getId().equals(traffic.getSubscriptionId())) {
-                        subscriptionTraffics.add(traffic);
-                    }
-                }
+           for (Subscription subs : subscriptions) {
+               for (Traffic traffic : traffics) {
+                   if (subs.getId().equals(traffic.getSubscriptionId())) {
+                       subscriptionTraffics.add(traffic);
+                   }
+               }
 
-            }
-            transactionImpl.commit();
-            return subscriptionTraffics;
+           }
+           transactionImpl.commit();
+           return subscriptionTraffics;
 
-        } catch (TransactionException | DaoException e) {
-            transactionImpl.rollback();
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
+       } catch (TransactionException | DaoException e) {
+           transactionImpl.rollback();
+           throw new ServiceException(e.getMessage(), e);
+       }
+   }
 
     @Override
     public Traffic findOneById(final Integer id) throws ServiceException {

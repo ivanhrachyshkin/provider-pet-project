@@ -12,7 +12,7 @@ public interface BillService extends Service<Bill> {
 
     List<Bill> findAndFilterBySubscriptionId(final Integer subscriptionId) throws ServiceException, TransactionException;
 
-    List<Bill> findBillsForSubscription(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException;
+    List<Bill> findBillsForSubscription(final Integer accountId, final Integer tariffId, Integer offset) throws ServiceException, TransactionException;
 
     List<Bill> findAndFilterAndSort(final Integer subscriptionId) throws ServiceException, TransactionException;
 

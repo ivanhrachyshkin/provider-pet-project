@@ -38,11 +38,11 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> findAndSortByValue() throws ServiceException, TransactionException {
+    public List<Discount> findAndSortByValue(final Integer offset) throws ServiceException, TransactionException {
 
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
-            final List<Discount> discounts = discountDao.findAndSortByValue();
+            final List<Discount> discounts = discountDao.findAndSortByValue(offset);
             transactionImpl.commit();
             return discounts;
 

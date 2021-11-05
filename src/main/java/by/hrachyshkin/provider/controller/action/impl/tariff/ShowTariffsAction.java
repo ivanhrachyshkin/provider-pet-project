@@ -23,6 +23,7 @@ public class ShowTariffsAction extends BaseAction {
         final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
         final int offset = getOffset(request);
+        setTotalPagesAttribute(request, tariffService.find());
         final String rawType = request.getParameter("filter");
 
         List<Tariff> tariffs;
@@ -33,14 +34,14 @@ public class ShowTariffsAction extends BaseAction {
             tariffs = tariffService.findAndFilterByType(type);
         }
 
-        setTotalPagesAttribute(request, tariffService.find());
+
         request.setAttribute("tariffs", tariffs);
 
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
             return "/all-tariffs-for-admin.jsp";
         } else {
             final List<Tariff> accountTariffs = tariffService.findTariffsForSubscription(getAccountId(request));
-            request.setAttribute("tariffs", accountTariffs);
+            request.setAttribute("accountTariffs", accountTariffs);
             return "/all-tariffs-for-user.jsp";
         }
     }
