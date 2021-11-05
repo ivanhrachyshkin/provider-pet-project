@@ -2,6 +2,23 @@
 -- Tables
 ------------------------------------------------------------------------------------------------------------------------
 
+-- Accounts
+
+DROP TABLE IF EXISTS accounts;
+
+CREATE TABLE accounts
+(
+    id       SERIAL         NOT NULL PRIMARY KEY,
+    email    CHARACTER(255) NOT NULL,
+    password CHARACTER(64)  NOT NULL,
+    role     INTEGER        NOT NULL,
+    name     CHARACTER(70)  NOT NULL,
+    phone    CHARACTER(35)  NOT NULL,
+    address  CHARACTER(255) NOT NULL,
+    balance  REAL           NOT NULL,
+    UNIQUE (email)
+);
+
 -- Discounts
 
 DROP TABLE IF EXISTS discounts;
@@ -31,34 +48,6 @@ CREATE TABLE tariffs
     UNIQUE (name)
 );
 
--- Promotions
-
-DROP TABLE IF EXISTS promotions;
-
-CREATE TABLE promotions
-(
-    tariff_id   INTEGER NOT NULL REFERENCES tariffs (id),
-    discount_id INTEGER NOT NULL REFERENCES discounts (id),
-    UNIQUE (tariff_id, discount_id)
-);
-
--- Accounts
-
-DROP TABLE IF EXISTS accounts;
-
-CREATE TABLE accounts
-(
-    id       SERIAL         NOT NULL PRIMARY KEY,
-    email    CHARACTER(255) NOT NULL,
-    password CHARACTER(64)  NOT NULL,
-    role     INTEGER        NOT NULL,
-    name     CHARACTER(70)  NOT NULL,
-    phone    CHARACTER(35)  NOT NULL,
-    address  CHARACTER(255) NOT NULL,
-    balance  REAL           NOT NULL,
-    UNIQUE (email)
-);
-
 -- Subscriptions
 
 DROP TABLE IF EXISTS subscriptions;
@@ -69,6 +58,18 @@ CREATE TABLE subscriptions
     account_id INTEGER NOT NULL REFERENCES accounts (id),
     tariff_id  INTEGER NOT NULL REFERENCES tariffs (id),
     UNIQUE (account_id, tariff_id)
+);
+
+
+-- Promotions
+
+DROP TABLE IF EXISTS promotions;
+
+CREATE TABLE promotions
+(
+    tariff_id   INTEGER NOT NULL REFERENCES tariffs (id),
+    discount_id INTEGER NOT NULL REFERENCES discounts (id),
+    UNIQUE (tariff_id, discount_id)
 );
 
 -- Traffics
@@ -89,7 +90,7 @@ DROP TABLE IF EXISTS bills;
 CREATE TABLE bills
 (
     id              SERIAL  NOT NULL PRIMARY KEY,
-    subscription_id INTEGER  NOT NULL REFERENCES accounts (id),
+    subscription_id INTEGER  NOT NULL REFERENCES subscriptions (id),
     value           INTEGER NOT NULL,
     date            DATE    NOT NULL,
     status          BOOLEAN NOT NULL
