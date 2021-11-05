@@ -266,7 +266,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete subscription by account id and tariff id", e);
+            throw new DaoException("Can't delete subscription by account id and tariff id because there are connected traffics and bills", e);
         }
     }
 

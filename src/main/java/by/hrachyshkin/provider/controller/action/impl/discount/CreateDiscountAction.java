@@ -8,8 +8,10 @@ import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDate;
 
 public class CreateDiscountAction extends BaseAction {
@@ -32,5 +34,11 @@ public class CreateDiscountAction extends BaseAction {
             request.setAttribute("error", e.getMessage());
         }
         return "/discounts";
+    }
+
+    @Override
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+
+        response.sendRedirect(request.getContextPath() + "/discounts");
     }
 }
