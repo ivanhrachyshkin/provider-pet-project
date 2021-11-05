@@ -21,9 +21,10 @@ public class ShowAccountsAction extends BaseAction {
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final int offset = getOffset(request);
-            setTotalPagesAttribute(request, accountService.find());
-
             final List<Account> accounts = accountService.findAndSortByName(offset);
+
+            pagination(request);
+            setTotalPagesAttribute(request, accountService.find());
             request.setAttribute("accounts", accounts);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {

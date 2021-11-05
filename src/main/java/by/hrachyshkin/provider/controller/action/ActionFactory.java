@@ -1,6 +1,6 @@
 package by.hrachyshkin.provider.controller.action;
 
-import by.hrachyshkin.provider.controller.action.impl.IndexAction;
+import by.hrachyshkin.provider.controller.action.impl.WelcomeAction;
 import by.hrachyshkin.provider.controller.action.impl.MainPageAction;
 import by.hrachyshkin.provider.controller.action.impl.account.*;
 import by.hrachyshkin.provider.controller.action.impl.discount.CreateDiscountAction;
@@ -22,7 +22,7 @@ public class ActionFactory {
     final Map<String, Action> commands = new HashMap<>() {
 
         {
-            put(CommandConstants.INDEX, new IndexAction());
+            put(CommandConstants.WELCOME, new WelcomeAction());
             put(CommandConstants.CABINET, new CabinetAction());
             put(CommandConstants.CREATE_ACCOUNT, new CreateAccountAction());
             put(CommandConstants.DEPOSIT, new DepositMoneyForAccount());

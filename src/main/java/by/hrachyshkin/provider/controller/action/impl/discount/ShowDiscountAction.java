@@ -23,11 +23,9 @@ public class ShowDiscountAction extends BaseAction {
             final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 
             final int offset = getOffset(request);
-            setTotalPagesAttribute(request, discountService.find());
-
             final String rawType = request.getParameter("filter");
-            final List<Discount> discounts;
 
+            final List<Discount> discounts;
             if (rawType == null || rawType.equals("all")) {
                 discounts = discountService.findAndSortByValue(offset);
             } else {
@@ -35,6 +33,8 @@ public class ShowDiscountAction extends BaseAction {
                 discounts = discountService.findAndFilterByType(type);
             }
 
+            pagination(request);
+            setTotalPagesAttribute(request, discountService.find());
             request.setAttribute("discounts", discounts);
 
             if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {

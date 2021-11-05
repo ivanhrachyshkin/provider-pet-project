@@ -24,14 +24,13 @@ public class ShowTrafficsForSubscriptionAction extends BaseAction {
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final int offset = getOffset(request);
-
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
             final Tariff tariff = tariffService.findOneById(tariffId);
             final Integer accountId = getAccountId(request);
             final Account account = accountService.findOneById(accountId);
-
             final List<Traffic> subscriptionTraffics = trafficService.findTrafficForSubscription(accountId, tariffId, offset);
 
+            pagination(request);
             setTotalPagesAttribute(request, subscriptionTraffics);
             request.setAttribute("account", account);
             request.setAttribute("tariff", tariff);

@@ -3,7 +3,7 @@ package by.hrachyshkin.provider.controller.action;
 public interface CommandConstants {
 
     // Account constants
-    String INDEX = "/";
+    String WELCOME = "/";
     String CABINET = "/cabinet";
     String CREATE_ACCOUNT = "/cabinet/accounts/create";
     String DEPOSIT = "/cabinet/deposit";

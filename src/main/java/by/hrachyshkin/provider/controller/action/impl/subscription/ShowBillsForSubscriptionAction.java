@@ -24,18 +24,16 @@ public class ShowBillsForSubscriptionAction extends BaseAction {
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final int offset = getOffset(request);
-
-            final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
             final Integer accountId = getAccountId(request);
+            final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
             final Tariff tariff = tariffService.findOneById(tariffId);
             final Account account = accountService.findOneById(accountId);
-
-            request.setAttribute("tariff", tariff);
-            request.setAttribute("account", account);
-
             final List<Bill> subscriptionBills = billService.findBillsForSubscription(accountId, tariffId, offset);
 
+            pagination(request);
             setTotalPagesAttribute(request, subscriptionBills);
+            request.setAttribute("tariff", tariff);
+            request.setAttribute("account", account);
             request.setAttribute("subscriptionBills", subscriptionBills);
 
         } catch (ServiceException | NumberFormatException e) {

@@ -15,6 +15,11 @@ import java.util.List;
 
 public abstract class BaseAction implements Action {
 
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+
+        request.getRequestDispatcher(path).forward(request, response);
+    }
+
     protected Integer getAccountId(HttpServletRequest request) {
 
         final HttpSession session = request.getSession(false);
@@ -25,11 +30,6 @@ public abstract class BaseAction implements Action {
 
         final HttpSession session = request.getSession(false);
         return (Account.Role) session.getAttribute("accountRole");
-    }
-
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
-
-        request.getRequestDispatcher(path).forward(request, response);
     }
 
     protected int getOffset(HttpServletRequest request) {
@@ -44,5 +44,14 @@ public abstract class BaseAction implements Action {
     protected void setTotalPagesAttribute(HttpServletRequest request, final List<? extends Model> list) {
 
         request.setAttribute("totalPages", list.size() / 5 + 1);
+    }
+
+    protected void pagination(HttpServletRequest request) {
+
+        if (request.getParameter("page") == null) {
+            request.setAttribute("page", request.getParameter("page"));
+        } else {
+            request.setAttribute("page", Integer.valueOf(request.getParameter("page")));
+        }
     }
 }

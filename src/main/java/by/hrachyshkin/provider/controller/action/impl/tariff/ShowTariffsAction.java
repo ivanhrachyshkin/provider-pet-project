@@ -23,7 +23,6 @@ public class ShowTariffsAction extends BaseAction {
         final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
         final int offset = getOffset(request);
-        setTotalPagesAttribute(request, tariffService.find());
         final String rawType = request.getParameter("filter");
 
         List<Tariff> tariffs;
@@ -34,13 +33,8 @@ public class ShowTariffsAction extends BaseAction {
             tariffs = tariffService.findAndFilterByType(type);
         }
 
-        if (request.getParameter("page") == null) {
-            request.setAttribute("page", 1);
-        } else {
-            request.setAttribute("page", Integer.valueOf(request.getParameter("page")));
-        }
-
-
+        pagination(request);
+        setTotalPagesAttribute(request, tariffService.find());
         request.setAttribute("tariffs", tariffs);
 
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
