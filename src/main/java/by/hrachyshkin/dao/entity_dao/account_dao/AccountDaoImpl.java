@@ -1,10 +1,11 @@
 package by.hrachyshkin.dao.entity_dao.account_dao;
 
-import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
+import by.hrachyshkin.dao.pool.PooledConnection;
 import by.hrachyshkin.entity.Account;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,8 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDaoImpl extends AbstractDao implements AccountDao {
-
+public class AccountDaoImpl implements AccountDao {
 
     private static final String EXISTS_BY_ID_QUERY =
             "EXISTS (" +
@@ -78,8 +78,10 @@ public class AccountDaoImpl extends AbstractDao implements AccountDao {
                     "FROM accounts " +
                     "WHERE id = ?";
 
+    private final Connection connection;
+
     public AccountDaoImpl(Connection connection) {
-        super(connection);
+        this.connection = connection;
     }
 
     @Override
@@ -148,23 +150,24 @@ public class AccountDaoImpl extends AbstractDao implements AccountDao {
     @Override
     public List<Account> find() throws DaoException {
 
-            try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
-                 final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
 
-                final List<Account> accounts = new ArrayList<>();
-                while (resultSet.next()) {
-                    final Account account = new Account(
-                            resultSet.getString(1),
-                            resultSet.getString(2),
-                            Account.Role.values()[resultSet.getInt(3)],
-                            resultSet.getString(4),
-                            resultSet.getString(4),
-                            resultSet.getString(5),
-                            resultSet.getFloat(6));
-                    accounts.add(account);
-                }
+            final List<Account> accounts = new ArrayList<>();
+            while (resultSet.next()) {
+                final Account account = new Account(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        resultSet.getString(3),
+                        Account.Role.values()[resultSet.getInt(4)],
+                        resultSet.getString(5),
+                        resultSet.getString(6),
+                        resultSet.getString(7),
+                        resultSet.getFloat(8));
+                accounts.add(account);
+            }
 
-                return accounts;
+            return accounts;
         } catch (Exception e) {
             throw new DaoException("Can't find accounts");
         }
@@ -311,5 +314,10 @@ public class AccountDaoImpl extends AbstractDao implements AccountDao {
         } catch (SQLException e) {
             throw new DaoException("Can't delete account", e);
         }
+    }
+
+    private String encrypt(final String password) {
+
+        return DigestUtils.md5Hex(password.toUpperCase());
     }
 }

@@ -1,7 +1,7 @@
 package by.hrachyshkin.dao.entity_dao.promotion_dao;
 
-import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
+import by.hrachyshkin.dao.pool.PooledConnection;
 import by.hrachyshkin.entity.Promotion;
 import by.hrachyshkin.entity.criteria.Filter;
 
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PromotionDaoImpl extends AbstractDao implements PromotionDao {
+public class PromotionDaoImpl  implements PromotionDao {
 
     private static final String EXISTS_BY_ID_QUERY =
             "EXISTS (" +
@@ -47,8 +47,10 @@ public class PromotionDaoImpl extends AbstractDao implements PromotionDao {
                     "FROM promotions " +
                     "WHERE discount_id = ?";
 
-    public PromotionDaoImpl(final Connection connection) {
-        super(connection);
+    private final Connection connection;
+
+    public PromotionDaoImpl(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

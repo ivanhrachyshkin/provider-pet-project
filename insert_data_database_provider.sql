@@ -1,3 +1,97 @@
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT ALL ON TABLES TO provider;
+
+------------------------------------------------------------------------------------------------------------------------
+-- Tables
+------------------------------------------------------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS bills;
+DROP TABLE IF EXISTS traffics;
+DROP TABLE IF EXISTS promotions;
+DROP TABLE IF EXISTS subscriptions;
+DROP TABLE IF EXISTS tariffs;
+DROP TABLE IF EXISTS discounts;
+DROP TABLE IF EXISTS accounts;
+
+-- Accounts
+CREATE TABLE accounts
+(
+    id       SERIAL         NOT NULL PRIMARY KEY,
+    email    CHARACTER VARYING (255) NOT NULL,
+    password CHARACTER VARYING(64)  NOT NULL,
+    role     INTEGER        NOT NULL,
+    name     CHARACTER VARYING(70)  NOT NULL,
+    phone    CHARACTER VARYING(35)  NOT NULL,
+    address  CHARACTER VARYING(255) NOT NULL,
+    balance  REAL           NOT NULL,
+    UNIQUE (email)
+);
+
+-- Discounts
+
+CREATE TABLE discounts
+(
+    id        SERIAL PRIMARY KEY,
+    name      CHARACTER VARYING(70) NOT NULL,
+    type      INTEGER       NOT NULL,
+    value     INTEGER       NOT NULL,
+    date_from DATE          NOT NULL,
+    date_to   DATE          NOT NULL,
+    UNIQUE (name)
+);
+
+-- Tariffs
+
+CREATE TABLE tariffs
+(
+    id    SERIAL PRIMARY KEY,
+    name  CHARACTER VARYING(70) NOT NULL,
+    type  INTEGER       NOT NULL,
+    speed INTEGER       NOT NULL,
+    price REAL          NOT NULL,
+    UNIQUE (name)
+);
+
+-- Subscriptions
+
+CREATE TABLE subscriptions
+(
+    id SERIAL PRIMARY KEY,
+    account_id INTEGER NOT NULL REFERENCES accounts (id),
+    tariff_id  INTEGER NOT NULL REFERENCES tariffs (id),
+    UNIQUE (account_id, tariff_id)
+);
+
+
+-- Promotions
+
+CREATE TABLE promotions
+(
+    tariff_id   INTEGER NOT NULL REFERENCES tariffs (id),
+    discount_id INTEGER NOT NULL REFERENCES discounts (id),
+    UNIQUE (tariff_id, discount_id)
+);
+
+-- Traffics
+
+CREATE TABLE traffics
+(
+    subscription_id INTEGER  NOT NULL REFERENCES subscriptions (id),
+    value           INTEGER NOT NULL,
+    date            DATE    NOT NULL
+);
+
+-- Bills
+
+CREATE TABLE bills
+(
+    id              SERIAL  NOT NULL PRIMARY KEY,
+    subscription_id INTEGER  NOT NULL REFERENCES subscriptions (id),
+    value           INTEGER NOT NULL,
+    date            DATE    NOT NULL,
+    status          BOOLEAN NOT NULL
+);
+
 INSERT
 INTO accounts (email, password, role, name, phone, address, balance)
 VALUES ('o@outlook.com',

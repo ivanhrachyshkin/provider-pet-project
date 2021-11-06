@@ -1,7 +1,7 @@
 package by.hrachyshkin.dao.entity_dao.bill_dao;
 
-import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
+import by.hrachyshkin.dao.pool.PooledConnection;
 import by.hrachyshkin.entity.Bill;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BillDaoImpl extends AbstractDao implements BillDao {
+public class BillDaoImpl  implements BillDao {
 
     private static final String EXISTS_BY_SUBSCRIPTION_ID_QUERY =
             "EXISTS (" +
@@ -63,10 +63,11 @@ public class BillDaoImpl extends AbstractDao implements BillDao {
                     "FROM bills " +
                     "WHERE id = ?";
 
-    public BillDaoImpl(final Connection connection) {
-        super(connection);
-    }
+    private final Connection connection;
 
+    public BillDaoImpl(Connection connection) {
+        this.connection = connection;
+    }
 
     @Override
     public boolean isExistBySubscriptionId(Integer subscriptionId) throws DaoException {

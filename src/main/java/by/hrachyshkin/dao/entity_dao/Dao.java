@@ -4,7 +4,7 @@ import by.hrachyshkin.dao.DaoException;
 
 import java.util.List;
 
-public interface EntityDao<T> {
+public interface Dao<T> {
 
     void add(T t) throws DaoException;
 

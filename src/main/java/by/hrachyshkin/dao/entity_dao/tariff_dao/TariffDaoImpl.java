@@ -1,7 +1,7 @@
 package by.hrachyshkin.dao.entity_dao.tariff_dao;
 
-import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
+import by.hrachyshkin.dao.pool.PooledConnection;
 import by.hrachyshkin.entity.Tariff;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TariffDaoImpl extends AbstractDao implements TariffDao {
+public class TariffDaoImpl implements TariffDao {
 
     private static final String EXISTS_BY_ID_QUERY =
             "EXISTS (" +
@@ -70,8 +70,10 @@ public class TariffDaoImpl extends AbstractDao implements TariffDao {
                     "FROM tariffs " +
                     "WHERE id = ?";
 
-    public TariffDaoImpl(final Connection connection) {
-        super(connection);
+    private final Connection connection;
+
+    public TariffDaoImpl(Connection connection) {
+        this.connection = connection;
     }
 
     @Override

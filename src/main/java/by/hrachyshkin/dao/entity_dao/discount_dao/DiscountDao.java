@@ -1,14 +1,14 @@
 package by.hrachyshkin.dao.entity_dao.discount_dao;
 
 import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.dao.entity_dao.EntityDao;
+import by.hrachyshkin.dao.entity_dao.Dao;
 import by.hrachyshkin.entity.Discount;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
 
 import java.util.List;
 
-public interface DiscountDao extends EntityDao<Discount> {
+public interface DiscountDao extends Dao<Discount> {
 
    boolean isExistById(Integer id) throws DaoException;
 

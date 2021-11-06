@@ -1,7 +1,7 @@
 package by.hrachyshkin.dao.entity_dao.subscription_dao;
 
-import by.hrachyshkin.dao.AbstractDao;
 import by.hrachyshkin.dao.DaoException;
+import by.hrachyshkin.dao.pool.PooledConnection;
 import by.hrachyshkin.entity.Subscription;
 import by.hrachyshkin.entity.criteria.Filter;
 
@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionDaoImpl extends AbstractDao implements SubscriptionDao {
+public class SubscriptionDaoImpl  implements SubscriptionDao {
 
     private static final String EXISTS_BY_ID_QUERY =
             "EXISTS (" +
@@ -54,19 +54,15 @@ public class SubscriptionDaoImpl extends AbstractDao implements SubscriptionDao 
                     "INTO subscriptions (account_id, tariff_id) " +
                     "VALUES (?, ?)";
 
-    private static final String UPDATE_QUERY =
-            "INSERT INTO subscriptions (account_id, tariff_id) " +
-                    "VALUES (?, ?)" +
-                    "WHERE id = ? " +
-                    "ON CONFLICT DO UPDATE";
-
     private static final String DELETE_QUERY =
             "DELETE " +
                     "FROM subscriptions " +
                     "WHERE id = ?";
 
-    public SubscriptionDaoImpl(final Connection connection) {
-        super(connection);
+    private final Connection connection;
+
+    public SubscriptionDaoImpl(Connection connection) {
+        this.connection = connection;
     }
 
     @Override
