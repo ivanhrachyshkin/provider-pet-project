@@ -1,7 +1,6 @@
 package by.hrachyshkin.dao.entity_dao.discount_dao;
 
 import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.dao.pool.PooledConnection;
 import by.hrachyshkin.entity.Discount;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
@@ -13,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscountDaoImpl  implements DiscountDao {
+public class DiscountDaoImpl implements DiscountDao {
 
     private static final String EXISTS_BY_ID_QUERY =
             "EXISTS (" +
@@ -33,21 +32,21 @@ public class DiscountDaoImpl  implements DiscountDao {
             "SELECT id, name, type, value, date_trom, date_to " +
                     "FROM discounts ";
 
-    private static final String FIND_AND_SORT_QUERY =
-            "SELECT id, name, type, value, date_trom, date_to " +
+    private static final String FIND_AND_SORT_BY_VALUE_QUERY =
+            "SELECT id, name, type, value, date_from, date_to " +
                     "FROM discounts " +
-                    "ORDER BY ? ? ";
+                    "ORDER BY value DESC";
 
-    private static final String FIND_AND_FILTER_QUERY =
+    private static final String FIND_AND_FILTER_BY_TYPE_QUERY =
             "SELECT id, name, type, value, date_trom, date_to " +
                     "FROM discounts " +
-                    "WHERE ? LIKE ? ";
+                    "WHERE type = ? ";
 
     private static final String FIND_AND_FILTER_AND_SORT_QUERY =
             "SELECT id, name, type, value, date_trom, date_to " +
                     "FROM discounts " +
-                    "WHERE ? LIKE ? " +
-                    "ORDER BY ? ? ";
+                    "WHERE type = ? " +
+                    "ORDER BY value DESC ";
 
     private static final String FIND_ONE_TARIFF_QUERY_BY_ID =
             "SELECT id, name, type, value, date_trom, date_to " +
@@ -78,13 +77,14 @@ public class DiscountDaoImpl  implements DiscountDao {
 
     @Override
     public boolean isExistById(final Integer id) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
 
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);) {
             statement.setInt(1, id);
-            resultSet.next();
-            return resultSet.getBoolean(1);
 
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
         } catch (SQLException e) {
             throw new DaoException("Can't find discount by id", e);
         }
@@ -92,33 +92,16 @@ public class DiscountDaoImpl  implements DiscountDao {
 
     @Override
     public boolean isExistByName(final String name) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
 
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY)) {
             statement.setString(1, name);
-            resultSet.next();
-            return resultSet.getBoolean(1);
 
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
         } catch (SQLException e) {
             throw new DaoException("Can't find discount by name", e);
-        }
-    }
-
-    @Override
-    public void add(final Discount discount) throws DaoException {
-
-        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
-
-            statement.setString(1, discount.getName());
-            statement.setInt(2, discount.getType().ordinal());
-            statement.setInt(3, discount.getValue());
-            statement.setDate(4, discount.getDateFrom());
-            statement.setDate(5, discount.getDateTo());
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't create discount", e);
         }
     }
 
@@ -127,7 +110,6 @@ public class DiscountDaoImpl  implements DiscountDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
-
             final List<Discount> discounts = new ArrayList<>();
             while (resultSet.next()) {
                 final Discount discount = new Discount(
@@ -139,7 +121,27 @@ public class DiscountDaoImpl  implements DiscountDao {
                         resultSet.getDate(6));
                 discounts.add(discount);
             }
+            return discounts;
+        } catch (Exception e) {
+            throw new DaoException("Can't find required discounts");
+        }
+    }
 
+    public List<Discount> findAndSortByValue() throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_VALUE_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+            final List<Discount> discounts = new ArrayList<>();
+            while (resultSet.next()) {
+                final Discount discount = new Discount(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        Discount.Type.values()[resultSet.getInt(3)],
+                        resultSet.getInt(4),
+                        resultSet.getDate(5),
+                        resultSet.getDate(6));
+                discounts.add(discount);
+            }
             return discounts;
         } catch (Exception e) {
             throw new DaoException("Can't find required discounts");
@@ -147,83 +149,50 @@ public class DiscountDaoImpl  implements DiscountDao {
     }
 
     @Override
-    public List<Discount> findAndSort(final Sort sort) throws DaoException {
+    public List<Discount> findAndFilterByType(final Discount.Type type) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_TYPE_QUERY)) {
+            statement.setInt(1, type.ordinal());
 
-            statement.setString(1, sort.getColumn());
-            statement.setString(2, sort.getDirection().name());
-
-            final List<Discount> discounts = new ArrayList<>();
-            while (resultSet.next()) {
-                final Discount discount = new Discount(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Discount.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getDate(5),
-                        resultSet.getDate(6));
-                discounts.add(discount);
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                final List<Discount> discounts = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Discount discount = new Discount(
+                            resultSet.getInt(1),
+                            resultSet.getString(2),
+                            Discount.Type.values()[resultSet.getInt(3)],
+                            resultSet.getInt(4),
+                            resultSet.getDate(5),
+                            resultSet.getDate(6));
+                    discounts.add(discount);
+                }
+                return discounts;
             }
-
-            return discounts;
-        } catch (Exception e) {
-            throw new DaoException("Can't find or sort discounts");
-        }
-    }
-
-    @Override
-    public List<Discount> findAndFilter(final Filter filter) throws DaoException {
-
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
-
-            statement.setString(1, filter.getColumn());
-            statement.setString(2, filter.getPattern());
-
-            final List<Discount> discounts = new ArrayList<>();
-            while (resultSet.next()) {
-                final Discount discount = new Discount(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Discount.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getDate(5),
-                        resultSet.getDate(6));
-                discounts.add(discount);
-            }
-
-            return discounts;
         } catch (Exception e) {
             throw new DaoException("Can't find or filter discounts");
         }
     }
 
     @Override
-    public List<Discount> findAndFilterAndSort(final Filter filter, final Sort sort) throws DaoException {
+    public List<Discount> findAndFilterAndSort(final Discount.Type type) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY)) {
+            statement.setInt(1, type.ordinal());
 
-            statement.setString(1, filter.getColumn());
-            statement.setString(2, filter.getPattern());
-            statement.setString(3, sort.getColumn());
-            statement.setString(4, sort.getDirection().name());
-
-            final List<Discount> discounts = new ArrayList<>();
-            while (resultSet.next()) {
-                final Discount discount = new Discount(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Discount.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getDate(5),
-                        resultSet.getDate(6));
-                discounts.add(discount);
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                final List<Discount> discounts = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Discount discount = new Discount(
+                            resultSet.getInt(1),
+                            resultSet.getString(2),
+                            Discount.Type.values()[resultSet.getInt(3)],
+                            resultSet.getInt(4),
+                            resultSet.getDate(5),
+                            resultSet.getDate(6));
+                    discounts.add(discount);
+                }
+                return discounts;
             }
-
-            return discounts;
         } catch (Exception e) {
             throw new DaoException("Can't find or filter or sort discounts");
         }
@@ -231,30 +200,44 @@ public class DiscountDaoImpl  implements DiscountDao {
 
     @Override
     public Discount findOneById(final Integer id) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID);
-             final ResultSet resultSet = statement.executeQuery()) {
-
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID)) {
             statement.setInt(1, id);
-            resultSet.next();
 
-            return new Discount(
-                    resultSet.getInt(1),
-                    resultSet.getString(2),
-                    Discount.Type.values()[resultSet.getInt(3)],
-                    resultSet.getInt(4),
-                    resultSet.getDate(5),
-                    resultSet.getDate(6));
-
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return new Discount(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        Discount.Type.values()[resultSet.getInt(3)],
+                        resultSet.getInt(4),
+                        resultSet.getDate(5),
+                        resultSet.getDate(6));
+            }
         } catch (SQLException e) {
             throw new DaoException("Can't find discount by id", e);
         }
     }
 
     @Override
-    public void update(final Discount discount) throws DaoException {
+    public void add(final Discount discount) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+            statement.setString(1, discount.getName());
+            statement.setInt(2, discount.getType().ordinal());
+            statement.setInt(3, discount.getValue());
+            statement.setDate(4, discount.getDateFrom());
+            statement.setDate(5, discount.getDateTo());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Can't create discount", e);
+        }
+    }
+
+    @Override
+    public void updateStatus(final Discount discount) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
-
             statement.setString(1, discount.getName());
             statement.setInt(2, discount.getType().ordinal());
             statement.setInt(3, discount.getValue());
@@ -264,7 +247,6 @@ public class DiscountDaoImpl  implements DiscountDao {
             statement.setInt(6, discount.getId());
 
             statement.executeUpdate();
-
         } catch (SQLException e) {
             throw new DaoException("Can't add discount", e);
         }
@@ -274,10 +256,8 @@ public class DiscountDaoImpl  implements DiscountDao {
     public void delete(final Integer id) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
-
             statement.setInt(1, id);
             statement.executeQuery();
-
         } catch (SQLException e) {
             throw new DaoException("Can't delete discount", e);
         }

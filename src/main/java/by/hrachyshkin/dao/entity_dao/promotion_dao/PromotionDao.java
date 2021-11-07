@@ -9,9 +9,7 @@ import java.util.List;
 
 public interface PromotionDao extends Dao<Promotion> {
 
-    boolean isExistById(Integer tariffId, Integer discountId) throws DaoException;
-
     boolean isExistByTariffId(Integer tariffId) throws DaoException;
 
-    List<Promotion> findAndFilter(Filter filter) throws DaoException;
+    List<Promotion> findAndFilterByTariffId(Integer tariffId) throws DaoException;
 }

@@ -13,10 +13,10 @@ public interface TrafficDao extends Dao<Traffic> {
 
     boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException;
 
-    List<Traffic> findAndSort(Sort sort) throws DaoException;
+    List<Traffic> findAndSortByDate() throws DaoException;
 
-    List<Traffic> findAndFilter(Filter filter) throws DaoException;
+    List<Traffic> findAndFilterBySubscriptionId(Integer subscriptionId) throws DaoException;
 
-    List<Traffic> findAndFilterAndSort(Filter filter, Sort sort) throws DaoException;
+    List<Traffic> findAndFilterAndSort(Integer subscriptionId) throws DaoException;
     
 }

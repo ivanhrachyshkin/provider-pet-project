@@ -2,12 +2,19 @@ package by.hrachyshkin.dao.transaction;
 
 import by.hrachyshkin.dao.entity_dao.Dao;
 import by.hrachyshkin.dao.entity_dao.DaoKeys;
+import by.hrachyshkin.dao.entity_dao.account_dao.AccountDao;
 import by.hrachyshkin.dao.entity_dao.account_dao.AccountDaoImpl;
+import by.hrachyshkin.dao.entity_dao.bill_dao.BillDao;
 import by.hrachyshkin.dao.entity_dao.bill_dao.BillDaoImpl;
+import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDao;
 import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDaoImpl;
+import by.hrachyshkin.dao.entity_dao.promotion_dao.PromotionDao;
 import by.hrachyshkin.dao.entity_dao.promotion_dao.PromotionDaoImpl;
+import by.hrachyshkin.dao.entity_dao.subscription_dao.SubscriptionDao;
 import by.hrachyshkin.dao.entity_dao.subscription_dao.SubscriptionDaoImpl;
+import by.hrachyshkin.dao.entity_dao.tariff_dao.TariffDao;
 import by.hrachyshkin.dao.entity_dao.tariff_dao.TariffDaoImpl;
+import by.hrachyshkin.dao.entity_dao.traffic_dao.TrafficDao;
 import by.hrachyshkin.dao.entity_dao.traffic_dao.TrafficDaoImpl;
 import lombok.RequiredArgsConstructor;
 
@@ -20,17 +27,17 @@ public class TransactionImpl implements Transaction {
     private final Connection connection;
 
     @SuppressWarnings("unchecked")
-    public <T> Dao<T> createDao(final DaoKeys daoKeys) throws TransactionException {
+    public <T extends Dao> T createDao(final DaoKeys daoKeys) throws TransactionException {
 
         try {
             return switch (daoKeys) {
-                case ACCOUNT_DAO -> (Dao<T>) new AccountDaoImpl(connection);
-                case BILL_DAO -> (Dao<T>) new BillDaoImpl(connection);
-                case DISCOUNT_DAO -> (Dao<T>) new DiscountDaoImpl(connection);
-                case PROMOTION_DAO -> (Dao<T>) new PromotionDaoImpl(connection);
-                case SUBSCRIPTION_DAO -> (Dao<T>) new SubscriptionDaoImpl(connection);
-                case TARIFF_DAO -> (Dao<T>) new TariffDaoImpl(connection);
-                default -> (Dao<T>) new TrafficDaoImpl(connection);
+                case ACCOUNT_DAO -> (T) new AccountDaoImpl(connection);
+                case BILL_DAO -> (T)new BillDaoImpl(connection);
+                case DISCOUNT_DAO -> (T) new DiscountDaoImpl(connection);
+                case PROMOTION_DAO -> (T) new PromotionDaoImpl(connection);
+                case SUBSCRIPTION_DAO -> (T) new SubscriptionDaoImpl(connection);
+                case TARIFF_DAO -> (T) new TariffDaoImpl(connection);
+                default -> (T) new TrafficDaoImpl(connection);
             };
 
         } catch (Exception e) {

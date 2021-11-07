@@ -3,8 +3,6 @@ package by.hrachyshkin.dao.entity_dao.discount_dao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.Dao;
 import by.hrachyshkin.entity.Discount;
-import by.hrachyshkin.entity.criteria.Filter;
-import by.hrachyshkin.entity.criteria.Sort;
 
 import java.util.List;
 
@@ -14,9 +12,9 @@ public interface DiscountDao extends Dao<Discount> {
 
    boolean isExistByName(String name) throws DaoException;
 
-   List<Discount> findAndSort(Sort sort) throws DaoException;
+   List<Discount> findAndSortByValue() throws DaoException;
 
-   List<Discount> findAndFilter(Filter filter) throws DaoException;
+   List<Discount> findAndFilterByType(final Discount.Type type) throws DaoException;
 
-   List<Discount> findAndFilterAndSort(Filter filter, Sort sort) throws DaoException;
+   List<Discount> findAndFilterAndSort(final Discount.Type type) throws DaoException;
 }

@@ -36,18 +36,4 @@ public final class Account {
                    final Float balance) {
         this(null, email, password, role, name, phone, address, balance);
     }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                ", address='" + address + '\'' +
-                ", balance=" + balance +
-                '}';
-    }
 }

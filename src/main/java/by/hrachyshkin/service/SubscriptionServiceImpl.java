@@ -6,6 +6,8 @@ import by.hrachyshkin.dao.entity_dao.DaoKeys;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
 import by.hrachyshkin.entity.Subscription;
+import by.hrachyshkin.entity.criteria.Filter;
+import by.hrachyshkin.entity.criteria.Sort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -16,15 +18,27 @@ public class SubscriptionServiceImpl extends ServiceImpl implements Service<Subs
     private final Transaction transaction;
 
     @Override
-    public List<Subscription> find() throws ServiceException {
+    public void add(Subscription subscription) throws ServiceException {
 
-        try {
-            Dao<Subscription> accountDao = transaction.createDao(DaoKeys.SUBSCRIPTION_DAO);
+    }
 
-            return accountDao.find();
+    @Override
+    public List<Subscription> find(Filter filter, Sort sort) throws ServiceException {
+        return null;
+    }
 
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
+    @Override
+    public Subscription findOneById(Integer id) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public void update(Subscription subscription) throws ServiceException {
+
+    }
+
+    @Override
+    public void delete(Integer id) throws ServiceException {
+
     }
 }

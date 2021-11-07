@@ -6,6 +6,8 @@ import by.hrachyshkin.dao.entity_dao.DaoKeys;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
 import by.hrachyshkin.entity.Promotion;
+import by.hrachyshkin.entity.criteria.Filter;
+import by.hrachyshkin.entity.criteria.Sort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -16,15 +18,27 @@ public class PromotionServiceImpl extends ServiceImpl implements Service<Promoti
     private final Transaction transaction;
 
     @Override
-    public List<Promotion> find() throws ServiceException {
+    public void add(Promotion promotion) throws ServiceException {
 
-        try {
-            Dao<Promotion> accountDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+    }
 
-            return accountDao.find();
+    @Override
+    public List<Promotion> find(Filter filter, Sort sort) throws ServiceException {
+        return null;
+    }
 
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
+    @Override
+    public Promotion findOneById(Integer id) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public void update(Promotion promotion) throws ServiceException {
+
+    }
+
+    @Override
+    public void delete(Integer id) throws ServiceException {
+
     }
 }

@@ -1,7 +1,6 @@
 package by.hrachyshkin.dao.entity_dao.tariff_dao;
 
 import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.dao.pool.PooledConnection;
 import by.hrachyshkin.entity.Tariff;
 import by.hrachyshkin.entity.criteria.Filter;
 import by.hrachyshkin.entity.criteria.Sort;
@@ -33,21 +32,21 @@ public class TariffDaoImpl implements TariffDao {
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs ";
 
-    private static final String FIND_AND_SORT_QUERY =
+    private static final String FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
-                    "ORDER BY ? ? ";
+                    "ORDER BY speed DESC, price ACS";
 
-    private static final String FIND_AND_FILTER_QUERY =
+    private static final String FIND_AND_FILTER_BY_TYPE_QUERY =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
-                    "WHERE ? LIKE ? ";
+                    "WHERE type = ? ";
 
     private static final String FIND_AND_FILTER_AND_SORT_QUERY =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
-                    "WHERE ? LIKE ? " +
-                    "ORDER BY ? ? ";
+                    "WHERE type = ? " +
+                    "ORDER speed DESC, price ACS ";
 
     private static final String FIND_ONE_TARIFF_QUERY_BY_ID =
             "SELECT id, name, type, speed, price " +
@@ -78,13 +77,14 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public boolean isExistById(final Integer id) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
 
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY)) {
             statement.setInt(1, id);
-            resultSet.next();
-            return resultSet.getBoolean(1);
 
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
         } catch (SQLException e) {
             throw new DaoException("Can't find tariff by id", e);
         }
@@ -92,41 +92,46 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public boolean isExistByName(final String name) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
 
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY)) {
             statement.setString(1, name);
-            resultSet.next();
-            return resultSet.getBoolean(1);
 
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
         } catch (SQLException e) {
             throw new DaoException("Can't find tariff by name", e);
         }
     }
 
     @Override
-    public void add(final Tariff tariff) throws DaoException {
+    public List<Tariff> find() throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+            final List<Tariff> tariffs = new ArrayList<>();
+            while (resultSet.next()) {
+                final Tariff tariff = new Tariff(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        Tariff.Type.values()[resultSet.getInt(3)],
+                        resultSet.getInt(4),
+                        resultSet.getFloat(5));
+                tariffs.add(tariff);
+            }
 
-            statement.setString(1, tariff.getName());
-            statement.setInt(2, tariff.getType().ordinal());
-            statement.setInt(3, tariff.getSpeed());
-            statement.setDouble(4, tariff.getPrice());
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't create tariff", e);
+            return tariffs;
+        } catch (Exception e) {
+            throw new DaoException("Can't find required tariffs");
         }
     }
 
     @Override
-    public List<Tariff> find() throws DaoException {
+    public List<Tariff> findAndSortBySpeedAndPrice() throws DaoException {
 
-            try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
+            try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY);
                  final ResultSet resultSet = statement.executeQuery()) {
-
                 final List<Tariff> tariffs = new ArrayList<>();
                 while (resultSet.next()) {
                     final Tariff tariff = new Tariff(
@@ -139,86 +144,54 @@ public class TariffDaoImpl implements TariffDao {
                 }
 
                 return tariffs;
-        } catch (Exception e) {
-            throw new DaoException("Can't find required tariffs");
-        }
+            } catch (Exception e) {
+                throw new DaoException("Can't find required tariffs");
+            }
     }
 
     @Override
-    public List<Tariff> findAndSort(final Sort sort) throws DaoException {
+    public List<Tariff> findAndFilterByType(final Tariff.Type type) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_TYPE_QUERY)) {
+            statement.setInt(1, type.ordinal());
 
-            statement.setString(1, sort.getColumn());
-            statement.setString(2, sort.getDirection().name());
-
-            final List<Tariff> tariffs = new ArrayList<>();
-            while (resultSet.next()) {
-                final Tariff tariff = new Tariff(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Tariff.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getFloat(5));
-                tariffs.add(tariff);
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                final List<Tariff> tariffs = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Tariff tariff = new Tariff(
+                            resultSet.getInt(1),
+                            resultSet.getString(2),
+                            Tariff.Type.values()[resultSet.getInt(3)],
+                            resultSet.getInt(4),
+                            resultSet.getFloat(5));
+                    tariffs.add(tariff);
+                }
+                return tariffs;
             }
-
-            return tariffs;
-        } catch (Exception e) {
-            throw new DaoException("Can't find or sort tariffs");
-        }
-    }
-
-    @Override
-    public List<Tariff> findAndFilter(final Filter filter) throws DaoException {
-
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
-
-            statement.setString(1, filter.getColumn());
-            statement.setString(2, filter.getPattern());
-
-            final List<Tariff> tariffs = new ArrayList<>();
-            while (resultSet.next()) {
-                final Tariff tariff = new Tariff(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Tariff.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getFloat(5));
-                tariffs.add(tariff);
-            }
-
-            return tariffs;
         } catch (Exception e) {
             throw new DaoException("Can't find or filter tariffs");
         }
     }
 
     @Override
-    public List<Tariff> findAndFilterAndSort(final Filter filter, final Sort sort) throws DaoException {
+    public List<Tariff> findAndFilterAndSort(final Tariff.Type type) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_AND_SORT_QUERY)) {
+            statement.setInt(1, type.ordinal());
 
-            statement.setString(1, filter.getColumn());
-            statement.setString(2, filter.getPattern());
-            statement.setString(3, sort.getColumn());
-            statement.setString(4, sort.getDirection().name());
-
-            final List<Tariff> tariffs = new ArrayList<>();
-            while (resultSet.next()) {
-                final Tariff tariff = new Tariff(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Tariff.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getFloat(5));
-                tariffs.add(tariff);
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                final List<Tariff> tariffs = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Tariff tariff = new Tariff(
+                            resultSet.getInt(1),
+                            resultSet.getString(2),
+                            Tariff.Type.values()[resultSet.getInt(3)],
+                            resultSet.getInt(4),
+                            resultSet.getFloat(5));
+                    tariffs.add(tariff);
+                }
+                return tariffs;
             }
-
-            return tariffs;
         } catch (Exception e) {
             throw new DaoException("Can't find or filter or sort tariffs");
         }
@@ -226,29 +199,43 @@ public class TariffDaoImpl implements TariffDao {
 
     @Override
     public Tariff findOneById(final Integer id) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID);
-             final ResultSet resultSet = statement.executeQuery()) {
 
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID)) {
             statement.setInt(1, id);
-            resultSet.next();
 
-            return new Tariff(
-                    resultSet.getInt(1),
-                    resultSet.getString(2),
-                    Tariff.Type.values()[resultSet.getInt(3)],
-                    resultSet.getInt(4),
-                    resultSet.getFloat(5));
-
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return new Tariff(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        Tariff.Type.values()[resultSet.getInt(3)],
+                        resultSet.getInt(4),
+                        resultSet.getFloat(5));
+            }
         } catch (SQLException e) {
             throw new DaoException("Can't find tariff by id", e);
         }
     }
 
     @Override
-    public void update(final Tariff tariff) throws DaoException {
+    public void add(final Tariff tariff) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+            statement.setString(1, tariff.getName());
+            statement.setInt(2, tariff.getType().ordinal());
+            statement.setInt(3, tariff.getSpeed());
+            statement.setDouble(4, tariff.getPrice());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Can't create tariff", e);
+        }
+    }
+
+    @Override
+    public void updateStatus(final Tariff tariff) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
-
             statement.setString(1, tariff.getName());
             statement.setInt(2, tariff.getType().ordinal());
             statement.setInt(3, tariff.getSpeed());
@@ -257,7 +244,6 @@ public class TariffDaoImpl implements TariffDao {
             statement.setInt(5, tariff.getId());
 
             statement.executeUpdate();
-
         } catch (SQLException e) {
             throw new DaoException("Can't add tariff", e);
         }
@@ -267,10 +253,8 @@ public class TariffDaoImpl implements TariffDao {
     public void delete(final Integer id) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
-
             statement.setInt(1, id);
             statement.executeQuery();
-
         } catch (SQLException e) {
             throw new DaoException("Can't delete tariff", e);
         }

@@ -1,7 +1,6 @@
 package by.hrachyshkin.dao.entity_dao.subscription_dao;
 
 import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.dao.pool.PooledConnection;
 import by.hrachyshkin.entity.Subscription;
 import by.hrachyshkin.entity.criteria.Filter;
 
@@ -12,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubscriptionDaoImpl  implements SubscriptionDao {
+public class SubscriptionDaoImpl implements SubscriptionDao {
 
     private static final String EXISTS_BY_ID_QUERY =
             "EXISTS (" +
@@ -28,21 +27,14 @@ public class SubscriptionDaoImpl  implements SubscriptionDao {
                     "WHERE account_id = ? " +
                     ")";
 
-    private static final String EXISTS_BY_ACCOUNT_ID_AND_TARIFF_ID =
-            "EXISTS (" +
-                    "SELECT * " +
-                    "FROM subscriptions " +
-                    "WHERE account_id = ? AND tariff_id = ?" +
-                    ")";
-
     private static final String FIND_QUERY =
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions ";
 
-    private static final String FIND_AND_FILTER_QUERY =
+    private static final String FIND_AND_FILTER_BY_ACCOUNT_ID_QUERY =
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions " +
-                    "WHERE ? LIKE ? ";
+                    "WHERE account_id = ? ";
 
     private static final String FIND_ONE_SUBSCRIPTION_QUERY_BY_ID =
             "SELECT id, account_id, tariff_id " +
@@ -67,13 +59,14 @@ public class SubscriptionDaoImpl  implements SubscriptionDao {
 
     @Override
     public boolean isExistById(final Integer id) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
 
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY)) {
             statement.setInt(1, id);
-            resultSet.next();
-            return resultSet.getBoolean(1);
 
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
         } catch (SQLException e) {
             throw new DaoException("Required subscription doesn't exist", e);
         }
@@ -83,48 +76,15 @@ public class SubscriptionDaoImpl  implements SubscriptionDao {
     @Override
     public boolean isExistByAccountId(final Integer accountId) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ACCOUNT_ID_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
-
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ACCOUNT_ID_QUERY)) {
             statement.setInt(1, accountId);
-            resultSet.next();
 
-            return resultSet.getBoolean(1);
-
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
         } catch (SQLException e) {
             throw new DaoException("Required subscription doesn't exist", e);
-        }
-    }
-
-    @Override
-    public boolean isExistByAccountIdAndTariffId(final Integer accountId,
-                                                 final Integer tariffId) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ACCOUNT_ID_AND_TARIFF_ID);
-             final ResultSet resultSet = statement.executeQuery()) {
-
-            statement.setInt(1, accountId);
-            statement.setInt(2, tariffId);
-            resultSet.next();
-
-            return resultSet.getBoolean(1);
-
-        } catch (SQLException e) {
-            throw new DaoException("Required subscription doesn't exist", e);
-        }
-    }
-
-    @Override
-    public void add(final Subscription subscription) throws DaoException {
-
-        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
-
-            statement.setInt(1, subscription.getAccountId());
-            statement.setInt(2, subscription.getAccountId());
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't create subscription", e);
         }
     }
 
@@ -133,15 +93,14 @@ public class SubscriptionDaoImpl  implements SubscriptionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
-
             final List<Subscription> subscriptions = new ArrayList<>();
             while (resultSet.next()) {
                 final Subscription subscription = new Subscription(
                         resultSet.getInt(1),
-                        resultSet.getInt(2));
+                        resultSet.getInt(2),
+                        resultSet.getInt(3));
                 subscriptions.add(subscription);
             }
-
             return subscriptions;
         } catch (Exception e) {
             throw new DaoException("Can't find subscriptions");
@@ -149,23 +108,22 @@ public class SubscriptionDaoImpl  implements SubscriptionDao {
     }
 
     @Override
-    public List<Subscription> findAndFilter(final Filter filter) throws DaoException {
+    public List<Subscription> findAndFilter(Integer accountId) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_ACCOUNT_ID_QUERY)) {
+            statement.setInt(1, accountId);
 
-            statement.setString(1, filter.getColumn());
-            statement.setString(2, filter.getPattern());
-
-            final List<Subscription> subscriptions = new ArrayList<>();
-            while (resultSet.next()) {
-                final Subscription subscription = new Subscription(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2));
-                subscriptions.add(subscription);
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                final List<Subscription> subscriptions = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Subscription subscription = new Subscription(
+                            resultSet.getInt(1),
+                            resultSet.getInt(2),
+                            resultSet.getInt(3));
+                    subscriptions.add(subscription);
+                }
+                return subscriptions;
             }
-
-            return subscriptions;
         } catch (Exception e) {
             throw new DaoException("Can't find or filter subscriptions");
         }
@@ -173,23 +131,37 @@ public class SubscriptionDaoImpl  implements SubscriptionDao {
 
     @Override
     public Subscription findOneById(final Integer id) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_SUBSCRIPTION_QUERY_BY_ID);
-             final ResultSet resultSet = statement.executeQuery()) {
 
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_SUBSCRIPTION_QUERY_BY_ID)) {
             statement.setInt(1, id);
-            resultSet.next();
 
-            return new Subscription(
-                    resultSet.getInt(1),
-                    resultSet.getInt(2));
-
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return new Subscription(
+                        resultSet.getInt(1),
+                        resultSet.getInt(2),
+                        resultSet.getInt(3));
+            }
         } catch (SQLException e) {
             throw new DaoException("Can't find subscription by id", e);
         }
     }
 
     @Override
-    public void update(final Subscription subscription) throws DaoException {
+    public void add(final Subscription subscription) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+            statement.setInt(1, subscription.getAccountId());
+            statement.setInt(2, subscription.getAccountId());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Can't create subscription", e);
+        }
+    }
+
+    @Override
+    public void updateStatus(final Subscription subscription) throws DaoException {
 
         throw new UnsupportedOperationException();
     }
@@ -198,10 +170,8 @@ public class SubscriptionDaoImpl  implements SubscriptionDao {
     public void delete(final Integer id) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
-
             statement.setInt(1, id);
             statement.executeQuery();
-
         } catch (SQLException e) {
             throw new DaoException("Can't delete subscription", e);
         }

@@ -12,7 +12,7 @@ public interface Dao<T> {
 
     T findOneById(Integer id) throws DaoException;
 
-    void update(T t) throws DaoException, DaoException;
+    void updateStatus(T t) throws DaoException, DaoException;
 
     void delete(Integer id) throws DaoException;
 

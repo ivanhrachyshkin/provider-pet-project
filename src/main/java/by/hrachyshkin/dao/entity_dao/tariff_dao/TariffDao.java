@@ -14,9 +14,9 @@ public interface TariffDao extends Dao<Tariff> {
 
     boolean isExistByName(String name) throws DaoException;
 
-    List<Tariff> findAndSort(Sort sort) throws DaoException;
+    List<Tariff> findAndSortBySpeedAndPrice() throws DaoException;
 
-    List<Tariff> findAndFilter(Filter filter) throws DaoException;
+    List<Tariff> findAndFilterByType(Tariff.Type type) throws DaoException;
 
-    List<Tariff> findAndFilterAndSort(Filter filter, Sort sort) throws DaoException;
+    List<Tariff> findAndFilterAndSort(Tariff.Type type) throws DaoException;
 }

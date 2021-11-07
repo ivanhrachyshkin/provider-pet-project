@@ -6,6 +6,8 @@ import by.hrachyshkin.dao.entity_dao.DaoKeys;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
 import by.hrachyshkin.entity.Traffic;
+import by.hrachyshkin.entity.criteria.Filter;
+import by.hrachyshkin.entity.criteria.Sort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -15,16 +17,29 @@ public class TrafficServiceImpl extends ServiceImpl implements Service<Traffic> 
 
     private final Transaction transaction;
 
+
     @Override
-    public List<Traffic> find() throws ServiceException {
+    public void add(Traffic traffic) throws ServiceException {
 
-        try {
-            Dao<Traffic> accountDao = transaction.createDao(DaoKeys.TRAFFIC_DAO);
+    }
 
-            return accountDao.find();
+    @Override
+    public List<Traffic> find(Filter filter, Sort sort) throws ServiceException {
+        return null;
+    }
 
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
+    @Override
+    public Traffic findOneById(Integer id) throws ServiceException {
+        return null;
+    }
+
+    @Override
+    public void update(Traffic traffic) throws ServiceException {
+
+    }
+
+    @Override
+    public void delete(Integer id) throws ServiceException {
+
     }
 }

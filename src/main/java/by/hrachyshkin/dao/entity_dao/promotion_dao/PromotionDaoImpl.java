@@ -1,9 +1,7 @@
 package by.hrachyshkin.dao.entity_dao.promotion_dao;
 
 import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.dao.pool.PooledConnection;
 import by.hrachyshkin.entity.Promotion;
-import by.hrachyshkin.entity.criteria.Filter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,14 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PromotionDaoImpl  implements PromotionDao {
-
-    private static final String EXISTS_BY_ID_QUERY =
-            "EXISTS (" +
-                    "SELECT * " +
-                    "FROM promotions " +
-                    "WHERE tariff_id = ? AND discount_id = ?" +
-                    ")";
+public class PromotionDaoImpl implements PromotionDao {
 
     private static final String EXISTS_BY_TARIFF_ID_QUERY =
             "EXISTS (" +
@@ -28,11 +19,6 @@ public class PromotionDaoImpl  implements PromotionDao {
                     "WHERE tariff_id = ? " +
                     ")";
 
-    private static final String ADD_QUERY =
-            "INSERT " +
-                    "INTO promotions (tariff_id, discount_id) " +
-                    "VALUES (?, ?)";
-
     private static final String FIND_QUERY =
             "SELECT tariff_id, discount_id " +
                     "FROM promotions ";
@@ -40,7 +26,12 @@ public class PromotionDaoImpl  implements PromotionDao {
     private static final String FIND_AND_FILTER_QUERY =
             "SELECT tariff_id, discount_id " +
                     "FROM promotions " +
-                    "WHERE ? = ? ";
+                    "WHERE taridd_id = ? ";
+
+    private static final String ADD_QUERY =
+            "INSERT " +
+                    "INTO promotions (tariff_id, discount_id) " +
+                    "VALUES (?, ?)";
 
     private static final String DELETE_QUERY =
             "DELETE " +
@@ -54,45 +45,17 @@ public class PromotionDaoImpl  implements PromotionDao {
     }
 
     @Override
-    public boolean isExistById(final Integer tariffId, final Integer discountId) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
-
-            statement.setInt(1, tariffId);
-            statement.setInt(1, discountId);
-            resultSet.next();
-            return resultSet.getBoolean(1);
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't find promotion by id", e);
-        }
-    }
-
-    @Override
     public boolean isExistByTariffId(final Integer tariffId) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_TARIFF_ID_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
 
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_TARIFF_ID_QUERY)) {
             statement.setInt(1, tariffId);
-            resultSet.next();
-            return resultSet.getBoolean(1);
 
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
         } catch (SQLException e) {
             throw new DaoException("Can't find promotion by tariff's id", e);
-        }
-    }
-
-    public void add(final Promotion promotion) throws DaoException {
-
-        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
-
-            statement.setInt(1, promotion.getTariffId());
-            statement.setInt(2, promotion.getDiscountId());
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new DaoException("Can't create promotion", e);
         }
     }
 
@@ -101,7 +64,6 @@ public class PromotionDaoImpl  implements PromotionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
-
             final List<Promotion> promotions = new ArrayList<>();
             while (resultSet.next()) {
                 final Promotion promotion = new Promotion(
@@ -109,32 +71,28 @@ public class PromotionDaoImpl  implements PromotionDao {
                         resultSet.getInt(2));
                 promotions.add(promotion);
             }
-
             return promotions;
-
         } catch (Exception e) {
             throw new DaoException("Can't find required promotions");
         }
     }
 
     @Override
-    public List<Promotion> findAndFilter(final Filter filter) throws DaoException {
+    public List<Promotion> findAndFilterByTariffId(final Integer tariffId) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_QUERY)) {
+            statement.setInt(1, tariffId);
 
-            statement.setString(1, filter.getColumn());
-            statement.setString(2, filter.getPattern());
-
-            final List<Promotion> promotions = new ArrayList<>();
-            while (resultSet.next()) {
-                final Promotion promotion = new Promotion(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2));
-                promotions.add(promotion);
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                final List<Promotion> promotions = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Promotion promotion = new Promotion(
+                            resultSet.getInt(1),
+                            resultSet.getInt(2));
+                    promotions.add(promotion);
+                }
+                return promotions;
             }
-
-            return promotions;
         } catch (Exception e) {
             throw new DaoException("Can't find or filter promotions");
         }
@@ -146,8 +104,20 @@ public class PromotionDaoImpl  implements PromotionDao {
     }
 
     @Override
-    public void update(final Promotion promotion) throws DaoException {
+    public void add(final Promotion promotion) throws DaoException {
 
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+            statement.setInt(1, promotion.getTariffId());
+            statement.setInt(2, promotion.getDiscountId());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Can't create promotion", e);
+        }
+    }
+
+    @Override
+    public void updateStatus(final Promotion promotion) throws DaoException {
         throw new UnsupportedOperationException();
     }
 
@@ -155,10 +125,8 @@ public class PromotionDaoImpl  implements PromotionDao {
     public void delete(final Integer id) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
-
             statement.setInt(1, id);
             statement.executeQuery();
-
         } catch (SQLException e) {
             throw new DaoException("Can't delete promotion", e);
         }
