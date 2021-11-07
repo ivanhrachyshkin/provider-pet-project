@@ -26,7 +26,7 @@ public class BillDaoImpl implements BillDao {
     private static final String FIND_AND_SORT_BY_DATE_QUERY =
             "SELECT subscription_id, value, date, status " +
                     "FROM bills " +
-                    "ORDER BY date ACS ";
+                    "ORDER BY date ASC ";
 
     private static final String FIND_AND_FILTER_BY_SUBSCRIPTION_ID_QUERY =
             "SELECT subscription_id, value, date, status " +
@@ -37,18 +37,17 @@ public class BillDaoImpl implements BillDao {
             "SELECT subscription_id, value, date, status " +
                     "FROM bills " +
                     "WHERE subscription_id = ? " +
-                    "ORDER BY date ACS ";
+                    "ORDER BY date ASC ";
 
     private static final String ADD_QUERY =
             "INSERT " +
                     "INTO bills (subscription_id, value, date, status) " +
                     "VALUES (?, ?, ?, ?)";
 
-    private static final String UPDATE_STATUS_BY_SUBSCRIPTION_ID_QUERY =
-            "INSERT INTO bills (subscription_id, status) " +
-                    "VALUES ?, ?" +
-                    "WHERE subscription_id = ? " +
-                    "ON CONFLICT DO UPDATE";
+    private static final String UPDATE_BILL_STATUS_BY_SUBSCRIPTION_ID_QUERY =
+            "UPDATE bills " +
+                    "SET status =? " +
+                    "WHERE subscription_id = ? AND date = ?";
 
     private final Connection connection;
 
@@ -57,7 +56,7 @@ public class BillDaoImpl implements BillDao {
     }
 
     @Override
-    public boolean isExistBySubscriptionId(Integer subscriptionId) throws DaoException {
+    public boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_SUBSCRIPTION_ID_QUERY)) {
             statement.setInt(1, subscriptionId);
@@ -67,23 +66,7 @@ public class BillDaoImpl implements BillDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Required subscription doesn't exist", e);
-        }
-    }
-
-
-    @Override
-    public void add(final Bill bill) throws DaoException {
-
-        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
-            statement.setInt(1, bill.getSubscriptionId());
-            statement.setFloat(2, bill.getValue());
-            statement.setDate(3, bill.getDate());
-            statement.setBoolean(4, bill.getStatus());
-
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException("Can't create bill", e);
+            throw new DaoException("Bill doesn't exist", e);
         }
     }
 
@@ -123,7 +106,7 @@ public class BillDaoImpl implements BillDao {
             }
             return bills;
         } catch (Exception e) {
-            throw new DaoException("Can't find bills");
+            throw new DaoException("Can't find or sort bills");
         }
     }
 
@@ -169,7 +152,7 @@ public class BillDaoImpl implements BillDao {
                 return bills;
             }
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter or sort accounts");
+            throw new DaoException("Can't find or filter or sort bills");
         }
     }
 
@@ -179,13 +162,29 @@ public class BillDaoImpl implements BillDao {
     }
 
     @Override
-    public void updateStatus(final Bill bill) throws DaoException {
+    public void add(final Bill bill) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_STATUS_BY_SUBSCRIPTION_ID_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
             statement.setInt(1, bill.getSubscriptionId());
-            statement.setBoolean(2, bill.getStatus());
+            statement.setFloat(2, bill.getValue());
+            statement.setDate(3, bill.getDate());
+            statement.setBoolean(4, bill.getStatus());
 
-            statement.setInt(3, bill.getSubscriptionId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Can't create bill", e);
+        }
+    }
+
+    @Override
+    public void update(final Bill bill) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_BILL_STATUS_BY_SUBSCRIPTION_ID_QUERY)) {
+
+            statement.setBoolean(1, bill.getStatus());
+
+            statement.setInt(2, bill.getSubscriptionId());
+            statement.setDate(3, bill.getDate());
 
             statement.executeUpdate();
         } catch (SQLException e) {

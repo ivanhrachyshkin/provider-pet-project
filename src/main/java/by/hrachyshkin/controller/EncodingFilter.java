@@ -1,4 +1,4 @@
-package by.hrachyshkin.filter;
+package by.hrachyshkin.controller;
 
 import java.io.IOException;
 

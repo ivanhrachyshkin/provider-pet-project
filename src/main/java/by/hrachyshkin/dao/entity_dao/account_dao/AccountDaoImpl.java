@@ -2,8 +2,6 @@ package by.hrachyshkin.dao.entity_dao.account_dao;
 
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Account;
-import by.hrachyshkin.entity.criteria.Filter;
-import by.hrachyshkin.entity.criteria.Sort;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Connection;
@@ -61,10 +59,9 @@ public class AccountDaoImpl implements AccountDao {
                     "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_QUERY =
-            "INSERT INTO accounts (email, password, role, name, phone, address, balance) " +
-                    "VALUES ?, ?, ?, ?, ?, ?, ?" +
-                    "WHERE id = ? " +
-                    "ON CONFLICT DO UPDATE";
+            "UPDATE accounts " +
+                    "SET email =?, role =?, name =?, phone=?, address=?, balance =?) " +
+                    "WHERE id = ?";
 
     private final Connection connection;
 
@@ -83,7 +80,7 @@ public class AccountDaoImpl implements AccountDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Required account doesn't exist", e);
+            throw new DaoException("Account doesn't exist", e);
         }
     }
 
@@ -98,7 +95,7 @@ public class AccountDaoImpl implements AccountDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Required account doesn't exist", e);
+            throw new DaoException("Account doesn't exist", e);
         }
     }
 
@@ -114,7 +111,7 @@ public class AccountDaoImpl implements AccountDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Required account doesn't exist", e);
+            throw new DaoException("Account doesn't exist", e);
         }
     }
 
@@ -162,7 +159,7 @@ public class AccountDaoImpl implements AccountDao {
             }
             return accounts;
         } catch (Exception e) {
-            throw new DaoException("Can't find accounts");
+            throw new DaoException("Can't find or sort accounts");
         }
     }
 
@@ -209,7 +206,7 @@ public class AccountDaoImpl implements AccountDao {
                         resultSet.getFloat(8));
             }
         } catch (SQLException e) {
-            throw new DaoException("Can't find account by id", e);
+            throw new DaoException("Can't find account by email", e);
         }
     }
 
@@ -227,17 +224,16 @@ public class AccountDaoImpl implements AccountDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("Can't create account", e);
+            throw new DaoException("Can't add account", e);
         }
     }
 
     @Override
-    public void updateStatus(final Account account) throws DaoException {
+    public void update(final Account account) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             statement.setString(1, account.getEmail());
-            statement.setString(2, account.getPassword());
-            statement.setInt(3, account.getRole().ordinal());
+            statement.setInt(2, account.getRole().ordinal());
             statement.setString(4, account.getName());
             statement.setString(5, account.getPhone());
             statement.setString(6, account.getAddress());
@@ -248,7 +244,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't add account", e);
+            throw new DaoException("Can't update account", e);
         }
     }
 

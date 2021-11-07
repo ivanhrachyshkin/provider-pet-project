@@ -2,7 +2,6 @@ package by.hrachyshkin.dao.entity_dao.subscription_dao;
 
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Subscription;
-import by.hrachyshkin.entity.criteria.Filter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -68,10 +67,9 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Required subscription doesn't exist", e);
+            throw new DaoException("Subscription doesn't exist", e);
         }
     }
-
 
     @Override
     public boolean isExistByAccountId(final Integer accountId) throws DaoException {
@@ -84,7 +82,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Required subscription doesn't exist", e);
+            throw new DaoException("Subscription doesn't exist", e);
         }
     }
 
@@ -156,12 +154,12 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("Can't create subscription", e);
+            throw new DaoException("Can't add subscription", e);
         }
     }
 
     @Override
-    public void updateStatus(final Subscription subscription) throws DaoException {
+    public void update(final Subscription subscription) throws DaoException {
 
         throw new UnsupportedOperationException();
     }

@@ -1,13 +1,13 @@
 package by.hrachyshkin.service;
 
 import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.dao.entity_dao.Dao;
 import by.hrachyshkin.dao.entity_dao.DaoKeys;
+import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDao;
+import by.hrachyshkin.dao.entity_dao.promotion_dao.PromotionDao;
+import by.hrachyshkin.dao.entity_dao.tariff_dao.TariffDao;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
 import by.hrachyshkin.entity.Promotion;
-import by.hrachyshkin.entity.criteria.Filter;
-import by.hrachyshkin.entity.criteria.Sort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -17,28 +17,72 @@ public class PromotionServiceImpl extends ServiceImpl implements Service<Promoti
 
     private final Transaction transaction;
 
-    @Override
-    public void add(Promotion promotion) throws ServiceException {
+    public boolean isExistByTariffId(final Integer tariffId) throws ServiceException {
 
+        try {
+            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            return promotionDao.isExistByTariffId(tariffId);
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+    @Override
+    public List<Promotion> find() throws ServiceException {
+
+        try {
+            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            return promotionDao.find();
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    public List<Promotion> findAndFilterByTariffId(final Integer tariffId) throws ServiceException {
+
+        try {
+            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            return promotionDao.findAndFilterByTariffId(tariffId);
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public List<Promotion> find(Filter filter, Sort sort) throws ServiceException {
-        return null;
+    public Promotion findOneById(final Integer id) throws ServiceException {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public Promotion findOneById(Integer id) throws ServiceException {
-        return null;
+    public void add(final Promotion promotion) throws ServiceException {
+
+        try {
+            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            promotionDao.add(promotion);
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public void update(Promotion promotion) throws ServiceException {
-
+    public void update(final Promotion promotion) throws ServiceException {
+        try {
+            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            promotionDao.update(promotion);
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 
     @Override
-    public void delete(Integer id) throws ServiceException {
+    public void delete(final Integer tariffId) throws ServiceException {
 
+        try {
+            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            promotionDao.delete(tariffId);
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 }

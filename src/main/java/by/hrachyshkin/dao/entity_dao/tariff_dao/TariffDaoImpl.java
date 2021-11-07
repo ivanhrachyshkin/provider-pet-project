@@ -2,8 +2,6 @@ package by.hrachyshkin.dao.entity_dao.tariff_dao;
 
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Tariff;
-import by.hrachyshkin.entity.criteria.Filter;
-import by.hrachyshkin.entity.criteria.Sort;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,7 +33,7 @@ public class TariffDaoImpl implements TariffDao {
     private static final String FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
-                    "ORDER BY speed DESC, price ACS";
+                    "ORDER BY speed DESC, price ASC";
 
     private static final String FIND_AND_FILTER_BY_TYPE_QUERY =
             "SELECT id, name, type, speed, price " +
@@ -46,7 +44,7 @@ public class TariffDaoImpl implements TariffDao {
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
                     "WHERE type = ? " +
-                    "ORDER speed DESC, price ACS ";
+                    "ORDER speed DESC, price ASC ";
 
     private static final String FIND_ONE_TARIFF_QUERY_BY_ID =
             "SELECT id, name, type, speed, price " +
@@ -59,10 +57,9 @@ public class TariffDaoImpl implements TariffDao {
                     "VALUES (?, ?, ?, ?)";
 
     private static final String UPDATE_QUERY =
-            "INSERT INTO tariffs (name, type, speed, price) " +
-                    "VALUES ?, ?, ?, ?" +
-                    "WHERE id = ? " +
-                    "ON CONFLICT DO UPDATE";
+            "UPDATE discounts " +
+                    "SET name = ?, type  = ?, speed  = ?, price  = ? " +
+                    "WHERE id = ?";
 
     private static final String DELETE_QUERY =
             "DELETE " +
@@ -86,7 +83,7 @@ public class TariffDaoImpl implements TariffDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Can't find tariff by id", e);
+            throw new DaoException("Tariff doesn't exist", e);
         }
     }
 
@@ -101,7 +98,7 @@ public class TariffDaoImpl implements TariffDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Can't find tariff by name", e);
+            throw new DaoException("Tariff doesn't exist", e);
         }
     }
 
@@ -123,7 +120,7 @@ public class TariffDaoImpl implements TariffDao {
 
             return tariffs;
         } catch (Exception e) {
-            throw new DaoException("Can't find required tariffs");
+            throw new DaoException("Can't find tariffs");
         }
     }
 
@@ -145,7 +142,7 @@ public class TariffDaoImpl implements TariffDao {
 
                 return tariffs;
             } catch (Exception e) {
-                throw new DaoException("Can't find required tariffs");
+                throw new DaoException("Can't find or sort tariffs");
             }
     }
 
@@ -228,12 +225,12 @@ public class TariffDaoImpl implements TariffDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("Can't create tariff", e);
+            throw new DaoException("Can't add tariff", e);
         }
     }
 
     @Override
-    public void updateStatus(final Tariff tariff) throws DaoException {
+    public void update(final Tariff tariff) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             statement.setString(1, tariff.getName());
@@ -245,7 +242,7 @@ public class TariffDaoImpl implements TariffDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("Can't add tariff", e);
+            throw new DaoException("Can't update tariff", e);
         }
     }
 

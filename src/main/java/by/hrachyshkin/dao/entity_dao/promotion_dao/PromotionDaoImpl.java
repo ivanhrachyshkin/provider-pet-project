@@ -33,7 +33,7 @@ public class PromotionDaoImpl implements PromotionDao {
                     "INTO promotions (tariff_id, discount_id) " +
                     "VALUES (?, ?)";
 
-    private static final String DELETE_QUERY =
+    private static final String DELETE_BY_DISCOUNT_QUERY =
             "DELETE " +
                     "FROM promotions " +
                     "WHERE discount_id = ?";
@@ -55,7 +55,7 @@ public class PromotionDaoImpl implements PromotionDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Can't find promotion by tariff's id", e);
+            throw new DaoException("Promotion doesn't exist", e);
         }
     }
 
@@ -73,7 +73,7 @@ public class PromotionDaoImpl implements PromotionDao {
             }
             return promotions;
         } catch (Exception e) {
-            throw new DaoException("Can't find required promotions");
+            throw new DaoException("Can't find promotions");
         }
     }
 
@@ -112,19 +112,19 @@ public class PromotionDaoImpl implements PromotionDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("Can't create promotion", e);
+            throw new DaoException("Can't add promotion", e);
         }
     }
 
     @Override
-    public void updateStatus(final Promotion promotion) throws DaoException {
+    public void update(final Promotion promotion) throws DaoException {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(final Integer id) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_DISCOUNT_QUERY)) {
             statement.setInt(1, id);
             statement.executeQuery();
         } catch (SQLException e) {

@@ -85,7 +85,6 @@ CREATE TABLE traffics
 
 CREATE TABLE bills
 (
-    id              SERIAL  NOT NULL PRIMARY KEY,
     subscription_id INTEGER  NOT NULL REFERENCES subscriptions (id),
     value           INTEGER NOT NULL,
     date            DATE    NOT NULL,
@@ -152,17 +151,17 @@ VALUES ('o@outlook.com',
 
 INSERT
 INTO discounts (name, type, value, date_from, date_to)
-VALUES ('Better Try', 1, 10, '2021-11-04', '2021-11-30'),
-       ('Super duper', 2, 50, '2021-12-04', '2021-12-30'),
-       ('Winter Is Coming', 1, 30, '2021-11-01', '2022-02-28');
+VALUES ('Better Try', 0, 10, '2021-11-04', '2021-11-30'),
+       ('Super duper', 1, 50, '2021-12-04', '2021-12-30'),
+       ('Winter Is Coming', 0, 30, '2021-11-01', '2022-02-28');
 
 INSERT
 INTO tariffs (name, type, speed, price)
-VALUES ('Home 3', 1, 3000, 10.0),
-       ('Work 6', 1, 6000, 15.0),
-       ('Relax 5', 2, 5000, 15.0),
-       ('Relax 2', 2, 2000, 13.0),
-       ('Sonic', 2, 10000, 50.0);
+VALUES ('Home 3', 0, 3000, 10.0),
+       ('Work 6', 0, 6000, 15.0),
+       ('Relax 5', 1, 5000, 15.0),
+       ('Relax 2', 1, 2000, 13.0),
+       ('Sonic', 0, 10000, 50.0);
 
 INSERT
 INTO subscriptions (account_id, tariff_id)

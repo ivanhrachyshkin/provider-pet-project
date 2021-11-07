@@ -27,7 +27,7 @@ public class TrafficDaoImpl implements TrafficDao {
     private static final String FIND_AND_SORT_BY_DATE_QUERY =
             "SELECT subscription_id, value, date " +
                     "FROM traffics " +
-                    "ORDER BY date ACS";
+                    "ORDER BY date ASC";
 
     private static final String FIND_AND_FILTER_BY_SUBSCRIPTION_ID_QUERY =
             "SELECT subscription_id, value, date " +
@@ -38,7 +38,7 @@ public class TrafficDaoImpl implements TrafficDao {
             "SELECT subscription_id, value, date " +
                     "FROM traffics " +
                     "WHERE subscription_id = ? " +
-                    "ORDER BY date ACS ";
+                    "ORDER BY date ASC ";
 
     private static final String ADD_QUERY =
             "INSERT " +
@@ -62,21 +62,7 @@ public class TrafficDaoImpl implements TrafficDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Required traffic doesn't exist", e);
-        }
-    }
-
-    @Override
-    public void add(final Traffic traffic) throws DaoException {
-
-        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
-            statement.setInt(1, traffic.getSubscriptionId());
-            statement.setInt(2, traffic.getValue());
-            statement.setDate(3, traffic.getDate());
-
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException("Can't create traffic", e);
+            throw new DaoException("Traffic doesn't exist", e);
         }
     }
 
@@ -114,7 +100,7 @@ public class TrafficDaoImpl implements TrafficDao {
             }
             return traffics;
         } catch (Exception e) {
-            throw new DaoException("Can't find traffics");
+            throw new DaoException("Can't find or sort traffics");
         }
     }
 
@@ -169,7 +155,21 @@ public class TrafficDaoImpl implements TrafficDao {
     }
 
     @Override
-    public void updateStatus(final Traffic traffic) {
+    public void add(final Traffic traffic) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
+            statement.setInt(1, traffic.getSubscriptionId());
+            statement.setInt(2, traffic.getValue());
+            statement.setDate(3, traffic.getDate());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Can't add traffic", e);
+        }
+    }
+
+    @Override
+    public void update(final Traffic traffic) {
 
         throw new UnsupportedOperationException();
     }

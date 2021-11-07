@@ -3,7 +3,6 @@ package by.hrachyshkin.dao.entity_dao.subscription_dao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.Dao;
 import by.hrachyshkin.entity.Subscription;
-import by.hrachyshkin.entity.criteria.Filter;
 
 import java.util.List;
 

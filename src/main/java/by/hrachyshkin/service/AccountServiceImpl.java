@@ -6,8 +6,6 @@ import by.hrachyshkin.dao.entity_dao.account_dao.AccountDao;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
 import by.hrachyshkin.entity.Account;
-import by.hrachyshkin.entity.criteria.Filter;
-import by.hrachyshkin.entity.criteria.Sort;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -26,7 +24,49 @@ public class AccountServiceImpl extends ServiceImpl implements Service<Account> 
             } else if (password == null) {
                 return accountDao.isExistByEmail(email);
             } else return accountDao.isExistByEmailAndPassword(email, password);
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 
+    @Override
+    public List<Account> find() throws ServiceException {
+
+        try {
+            final AccountDao accountDao = transaction.createDao(DaoKeys.ACCOUNT_DAO);
+            return accountDao.find();
+        } catch (DaoException | TransactionException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    public List<Account> findAndSortByName() throws ServiceException {
+
+        try {
+            final AccountDao accountDao = transaction.createDao(DaoKeys.ACCOUNT_DAO);
+            return accountDao.findAndSortByName();
+        } catch (DaoException | TransactionException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Account findOneById(final Integer id) throws ServiceException {
+
+        try {
+            final AccountDao accountDao = transaction.createDao(DaoKeys.ACCOUNT_DAO);
+            return accountDao.findOneById(id);
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+
+    public Account findOneByEmail(final String email) throws ServiceException {
+
+        try {
+            final AccountDao accountDao = transaction.createDao(DaoKeys.ACCOUNT_DAO);
+            return accountDao.findOneByEmail(email);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -38,37 +78,6 @@ public class AccountServiceImpl extends ServiceImpl implements Service<Account> 
         try {
             AccountDao accountDao = transaction.createDao(DaoKeys.ACCOUNT_DAO);
             accountDao.add(account);
-
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public List<Account> find(final Filter filter, final Sort sort) throws ServiceException {
-
-        try {
-            final AccountDao accountDao = transaction.createDao(DaoKeys.ACCOUNT_DAO);
-            if (filter != null && sort != null) {
-                return accountDao.findAndFilterAndSort(filter, sort);
-            } else if (filter != null) {
-                return accountDao.findAndFilter(filter);
-            } else if (sort != null) {
-                return accountDao.findAndSort(sort);
-            } else return accountDao.find();
-
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public Account findOneById(final Integer id) throws ServiceException {
-
-        try {
-            final AccountDao accountDao = transaction.createDao(DaoKeys.ACCOUNT_DAO);
-            return accountDao.findOneById(id);
-
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -79,8 +88,7 @@ public class AccountServiceImpl extends ServiceImpl implements Service<Account> 
 
         try {
             final AccountDao accountDao = transaction.createDao(DaoKeys.ACCOUNT_DAO);
-            accountDao.updateStatus(account);
-
+            accountDao.update(account);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -88,13 +96,6 @@ public class AccountServiceImpl extends ServiceImpl implements Service<Account> 
 
     @Override
     public void delete(final Integer id) throws ServiceException {
-
-        try {
-            final AccountDao accountDao = transaction.createDao(DaoKeys.ACCOUNT_DAO);
-            accountDao.delete(id);
-
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
+        throw new UnsupportedOperationException();
     }
 }

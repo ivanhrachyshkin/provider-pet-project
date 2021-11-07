@@ -8,8 +8,10 @@ public class Runner {
 
     public static void main(String[] args) throws Exception {
 
-       SubscriptionDao subscriptionDao = TransactionFactory.getINSTANCE().createTransaction()
-               .createDao(DaoKeys.SUBSCRIPTION_DAO);
 
+TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+
+List<Tariff> tariffs = tariffService.findTariffsForAccountId(4);
+        System.out.println(tariffs);
     }
 }

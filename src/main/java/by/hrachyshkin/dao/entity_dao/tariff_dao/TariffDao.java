@@ -3,8 +3,6 @@ package by.hrachyshkin.dao.entity_dao.tariff_dao;
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.Dao;
 import by.hrachyshkin.entity.Tariff;
-import by.hrachyshkin.entity.criteria.Filter;
-import by.hrachyshkin.entity.criteria.Sort;
 
 import java.util.List;
 
