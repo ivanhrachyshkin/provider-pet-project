@@ -1,4 +1,5 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page import="by.hrachyshkin.entity.Tariff" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="ru">
@@ -46,15 +47,44 @@
             <th>Type</th>
             <th>Speed</th>
             <th>Price</th>
+            <th>Action</th>
         </tr>
         <c:forEach var="tariff" items="${tariffs}">
             <tr>
-                <td>${tariff.name}</td>
-                <td>${tariff.type}</td>
-                <td>${tariff.speed}</td>
-                <td>${tariff.price}</td>
+                <form action="tariffs/update" method="POST">
+                    <td><input name="name" type="text" value="${tariff.name}" placeholder="${tariff.name}"/></td>
+                    <td><select name="type">
+                        <c:set var="types" value="<%=Tariff.Type.values()%>"/>
+                        <c:forEach var="type" items="${types}">
+                            <option value="${type.name()}" ${tariff.type.name()==type ?'selected':''}>${type.name()}</option>
+                        </c:forEach>
+                    </select></td>
+                    <td><input name="speed" type="number" value="${tariff.speed}" placeholder="${tariff.speed}"/></td>
+                    <td><input name="price" type="number" value="${tariff.price}" placeholder="${tariff.price}"/></td>
+                    <td><button type="submit">update</button></td>
+                    <input name="id" type="hidden" value="${tariff.id}">
+                </form>
+                <form action="tariffs/delete" method="POST">
+                    <td><button type="submit">delete</button></td>
+                    <input name="id" type="hidden" value="${tariff.id}">
+                </form>
             </tr>
         </c:forEach>
+        <tr>
+            <form action="tariffs/create" method="POST">
+                <td><input name="name" type="text"/></td>
+                <td><select name="type">
+                    <c:set var="types" value="<%=Tariff.Type.values()%>"/>
+                    <c:forEach var="type" items="${types}">
+                        <option value="${type.name()}">${type.name()}</option>
+                    </c:forEach>
+                </select></td>
+                <td><input name="speed" type="number"/></td>
+                <td><input name="price" type="number"/></td>
+                <td><button type="submit">create</button></td>
+                <input name="id" type="hidden" value="${tariff.id}">
+            </form>
+        </tr>
     </table>
 </div>
 

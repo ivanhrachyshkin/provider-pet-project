@@ -27,7 +27,7 @@ public class TransactionImpl implements Transaction {
     private final Connection connection;
 
     @SuppressWarnings("unchecked")
-    public <T extends Dao> T createDao(final DaoKeys daoKeys) throws TransactionException {
+    public <T extends Dao<?>> T createDao(final DaoKeys daoKeys) throws TransactionException {
 
         try {
             return switch (daoKeys) {

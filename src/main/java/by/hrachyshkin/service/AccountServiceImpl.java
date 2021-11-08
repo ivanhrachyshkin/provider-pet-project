@@ -1,6 +1,7 @@
 package by.hrachyshkin.service;
 
 import by.hrachyshkin.dao.DaoException;
+import by.hrachyshkin.dao.entity_dao.Dao;
 import by.hrachyshkin.dao.entity_dao.DaoKeys;
 import by.hrachyshkin.dao.entity_dao.account_dao.AccountDao;
 import by.hrachyshkin.dao.transaction.Transaction;

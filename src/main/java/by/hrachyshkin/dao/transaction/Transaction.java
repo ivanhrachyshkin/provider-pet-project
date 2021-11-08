@@ -5,7 +5,7 @@ import by.hrachyshkin.dao.entity_dao.DaoKeys;
 
 public interface Transaction {
 
-    <T extends Dao> T createDao(final DaoKeys typeDao) throws TransactionException;
+    <T extends Dao<?>> T createDao(final DaoKeys typeDao) throws TransactionException;
 
     void commit() throws TransactionException;
 
