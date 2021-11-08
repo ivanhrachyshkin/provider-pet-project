@@ -9,11 +9,9 @@ public class Runner {
     public static void main(String[] args) throws Exception {
 
 
-        TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+        DiscountServiceImpl discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 
-        List<Tariff> tariffs = tariffService.findAndFilterByType(Tariff.Type.UNLIMITED);
 
-        tariffs.stream().forEach(bills1 -> System.out.println(bills1));
-
+      discountService.add(new Discount("asd", Discount.Type.COEFFICIENT, 12, LocalDate.of(2020,10,10), LocalDate.of(2020,10,10)));
     }
 }

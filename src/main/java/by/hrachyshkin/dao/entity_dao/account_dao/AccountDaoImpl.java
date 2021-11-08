@@ -14,21 +14,21 @@ import java.util.List;
 public class AccountDaoImpl implements AccountDao {
 
     private static final String EXISTS_BY_ID_QUERY =
-            "EXISTS (" +
+            "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM accounts " +
                     "WHERE id = ?" +
                     ")";
 
     private static final String EXISTS_BY_EMAIL_QUERY =
-            "EXISTS (" +
+            "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM accounts " +
                     "WHERE email = ?" +
                     ")";
 
     private static final String EXISTS_BY_EMAIL_AND_PASSWORD =
-            "EXISTS (" +
+            "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM accounts " +
                     "WHERE email = ? AND password = ?" +

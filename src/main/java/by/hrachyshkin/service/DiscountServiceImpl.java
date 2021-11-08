@@ -22,13 +22,11 @@ public class DiscountServiceImpl extends ServiceImpl implements Service<Discount
 
     private final Transaction transaction;
 
-    public boolean isExist(final Integer id, final String name) throws ServiceException {
+    public boolean isExist(final Integer id) throws ServiceException {
 
         try {
             final DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
-            if (id != null) {
-                return discountDao.isExistById(id);
-            } else return discountDao.isExistByName(name);
+            return discountDao.isExistById(id);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

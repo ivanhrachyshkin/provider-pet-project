@@ -13,7 +13,7 @@ import java.util.List;
 public class BillDaoImpl implements BillDao {
 
     private static final String EXISTS_BY_SUBSCRIPTION_ID_QUERY =
-            "EXISTS (" +
+            "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM bills " +
                     "WHERE subscription_id = ?" +
@@ -80,7 +80,7 @@ public class BillDaoImpl implements BillDao {
                 final Bill bill = new Bill(
                         resultSet.getInt(1),
                         resultSet.getFloat(2),
-                        resultSet.getDate(3),
+                        resultSet.getDate(3).toLocalDate(),
                         resultSet.getBoolean(4));
                 bills.add(bill);
             }
@@ -100,7 +100,7 @@ public class BillDaoImpl implements BillDao {
                 final Bill bill = new Bill(
                         resultSet.getInt(1),
                         resultSet.getFloat(2),
-                        resultSet.getDate(3),
+                        resultSet.getDate(3).toLocalDate(),
                         resultSet.getBoolean(4));
                 bills.add(bill);
             }
@@ -122,7 +122,7 @@ public class BillDaoImpl implements BillDao {
                     final Bill bill = new Bill(
                             resultSet.getInt(1),
                             resultSet.getFloat(2),
-                            resultSet.getDate(3),
+                            resultSet.getDate(3).toLocalDate(),
                             resultSet.getBoolean(4));
                     bills.add(bill);
                 }
@@ -145,7 +145,7 @@ public class BillDaoImpl implements BillDao {
                     final Bill bill = new Bill(
                             resultSet.getInt(1),
                             resultSet.getFloat(2),
-                            resultSet.getDate(3),
+                            resultSet.getDate(3).toLocalDate(),
                             resultSet.getBoolean(4));
                     bills.add(bill);
                 }
@@ -167,7 +167,7 @@ public class BillDaoImpl implements BillDao {
         try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
             statement.setInt(1, bill.getSubscriptionId());
             statement.setFloat(2, bill.getValue());
-            statement.setDate(3, bill.getDate());
+            statement.setDate(3, java.sql.Date.valueOf(bill.getDate()));
             statement.setBoolean(4, bill.getStatus());
 
             statement.executeUpdate();
@@ -184,7 +184,7 @@ public class BillDaoImpl implements BillDao {
             statement.setBoolean(1, bill.getStatus());
 
             statement.setInt(2, bill.getSubscriptionId());
-            statement.setDate(3, bill.getDate());
+            statement.setDate(3, java.sql.Date.valueOf(bill.getDate()));
 
             statement.executeUpdate();
         } catch (SQLException e) {

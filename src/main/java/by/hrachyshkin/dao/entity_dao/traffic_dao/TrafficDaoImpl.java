@@ -76,7 +76,7 @@ public class TrafficDaoImpl implements TrafficDao {
                 final Traffic traffic = new Traffic(
                         resultSet.getInt(1),
                         resultSet.getInt(2),
-                        resultSet.getDate(3));
+                        resultSet.getDate(3).toLocalDate());
                 traffics.add(traffic);
             }
             return traffics;
@@ -95,7 +95,7 @@ public class TrafficDaoImpl implements TrafficDao {
                 final Traffic traffic = new Traffic(
                         resultSet.getInt(1),
                         resultSet.getInt(2),
-                        resultSet.getDate(3));
+                        resultSet.getDate(3).toLocalDate());
                 traffics.add(traffic);
             }
             return traffics;
@@ -116,7 +116,7 @@ public class TrafficDaoImpl implements TrafficDao {
                     final Traffic traffic = new Traffic(
                             resultSet.getInt(1),
                             resultSet.getInt(2),
-                            resultSet.getDate(3));
+                            resultSet.getDate(3).toLocalDate());
                     traffics.add(traffic);
                 }
                 return traffics;
@@ -138,7 +138,7 @@ public class TrafficDaoImpl implements TrafficDao {
                     final Traffic traffic = new Traffic(
                             resultSet.getInt(1),
                             resultSet.getInt(2),
-                            resultSet.getDate(3));
+                            resultSet.getDate(3).toLocalDate());
                     traffics.add(traffic);
                 }
                 return traffics;
@@ -160,7 +160,7 @@ public class TrafficDaoImpl implements TrafficDao {
         try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
             statement.setInt(1, traffic.getSubscriptionId());
             statement.setInt(2, traffic.getValue());
-            statement.setDate(3, traffic.getDate());
+            statement.setDate(3, java.sql.Date.valueOf(traffic.getDate()));
 
             statement.executeUpdate();
         } catch (SQLException e) {

@@ -14,5 +14,5 @@ public final class Traffic {
 
     private final Integer subscriptionId;
     private final Integer value;
-    private final Date date;
+    private final LocalDate date;
 }

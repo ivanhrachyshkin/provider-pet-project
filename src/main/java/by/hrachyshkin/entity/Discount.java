@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @ToString
@@ -21,14 +22,14 @@ public final class Discount {
     private final String name;
     private final Type type;
     private final Integer value;
-    private final Date dateFrom;
-    private final Date dateTo;
+    private final LocalDate dateFrom;
+    private final LocalDate dateTo;
 
     public Discount(final String name,
                     final Type type,
                     final Integer value,
-                    final Date dateFrom,
-                    final Date dateTo) {
+                    final LocalDate dateFrom,
+                    final LocalDate dateTo) {
         this(null, name, type, value, dateFrom, dateTo);
     }
 }
