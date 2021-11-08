@@ -9,9 +9,11 @@ public class Runner {
     public static void main(String[] args) throws Exception {
 
 
-TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+        TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
-List<Tariff> tariffs = tariffService.findTariffsForAccountId(4);
-        System.out.println(tariffs);
+        List<Tariff> tariffs = tariffService.findAndFilterByType(Tariff.Type.UNLIMITED);
+
+        tariffs.stream().forEach(bills1 -> System.out.println(bills1));
+
     }
 }

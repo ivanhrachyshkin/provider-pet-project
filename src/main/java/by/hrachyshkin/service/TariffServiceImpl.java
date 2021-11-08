@@ -91,16 +91,19 @@ public class TariffServiceImpl extends ServiceImpl implements Service<Tariff> {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
             final SubscriptionDao subscriptionDao = transaction.createDao(DaoKeys.SUBSCRIPTION_DAO);
 
-            final List<Tariff> tariffs = new ArrayList<>();
-            final List<Subscription> subscriptions = subscriptionDao.find();
+            final List<Tariff> tariffs = tariffDao.find();
+            final List<Tariff> accountTariffs = new ArrayList<>();
+            final List<Subscription> subscriptions = subscriptionDao.findAndFilter(accountId);
 
             for (Subscription subs : subscriptions) {
-                if (subs.getAccountId().equals(accountId)) {
-                    final Tariff tariff = tariffDao.findOneById(subs.getTariffId());
-                    tariffs.add(tariff);
+                for (Tariff tariff : tariffs) {
+                    if (subs.getTariffId().equals(tariff.getId())) {
+                        accountTariffs.add(tariff);
+                    }
                 }
             }
-            return tariffs;
+            return accountTariffs;
+
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

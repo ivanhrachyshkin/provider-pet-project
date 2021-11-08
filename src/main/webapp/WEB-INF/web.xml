@@ -10,14 +10,6 @@
         <res-auth>Container</res-auth>
     </resource-ref>
 
-    <servlet>
-        <servlet-name>accountServlet</servlet-name>
-        <servlet-class>by.hrachyshkin.servlet.AccountServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>accountServlet</servlet-name>
-        <url-pattern>/accounts</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
