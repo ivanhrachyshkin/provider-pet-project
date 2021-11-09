@@ -110,7 +110,7 @@ public class TariffServiceImpl implements Service<Tariff> {
 
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
-            if (tariffDao.isExistById(tariff.getId())) {
+            if (tariffDao.isExistByName(tariff.getName())) {
                 throw new ServiceException();
             }
             tariffDao.add(tariff);

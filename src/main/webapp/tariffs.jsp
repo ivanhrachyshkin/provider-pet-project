@@ -61,11 +61,19 @@
                     </select></td>
                     <td><input name="speed" type="number" value="${tariff.speed}" placeholder="${tariff.speed}"/></td>
                     <td><input name="price" type="number" value="${tariff.price}" placeholder="${tariff.price}"/></td>
-                    <td><button type="submit">update</button></td>
+                    <td><button type="submit" class="btn btn-info">update</button></td>
                     <input name="id" type="hidden" value="${tariff.id}">
                 </form>
                 <form action="tariffs/delete" method="POST">
-                    <td><button type="submit">delete</button></td>
+                    <td><button type="submit" class="btn btn-info">delete</button></td>
+                    <input name="id" type="hidden" value="${tariff.id}">
+                </form>
+                <form action="111" method="POST">
+                    <td><button type="submit" class="btn btn-info">traffics</button></td>
+                    <input name="id" type="hidden" value="${tariff.id}">
+                </form>
+                <form action="111" method="POST">
+                    <td><button type="submit" class="btn btn-info">bills</button></td>
                     <input name="id" type="hidden" value="${tariff.id}">
                 </form>
             </tr>
@@ -81,8 +89,7 @@
                 </select></td>
                 <td><input name="speed" type="number"/></td>
                 <td><input name="price" type="number"/></td>
-                <td><button type="submit">create</button></td>
-                <input name="id" type="hidden" value="${tariff.id}">
+                <td><button type="submit" class="btn btn-info">create</button></td>
             </form>
         </tr>
     </table>

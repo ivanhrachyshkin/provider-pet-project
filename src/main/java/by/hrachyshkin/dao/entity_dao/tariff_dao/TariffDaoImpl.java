@@ -19,6 +19,13 @@ public class TariffDaoImpl implements TariffDao {
                     "WHERE id = ?" +
                     ")";
 
+    private static final String EXISTS_BY_NAME_QUERY =
+            "SELECT EXISTS (" +
+                    "SELECT * " +
+                    "FROM tariffs " +
+                    "WHERE name = ?" +
+                    ")";
+
     private static final String FIND_QUERY =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs ";
@@ -70,6 +77,21 @@ public class TariffDaoImpl implements TariffDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY)) {
             statement.setInt(1, id);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Tariff doesn't exist", e);
+        }
+    }
+
+    @Override
+    public boolean isExistByName(final String name) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY)) {
+            statement.setString(1, name);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();

@@ -1,8 +1,3 @@
-ALTER DEFAULT PRIVILEGES IN SCHEMA public
-GRANT ALL ON TABLES TO provider;
-
-GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO www;
-
 ------------------------------------------------------------------------------------------------------------------------
 -- Tables
 ------------------------------------------------------------------------------------------------------------------------
@@ -271,3 +266,8 @@ VALUES (1, 4, '2021-10-01', false),
        (9, 30, '2021-10-03', true),
        (9, 40, '2021-10-04', true),
        (9, 2, '2021-10-05', false);
+
+ALTER DEFAULT PRIVILEGES IN SCHEMA public
+GRANT ALL ON TABLES TO provider;
+
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO provider;

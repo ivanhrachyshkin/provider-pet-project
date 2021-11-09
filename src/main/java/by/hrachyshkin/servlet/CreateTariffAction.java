@@ -1,8 +1,6 @@
 package by.hrachyshkin.servlet;
 
-import by.hrachyshkin.entity.Account;
 import by.hrachyshkin.entity.Tariff;
-import by.hrachyshkin.service.AccountServiceImpl;
 import by.hrachyshkin.service.ServiceFactoryImpl;
 import by.hrachyshkin.service.ServiceKeys;
 import by.hrachyshkin.service.TariffServiceImpl;
@@ -15,10 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
-@WebServlet("/tariffs")
-public class TariffsServlet extends HttpServlet {
+@WebServlet("/tariffs/create")
+public class CreateTariffAction extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -36,18 +33,14 @@ public class TariffsServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+        final TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
-        final List<Tariff> tariffs;
-        final String rawType = request.getParameter("filter");
+        final String name = request.getParameter("name");
+        final Tariff.Type type = Tariff.Type.valueOf(request.getParameter("type").toUpperCase());
+        final Integer speed = Integer.valueOf(request.getParameter("speed"));
+        final Float price = Float.valueOf(request.getParameter("price"));
+        tariffService.add(new Tariff(name, type, speed, price));
 
-
-        if(rawType != null) {
-            final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
-            tariffs = tariffService.findAndFilterByType(type);
-        } else tariffs = tariffService.find();
-
-        request.setAttribute("tariffs", tariffs);
-        request.getRequestDispatcher("tariffs.jsp").forward(request, response);
+        response.sendRedirect("/training-java-project-provider/tariffs");
     }
 }

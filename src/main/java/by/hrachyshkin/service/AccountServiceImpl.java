@@ -77,7 +77,7 @@ public class AccountServiceImpl implements Service<Account> {
     public void add(final Account account) throws ServiceException {
 
         try {
-           final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
             if (accountDao.isExistByEmail(account.getEmail())) {
                 throw new ServiceException();
             }
