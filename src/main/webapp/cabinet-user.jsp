@@ -1,7 +1,13 @@
 <%@ page import="by.hrachyshkin.provider.model.Account" %>
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="ru_RU"/>
+<fmt:setBundle basename="langs"/>
+
 <!doctype html>
-<html lang="ru">
 <head>
     <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>User cabinet</title>
@@ -16,18 +22,18 @@
 </head>
 <body>
 
-<jsp:include page="header.jsp"/>
+<jsp:include page="navbar.jsp"/>
     <div class="container">
-        <h1 class="text-center">User account information</h1>
+        <h1 class="text-center"><fmt:message key="userCabinetHeaderLabel"/></h1>
         <br>
         <table class="table table-hover table-stripped">
             <tr>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Balance</th>
+                <th><fmt:message key="emailLabel"/></th>
+                <th><fmt:message key="roleLabel"/></th>
+                <th><fmt:message key="nameLabel"/></th>
+                <th><fmt:message key="telephoneLabel"/></th>
+                <th><fmt:message key="addressLabel"/></th>
+                <th><fmt:message key="balanceLabel"/></th>
             </tr>
             <tr>
                 <form action="${url}/cabinet/update" method="POST">
@@ -44,7 +50,7 @@
                     </td>
                     <td>${account.balance}</td>
                     <td>
-                        <button type="submit" class="btn btn-info">update</button>
+                        <button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button>
                     </td>
                     <input name="accountId" type="hidden" value="${account.id}">
                     <input name="balance" type="hidden" value="${account.balance}">

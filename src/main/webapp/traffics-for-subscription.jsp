@@ -1,8 +1,12 @@
-<%@ page import="by.hrachyshkin.provider.model.Tariff" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="ru_RU"/>
+<fmt:setBundle basename="langs"/>
+
 <!doctype html>
-<html lang="ru">
 <head>
     <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>
@@ -16,7 +20,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+<jsp:include page="navbar.jsp"/>
 
 <div class="container">
     <h2 class="text-center">Traffics for "${account.email}" for "${tariff.name}" subscription</h2>

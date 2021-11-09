@@ -10,11 +10,6 @@ public class MainPageAction extends BaseAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response){
 
-        //  if (getAccountId(request) == null
-        //          && getRole(request)== null) {
-        //      request.getRequestDispatcher("/login.jsp").forward(request, response);
-        //  }
-
         return "/main.jsp";
     }
 }

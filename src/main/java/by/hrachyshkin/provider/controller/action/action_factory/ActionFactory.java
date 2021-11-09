@@ -12,10 +12,10 @@ import by.hrachyshkin.provider.controller.action.action_impl.promotion_impl.Crea
 import by.hrachyshkin.provider.controller.action.action_impl.promotion_impl.DeletePromotionAction;
 import by.hrachyshkin.provider.controller.action.action_impl.promotion_impl.ShowDiscountsForPromotionAction;
 import by.hrachyshkin.provider.controller.action.action_impl.subscription_impl.*;
-import by.hrachyshkin.provider.controller.action.action_impl.tariffaction.CreateTariffAction;
-import by.hrachyshkin.provider.controller.action.action_impl.tariffaction.DeleteTariffAction;
-import by.hrachyshkin.provider.controller.action.action_impl.tariffaction.ShowTariffsAction;
-import by.hrachyshkin.provider.controller.action.action_impl.tariffaction.UpdateTariffAction;
+import by.hrachyshkin.provider.controller.action.action_impl.tariff_impl.CreateTariffAction;
+import by.hrachyshkin.provider.controller.action.action_impl.tariff_impl.DeleteTariffAction;
+import by.hrachyshkin.provider.controller.action.action_impl.tariff_impl.ShowTariffsAction;
+import by.hrachyshkin.provider.controller.action.action_impl.tariff_impl.UpdateTariffAction;
 import lombok.Getter;
 
 import java.util.HashMap;

@@ -1,4 +1,4 @@
-package by.hrachyshkin.provider.controller.action.action_impl.tariffaction;
+package by.hrachyshkin.provider.controller.action.action_impl.tariff_impl;
 
 import by.hrachyshkin.provider.controller.action.action_impl.BaseAction;
 import by.hrachyshkin.provider.controller.action.Action;

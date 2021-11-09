@@ -1,9 +1,13 @@
-<%@ page import="by.hrachyshkin.provider.model.Tariff" %>
 <%@ page import="by.hrachyshkin.provider.model.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="ru_RU"/>
+<fmt:setBundle basename="langs"/>
+
 <!doctype html>
-<html lang="en">
 <head>
     <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>
@@ -17,25 +21,24 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="header.jsp" />
+<jsp:include page="navbar.jsp" />
 
 <div class="container">
-    <h1 class="text-center">Discounts</h1>
+    <h1 class="text-center"><fmt:message key="discountsLabel"/></h1>
     <br>
-    <a href="${url}/discounts?filter=percentage" class="btn btn-info">percentage</a>
-    <a href="${url}/discounts?filter=coefficient" class="btn btn-info">coefficient</a>
-    <a href="${url}/discounts?filter=all" class="btn btn-info">all</a>
+    <a href="${url}/discounts?filter=percentage" class="btn btn-info"><fmt:message key="percentageLabel"/></a>
+    <a href="${url}/discounts?filter=coefficient" class="btn btn-info"><fmt:message key="coefficientLabel"/></a>
+    <a href="${url}/discounts?filter=all" class="btn btn-info"><fmt:message key="allLabel"/></a>
 </div>
 
 <div class="container">
     <table class="table table-hover table-stripped">
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Value</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Action</th>
+            <th><fmt:message key="nameLabel"/></th>
+            <th><fmt:message key="typeLabel"/></th>
+            <th><fmt:message key="valueLabel"/></th>
+            <th><fmt:message key="startLabel"/></th>
+            <th><fmt:message key="endLabel"/></th>
         </tr>
         <c:forEach var="discount" items="${discounts}">
             <tr>
@@ -50,11 +53,11 @@
                     <td><input name="value" type="number" value="${discount.value}" placeholder="${discount.value}"/></td>
                     <td><input name="dateFrom" type="date" value="${discount.dateFrom}" placeholder="${discount.dateFrom}"/></td>
                     <td><input name="dateTo" type="date" value="${discount.dateTo}" placeholder="${discount.dateTo}"/></td>
-                    <td><button type="submit" class="btn btn-info">update</button></td>
+                    <td><button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button></td>
                     <input name="id" type="hidden" value="${discount.id}">
                 </form>
                 <form action="${url}/discounts/delete" method="POST">
-                    <td><button type="submit" class="btn btn-info">delete</button></td>
+                    <td><button type="submit" class="btn btn-info"><fmt:message key="deleteLabel"/></button></td>
                     <input name="discountId" type="hidden" value="${discount.id}">
                 </form>
             </tr>
@@ -71,7 +74,7 @@
                 <td><input name="value" type="number"/></td>
                 <td><input name="dateFrom" type="date"/></td>
                 <td><input name="dateTo" type="date"/></td>
-                <td><button type="submit" class="btn btn-info">create</button></td>
+                <td><button type="submit" class="btn btn-info"><fmt:message key="createLabel"/></button></td>
             </form>
         </tr>
     </table>

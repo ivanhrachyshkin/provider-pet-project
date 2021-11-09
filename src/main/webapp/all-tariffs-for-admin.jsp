@@ -1,6 +1,12 @@
 <%@ page import="by.hrachyshkin.provider.model.Tariff" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="ru_RU"/>
+<fmt:setBundle basename="langs"/>
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -16,24 +22,23 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="header.jsp" />
+<jsp:include page="navbar.jsp" />
 
 <div class="container">
-    <h1 class="text-center">Tariff plans</h1>
+    <h1 class="text-center"><fmt:message key="tariffsLabel"/></h1>
     <br>
-    <a href="${url}/tariffs?filter=trafficked" class="btn btn-info">trafficked</a>
-    <a href="${url}/tariffs?filter=unlimited" class="btn btn-info">unlimited</a>
+    <a href="${url}/tariffs?filter=trafficked" class="btn btn-info"><fmt:message key="traffickedLabel"/></a>
+    <a href="${url}/tariffs?filter=unlimited" class="btn btn-info"><fmt:message key="unlimitedLabel"/></a>
     <a href="${url}/tariffs?filter=all" class="btn btn-info">all</a>
 </div>
 
 <div class="container">
     <table class="table table-hover table-stripped">
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Speed</th>
-            <th>Price</th>
-            <th>Action</th>
+            <th><fmt:message key="nameLabel"/></th>
+            <th><fmt:message key="typeLabel"/></th>
+            <th><fmt:message key="speedLabel"/></th>
+            <th><fmt:message key="priceLabel"/></th>
         </tr>
         <c:forEach var="tariff" items="${tariffs}">
             <tr>
@@ -47,11 +52,11 @@
                     </select></td>
                     <td><input name="speed" type="number" value="${tariff.speed}" placeholder="${tariff.speed}"/></td>
                     <td><input name="price" type="number" value="${tariff.price}" placeholder="${tariff.price}"/></td>
-                    <td><button type="submit" class="btn btn-info">update</button></td>
+                    <td><button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button></td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
                 <form action="${url}/tariffs/delete" method="POST">
-                    <td><button type="submit" class="btn btn-info">delete</button></td>
+                    <td><button type="submit" class="btn btn-info"><fmt:message key="deleteLabel"/></button></td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
                 <form action="${url}/tariffs/discounts" method="POST">
@@ -71,7 +76,7 @@
                 </select></td>
                 <td><input name="speed" type="number"/></td>
                 <td><input name="price" type="number"/></td>
-                <td><button type="submit" class="btn btn-info">create</button></td>
+                <td><button type="submit" class="btn btn-info"><fmt:message key="createLabel"/></button></td>
             </form>
         </tr>
     </table>

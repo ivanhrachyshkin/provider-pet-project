@@ -8,7 +8,6 @@
 
 <!doctype html>
 <head>
-    <meta charset="utf-8">
     <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -19,20 +18,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
-<div class="container">
-    <h1 class="text-center"><fmt:message key="mainTitleLabel"/></h1>
-    <br>
-    <h2 class="text-center"><fmt:message key="mainDescriptionLabel"/></h2>
-    <br>
-    <h2 class="text-center"><fmt:message key="mainDescriptionLabel"/></h2>
-    <br>
-    <h2 class="text-center"><fmt:message key="mainDescriptionLabel"/></h2>
-    <br>
-    <h2 class="text-center"><fmt:message key="mainDescriptionLabel"/></h2>
-</div>
-<jsp:include page="footer.jsp" />
-</body>
-</html>
+<nav class="navbar navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <a href="${url}/main" class="navbar-brand"><fmt:message key="providerLabel"/></a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="${url}/tariffs"><b><fmt:message key="tariffsLabel"/></b></a></li>
+            <li><a href="${url}/discounts"><b><fmt:message key="discountsLabel"/></b></a></li>
+            <li><a href="#"><b><fmt:message key="aboutUsLabel"/></b></a></li>
+            <li><a href="${url}/cabinet"><b><fmt:message key="cabinetLabel"/></b></a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li><a href="${url}/logout"><span class="glyphicon glyphicon-user"><fmt:message key="logoutLabel"/></span></a></li>
+        </ul>
+    </div>
+</nav>

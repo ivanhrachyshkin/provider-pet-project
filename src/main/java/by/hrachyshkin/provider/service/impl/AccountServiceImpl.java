@@ -114,6 +114,7 @@ public class AccountServiceImpl implements AccountService {
             if (account.getEmail().isEmpty()
                     || account.getPassword().isEmpty()
                     || account.getRole() == null
+                    || account.getName() == null
                     || account.getName().isEmpty()
                     || account.getPhone().isEmpty()
                     || account.getAddress().isEmpty()) {
@@ -151,6 +152,7 @@ public class AccountServiceImpl implements AccountService {
             if (account.getId() == null
                     || account.getEmail().isEmpty()
                     || account.getRole() == null
+                    || account.getName() == null
                     || account.getName().isEmpty()
                     || account.getPhone().isEmpty()
                     || account.getAddress().isEmpty()) {

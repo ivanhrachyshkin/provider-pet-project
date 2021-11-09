@@ -1,7 +1,12 @@
-<%@ page import="by.hrachyshkin.provider.model.Tariff" %>
 <%@ page import="by.hrachyshkin.provider.model.Account" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="ru_RU"/>
+<fmt:setBundle basename="langs"/>
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -17,7 +22,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+<jsp:include page="navbar.jsp"/>
 
 <div class="container">
     <h1 class="text-center">Accounts</h1>
@@ -50,7 +55,7 @@
                                placeholder="${account.address}"/></td>
                     <td>${account.balance}</td>
                     <td>
-                        <button type="submit" class="btn btn-info">update</button>
+                        <button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button>
                     </td>
                     <input name="accountId" type="hidden" value="${account.id}">
                     <input name="balance" type="hidden" value="${account.balance}">
@@ -74,11 +79,12 @@
                 <input name="name" type="text" placeholder="name"/>
                 <input name="phone" type="text" placeholder="phone"/>
                 <input name="address" type="text" placeholder="address"/>
-                <button type="submit" class="btn btn-info">create</button>
+                <button type="submit" class="btn btn-info"><fmt:message key="createLabel"/></button>
             </form>
         </div>
         <div class="col-md-2"></div>
     </div>
-    <jsp:include page="footer.jsp"/>
+</div>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

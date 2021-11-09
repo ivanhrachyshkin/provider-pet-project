@@ -1,6 +1,11 @@
-<%@ page import="by.hrachyshkin.provider.model.Tariff" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="ru_RU"/>
+<fmt:setBundle basename="langs"/>
+
 <!doctype html>
 <html lang="ru">
 <head>
@@ -16,7 +21,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="header.jsp" />
+<jsp:include page="navbar.jsp" />
 <div class="container">
     <h1 class="text-center">Bills for "${account.email}" for "${tariff.name}"</h1>
     <br>
@@ -26,10 +31,9 @@
     <div class="col-md-6">
         <table class="table table-hover table-stripped">
             <tr>
-                <th>Value</th>
-                <th>Date</th>
-                <th>Status</th>
-                <th>Action</th>
+                <th><fmt:message key="valueLabel"/></th>
+                <th><fmt:message key="dateLabel"/></th>
+                <th><fmt:message key="statusLabel"/></th>
             </tr>
             <c:forEach var="bill" items="${subscriptionBills}">
                 <tr>

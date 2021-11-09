@@ -1,9 +1,12 @@
-<%@ page import="by.hrachyshkin.provider.model.Tariff" %>
-<%@ page import="by.hrachyshkin.provider.model.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="ru_RU"/>
+<fmt:setBundle basename="langs"/>
+
 <!doctype html>
-<html lang="ru">
 <head>
     <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>
@@ -17,17 +20,17 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="header.jsp" />
+<jsp:include page="navbar.jsp" />
 <div class="container">
     <h1 class="text-center">Discounts for "${tariff.name}" tariff plan</h1>
     <br>
     <table class="table table-hover table-stripped">
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Value</th>
-            <th>Start</th>
-            <th>End</th>
+            <th><fmt:message key="nameLabel"/></th>
+            <th><fmt:message key="typeLabel"/></th>
+            <th><fmt:message key="valueLabel"/></th>
+            <th><fmt:message key="startLabel"/></th>
+            <th><fmt:message key="endLabel"/></th>
         </tr>
         <c:forEach var="discount" items="${tariffDiscounts}">
             <tr>

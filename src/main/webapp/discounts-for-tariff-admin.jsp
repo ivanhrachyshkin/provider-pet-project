@@ -1,9 +1,12 @@
-<%@ page import="by.hrachyshkin.provider.model.Tariff" %>
-<%@ page import="by.hrachyshkin.provider.model.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="ru_RU"/>
+<fmt:setBundle basename="langs"/>
+
 <!doctype html>
-<html lang="ru">
 <head>
     <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>
@@ -18,18 +21,17 @@
 </head>
 <body>
 
-<jsp:include page="header.jsp" />
+<jsp:include page="navbar.jsp" />
 <div class="container">
     <h1 class="text-center">Discounts for "${tariff.name}" tariff plan</h1>
     <br>
     <table class="table table-hover table-stripped">
         <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Value</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Action</th>
+            <th><fmt:message key="nameLabel"/></th>
+            <th><fmt:message key="typeLabel"/></th>
+            <th><fmt:message key="valueLabel"/></th>
+            <th><fmt:message key="startLabel"/></th>
+            <th><fmt:message key="endLabel"/></th>
         </tr>
         <c:forEach var="discount" items="${tariffDiscounts}">
             <tr>
@@ -39,7 +41,7 @@
                     <td>${discount.dateFrom}</td>
                     <td>${discount.dateTo}</td>
                 <form action="${url}/tariffs/discounts/delete" method="POST">
-                    <td><button type="submit" class="btn btn-info">remove</button></td>
+                    <td><button type="submit" class="btn btn-info"><fmt:message key="removeLabel"/></button></td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                     <input name="discountId" type="hidden" value="${discount.id}">
                 </form>
@@ -50,13 +52,13 @@
 
 <span class="text-center">
 <form action="${url}/tariffs/discounts/create" method="POST">
-    <label>Choose a discount:</label>
+    <label><fmt:message key="discountsChooseLabel"/></label>
     <select name="discountId">
         <c:forEach var="discount" items="${discounts}">
             <option value="${discount.id}">${discount.name} | ${discount.type} | ${discount.value} | ${discount.dateFrom} | ${discount.dateTo}</option>
         </c:forEach>
     </select>
-    <input type="submit" class="btn btn-info" value="add discount">
+    <input type="submit" class="btn btn-info" value=<fmt:message key="discountsAddLabel"/>>
     <input name="tariffId" type="hidden" value="${tariff.id}">
 </form>
 </span>
