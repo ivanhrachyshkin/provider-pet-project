@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class DeleteSubscriptionAction extends BaseAction implements Action {
+public class DeleteSubscriptionAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {

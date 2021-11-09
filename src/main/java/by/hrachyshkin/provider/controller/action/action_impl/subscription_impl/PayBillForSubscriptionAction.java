@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class PayBillForSubscriptionAction extends BaseAction implements Action {
+public class PayBillForSubscriptionAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {

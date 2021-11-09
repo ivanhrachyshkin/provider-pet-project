@@ -5,7 +5,7 @@ import by.hrachyshkin.provider.controller.action.Action;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class IndexAction extends BaseAction implements Action {
+public class IndexAction extends BaseAction  {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

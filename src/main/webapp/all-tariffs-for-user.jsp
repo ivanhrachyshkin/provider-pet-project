@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="ru_RU"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
 
 <!doctype html>
@@ -26,7 +26,7 @@
     <h1 class="text-center"><fmt:message key="tariffsLabel"/></h1>
     <br>
     <a href="${url}/tariffs?filter=trafficked" class="btn btn-info"><fmt:message key="traffickedLabel"/></a>
-    < href="${url}/tariffs?filter=unlimited" class="btn btn-info"><fmt:message key="unlimitedLabel"/></a>
+    <a href="${url}/tariffs?filter=unlimited" class="btn btn-info"><fmt:message key="unlimitedLabel"/></a>
     <a href="${url}/tariffs?filter=all" class="btn btn-info">all</a>
 </div>
 

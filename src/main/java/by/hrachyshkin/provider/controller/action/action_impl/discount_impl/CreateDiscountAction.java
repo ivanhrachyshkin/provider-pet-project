@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 
-public class CreateDiscountAction extends BaseAction implements Action {
+public class CreateDiscountAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

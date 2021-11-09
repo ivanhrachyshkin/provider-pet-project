@@ -12,7 +12,7 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class CreateAccountAction extends BaseAction implements Action {
+public class CreateAccountAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

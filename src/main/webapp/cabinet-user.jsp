@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="ru_RU"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
 
 <!doctype html>
@@ -23,65 +23,65 @@
 <body>
 
 <jsp:include page="navbar.jsp"/>
-    <div class="container">
-        <h1 class="text-center"><fmt:message key="userCabinetHeaderLabel"/></h1>
-        <br>
-        <table class="table table-hover table-stripped">
-            <tr>
-                <th><fmt:message key="emailLabel"/></th>
-                <th><fmt:message key="roleLabel"/></th>
-                <th><fmt:message key="nameLabel"/></th>
-                <th><fmt:message key="telephoneLabel"/></th>
-                <th><fmt:message key="addressLabel"/></th>
-                <th><fmt:message key="balanceLabel"/></th>
-            </tr>
-            <tr>
-                <form action="${url}/cabinet/update" method="POST">
-                    <td><input name="email" type="text" value="${account.email}" placeholder="${account.email}"/></td>
-                    <td><select name="role">
-                        <c:set var="roles" value="<%=Account.Role.values()%>"/>
-                        <c:forEach var="role" items="${roles}">
-                            <option value="${role.name()}" ${account.role.name()==role ?'selected':''}>${role.name()}</option>
-                        </c:forEach>
-                    </select></td>
-                    <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/></td>
-                    <td><input name="phone" type="text" value="${account.phone}" placeholder="${account.phone}"/></td>
-                    <td><input name="address" type="text" value="${account.address}" placeholder="${account.address}"/>
-                    </td>
-                    <td>${account.balance}</td>
-                    <td>
-                        <button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button>
-                    </td>
-                    <input name="accountId" type="hidden" value="${account.id}">
-                    <input name="balance" type="hidden" value="${account.balance}">
-                </form>
-            </tr>
-        </table>
-    </div>
+<div class="container">
+    <h1 class="text-center"><fmt:message key="userCabinetHeaderLabel"/></h1>
+    <br>
+    <table class="table table-hover table-stripped">
+        <tr>
+            <th><fmt:message key="emailLabel"/></th>
+            <th><fmt:message key="roleLabel"/></th>
+            <th><fmt:message key="nameLabel"/></th>
+            <th><fmt:message key="telephoneLabel"/></th>
+            <th><fmt:message key="addressLabel"/></th>
+            <th><fmt:message key="balanceLabel"/></th>
+        </tr>
+        <tr>
+            <form action="${url}/cabinet/update" method="POST">
+                <td><input name="email" type="text" value="${account.email}" placeholder="${account.email}"/></td>
+                <td><select name="role">
+                    <c:set var="roles" value="<%=Account.Role.values()%>"/>
+                    <c:forEach var="role" items="${roles}">
+                        <option value="${role.name()}" ${account.role.name()==role ?'selected':''}>${role.name()}</option>
+                    </c:forEach>
+                </select></td>
+                <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/></td>
+                <td><input name="phone" type="text" value="${account.phone}" placeholder="${account.phone}"/></td>
+                <td><input name="address" type="text" value="${account.address}" placeholder="${account.address}"/>
+                </td>
+                <td>${account.balance}</td>
+                <td>
+                    <button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button>
+                </td>
+                <input name="accountId" type="hidden" value="${account.id}">
+                <input name="balance" type="hidden" value="${account.balance}">
+            </form>
+        </tr>
+    </table>
+</div>
 
-    <div class="container">
-        <h3>
-            <div class="row">
-                <div class="col-md-2">
-                </div>
-                <div class="col-md-4 text-center">
-                    <h3>Subscriptions</h3>
-                    <a href="${url}/cabinet/subscriptions" class="btn btn-info">my subscriptions</a>
-                </div>
-                <div class="col-md-4">
-                    <form action="${url}/cabinet/deposit" method="POST">
-                        <input class="form-control input-sm" name="card" type="number"
-                               placeholder="card number xxxx xxxx xxxx xxxx"/>
-                        <input class="form-control input-sm" name="sum" type="number" value="sum" placeholder="sum"/>
-                        <input class="form-control input-sm" name="validity" type="date" placeholder="VALID THRU"/>
-                        <button type="submit" class="btn btn-info">deposit</button>
-                    </form>
-
-                </div>
+<div class="container">
+    <h3>
+        <div class="row">
+            <div class="col-md-2">
             </div>
-            <div class="col-md-2"></div>
-        </h3>
-    </div>
+            <div class="col-md-4 text-center">
+                <h3>Subscriptions</h3>
+                <a href="${url}/cabinet/subscriptions" class="btn btn-info">my subscriptions</a>
+            </div>
+            <div class="col-md-4">
+                <form action="${url}/cabinet/deposit" method="POST">
+                    <input class="form-control input-sm" name="card" type="number"
+                           placeholder="card number xxxx xxxx xxxx xxxx"/>
+                    <input class="form-control input-sm" name="sum" type="number" value="sum" placeholder="sum"/>
+                    <input class="form-control input-sm" name="validity" type="date" placeholder="VALID THRU"/>
+                    <button type="submit" class="btn btn-info">deposit</button>
+                </form>
+
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+    </h3>
+</div>
 <jsp:include page="footer.jsp"/>
 </body>
 </html>

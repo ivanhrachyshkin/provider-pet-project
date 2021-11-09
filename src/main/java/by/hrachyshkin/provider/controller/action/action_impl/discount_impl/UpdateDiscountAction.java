@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class UpdateDiscountAction extends BaseAction implements Action {
+public class UpdateDiscountAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

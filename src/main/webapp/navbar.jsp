@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="ru_RU"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
 
 <!doctype html>
@@ -15,9 +15,6 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
 </head>
@@ -34,6 +31,14 @@
             <li><a href="${url}/cabinet"><b><fmt:message key="cabinetLabel"/></b></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false"> &#127760;Language <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="?sessionLocale=en_US">eng</a></li>
+                    <li><a href="?sessionLocale=ru_RU">rus</a></li>
+                </ul>
+            </li>
             <li><a href="${url}/logout"><span class="glyphicon glyphicon-user"><fmt:message key="logoutLabel"/></span></a></li>
         </ul>
     </div>

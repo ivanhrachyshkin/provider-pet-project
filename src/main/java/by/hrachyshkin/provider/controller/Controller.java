@@ -39,6 +39,7 @@ public class Controller extends HttpServlet {
         final Action command = actionFactory.getCommand(commandName);
 
         final String path = command.execute(request, response);
-        request.getRequestDispatcher(path).forward(request, response);
+
+        command.postExecute(request, response, path);
     }
 }

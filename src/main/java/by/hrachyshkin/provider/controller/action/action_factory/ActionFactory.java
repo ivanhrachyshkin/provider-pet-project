@@ -1,8 +1,8 @@
 package by.hrachyshkin.provider.controller.action.action_factory;
 
 import by.hrachyshkin.provider.controller.action.Action;
-import by.hrachyshkin.provider.controller.action.action_impl.MainPageAction;
 import by.hrachyshkin.provider.controller.action.action_impl.IndexAction;
+import by.hrachyshkin.provider.controller.action.action_impl.MainPageAction;
 import by.hrachyshkin.provider.controller.action.action_impl.account_impl.*;
 import by.hrachyshkin.provider.controller.action.action_impl.discount_impl.CreateDiscountAction;
 import by.hrachyshkin.provider.controller.action.action_impl.discount_impl.DeleteDiscountAction;
@@ -57,7 +57,6 @@ public class ActionFactory {
             put(CommandConstants.TARIFFS, new ShowTariffsAction());
             put(CommandConstants.UPDATE_TARIFF, new UpdateTariffAction());
         }
-
     };
 
 

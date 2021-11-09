@@ -9,11 +9,13 @@ import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
-public class LoginAction extends BaseAction implements Action {
+public class LoginAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response){
@@ -45,6 +47,13 @@ public class LoginAction extends BaseAction implements Action {
             path = "/";
         }
         return path;
+    }
+
+    @Override
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+
+        response.sendRedirect(request.getContextPath() + "/cabinet");
+
     }
 }
 

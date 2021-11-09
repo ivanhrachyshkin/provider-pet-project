@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class ShowDiscountsForPromotionAction extends BaseAction implements Action {
+public class ShowDiscountsForPromotionAction extends BaseAction{
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {

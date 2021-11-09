@@ -12,7 +12,7 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class CabinetAction extends BaseAction implements Action {
+public class CabinetAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

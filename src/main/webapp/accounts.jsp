@@ -4,11 +4,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="ru_RU"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
 
 <!doctype html>
-<html lang="ru">
 <head>
     <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>

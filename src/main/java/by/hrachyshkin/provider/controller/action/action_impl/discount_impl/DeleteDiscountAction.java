@@ -11,7 +11,7 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class DeleteDiscountAction extends BaseAction implements Action {
+public class DeleteDiscountAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

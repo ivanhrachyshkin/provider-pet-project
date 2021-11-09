@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="ru_RU"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
 
 <!doctype html>
@@ -60,7 +60,7 @@
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
                 <form action="${url}/tariffs/discounts" method="POST">
-                    <td><button type="submit" class="btn btn-info">discounts</button></td>
+                    <td><button type="submit" class="btn btn-info"><fmt:message key="discountsLabel"/></button></td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
             </tr>

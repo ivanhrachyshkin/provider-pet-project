@@ -3,7 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="ru_RU"/>
+<fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
 
 <!doctype html>
@@ -15,16 +15,18 @@
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
           integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
             crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
+
 </head>
 <body>
 
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
-            <a href="${url}/main" class="navbar-brand"><fmt:message key="providerLabel"/></a>
+            <a href="${url}/main" class="navbar-brand">Provider</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="${url}/tariffs"><b><fmt:message key="tariffsLabel"/></b></a></li>
@@ -33,7 +35,14 @@
             <li><a href="${url}/cabinet"><b><fmt:message key="cabinetLabel"/></b></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false"> &#127760;Language <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="?sessionLocale=ru_RU">RUS</a></li>
+                    <li><a href="?sessionLocale=en_US">ENG</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>
@@ -49,7 +58,8 @@
                 </div>
                 <div class="form-group">
                     <label><fmt:message key="passwordLabel"/></label>
-                    <input type="text" class="form-control" name="password" placeholder="<fmt:message key="passwordLabel"/>">
+                    <input type="text" class="form-control" name="password"
+                           placeholder="<fmt:message key="passwordLabel"/>">
                 </div>
                 <input type="submit" class="btn btn-info" value=<fmt:message key="loginLabel"/>>
             </form>
