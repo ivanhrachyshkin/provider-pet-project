@@ -73,30 +73,30 @@ public class BillServiceImpl extends ServiceImpl implements Service<Bill> {
         throw new UnsupportedOperationException();
     }
 
-//    public List<Bill> findBillsForAccountId(final Integer accountId, final Integer tariffId) throws ServiceException {
-//
-//        try {
-//            final SubscriptionDao subscriptionDao = transaction.createDao(DaoKeys.SUBSCRIPTION_DAO);
-//            final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
-//
-//            final List<Bill> bills = billDao.find();
-//            final List<Bill> subscriptionBills = new ArrayList<>();
-//            final List<Subscription> subscriptions = subscriptionDao.findAndFilter(accountId, tariffId);
-//
-//            for (Subscription subs : subscriptions) {
-//                for (Bill bill : bills) {
-//                    if (subs.getId().equals(bill.getSubscriptionId())) {
-//                        subscriptionBills.add(bill);
-//                    }
-//                }
-//
-//            }
-//            return subscriptionBills;
-//
-//        } catch (TransactionException | DaoException e) {
-//            throw new ServiceException(e.getMessage(), e);
-//        }
-//    }
+  //public List<Bill> findBillsForAccountId(final Integer accountId, final Integer tariffId) throws ServiceException {
+
+  //    try {
+  //        final SubscriptionDao subscriptionDao = transaction.createDao(DaoKeys.SUBSCRIPTION_DAO);
+  //        final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
+
+  //        final List<Bill> bills = billDao.find();
+  //        final List<Bill> subscriptionBills = new ArrayList<>();
+  //        final List<Subscription> subscriptions = subscriptionDao.findAndFilter(accountId, tariffId);
+
+  //        for (Subscription subs : subscriptions) {
+  //            for (Bill bill : bills) {
+  //                if (subs.getId().equals(bill.getSubscriptionId())) {
+  //                    subscriptionBills.add(bill);
+  //                }
+  //            }
+
+  //        }
+  //        return subscriptionBills;
+
+  //    } catch (TransactionException | DaoException e) {
+  //        throw new ServiceException(e.getMessage(), e);
+  //    }
+  //}
 
     @Override
     public void update(final Bill bill) throws ServiceException {

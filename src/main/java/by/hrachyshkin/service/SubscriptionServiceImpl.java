@@ -16,13 +16,16 @@ public class SubscriptionServiceImpl extends ServiceImpl implements Service<Subs
 
     private final Transaction transaction;
 
-    public boolean isExist(final Integer id, final Integer accountId) throws ServiceException {
+    public boolean isExist(final Integer id, final Integer accountId, final Integer tariffId) throws ServiceException {
 
         try {
             final SubscriptionDao subscriptionDao = transaction.createDao(DaoKeys.SUBSCRIPTION_DAO);
             if (id != null) {
                 return subscriptionDao.isExistById(id);
-            } else return subscriptionDao.isExistByAccountId(accountId);
+            } else if (accountId != null) {
+                return subscriptionDao.isExistByAccountId(accountId);
+            } else return subscriptionDao.isExistByTariffId(tariffId);
+
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

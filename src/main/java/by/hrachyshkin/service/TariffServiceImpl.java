@@ -18,13 +18,12 @@ public class TariffServiceImpl extends ServiceImpl implements Service<Tariff> {
 
     private final Transaction transaction;
 
-    public boolean isExistBySubscriptionId(final Integer id, final String name) throws ServiceException {
+    public boolean isExist(final Integer id) throws ServiceException {
 
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
-            if (id != null) {
+
                 return tariffDao.isExistById(id);
-            } else return tariffDao.isExistByName(name);
 
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);

@@ -13,17 +13,24 @@ import java.util.List;
 public class SubscriptionDaoImpl implements SubscriptionDao {
 
     private static final String EXISTS_BY_ID_QUERY =
-            "EXISTS (" +
+            "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM subscriptions " +
                     "WHERE id = ?" +
                     ")";
 
     private static final String EXISTS_BY_ACCOUNT_ID_QUERY =
-            "EXISTS (" +
+            "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM subscriptions " +
                     "WHERE account_id = ? " +
+                    ")";
+
+    private static final String EXISTS_BY_TARIFF_ID_QUERY =
+            "SELECT EXISTS (" +
+                    "SELECT * " +
+                    "FROM subscriptions " +
+                    "WHERE tariff_id = ? " +
                     ")";
 
     private static final String FIND_QUERY =
@@ -76,6 +83,21 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ACCOUNT_ID_QUERY)) {
             statement.setInt(1, accountId);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Subscription doesn't exist", e);
+        }
+    }
+
+    @Override
+    public boolean isExistByTariffId(final Integer tariffId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_TARIFF_ID_QUERY)) {
+            statement.setInt(1, tariffId);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
@@ -150,7 +172,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(ADD_QUERY)) {
             statement.setInt(1, subscription.getAccountId());
-            statement.setInt(2, subscription.getAccountId());
+            statement.setInt(2, subscription.getTariffId());
 
             statement.executeUpdate();
         } catch (SQLException e) {

@@ -36,4 +36,15 @@ public final class Account {
                    final Float balance) {
         this(null, email, password, role, name, phone, address, balance);
     }
+
+    public Account(Integer id, String email, Role role, String name, String phone, String address, Float balance) {
+        this.id = id;
+        this.email = email;
+        this.password = null;
+        this.role = role;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.balance = balance;
+    }
 }

@@ -27,6 +27,16 @@ public class PromotionServiceImpl extends ServiceImpl implements Service<Promoti
         }
     }
 
+    public boolean isExistByDiscountId(final Integer discountId) throws ServiceException {
+
+        try {
+            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            return promotionDao.isExistByTariffId(discountId);
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
 
     @Override
     public List<Promotion> find() throws ServiceException {
@@ -67,20 +77,19 @@ public class PromotionServiceImpl extends ServiceImpl implements Service<Promoti
 
     @Override
     public void update(final Promotion promotion) throws ServiceException {
-        try {
-            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
-            promotionDao.update(promotion);
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
+      throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(final Integer tariffId) throws ServiceException {
+    public void delete(Integer id) throws ServiceException {
+        throw new UnsupportedOperationException();
+    }
+
+    public void deleteByTariffAndDiscount(final Integer tariffId, final Integer discountId) throws ServiceException {
 
         try {
             final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
-            promotionDao.delete(tariffId);
+            promotionDao.deleteByTariffAndDiscount(tariffId, discountId);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

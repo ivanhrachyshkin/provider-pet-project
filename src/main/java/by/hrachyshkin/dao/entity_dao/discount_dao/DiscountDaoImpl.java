@@ -4,7 +4,6 @@ import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.entity.Discount;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class DiscountDaoImpl implements DiscountDao {
                     "WHERE type = ? " +
                     "ORDER BY value DESC ";
 
-    private static final String FIND_ONE_TARIFF_QUERY_BY_ID =
+    private static final String FIND_ONE_BY_ID_QUERY =
             "SELECT id, name, type, value, date_from, date_to " +
                     "FROM discounts " +
                     "WHERE id = ?";
@@ -173,7 +172,7 @@ public class DiscountDaoImpl implements DiscountDao {
 
     @Override
     public Discount findOneById(final Integer id) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID)) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_BY_ID_QUERY)) {
             statement.setInt(1, id);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
@@ -231,7 +230,7 @@ public class DiscountDaoImpl implements DiscountDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, id);
-            statement.executeQuery();
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Can't delete discount", e);
         }

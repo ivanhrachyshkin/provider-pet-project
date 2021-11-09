@@ -14,7 +14,7 @@ public class TrafficDaoImpl implements TrafficDao {
 
 
     private static final String EXISTS_BY_SUBSCRIPTION_ID_QUERY =
-            "EXISTS (" +
+            "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM traffics " +
                     "WHERE subscription_id = ? " +

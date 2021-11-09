@@ -13,17 +13,10 @@ import java.util.List;
 public class TariffDaoImpl implements TariffDao {
 
     private static final String EXISTS_BY_ID_QUERY =
-            "EXISTS (" +
+            "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM tariffs " +
                     "WHERE id = ?" +
-                    ")";
-
-    private static final String EXISTS_BY_NAME_QUERY =
-            "EXISTS (" +
-                    "SELECT * " +
-                    "FROM tariffs " +
-                    "WHERE name = ?" +
                     ")";
 
     private static final String FIND_QUERY =
@@ -44,9 +37,9 @@ public class TariffDaoImpl implements TariffDao {
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
                     "WHERE type = ? " +
-                    "ORDER speed DESC, price ASC ";
+                    "ORDER by speed DESC, price ASC ";
 
-    private static final String FIND_ONE_TARIFF_QUERY_BY_ID =
+    private static final String FIND_ONE_BY_ID_QUERY =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
                     "WHERE id = ?";
@@ -57,7 +50,7 @@ public class TariffDaoImpl implements TariffDao {
                     "VALUES (?, ?, ?, ?)";
 
     private static final String UPDATE_QUERY =
-            "UPDATE discounts " +
+            "UPDATE tariffs " +
                     "SET name = ?, type  = ?, speed  = ?, price  = ? " +
                     "WHERE id = ?";
 
@@ -77,21 +70,6 @@ public class TariffDaoImpl implements TariffDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY)) {
             statement.setInt(1, id);
-
-            try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getBoolean(1);
-            }
-        } catch (SQLException e) {
-            throw new DaoException("Tariff doesn't exist", e);
-        }
-    }
-
-    @Override
-    public boolean isExistByName(final String name) throws DaoException {
-
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY)) {
-            statement.setString(1, name);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
@@ -197,7 +175,7 @@ public class TariffDaoImpl implements TariffDao {
     @Override
     public Tariff findOneById(final Integer id) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_TARIFF_QUERY_BY_ID)) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_BY_ID_QUERY)) {
             statement.setInt(1, id);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
@@ -251,7 +229,7 @@ public class TariffDaoImpl implements TariffDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, id);
-            statement.executeQuery();
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Can't delete tariff", e);
         }

@@ -1,6 +1,7 @@
 package by.hrachyshkin.dao.entity_dao.account_dao;
 
 import by.hrachyshkin.dao.DaoException;
+import by.hrachyshkin.dao.entity_dao.account_dao.AccountDao;
 import by.hrachyshkin.entity.Account;
 import org.apache.commons.codec.digest.DigestUtils;
 
@@ -60,7 +61,7 @@ public class AccountDaoImpl implements AccountDao {
 
     private static final String UPDATE_QUERY =
             "UPDATE accounts " +
-                    "SET email =?, role =?, name =?, phone=?, address=?, balance =?) " +
+                    "SET email =?, role =?, name =?, phone=?, address=?, balance =? " +
                     "WHERE id = ?";
 
     private final Connection connection;
@@ -234,12 +235,12 @@ public class AccountDaoImpl implements AccountDao {
         try (final PreparedStatement statement = connection.prepareStatement(UPDATE_QUERY)) {
             statement.setString(1, account.getEmail());
             statement.setInt(2, account.getRole().ordinal());
-            statement.setString(4, account.getName());
-            statement.setString(5, account.getPhone());
-            statement.setString(6, account.getAddress());
-            statement.setFloat(7, account.getBalance());
+            statement.setString(3, account.getName());
+            statement.setString(4, account.getPhone());
+            statement.setString(5, account.getAddress());
+            statement.setFloat(6, account.getBalance());
 
-            statement.setInt(8, account.getId());
+            statement.setInt(7, account.getId());
 
             statement.executeUpdate();
 

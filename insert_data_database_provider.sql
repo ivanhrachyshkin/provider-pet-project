@@ -1,6 +1,8 @@
 ALTER DEFAULT PRIVILEGES IN SCHEMA public
 GRANT ALL ON TABLES TO provider;
 
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO www;
+
 ------------------------------------------------------------------------------------------------------------------------
 -- Tables
 ------------------------------------------------------------------------------------------------------------------------
@@ -152,7 +154,7 @@ VALUES ('o@outlook.com',
 INSERT
 INTO discounts (name, type, value, date_from, date_to)
 VALUES ('Better Try', 0, 10, '2021-11-04', '2021-11-30'),
-       ('Super duper', 1, 50, '2021-12-04', '2021-12-30'),
+       ('Super Duper', 1, 50, '2021-12-04', '2021-12-30'),
        ('Winter Is Coming', 0, 30, '2021-11-01', '2022-02-28');
 
 INSERT

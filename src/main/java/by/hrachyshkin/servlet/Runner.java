@@ -9,9 +9,11 @@ public class Runner {
     public static void main(String[] args) throws Exception {
 
 
-        DiscountServiceImpl discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        SubscriptionServiceImpl subscriptionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+
+       subscriptionService.add(new Subscription(7,3));
 
 
-      discountService.add(new Discount("asd", Discount.Type.COEFFICIENT, 12, LocalDate.of(2020,10,10), LocalDate.of(2020,10,10)));
+
     }
 }

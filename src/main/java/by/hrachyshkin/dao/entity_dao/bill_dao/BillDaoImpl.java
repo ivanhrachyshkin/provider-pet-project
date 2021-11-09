@@ -44,7 +44,7 @@ public class BillDaoImpl implements BillDao {
                     "INTO bills (subscription_id, value, date, status) " +
                     "VALUES (?, ?, ?, ?)";
 
-    private static final String UPDATE_BILL_STATUS_BY_SUBSCRIPTION_ID_QUERY =
+    private static final String UPDATE_BILL_STATUS_QUERY =
             "UPDATE bills " +
                     "SET status =? " +
                     "WHERE subscription_id = ? AND date = ?";
@@ -179,7 +179,7 @@ public class BillDaoImpl implements BillDao {
     @Override
     public void update(final Bill bill) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_BILL_STATUS_BY_SUBSCRIPTION_ID_QUERY)) {
+        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_BILL_STATUS_QUERY)) {
 
             statement.setBoolean(1, bill.getStatus());
 
