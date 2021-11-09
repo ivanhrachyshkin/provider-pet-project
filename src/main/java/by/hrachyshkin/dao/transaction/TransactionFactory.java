@@ -29,7 +29,7 @@ public class TransactionFactory {
         }
     }
 
-    public Transaction createTransaction() throws PoolException {
+    public Transaction createTransactionImpl() throws PoolException {
         return new TransactionImpl(ConnectionPool.getInstance().getConnection());
     }
 }

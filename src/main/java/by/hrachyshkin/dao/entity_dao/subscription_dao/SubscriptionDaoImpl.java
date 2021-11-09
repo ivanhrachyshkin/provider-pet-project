@@ -42,6 +42,11 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                     "FROM subscriptions " +
                     "WHERE account_id = ? ";
 
+    private static final String FIND_AND_FILTER_BY_ACCOUNT_AND_TARIFF_ID_QUERY =
+            "SELECT id, account_id, tariff_id " +
+                    "FROM subscriptions " +
+                    "WHERE account_id = ? AND tariff_id = ? ";
+
     private static final String FIND_ONE_SUBSCRIPTION_QUERY_BY_ID =
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions " +
@@ -132,6 +137,29 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_ACCOUNT_ID_QUERY)) {
             statement.setInt(1, accountId);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                final List<Subscription> subscriptions = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Subscription subscription = new Subscription(
+                            resultSet.getInt(1),
+                            resultSet.getInt(2),
+                            resultSet.getInt(3));
+                    subscriptions.add(subscription);
+                }
+                return subscriptions;
+            }
+        } catch (Exception e) {
+            throw new DaoException("Can't find or filter subscriptions");
+        }
+    }
+
+    @Override
+    public List<Subscription> findAndFilterByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
+            statement.setInt(1, accountId);
+            statement.setInt(2, tariffId);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Subscription> subscriptions = new ArrayList<>();

@@ -9,11 +9,8 @@ public class Runner {
     public static void main(String[] args) throws Exception {
 
 
-        SubscriptionServiceImpl subscriptionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
-
-       subscriptionService.add(new Subscription(7,3));
-
-
+        BillServiceImpl billService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
+        billService.findBillsForTariffPerAccount(4, 3).stream().forEach(System.out::println);
 
     }
 }

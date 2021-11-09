@@ -2,7 +2,6 @@ package by.hrachyshkin.service;
 
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.DaoKeys;
-import by.hrachyshkin.dao.entity_dao.promotion_dao.PromotionDao;
 import by.hrachyshkin.dao.entity_dao.subscription_dao.SubscriptionDao;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
@@ -12,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class SubscriptionServiceImpl extends ServiceImpl implements Service<Subscription> {
+public class SubscriptionServiceImpl implements Service<Subscription> {
 
     private final Transaction transaction;
 

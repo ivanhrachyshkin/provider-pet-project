@@ -4,21 +4,17 @@ import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.DaoKeys;
 import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDao;
 import by.hrachyshkin.dao.entity_dao.promotion_dao.PromotionDao;
-import by.hrachyshkin.dao.entity_dao.subscription_dao.SubscriptionDao;
-import by.hrachyshkin.dao.entity_dao.tariff_dao.TariffDao;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
 import by.hrachyshkin.entity.Discount;
 import by.hrachyshkin.entity.Promotion;
-import by.hrachyshkin.entity.Subscription;
-import by.hrachyshkin.entity.Tariff;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class DiscountServiceImpl extends ServiceImpl implements Service<Discount> {
+public class DiscountServiceImpl implements Service<Discount> {
 
     private final Transaction transaction;
 

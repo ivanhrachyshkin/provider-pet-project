@@ -1,6 +1,5 @@
 package by.hrachyshkin.service;
 
-import by.hrachyshkin.dao.entity_dao.Dao;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
 import by.hrachyshkin.dao.transaction.TransactionFactory;
@@ -19,7 +18,7 @@ public class ServiceFactoryImpl {
     public <T extends Service> T getService(final ServiceKeys serviceKeys) throws TransactionException {
 
         try {
-            final Transaction transaction = factory.createTransaction();
+            final Transaction transactionImpl = factory.createTransactionImpl();
 
             return switch (serviceKeys) {
                 case ACCOUNT_SERVICE -> (T) new AccountServiceImpl(transaction);

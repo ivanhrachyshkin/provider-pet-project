@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class TariffServiceImpl extends ServiceImpl implements Service<Tariff> {
+public class TariffServiceImpl implements Service<Tariff> {
 
     private final Transaction transaction;
 
@@ -23,7 +23,7 @@ public class TariffServiceImpl extends ServiceImpl implements Service<Tariff> {
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
 
-                return tariffDao.isExistById(id);
+            return tariffDao.isExistById(id);
 
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);

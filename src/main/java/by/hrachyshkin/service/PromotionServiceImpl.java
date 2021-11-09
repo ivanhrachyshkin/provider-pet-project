@@ -2,9 +2,7 @@ package by.hrachyshkin.service;
 
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.DaoKeys;
-import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDao;
 import by.hrachyshkin.dao.entity_dao.promotion_dao.PromotionDao;
-import by.hrachyshkin.dao.entity_dao.tariff_dao.TariffDao;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
 import by.hrachyshkin.entity.Promotion;
@@ -13,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class PromotionServiceImpl extends ServiceImpl implements Service<Promotion> {
+public class PromotionServiceImpl implements Service<Promotion> {
 
     private final Transaction transaction;
 
@@ -77,7 +75,7 @@ public class PromotionServiceImpl extends ServiceImpl implements Service<Promoti
 
     @Override
     public void update(final Promotion promotion) throws ServiceException {
-      throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException();
     }
 
     @Override

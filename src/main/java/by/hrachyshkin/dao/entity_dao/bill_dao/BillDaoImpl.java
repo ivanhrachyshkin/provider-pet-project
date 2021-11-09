@@ -46,8 +46,8 @@ public class BillDaoImpl implements BillDao {
 
     private static final String UPDATE_BILL_STATUS_QUERY =
             "UPDATE bills " +
-                    "SET status =? " +
-                    "WHERE subscription_id = ? AND date = ?";
+                    "SET status = true " +
+                    "WHERE subscription_id = ? AND value = ? AND date = ?";
 
     private final Connection connection;
 
@@ -181,9 +181,8 @@ public class BillDaoImpl implements BillDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(UPDATE_BILL_STATUS_QUERY)) {
 
-            statement.setBoolean(1, bill.getStatus());
-
-            statement.setInt(2, bill.getSubscriptionId());
+            statement.setInt(1, bill.getSubscriptionId());
+            statement.setFloat(2, bill.getValue());
             statement.setDate(3, java.sql.Date.valueOf(bill.getDate()));
 
             statement.executeUpdate();
