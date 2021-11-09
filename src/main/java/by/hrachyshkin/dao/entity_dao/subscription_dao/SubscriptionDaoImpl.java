@@ -33,6 +33,13 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                     "WHERE tariff_id = ? " +
                     ")";
 
+    private static final String EXISTS_BY_ACCOUNT_AND_TARIFF_ID_QUERY =
+            "SELECT EXISTS (" +
+                    "SELECT * " +
+                    "FROM subscriptions " +
+                    "WHERE account_id = ? tariff_id = ? " +
+                    ")";
+
     private static final String FIND_QUERY =
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions ";
@@ -102,6 +109,22 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     public boolean isExistByTariffId(final Integer tariffId) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_TARIFF_ID_QUERY)) {
+            statement.setInt(1, tariffId);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Subscription doesn't exist", e);
+        }
+    }
+
+    @Override
+    public boolean isExistByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
+            statement.setInt(1, accountId);
             statement.setInt(1, tariffId);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
@@ -210,7 +233,6 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
     @Override
     public void update(final Subscription subscription) throws DaoException {
-
         throw new UnsupportedOperationException();
     }
 

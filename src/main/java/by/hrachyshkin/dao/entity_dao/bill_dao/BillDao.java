@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface BillDao extends Dao<Bill> {
 
-    boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException;
+    boolean isExists(final Bill bill) throws DaoException;
 
     List<Bill> findAndFilterBySubscriptionId(Integer subscriptionId) throws DaoException;
 

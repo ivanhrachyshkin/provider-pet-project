@@ -9,7 +9,7 @@ import java.util.List;
 public interface TrafficDao extends Dao<Traffic> {
 
 
-    boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException;
+    boolean isExists(final Traffic traffic) throws DaoException;
 
     List<Traffic> findAndSortByDate() throws DaoException;
 

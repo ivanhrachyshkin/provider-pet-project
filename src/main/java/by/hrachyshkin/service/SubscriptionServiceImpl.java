@@ -15,21 +15,6 @@ public class SubscriptionServiceImpl implements Service<Subscription> {
 
     private final Transaction transaction;
 
-    public boolean isExist(final Integer id, final Integer accountId, final Integer tariffId) throws ServiceException {
-
-        try {
-            final SubscriptionDao subscriptionDao = transaction.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            if (id != null) {
-                return subscriptionDao.isExistById(id);
-            } else if (accountId != null) {
-                return subscriptionDao.isExistByAccountId(accountId);
-            } else return subscriptionDao.isExistByTariffId(tariffId);
-
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
     @Override
     public List<Subscription> find() throws ServiceException {
 
@@ -68,6 +53,9 @@ public class SubscriptionServiceImpl implements Service<Subscription> {
 
         try {
             final SubscriptionDao subscriptionDao = transaction.createDao(DaoKeys.SUBSCRIPTION_DAO);
+            if (subscriptionDao.isExistByAccountAndTariffId(subscription.getAccountId(), subscription.getTariffId())) {
+                throw new ServiceException();
+            }
             subscriptionDao.add(subscription);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -76,13 +64,7 @@ public class SubscriptionServiceImpl implements Service<Subscription> {
 
     @Override
     public void update(Subscription subscription) throws ServiceException {
-
-        try {
-            final SubscriptionDao subscriptionDao = transaction.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            subscriptionDao.update(subscription);
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
+        throw new UnsupportedOperationException();
     }
 
     @Override

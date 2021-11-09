@@ -2,6 +2,7 @@ package by.hrachyshkin.service;
 
 import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.DaoKeys;
+import by.hrachyshkin.dao.entity_dao.promotion_dao.PromotionDao;
 import by.hrachyshkin.dao.entity_dao.subscription_dao.SubscriptionDao;
 import by.hrachyshkin.dao.entity_dao.tariff_dao.TariffDao;
 import by.hrachyshkin.dao.transaction.Transaction;
@@ -22,9 +23,7 @@ public class TariffServiceImpl implements Service<Tariff> {
 
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
-
             return tariffDao.isExistById(id);
-
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -78,7 +77,6 @@ public class TariffServiceImpl implements Service<Tariff> {
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
             return tariffDao.findOneById(id);
-
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -102,7 +100,6 @@ public class TariffServiceImpl implements Service<Tariff> {
                 }
             }
             return accountTariffs;
-
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -112,7 +109,10 @@ public class TariffServiceImpl implements Service<Tariff> {
     public void add(final Tariff tariff) throws ServiceException {
 
         try {
-            TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
+            final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
+            if (tariffDao.isExistById(tariff.getId())) {
+                throw new ServiceException();
+            }
             tariffDao.add(tariff);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -124,8 +124,10 @@ public class TariffServiceImpl implements Service<Tariff> {
 
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
+            if (!tariffDao.isExistById(tariff.getId())) {
+                throw new ServiceException();
+            }
             tariffDao.update(tariff);
-
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -136,8 +138,14 @@ public class TariffServiceImpl implements Service<Tariff> {
 
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
+            final SubscriptionDao subscriptionDao = transaction.createDao(DaoKeys.SUBSCRIPTION_DAO);
+            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            if (!tariffDao.isExistById(id)
+                    || subscriptionDao.isExistByTariffId(id)
+                    || promotionDao.isExistByTariffId(id)) {
+                throw new ServiceException();
+            }
             tariffDao.delete(id);
-
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

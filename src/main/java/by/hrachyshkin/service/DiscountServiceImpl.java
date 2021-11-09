@@ -4,6 +4,7 @@ import by.hrachyshkin.dao.DaoException;
 import by.hrachyshkin.dao.entity_dao.DaoKeys;
 import by.hrachyshkin.dao.entity_dao.discount_dao.DiscountDao;
 import by.hrachyshkin.dao.entity_dao.promotion_dao.PromotionDao;
+import by.hrachyshkin.dao.entity_dao.subscription_dao.SubscriptionDao;
 import by.hrachyshkin.dao.transaction.Transaction;
 import by.hrachyshkin.dao.transaction.TransactionException;
 import by.hrachyshkin.entity.Discount;
@@ -17,16 +18,6 @@ import java.util.List;
 public class DiscountServiceImpl implements Service<Discount> {
 
     private final Transaction transaction;
-
-    public boolean isExist(final Integer id) throws ServiceException {
-
-        try {
-            final DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
-            return discountDao.isExistById(id);
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
 
     @Override
     public List<Discount> find() throws ServiceException {
@@ -108,6 +99,9 @@ public class DiscountServiceImpl implements Service<Discount> {
 
         try {
             DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
+            if (discountDao.isExistById(discount.getId())) {
+                throw new ServiceException();
+            }
             discountDao.add(discount);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -119,6 +113,9 @@ public class DiscountServiceImpl implements Service<Discount> {
 
         try {
             final DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
+            if (!discountDao.isExistById(discount.getId())) {
+                throw new ServiceException();
+            }
             discountDao.update(discount);
 
         } catch (TransactionException | DaoException e) {
@@ -130,9 +127,12 @@ public class DiscountServiceImpl implements Service<Discount> {
     public void delete(final Integer id) throws ServiceException {
 
         try {
+            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
             final DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
+            if (!discountDao.isExistById(id) || promotionDao.isExistByDiscountId(id)) {
+                throw new ServiceException();
+            }
             discountDao.delete(id);
-
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }

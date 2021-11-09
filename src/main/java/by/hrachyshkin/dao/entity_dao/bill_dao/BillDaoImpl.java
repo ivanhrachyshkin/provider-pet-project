@@ -12,11 +12,11 @@ import java.util.List;
 
 public class BillDaoImpl implements BillDao {
 
-    private static final String EXISTS_BY_SUBSCRIPTION_ID_QUERY =
+    private static final String EXISTS_QUERY =
             "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM bills " +
-                    "WHERE subscription_id = ?" +
+                    "WHERE subscription_id = ? AND value = ? AND date = ? AND status = ? " +
                     ")";
 
     private static final String FIND_QUERY =
@@ -56,10 +56,13 @@ public class BillDaoImpl implements BillDao {
     }
 
     @Override
-    public boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException {
+    public boolean isExists(final Bill bill) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_SUBSCRIPTION_ID_QUERY)) {
-            statement.setInt(1, subscriptionId);
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_QUERY)) {
+            statement.setInt(1, bill.getSubscriptionId());
+            statement.setFloat(2, bill.getValue());
+            statement.setDate(3, java.sql.Date.valueOf(bill.getDate()));
+            statement.setBoolean(4, bill.getStatus());
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
@@ -187,7 +190,7 @@ public class BillDaoImpl implements BillDao {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("Can't add bill", e);
+            throw new DaoException("Can't update bill", e);
         }
     }
 

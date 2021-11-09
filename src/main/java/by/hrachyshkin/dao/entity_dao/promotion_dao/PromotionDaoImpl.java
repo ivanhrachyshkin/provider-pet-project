@@ -26,6 +26,13 @@ public class PromotionDaoImpl implements PromotionDao {
                     "WHERE discount_id = ? " +
                     ")";
 
+    private static final String EXISTS_BY_TARIFF_AND_DISCOUNT_ID_QUERY =
+            "SELECT EXISTS (" +
+                    "SELECT * " +
+                    "FROM promotions " +
+                    "WHERE tariff_id = ? AND discount_id = ? " +
+                    ")";
+
     private static final String FIND_QUERY =
             "SELECT tariff_id, discount_id " +
                     "FROM promotions ";
@@ -71,6 +78,22 @@ public class PromotionDaoImpl implements PromotionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_DISCOUNT_ID_QUERY)) {
             statement.setInt(1, discountId);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Promotion doesn't exist", e);
+        }
+    }
+
+    @Override
+    public boolean isExistByTariffAndDiscountId(final Integer tariffId, final Integer discountId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_TARIFF_AND_DISCOUNT_ID_QUERY)) {
+            statement.setInt(1, tariffId);
+            statement.setInt(2, discountId);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();

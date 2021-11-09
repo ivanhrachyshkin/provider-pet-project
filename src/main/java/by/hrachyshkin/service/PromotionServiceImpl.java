@@ -15,27 +15,6 @@ public class PromotionServiceImpl implements Service<Promotion> {
 
     private final Transaction transaction;
 
-    public boolean isExistByTariffId(final Integer tariffId) throws ServiceException {
-
-        try {
-            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
-            return promotionDao.isExistByTariffId(tariffId);
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    public boolean isExistByDiscountId(final Integer discountId) throws ServiceException {
-
-        try {
-            final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
-            return promotionDao.isExistByTariffId(discountId);
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-
     @Override
     public List<Promotion> find() throws ServiceException {
 
@@ -67,6 +46,9 @@ public class PromotionServiceImpl implements Service<Promotion> {
 
         try {
             final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            if (promotionDao.isExistByTariffAndDiscountId(promotion.getTariffId(), promotion.getDiscountId())){
+                throw new ServiceException();
+            }
             promotionDao.add(promotion);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -87,6 +69,9 @@ public class PromotionServiceImpl implements Service<Promotion> {
 
         try {
             final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
+            if (!promotionDao.isExistByTariffAndDiscountId(tariffId, discountId)) {
+                throw new ServiceException();
+            }
             promotionDao.deleteByTariffAndDiscount(tariffId, discountId);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);

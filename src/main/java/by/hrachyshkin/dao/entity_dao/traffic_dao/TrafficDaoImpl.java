@@ -17,7 +17,7 @@ public class TrafficDaoImpl implements TrafficDao {
             "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM traffics " +
-                    "WHERE subscription_id = ? " +
+                    "WHERE subscription_id = ? AND value = ? AND date = ? " +
                     ")";
 
     private static final String FIND_QUERY =
@@ -52,10 +52,12 @@ public class TrafficDaoImpl implements TrafficDao {
     }
 
     @Override
-    public boolean isExistBySubscriptionId(final Integer subscriptionId) throws DaoException {
+    public boolean isExists(final Traffic traffic) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_SUBSCRIPTION_ID_QUERY)) {
-            statement.setInt(1, subscriptionId);
+            statement.setInt(1, traffic.getSubscriptionId());
+            statement.setInt(2, traffic.getValue());
+            statement.setDate(3, java.sql.Date.valueOf(traffic.getDate()));
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();

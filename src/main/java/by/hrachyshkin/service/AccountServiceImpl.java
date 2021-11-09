@@ -15,15 +15,11 @@ public class AccountServiceImpl implements Service<Account> {
 
     private final Transaction transactionImpl;
 
-    public boolean isExist(final Integer id, final String email, final String password) throws ServiceException {
+    public boolean isExistByEmailAndPassword(final String email, final String password) throws ServiceException {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
-            if (id != null) {
-                return accountDao.isExistById(id);
-            } else if (password == null) {
-                return accountDao.isExistByEmail(email);
-            } else return accountDao.isExistByEmailAndPassword(email, password);
+            return accountDao.isExistByEmailAndPassword(email, password);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -55,17 +51,22 @@ public class AccountServiceImpl implements Service<Account> {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            if (!accountDao.isExistById(id)) {
+                throw new ServiceException();
+            }
             return accountDao.findOneById(id);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
-
     public Account findOneByEmail(final String email) throws ServiceException {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            if (!accountDao.isExistByEmail(email)) {
+                throw new ServiceException();
+            }
             return accountDao.findOneByEmail(email);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -76,7 +77,10 @@ public class AccountServiceImpl implements Service<Account> {
     public void add(final Account account) throws ServiceException {
 
         try {
-            AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+           final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            if (accountDao.isExistByEmail(account.getEmail())) {
+                throw new ServiceException();
+            }
             accountDao.add(account);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -88,6 +92,9 @@ public class AccountServiceImpl implements Service<Account> {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            if (!accountDao.isExistById(account.getId())) {
+                throw new ServiceException();
+            }
             accountDao.update(account);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);

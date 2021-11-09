@@ -18,17 +18,6 @@ public class TrafficServiceImpl implements Service<Traffic> {
 
     private final Transaction transaction;
 
-
-    public boolean isExistBySubscriptionId(final Integer subscriptionId) throws ServiceException {
-
-        try {
-            final TrafficDao trafficDao = transaction.createDao(DaoKeys.TRAFFIC_DAO);
-            return trafficDao.isExistBySubscriptionId(subscriptionId);
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
     @Override
     public List<Traffic> find() throws ServiceException {
 
@@ -106,6 +95,9 @@ public class TrafficServiceImpl implements Service<Traffic> {
 
         try {
             final TrafficDao trafficDao = transaction.createDao(DaoKeys.TRAFFIC_DAO);
+            if (trafficDao.isExists(traffic)) {
+                throw new ServiceException();
+            }
             trafficDao.add(traffic);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);

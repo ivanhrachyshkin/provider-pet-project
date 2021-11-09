@@ -18,18 +18,9 @@ public class BillServiceImpl implements Service<Bill> {
 
     private final Transaction transaction;
 
-    public boolean isExistBySubscriptionId(final Integer subscriptionId) throws ServiceException {
-
-        try {
-            final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
-            return billDao.isExistBySubscriptionId(subscriptionId);
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
     @Override
     public List<Bill> find() throws ServiceException {
+
         try {
             final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
             return billDao.find();
@@ -39,6 +30,7 @@ public class BillServiceImpl implements Service<Bill> {
     }
 
     public List<Bill> findAndSortByDate() throws ServiceException {
+
         try {
             final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
             return billDao.findAndSortByDate();
@@ -48,6 +40,7 @@ public class BillServiceImpl implements Service<Bill> {
     }
 
     public List<Bill> findAndFilterBySubscriptionId(final Integer subscriptionId) throws ServiceException {
+
         try {
             final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
             return billDao.findAndFilterBySubscriptionId(subscriptionId);
@@ -57,6 +50,7 @@ public class BillServiceImpl implements Service<Bill> {
     }
 
     public List<Bill> findAndFilterAndSort(final Integer subscriptionId) throws ServiceException {
+
         try {
             final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
             return billDao.findAndFilterAndSort(subscriptionId);
@@ -90,20 +84,6 @@ public class BillServiceImpl implements Service<Bill> {
 
             }
             return subscriptionBills;
-
-        } catch (TransactionException | DaoException e) {
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public void update(final Bill bill) throws ServiceException {
-
-        try {
-            if (!bill.getStatus()) {
-                final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
-                billDao.update(bill);
-            }
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -113,9 +93,26 @@ public class BillServiceImpl implements Service<Bill> {
     public void add(final Bill bill) throws ServiceException {
 
         try {
-            BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
+            final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
+            if (billDao.isExists(bill)) {
+                throw new ServiceException();
+            }
             billDao.add(bill);
+        } catch (TransactionException | DaoException e) {
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 
+    @Override
+    public void update(final Bill bill) throws ServiceException {
+
+        try {
+            final BillDao billDao = transaction.createDao(DaoKeys.BILL_DAO);
+            if (billDao.isExists(bill) || !bill.getStatus()) {
+                billDao.update(bill);
+            } else {
+                throw new ServiceException();
+            }
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
