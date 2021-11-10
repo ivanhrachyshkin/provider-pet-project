@@ -1,9 +1,8 @@
-package by.hrachyshkin.provider.action.tariff_action;
+package by.hrachyshkin.provider.controller.action.tariff_action;
 
-import by.hrachyshkin.provider.entity.Promotion;
-import by.hrachyshkin.provider.service.PromotionServiceImpl;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
+import by.hrachyshkin.provider.service.TariffServiceImpl;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;
@@ -13,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/tariffs/discounts/add")
-public class AddDiscountToTariffAction extends HttpServlet {
+@WebServlet("/tariffs/delete")
+public class DeleteTariffAction extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -32,10 +31,11 @@ public class AddDiscountToTariffAction extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        final PromotionServiceImpl promotionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
-        final String tariffId = request.getParameter("tariffId");
-        final String discountId = request.getParameter("discountId");
-        promotionService.add(new Promotion(Integer.valueOf(tariffId), Integer.valueOf(discountId)));
+        final TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+
+        final Integer tariffId = Integer.valueOf(request.getParameter("id"));
+        tariffService.delete(tariffId);
+
         response.sendRedirect("/training-java-project-provider/tariffs");
     }
 }

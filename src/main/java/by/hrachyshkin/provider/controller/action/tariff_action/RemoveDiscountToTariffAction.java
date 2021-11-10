@@ -1,6 +1,5 @@
-package by.hrachyshkin.provider.action.tariff_action;
+package by.hrachyshkin.provider.controller.action.tariff_action;
 
-import by.hrachyshkin.provider.entity.Promotion;
 import by.hrachyshkin.provider.service.PromotionServiceImpl;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;

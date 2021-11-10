@@ -1,9 +1,9 @@
-package by.hrachyshkin.provider.action.tariff_action;
+package by.hrachyshkin.provider.controller.action.tariff_action;
 
 import by.hrachyshkin.provider.entity.Tariff;
-import by.hrachyshkin.provider.service.TariffServiceImpl;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
+import by.hrachyshkin.provider.service.TariffServiceImpl;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;
@@ -12,10 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
-@WebServlet("/tariffs")
-public class ShowTariffAction extends HttpServlet {
+@WebServlet("/tariffs/update")
+public class UpdateTariffAction extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -33,18 +32,15 @@ public class ShowTariffAction extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+        final TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
-        final List<Tariff> tariffs;
-        final String rawType = request.getParameter("filter");
+        final Integer id = Integer.valueOf(request.getParameter("id"));
+        final String name = request.getParameter("name");
+        final Tariff.Type type = Tariff.Type.valueOf(request.getParameter("type").toUpperCase());
+        final Integer speed = Integer.valueOf(request.getParameter("dateFrom"));
+        final Float price = Float.valueOf(request.getParameter("dateTo"));
+        tariffService.update(new Tariff(id, name, type, speed, price));
 
-
-        if(rawType != null) {
-            final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
-            tariffs = tariffService.findAndFilterByType(type);
-        } else tariffs = tariffService.find();
-
-        request.setAttribute("tariffs", tariffs);
-        request.getRequestDispatcher("tariffs.jsp").forward(request, response);
+        response.sendRedirect("/training-java-project-provider/tariffs");
     }
 }

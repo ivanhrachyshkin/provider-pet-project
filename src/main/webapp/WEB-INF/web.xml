@@ -10,6 +10,10 @@
         <res-auth>Container</res-auth>
     </resource-ref>
 
+    <listener>
+        <listener-class>by.hrachyshkin.provider.controller.listener.SessionListener</listener-class>
+    </listener>
+
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
