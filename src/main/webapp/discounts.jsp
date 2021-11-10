@@ -1,4 +1,5 @@
 <%@ page import="by.hrachyshkin.provider.entity.Tariff" %>
+<%@ page import="by.hrachyshkin.provider.entity.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
@@ -33,11 +34,11 @@
 </nav>
 
 <div class="container">
-    <h1 class="text-center">Tariff plans</h1>
+    <h1 class="text-center">Discounts</h1>
     <h1></h1>
     <h1></h1>
-    <a href="tariffs?filter=trafficked" class="btn btn-info">trafficked</a>
-    <a href="tariffs?filter=unlimited" class="btn btn-info">unlimited</a>
+    <a href="discounts?filter=percentage" class="btn btn-info">percentage</a>
+    <a href="discounts?filter=coefficient" class="btn btn-info">coefficient</a>
 </div>
 
 <div class="container">
@@ -45,54 +46,45 @@
         <tr>
             <th>Name</th>
             <th>Type</th>
-            <th>Speed</th>
-            <th>Price</th>
+            <th>Value</th>
+            <th>Start</th>
+            <th>End</th>
             <th>Action</th>
         </tr>
-        <c:forEach var="tariff" items="${tariffs}">
+        <c:forEach var="discount" items="${discounts}">
             <tr>
-                <form action="tariffs/update" method="POST">
-                    <td><input name="name" type="text" value="${tariff.name}" placeholder="${tariff.name}"/></td>
+                <form action="discounts/update" method="POST">
+                    <td><input name="name" type="text" value="${discount.name}" placeholder="${discount.name}"/></td>
                     <td><select name="type">
-                        <c:set var="types" value="<%=Tariff.Type.values()%>"/>
+                        <c:set var="types" value="<%=Discount.Type.values()%>"/>
                         <c:forEach var="type" items="${types}">
-                            <option value="${type.name()}" ${tariff.type.name()==type ?'selected':''}>${type.name()}</option>
+                            <option value="${type.name()}" ${discount.type.name()==type ?'selected':''}>${type.name()}</option>
                         </c:forEach>
                     </select></td>
-                    <td><input name="speed" type="number" value="${tariff.speed}" placeholder="${tariff.speed}"/></td>
-                    <td><input name="price" type="number" value="${tariff.price}" placeholder="${tariff.price}"/></td>
+                    <td><input name="value" type="number" value="${discount.value}" placeholder="${discount.value}"/></td>
+                    <td><input name="dateFrom" type="date" value="${discount.dateFrom}" placeholder="${discount.dateFrom}"/></td>
+                    <td><input name="dateTo" type="date" value="${discount.dateTo}" placeholder="${discount.dateTo}"/></td>
                     <td><button type="submit" class="btn btn-info">update</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
+                    <input name="id" type="hidden" value="${discount.id}">
                 </form>
-                <form action="tariffs/delete" method="POST">
+                <form action="discounts/delete" method="POST">
                     <td><button type="submit" class="btn btn-info">delete</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
-                </form>
-                <form action="discounts" method="POST">
-                    <td><button type="submit" class="btn btn-info">discounts</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
-                </form>
-                <form action="111" method="POST">
-                    <td><button type="submit" class="btn btn-info">traffics</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
-                </form>
-                <form action="111" method="POST">
-                    <td><button type="submit" class="btn btn-info">bills</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
+                    <input name="id" type="hidden" value="${discount.id}">
                 </form>
             </tr>
         </c:forEach>
         <tr>
-            <form action="tariffs/create" method="POST">
+            <form action="discounts/create" method="POST">
                 <td><input name="name" type="text"/></td>
                 <td><select name="type">
-                    <c:set var="types" value="<%=Tariff.Type.values()%>"/>
+                    <c:set var="types" value="<%=Discount.Type.values()%>"/>
                     <c:forEach var="type" items="${types}">
                         <option value="${type.name()}">${type.name()}</option>
                     </c:forEach>
                 </select></td>
-                <td><input name="speed" type="number"/></td>
-                <td><input name="price" type="number"/></td>
+                <td><input name="value" type="number"/></td>
+                <td><input name="dateFrom" type="date"/></td>
+                <td><input name="dateTo" type="date"/></td>
                 <td><button type="submit" class="btn btn-info">create</button></td>
             </form>
         </tr>

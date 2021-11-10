@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
-    <title>Providi</title>
+    <title>Provider</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -21,7 +21,7 @@
         <div>
             <ul class="nav navbar-nav">
                 <li><a href="tariffs"><b>Tariff plans</b></a></li>
-                <li><a href="#"><b>Stock</b></a></li>
+                <li><a href="discounts"><b>Discounts</b></a></li>
                 <li><a href="#"><b>About us</b></a></li>
                 <li><a href="#"><b>Personal Cabinet</b></a></li>
             </ul>
@@ -30,10 +30,14 @@
 </nav>
 
 <div class="container">
-    <h1 class="text-center">Providi - is the best choice</h1>
+    <h1 class="text-center">Provider - is the best choice</h1>
     <h2 class="text-center">Tariff plans</h2>
     <h2 class="text-center">
         <a href="tariffs" class="btn btn-info">show tariffs</a>
+    </h2>
+    <h2 class="text-center">Discounts</h2>
+    <h2 class="text-center">
+        <a href="discounts" class="btn btn-info">show discounts</a>
     </h2>
     </tbody>
     </table>
