@@ -68,16 +68,8 @@
                     <td><button type="submit" class="btn btn-info">delete</button></td>
                     <input name="id" type="hidden" value="${tariff.id}">
                 </form>
-                <form action="discounts" method="POST">
+                <form action="tariffs/discounts" method="GET">
                     <td><button type="submit" class="btn btn-info">discounts</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
-                </form>
-                <form action="111" method="POST">
-                    <td><button type="submit" class="btn btn-info">traffics</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
-                </form>
-                <form action="111" method="POST">
-                    <td><button type="submit" class="btn btn-info">bills</button></td>
                     <input name="id" type="hidden" value="${tariff.id}">
                 </form>
             </tr>
