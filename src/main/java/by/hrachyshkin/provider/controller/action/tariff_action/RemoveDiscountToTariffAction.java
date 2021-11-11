@@ -1,8 +1,8 @@
 package by.hrachyshkin.provider.controller.action.tariff_action;
 
 import by.hrachyshkin.provider.controller.action.BaseAction;
-import by.hrachyshkin.provider.entity.Promotion;
-import by.hrachyshkin.provider.service.PromotionServiceImpl;
+import by.hrachyshkin.provider.service.PromotionService;
+import by.hrachyshkin.provider.service.impl.PromotionServiceImpl;
 import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
@@ -21,7 +21,7 @@ public class RemoveDiscountToTariffAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        final PromotionServiceImpl promotionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
 
         try {
             final String tariffId = request.getParameter("tariffId");

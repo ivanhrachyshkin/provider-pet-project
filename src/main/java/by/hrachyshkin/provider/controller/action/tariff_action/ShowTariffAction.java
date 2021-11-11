@@ -1,8 +1,9 @@
 package by.hrachyshkin.provider.controller.action.tariff_action;
 
 import by.hrachyshkin.provider.controller.action.BaseAction;
-import by.hrachyshkin.provider.entity.Tariff;
-import by.hrachyshkin.provider.service.TariffServiceImpl;
+import by.hrachyshkin.provider.model.Tariff;
+import by.hrachyshkin.provider.service.TariffService;
+import by.hrachyshkin.provider.service.impl.TariffServiceImpl;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
 import lombok.SneakyThrows;
@@ -21,7 +22,7 @@ public class ShowTariffAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-       final TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+       final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
         final List<Tariff> tariffs;
         final String rawType = request.getParameter("filter");

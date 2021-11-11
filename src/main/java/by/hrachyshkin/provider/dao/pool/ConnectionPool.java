@@ -36,6 +36,7 @@ final public class ConnectionPool {
             try {
                 if (!freeConnections.isEmpty()) {
                     connection = freeConnections.take();
+                    connection.setAutoCommit(false);
 
                     if (!connection.isValid(checkConnectionTimeout)) {
 
@@ -49,6 +50,7 @@ final public class ConnectionPool {
 
                 } else if (usedConnections.size() < maxSize) {
                     connection = createConnection();
+                    connection.setAutoCommit(false);
 
                 } else {
                     LOGGER.error("The limit of number of database connections is exceeded");

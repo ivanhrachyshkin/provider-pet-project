@@ -1,11 +1,11 @@
 package by.hrachyshkin.provider.controller.action.tariff_action;
 
 import by.hrachyshkin.provider.controller.action.BaseAction;
-import by.hrachyshkin.provider.entity.Tariff;
 import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
-import by.hrachyshkin.provider.service.TariffServiceImpl;
+import by.hrachyshkin.provider.service.TariffService;
+import by.hrachyshkin.provider.service.impl.TariffServiceImpl;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;
@@ -21,7 +21,7 @@ public class DeleteTariffAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        final TariffServiceImpl tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+        final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
         try {
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));

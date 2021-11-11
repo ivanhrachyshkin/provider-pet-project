@@ -1,4 +1,4 @@
-<%@ page import="by.hrachyshkin.provider.entity.Tariff" %>
+<%@ page import="by.hrachyshkin.provider.model.Tariff" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
