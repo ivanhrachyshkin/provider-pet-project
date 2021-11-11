@@ -5,6 +5,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+    <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -20,12 +21,12 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="index.jsp" class="navbar-brand">Provider</a>
+            <a href="${url}/index.jsp" class="navbar-brand">Provider</a>
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li><a href="tariffs"><b>Tariff plans</b></a></li>
-                <li><a href="discounts"><b>Discounts</b></a></li>
+                <li><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
+                <li><a href="${url}/discounts"><b>Discounts</b></a></li>
                 <li><a href="#"><b>About us</b></a></li>
                 <li><a href="#"><b>Personal Cabinet</b></a></li>
             </ul>
@@ -56,7 +57,7 @@
                     <td>${discount.value}</td>
                     <td>${discount.dateFrom}</td>
                     <td>${discount.dateTo}</td>
-                <form action="discounts/remove" method="GET">
+                <form action="${url}/tariffs/discounts/remove" method="POST">
                     <td><button type="submit" class="btn btn-info">remove</button></td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                     <input name="discountId" type="hidden" value="${discount.id}">
@@ -66,8 +67,8 @@
     </table>
 </div>
 
-<h6 class="text-center">
-<form action="discounts/add">
+<span class="text-center">
+<form action="${url}/tariffs/discounts/add" method="POST">
     <label>Choose a discount:</label>
     <select name="discountId">
         <c:forEach var="discount" items="${discounts}">
@@ -77,8 +78,9 @@
     <input type="submit" class="btn btn-info" value="add discount">
     <input name="tariffId" type="hidden" value="${tariff.id}">
 </form>
-    </div>
-</h6>
-
+</span>
+<div>
+    ${error}
+</div>
 </body>
 </html>

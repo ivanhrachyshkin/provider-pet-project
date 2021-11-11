@@ -23,6 +23,13 @@ public class DiscountDaoImpl implements DiscountDao {
                     "WHERE name = ?" +
                     ")";
 
+    private static final String EXISTS_BY_NOT_ID_AND_NAME_QUERY =
+            "SELECT EXISTS (" +
+                    "SELECT * " +
+                    "FROM discounts " +
+                    "WHERE id != ? AND name = ?" +
+                    ")";
+
     private static final String FIND_QUERY =
             "SELECT id, name, type, value, date_from, date_to " +
                     "FROM discounts ";
@@ -72,7 +79,7 @@ public class DiscountDaoImpl implements DiscountDao {
     @Override
     public boolean isExistById(final Integer id) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY);) {
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ID_QUERY)) {
             statement.setInt(1, id);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
@@ -87,7 +94,7 @@ public class DiscountDaoImpl implements DiscountDao {
     @Override
     public boolean isExistByName(final String name) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY);) {
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NAME_QUERY)) {
             statement.setString(1, name);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
@@ -98,6 +105,23 @@ public class DiscountDaoImpl implements DiscountDao {
             throw new DaoException("Discount doesn't exist", e);
         }
     }
+
+    @Override
+    public boolean isExistByNotIdAndName(final Integer id, final String name) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NOT_ID_AND_NAME_QUERY)) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Discount doesn't exist", e);
+        }
+    }
+
 
     @Override
     public List<Discount> find() throws DaoException {

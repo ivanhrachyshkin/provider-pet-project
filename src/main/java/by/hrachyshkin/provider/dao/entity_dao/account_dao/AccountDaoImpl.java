@@ -77,8 +77,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.setInt(1, id);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getBoolean(1);
+                resultSet.next(); return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);
@@ -92,8 +91,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.setString(1, name);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getBoolean(1);
+                resultSet.next(); return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);
@@ -108,8 +106,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.setString(2, password);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getBoolean(1);
+                resultSet.next(); return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);

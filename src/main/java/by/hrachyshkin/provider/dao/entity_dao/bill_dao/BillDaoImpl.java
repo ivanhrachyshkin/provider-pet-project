@@ -65,8 +65,8 @@ public class BillDaoImpl implements BillDao {
             statement.setBoolean(4, bill.getStatus());
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getBoolean(1);
+                 resultSet.next();
+                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Bill doesn't exist", e);

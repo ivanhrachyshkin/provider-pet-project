@@ -26,6 +26,13 @@ public class TariffDaoImpl implements TariffDao {
                     "WHERE name = ?" +
                     ")";
 
+    private static final String EXISTS_BY_NOT_ID_AND_NAME_QUERY =
+            "SELECT EXISTS (" +
+                    "SELECT * " +
+                    "FROM tariffs " +
+                    "WHERE id != ? AND name = ?" +
+                    ")";
+
     private static final String FIND_QUERY =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs ";
@@ -79,8 +86,7 @@ public class TariffDaoImpl implements TariffDao {
             statement.setInt(1, id);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                return resultSet.getBoolean(1);
+                resultSet.next(); return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Tariff doesn't exist", e);
@@ -94,11 +100,26 @@ public class TariffDaoImpl implements TariffDao {
             statement.setString(1, name);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next(); return resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Tariff doesn't exist", e);
+        }
+    }
+
+    @Override
+    public boolean isExistByNotIdAndName(final Integer id, final String name) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NOT_ID_AND_NAME_QUERY)) {
+            statement.setInt(1, id);
+            statement.setString(2, name);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Tariff doesn't exist", e);
+            throw new DaoException("Can't check if tariff exists by not id and name", e);
         }
     }
 
@@ -117,7 +138,6 @@ public class TariffDaoImpl implements TariffDao {
                         resultSet.getFloat(5));
                 tariffs.add(tariff);
             }
-
             return tariffs;
         } catch (Exception e) {
             throw new DaoException("Can't find tariffs");
@@ -127,23 +147,23 @@ public class TariffDaoImpl implements TariffDao {
     @Override
     public List<Tariff> findAndSortBySpeedAndPrice() throws DaoException {
 
-            try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY);
-                 final ResultSet resultSet = statement.executeQuery()) {
-                final List<Tariff> tariffs = new ArrayList<>();
-                while (resultSet.next()) {
-                    final Tariff tariff = new Tariff(
-                            resultSet.getInt(1),
-                            resultSet.getString(2),
-                            Tariff.Type.values()[resultSet.getInt(3)],
-                            resultSet.getInt(4),
-                            resultSet.getFloat(5));
-                    tariffs.add(tariff);
-                }
-
-                return tariffs;
-            } catch (Exception e) {
-                throw new DaoException("Can't find or sort tariffs");
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY);
+             final ResultSet resultSet = statement.executeQuery()) {
+            final List<Tariff> tariffs = new ArrayList<>();
+            while (resultSet.next()) {
+                final Tariff tariff = new Tariff(
+                        resultSet.getInt(1),
+                        resultSet.getString(2),
+                        Tariff.Type.values()[resultSet.getInt(3)],
+                        resultSet.getInt(4),
+                        resultSet.getFloat(5));
+                tariffs.add(tariff);
             }
+
+            return tariffs;
+        } catch (Exception e) {
+            throw new DaoException("Can't find or sort tariffs");
+        }
     }
 
     @Override

@@ -47,7 +47,7 @@ public class PromotionServiceImpl implements Service<Promotion> {
         try {
             final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
             if (promotionDao.isExistByTariffAndDiscountId(promotion.getTariffId(), promotion.getDiscountId())){
-                throw new ServiceException();
+                throw new ServiceException("Discount is already added to current tariff");
             }
             promotionDao.add(promotion);
         } catch (TransactionException | DaoException e) {
@@ -70,7 +70,7 @@ public class PromotionServiceImpl implements Service<Promotion> {
         try {
             final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
             if (!promotionDao.isExistByTariffAndDiscountId(tariffId, discountId)) {
-                throw new ServiceException();
+                throw new ServiceException("There is no such discount for current tariff");
             }
             promotionDao.deleteByTariffAndDiscount(tariffId, discountId);
         } catch (TransactionException | DaoException e) {

@@ -76,6 +76,9 @@ public class TariffServiceImpl implements Service<Tariff> {
 
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
+            if (!tariffDao.isExistById(id)) {
+                throw new ServiceException("Can't find tariff by id");
+            }
             return tariffDao.findOneById(id);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -111,7 +114,7 @@ public class TariffServiceImpl implements Service<Tariff> {
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
             if (tariffDao.isExistByName(tariff.getName())) {
-                throw new ServiceException();
+                throw new ServiceException("Can't add tariff");
             }
             tariffDao.add(tariff);
         } catch (TransactionException | DaoException e) {
@@ -125,7 +128,10 @@ public class TariffServiceImpl implements Service<Tariff> {
         try {
             final TariffDao tariffDao = transaction.createDao(DaoKeys.TARIFF_DAO);
             if (!tariffDao.isExistById(tariff.getId())) {
-                throw new ServiceException();
+                throw new ServiceException("Can't update current tariff");
+            }
+            if (tariffDao.isExistByNotIdAndName(tariff.getId(), tariff.getName())) {
+                throw new ServiceException("Can't update current tariff");
             }
             tariffDao.update(tariff);
         } catch (TransactionException | DaoException e) {
@@ -143,7 +149,7 @@ public class TariffServiceImpl implements Service<Tariff> {
             if (!tariffDao.isExistById(id)
                     || subscriptionDao.isExistByTariffId(id)
                     || promotionDao.isExistByTariffId(id)) {
-                throw new ServiceException();
+                throw new ServiceException("Can't delete current tariff");
             }
             tariffDao.delete(id);
         } catch (TransactionException | DaoException e) {

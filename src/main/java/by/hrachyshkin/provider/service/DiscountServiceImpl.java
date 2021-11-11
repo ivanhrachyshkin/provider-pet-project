@@ -66,6 +66,9 @@ public class DiscountServiceImpl implements Service<Discount> {
 
         try {
             final DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
+            if(!discountDao.isExistById(id)) {
+                throw new ServiceException("Can't find discount by id");
+            }
             return discountDao.findOneById(id);
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
@@ -99,7 +102,7 @@ public class DiscountServiceImpl implements Service<Discount> {
         try {
             DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
             if (discountDao.isExistByName(discount.getName())) {
-                throw new ServiceException();
+                throw new ServiceException("Can't add discount");
             }
             discountDao.add(discount);
         } catch (TransactionException | DaoException e) {
@@ -113,7 +116,10 @@ public class DiscountServiceImpl implements Service<Discount> {
         try {
             final DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
             if (!discountDao.isExistById(discount.getId())) {
-                throw new ServiceException();
+                throw new ServiceException("Can't update discount");
+            }
+            if (discountDao.isExistByNotIdAndName(discount.getId(), discount.getName())) {
+                throw new ServiceException("Can't update discount");
             }
             discountDao.update(discount);
 
@@ -129,7 +135,7 @@ public class DiscountServiceImpl implements Service<Discount> {
             final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
             final DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
             if (!discountDao.isExistById(id) || promotionDao.isExistByDiscountId(id)) {
-                throw new ServiceException();
+                throw new ServiceException("Can't delete discount");
             }
             discountDao.delete(id);
         } catch (TransactionException | DaoException e) {

@@ -4,6 +4,7 @@
 <!doctype html>
 <html lang="ru">
 <head>
+    <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -15,16 +16,15 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="index.jsp" class="navbar-brand">Provider</a>
+            <a href="${url}/index.jsp" class="navbar-brand">Provider</a>
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li><a href="tariffs"><b>Tariff plans</b></a></li>
-                <li><a href="discounts"><b>Discounts</b></a></li>
+                <li><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
+                <li><a href="${url}/discounts"><b>Discounts</b></a></li>
                 <li><a href="#"><b>About us</b></a></li>
                 <li><a href="#"><b>Personal Cabinet</b></a></li>
             </ul>
@@ -36,8 +36,8 @@
     <h1 class="text-center">Tariff plans</h1>
     <h1></h1>
     <h1></h1>
-    <a href="tariffs?filter=trafficked" class="btn btn-info">trafficked</a>
-    <a href="tariffs?filter=unlimited" class="btn btn-info">unlimited</a>
+    <a href="${url}/tariffs?filter=trafficked" class="btn btn-info">trafficked</a>
+    <a href="${url}/tariffs?filter=unlimited" class="btn btn-info">unlimited</a>
 </div>
 
 <div class="container">
@@ -51,7 +51,7 @@
         </tr>
         <c:forEach var="tariff" items="${tariffs}">
             <tr>
-                <form action="tariffs/update" method="POST">
+                <form action="${url}/tariffs/update" method="POST">
                     <td><input name="name" type="text" value="${tariff.name}" placeholder="${tariff.name}"/></td>
                     <td><select name="type">
                         <c:set var="types" value="<%=Tariff.Type.values()%>"/>
@@ -62,20 +62,20 @@
                     <td><input name="speed" type="number" value="${tariff.speed}" placeholder="${tariff.speed}"/></td>
                     <td><input name="price" type="number" value="${tariff.price}" placeholder="${tariff.price}"/></td>
                     <td><button type="submit" class="btn btn-info">update</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
+                    <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
-                <form action="tariffs/delete" method="POST">
+                <form action="${url}/tariffs/delete" method="POST">
                     <td><button type="submit" class="btn btn-info">delete</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
+                    <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
-                <form action="tariffs/discounts" method="GET">
+                <form action="${url}/tariffs/discounts" method="POST">
                     <td><button type="submit" class="btn btn-info">discounts</button></td>
-                    <input name="id" type="hidden" value="${tariff.id}">
+                    <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
             </tr>
         </c:forEach>
         <tr>
-            <form action="tariffs/create" method="POST">
+            <form action="${url}/tariffs/create" method="POST">
                 <td><input name="name" type="text"/></td>
                 <td><select name="type">
                     <c:set var="types" value="<%=Tariff.Type.values()%>"/>
@@ -91,5 +91,8 @@
     </table>
 </div>
 
+<div>
+    ${error}
+</div>
 </body>
 </html>

@@ -3,8 +3,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
+    <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -16,16 +17,15 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="index.jsp" class="navbar-brand">Provider</a>
+            <a href="${url}/index.jsp" class="navbar-brand">Provider</a>
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li><a href="tariffs"><b>Tariff plans</b></a></li>
-                <li><a href="discounts"><b>Discounts</b></a></li>
+                <li><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
+                <li><a href="${url}/discounts"><b>Discounts</b></a></li>
                 <li><a href="#"><b>About us</b></a></li>
                 <li><a href="#"><b>Personal Cabinet</b></a></li>
             </ul>
@@ -37,8 +37,8 @@
     <h1 class="text-center">Discounts</h1>
     <h1></h1>
     <h1></h1>
-    <a href="discounts?filter=percentage" class="btn btn-info">percentage</a>
-    <a href="discounts?filter=coefficient" class="btn btn-info">coefficient</a>
+    <a href="${url}/discounts?filter=percentage" class="btn btn-info">percentage</a>
+    <a href="${url}/discounts?filter=coefficient" class="btn btn-info">coefficient</a>
 </div>
 
 <div class="container">
@@ -53,7 +53,7 @@
         </tr>
         <c:forEach var="discount" items="${discounts}">
             <tr>
-                <form action="discounts/update" method="POST">
+                <form action="${url}/discounts/update" method="POST">
                     <td><input name="name" type="text" value="${discount.name}" placeholder="${discount.name}"/></td>
                     <td><select name="type">
                         <c:set var="types" value="<%=Discount.Type.values()%>"/>
@@ -67,14 +67,14 @@
                     <td><button type="submit" class="btn btn-info">update</button></td>
                     <input name="id" type="hidden" value="${discount.id}">
                 </form>
-                <form action="discounts/delete" method="POST">
+                <form action="${url}/discounts/delete" method="POST">
                     <td><button type="submit" class="btn btn-info">delete</button></td>
                     <input name="id" type="hidden" value="${discount.id}">
                 </form>
             </tr>
         </c:forEach>
         <tr>
-            <form action="discounts/create" method="POST">
+            <form action="${url}/discounts/create" method="POST">
                 <td><input name="name" type="text"/></td>
                 <td><select name="type">
                     <c:set var="types" value="<%=Discount.Type.values()%>"/>
@@ -90,6 +90,8 @@
         </tr>
     </table>
 </div>
-
+<div>
+    ${error}
+</div>
 </body>
 </html>
