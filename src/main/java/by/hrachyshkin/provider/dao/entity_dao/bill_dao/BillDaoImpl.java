@@ -65,8 +65,8 @@ public class BillDaoImpl implements BillDao {
             statement.setBoolean(4, bill.getStatus());
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                 resultSet.next();
-                 return resultSet.getBoolean(1);
+                resultSet.next();
+                return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Bill doesn't exist", e);
@@ -80,11 +80,7 @@ public class BillDaoImpl implements BillDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Bill> bills = new ArrayList<>();
             while (resultSet.next()) {
-                final Bill bill = new Bill(
-                        resultSet.getInt(1),
-                        resultSet.getFloat(2),
-                        resultSet.getDate(3).toLocalDate(),
-                        resultSet.getBoolean(4));
+                final Bill bill = buildBill(resultSet);
                 bills.add(bill);
             }
             return bills;
@@ -100,11 +96,7 @@ public class BillDaoImpl implements BillDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Bill> bills = new ArrayList<>();
             while (resultSet.next()) {
-                final Bill bill = new Bill(
-                        resultSet.getInt(1),
-                        resultSet.getFloat(2),
-                        resultSet.getDate(3).toLocalDate(),
-                        resultSet.getBoolean(4));
+                final Bill bill = buildBill(resultSet);
                 bills.add(bill);
             }
             return bills;
@@ -122,11 +114,7 @@ public class BillDaoImpl implements BillDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Bill> bills = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Bill bill = new Bill(
-                            resultSet.getInt(1),
-                            resultSet.getFloat(2),
-                            resultSet.getDate(3).toLocalDate(),
-                            resultSet.getBoolean(4));
+                    final Bill bill = buildBill(resultSet);
                     bills.add(bill);
                 }
                 return bills;
@@ -145,11 +133,7 @@ public class BillDaoImpl implements BillDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Bill> bills = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Bill bill = new Bill(
-                            resultSet.getInt(1),
-                            resultSet.getFloat(2),
-                            resultSet.getDate(3).toLocalDate(),
-                            resultSet.getBoolean(4));
+                    final Bill bill = buildBill(resultSet);
                     bills.add(bill);
                 }
                 return bills;
@@ -161,7 +145,7 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public Bill findOneById(final Integer id) throws DaoException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Find one by id operation is not available for traffic");
     }
 
     @Override
@@ -183,7 +167,6 @@ public class BillDaoImpl implements BillDao {
     public void update(final Bill bill) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(UPDATE_BILL_STATUS_QUERY)) {
-
             statement.setInt(1, bill.getSubscriptionId());
             statement.setFloat(2, bill.getValue());
             statement.setDate(3, java.sql.Date.valueOf(bill.getDate()));
@@ -196,6 +179,15 @@ public class BillDaoImpl implements BillDao {
 
     @Override
     public void delete(final Integer subscriptionId) throws DaoException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Delete operation is not available for bill");
+    }
+
+    private Bill buildBill(final ResultSet resultSet) throws SQLException {
+
+        return new Bill(
+                resultSet.getInt(1),
+                resultSet.getFloat(2),
+                resultSet.getDate(3).toLocalDate(),
+                resultSet.getBoolean(4));
     }
 }

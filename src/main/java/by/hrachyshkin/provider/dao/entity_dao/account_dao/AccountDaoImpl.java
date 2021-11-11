@@ -1,8 +1,7 @@
-package by.hrachyshkin.dao.entity_dao.account_dao;
+package by.hrachyshkin.provider.dao.entity_dao.account_dao;
 
-import by.hrachyshkin.dao.DaoException;
-import by.hrachyshkin.dao.entity_dao.account_dao.AccountDao;
-import by.hrachyshkin.entity.Account;
+import by.hrachyshkin.provider.dao.DaoException;
+import by.hrachyshkin.provider.entity.Account;
 import org.apache.commons.codec.digest.DigestUtils;
 
 import java.sql.Connection;
@@ -209,9 +208,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.setFloat(6, account.getBalance());
 
             statement.setInt(7, account.getId());
-
             statement.executeUpdate();
-
         } catch (SQLException e) {
             throw new DaoException("Can't update account", e);
         }

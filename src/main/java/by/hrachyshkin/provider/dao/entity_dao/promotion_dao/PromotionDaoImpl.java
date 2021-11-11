@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.dao.entity_dao.promotion_dao;
 
 import by.hrachyshkin.provider.dao.DaoException;
+import by.hrachyshkin.provider.entity.Discount;
 import by.hrachyshkin.provider.entity.Promotion;
 
 import java.sql.Connection;
@@ -111,9 +112,7 @@ public class PromotionDaoImpl implements PromotionDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Promotion> promotions = new ArrayList<>();
             while (resultSet.next()) {
-                final Promotion promotion = new Promotion(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2));
+                final Promotion promotion = buildPromotion(resultSet);
                 promotions.add(promotion);
             }
             return promotions;
@@ -131,9 +130,7 @@ public class PromotionDaoImpl implements PromotionDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Promotion> promotions = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Promotion promotion = new Promotion(
-                            resultSet.getInt(1),
-                            resultSet.getInt(2));
+                    final Promotion promotion = buildPromotion(resultSet);
                     promotions.add(promotion);
                 }
                 return promotions;
@@ -168,7 +165,7 @@ public class PromotionDaoImpl implements PromotionDao {
 
     @Override
     public void delete(Integer id) throws DaoException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Delete operation is not available for promotion");
     }
 
     @Override
@@ -179,7 +176,14 @@ public class PromotionDaoImpl implements PromotionDao {
             statement.setInt(2, discountId);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DaoException("Can't delete promotion", e);
+            throw new DaoException("Can't delete promotion by tariff id and discount id", e);
         }
+    }
+
+    private Promotion buildPromotion(final ResultSet resultSet) throws SQLException {
+
+        return new Promotion(
+                resultSet.getInt(1),
+                resultSet.getInt(2));
     }
 }

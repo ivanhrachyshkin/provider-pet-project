@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class DiscountServiceImpl implements Service<Discount> {
+public class DiscountServiceImpl implements DiscountService {
 
     private final Transaction transaction;
 
@@ -29,6 +29,7 @@ public class DiscountServiceImpl implements Service<Discount> {
         }
     }
 
+    @Override
     public List<Discount> findAndSortByValue() throws ServiceException {
 
         try {
@@ -40,6 +41,7 @@ public class DiscountServiceImpl implements Service<Discount> {
         }
     }
 
+    @Override
     public List<Discount> findAndFilterByType(final Discount.Type type) throws ServiceException {
 
         try {
@@ -50,6 +52,7 @@ public class DiscountServiceImpl implements Service<Discount> {
         }
     }
 
+    @Override
     public List<Discount> findAndFilterAndSort(final Discount.Type type) throws ServiceException {
 
         try {
@@ -66,7 +69,7 @@ public class DiscountServiceImpl implements Service<Discount> {
 
         try {
             final DiscountDao discountDao = transaction.createDao(DaoKeys.DISCOUNT_DAO);
-            if(!discountDao.isExistById(id)) {
+            if (!discountDao.isExistById(id)) {
                 throw new ServiceException("Can't find discount by id");
             }
             return discountDao.findOneById(id);

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class TrafficServiceImpl implements Service<Traffic> {
+public class TrafficServiceImpl implements TrafficService {
 
     private final Transaction transaction;
 
@@ -29,6 +29,7 @@ public class TrafficServiceImpl implements Service<Traffic> {
         }
     }
 
+    @Override
     public List<Traffic> findAndSortByDate() throws ServiceException {
 
         try {
@@ -39,6 +40,7 @@ public class TrafficServiceImpl implements Service<Traffic> {
         }
     }
 
+    @Override
     public List<Traffic> findAndFilterBySubscriptionId(final Integer subscriptionId) throws ServiceException {
 
         try {
@@ -49,6 +51,7 @@ public class TrafficServiceImpl implements Service<Traffic> {
         }
     }
 
+    @Override
     public List<Traffic> findAndFilterAndSort(final Integer subscriptionId) throws ServiceException {
 
         try {
@@ -59,6 +62,7 @@ public class TrafficServiceImpl implements Service<Traffic> {
         }
     }
 
+    @Override
     public List<Traffic> findTrafficForTariffPerAccount(final Integer accountId, final Integer tariffId) throws ServiceException {
 
         try {

@@ -15,10 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class TariffServiceImpl implements Service<Tariff> {
+public class TariffServiceImpl implements TariffService {
 
     private final Transaction transaction;
 
+    @Override
     public boolean isExist(final Integer id) throws ServiceException {
 
         try {
@@ -40,6 +41,7 @@ public class TariffServiceImpl implements Service<Tariff> {
         }
     }
 
+    @Override
     public List<Tariff> findAndSortBySpeedAndPrice() throws ServiceException {
 
         try {
@@ -50,6 +52,7 @@ public class TariffServiceImpl implements Service<Tariff> {
         }
     }
 
+    @Override
     public List<Tariff> findAndFilterByType(final Tariff.Type type) throws ServiceException {
 
         try {
@@ -60,6 +63,7 @@ public class TariffServiceImpl implements Service<Tariff> {
         }
     }
 
+    @Override
     public List<Tariff> findAndFilterAndSort(final Tariff.Type type) throws ServiceException {
 
         try {

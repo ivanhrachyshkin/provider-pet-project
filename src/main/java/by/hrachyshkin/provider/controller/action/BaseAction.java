@@ -1,7 +1,5 @@
 package by.hrachyshkin.provider.controller.action;
 
-import by.hrachyshkin.provider.service.ServiceException;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,12 +21,4 @@ public abstract class BaseAction extends HttpServlet {
     protected abstract void processRequest(HttpServletRequest request,
                                            HttpServletResponse response)
             throws ServletException, IOException;
-
-    public void redirect(HttpServletRequest request,
-                         HttpServletResponse response,
-                         String resource) throws IOException {
-
-        response.sendRedirect(request.getContextPath() + "/" + resource);
-
-    }
 }

@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class PromotionServiceImpl implements Service<Promotion> {
+public class PromotionServiceImpl implements PromotionService {
 
     private final Transaction transaction;
 
@@ -26,6 +26,7 @@ public class PromotionServiceImpl implements Service<Promotion> {
         }
     }
 
+    @Override
     public List<Promotion> findAndFilterByTariffId(final Integer tariffId) throws ServiceException {
 
         try {
@@ -46,7 +47,7 @@ public class PromotionServiceImpl implements Service<Promotion> {
 
         try {
             final PromotionDao promotionDao = transaction.createDao(DaoKeys.PROMOTION_DAO);
-            if (promotionDao.isExistByTariffAndDiscountId(promotion.getTariffId(), promotion.getDiscountId())){
+            if (promotionDao.isExistByTariffAndDiscountId(promotion.getTariffId(), promotion.getDiscountId())) {
                 throw new ServiceException("Discount is already added to current tariff");
             }
             promotionDao.add(promotion);
@@ -65,6 +66,7 @@ public class PromotionServiceImpl implements Service<Promotion> {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public void deleteByTariffAndDiscount(final Integer tariffId, final Integer discountId) throws ServiceException {
 
         try {

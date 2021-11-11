@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.dao.entity_dao.subscription_dao;
 
 import by.hrachyshkin.provider.dao.DaoException;
+import by.hrachyshkin.provider.entity.Promotion;
 import by.hrachyshkin.provider.entity.Subscription;
 
 import java.sql.Connection;
@@ -143,10 +144,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Subscription> subscriptions = new ArrayList<>();
             while (resultSet.next()) {
-                final Subscription subscription = new Subscription(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2),
-                        resultSet.getInt(3));
+                final Subscription subscription = buildSubscription(resultSet);
                 subscriptions.add(subscription);
             }
             return subscriptions;
@@ -164,10 +162,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Subscription> subscriptions = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Subscription subscription = new Subscription(
-                            resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getInt(3));
+                    final Subscription subscription = buildSubscription(resultSet);
                     subscriptions.add(subscription);
                 }
                 return subscriptions;
@@ -187,10 +182,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Subscription> subscriptions = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Subscription subscription = new Subscription(
-                            resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getInt(3));
+                    final Subscription subscription = buildSubscription(resultSet);
                     subscriptions.add(subscription);
                 }
                 return subscriptions;
@@ -208,10 +200,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                return new Subscription(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2),
-                        resultSet.getInt(3));
+                return buildSubscription(resultSet);
             }
         } catch (SQLException e) {
             throw new DaoException("Can't find subscription by id", e);
@@ -233,7 +222,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
     @Override
     public void update(final Subscription subscription) throws DaoException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Update operation is not available for subscription");
     }
 
     @Override
@@ -245,5 +234,13 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
         } catch (SQLException e) {
             throw new DaoException("Can't delete subscription", e);
         }
+    }
+
+    private Subscription buildSubscription(final ResultSet resultSet) throws SQLException {
+
+        return new Subscription(
+                resultSet.getInt(1),
+                resultSet.getInt(2),
+                resultSet.getInt(3));
     }
 }

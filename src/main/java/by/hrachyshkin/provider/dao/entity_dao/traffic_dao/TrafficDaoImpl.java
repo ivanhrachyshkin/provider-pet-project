@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.dao.entity_dao.traffic_dao;
 
 import by.hrachyshkin.provider.dao.DaoException;
+import by.hrachyshkin.provider.entity.Tariff;
 import by.hrachyshkin.provider.entity.Traffic;
 
 import java.sql.Connection;
@@ -75,10 +76,7 @@ public class TrafficDaoImpl implements TrafficDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Traffic> traffics = new ArrayList<>();
             while (resultSet.next()) {
-                final Traffic traffic = new Traffic(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2),
-                        resultSet.getDate(3).toLocalDate());
+                final Traffic traffic = buildTraffic(resultSet);
                 traffics.add(traffic);
             }
             return traffics;
@@ -94,10 +92,7 @@ public class TrafficDaoImpl implements TrafficDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Traffic> traffics = new ArrayList<>();
             while (resultSet.next()) {
-                final Traffic traffic = new Traffic(
-                        resultSet.getInt(1),
-                        resultSet.getInt(2),
-                        resultSet.getDate(3).toLocalDate());
+                final Traffic traffic = buildTraffic(resultSet);
                 traffics.add(traffic);
             }
             return traffics;
@@ -115,10 +110,7 @@ public class TrafficDaoImpl implements TrafficDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Traffic> traffics = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Traffic traffic = new Traffic(
-                            resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getDate(3).toLocalDate());
+                    final Traffic traffic = buildTraffic(resultSet);
                     traffics.add(traffic);
                 }
                 return traffics;
@@ -137,10 +129,7 @@ public class TrafficDaoImpl implements TrafficDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Traffic> traffics = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Traffic traffic = new Traffic(
-                            resultSet.getInt(1),
-                            resultSet.getInt(2),
-                            resultSet.getDate(3).toLocalDate());
+                    final Traffic traffic = buildTraffic(resultSet);
                     traffics.add(traffic);
                 }
                 return traffics;
@@ -153,7 +142,7 @@ public class TrafficDaoImpl implements TrafficDao {
     @Override
     public Traffic findOneById(Integer id) {
 
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Find one by id operation is not available for traffic");
     }
 
     @Override
@@ -172,13 +161,20 @@ public class TrafficDaoImpl implements TrafficDao {
 
     @Override
     public void update(final Traffic traffic) {
-
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Update operation is not available for traffic");
     }
 
     @Override
     public void delete(final Integer id) {
+        throw new UnsupportedOperationException("Delete operation is not available for traffic");
+    }
 
-        throw new UnsupportedOperationException();
+
+    private Traffic buildTraffic(final ResultSet resultSet) throws SQLException {
+
+        return new Traffic(
+                resultSet.getInt(1),
+                resultSet.getInt(2),
+                resultSet.getDate(3).toLocalDate());
     }
 }

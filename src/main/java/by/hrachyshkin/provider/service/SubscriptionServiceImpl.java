@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class SubscriptionServiceImpl implements Service<Subscription> {
+public class SubscriptionServiceImpl implements SubscriptionService {
 
     private final Transaction transaction;
 
@@ -26,6 +26,7 @@ public class SubscriptionServiceImpl implements Service<Subscription> {
         }
     }
 
+    @Override
     public List<Subscription> findAndFilter(final Integer accountId) throws ServiceException {
 
         try {

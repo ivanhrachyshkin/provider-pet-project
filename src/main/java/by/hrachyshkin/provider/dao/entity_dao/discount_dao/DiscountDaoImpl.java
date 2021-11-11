@@ -130,13 +130,7 @@ public class DiscountDaoImpl implements DiscountDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Discount> discounts = new ArrayList<>();
             while (resultSet.next()) {
-                final Discount discount = new Discount(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Discount.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getDate(5).toLocalDate(),
-                        resultSet.getDate(6).toLocalDate());
+                final Discount discount = buildDiscount(resultSet);
                 discounts.add(discount);
             }
             return discounts;
@@ -151,13 +145,7 @@ public class DiscountDaoImpl implements DiscountDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Discount> discounts = new ArrayList<>();
             while (resultSet.next()) {
-                final Discount discount = new Discount(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Discount.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getDate(5).toLocalDate(),
-                        resultSet.getDate(6).toLocalDate());
+                final Discount discount = buildDiscount(resultSet);
                 discounts.add(discount);
             }
             return discounts;
@@ -175,13 +163,7 @@ public class DiscountDaoImpl implements DiscountDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Discount> discounts = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Discount discount = new Discount(
-                            resultSet.getInt(1),
-                            resultSet.getString(2),
-                            Discount.Type.values()[resultSet.getInt(3)],
-                            resultSet.getInt(4),
-                            resultSet.getDate(5).toLocalDate(),
-                            resultSet.getDate(6).toLocalDate());
+                    final Discount discount = buildDiscount(resultSet);
                     discounts.add(discount);
                 }
                 return discounts;
@@ -200,13 +182,7 @@ public class DiscountDaoImpl implements DiscountDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Discount> discounts = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Discount discount = new Discount(
-                            resultSet.getInt(1),
-                            resultSet.getString(2),
-                            Discount.Type.values()[resultSet.getInt(3)],
-                            resultSet.getInt(4),
-                            resultSet.getDate(5).toLocalDate(),
-                            resultSet.getDate(6).toLocalDate());
+                    final Discount discount = buildDiscount(resultSet);
                     discounts.add(discount);
                 }
                 return discounts;
@@ -223,13 +199,7 @@ public class DiscountDaoImpl implements DiscountDao {
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                return new Discount(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Discount.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getDate(5).toLocalDate(),
-                        resultSet.getDate(6).toLocalDate());
+                return buildDiscount(resultSet);
             }
         } catch (SQLException e) {
             throw new DaoException("Can't find discount by id", e);
@@ -280,5 +250,16 @@ public class DiscountDaoImpl implements DiscountDao {
         } catch (SQLException e) {
             throw new DaoException("Can't delete discount", e);
         }
+    }
+
+    private Discount buildDiscount(final ResultSet resultSet) throws SQLException {
+
+        return new Discount(
+                resultSet.getInt(1),
+                resultSet.getString(2),
+                Discount.Type.values()[resultSet.getInt(3)],
+                resultSet.getInt(4),
+                resultSet.getDate(5).toLocalDate(),
+                resultSet.getDate(6).toLocalDate());
     }
 }

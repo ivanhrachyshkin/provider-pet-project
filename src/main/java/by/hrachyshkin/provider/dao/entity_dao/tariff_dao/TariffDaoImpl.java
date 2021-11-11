@@ -86,7 +86,8 @@ public class TariffDaoImpl implements TariffDao {
             statement.setInt(1, id);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next(); return resultSet.getBoolean(1);
+                resultSet.next();
+                return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Tariff doesn't exist", e);
@@ -100,7 +101,8 @@ public class TariffDaoImpl implements TariffDao {
             statement.setString(1, name);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next(); return resultSet.getBoolean(1);
+                resultSet.next();
+                return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Tariff doesn't exist", e);
@@ -119,7 +121,7 @@ public class TariffDaoImpl implements TariffDao {
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Can't check if tariff exists by not id and name", e);
+            throw new DaoException("Tariff doesn't exist", e);
         }
     }
 
@@ -130,12 +132,7 @@ public class TariffDaoImpl implements TariffDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Tariff> tariffs = new ArrayList<>();
             while (resultSet.next()) {
-                final Tariff tariff = new Tariff(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Tariff.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getFloat(5));
+                final Tariff tariff = buildTariff(resultSet);
                 tariffs.add(tariff);
             }
             return tariffs;
@@ -151,12 +148,7 @@ public class TariffDaoImpl implements TariffDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Tariff> tariffs = new ArrayList<>();
             while (resultSet.next()) {
-                final Tariff tariff = new Tariff(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Tariff.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getFloat(5));
+                final Tariff tariff = buildTariff(resultSet);
                 tariffs.add(tariff);
             }
 
@@ -175,12 +167,7 @@ public class TariffDaoImpl implements TariffDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Tariff> tariffs = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Tariff tariff = new Tariff(
-                            resultSet.getInt(1),
-                            resultSet.getString(2),
-                            Tariff.Type.values()[resultSet.getInt(3)],
-                            resultSet.getInt(4),
-                            resultSet.getFloat(5));
+                    final Tariff tariff = buildTariff(resultSet);
                     tariffs.add(tariff);
                 }
                 return tariffs;
@@ -199,12 +186,7 @@ public class TariffDaoImpl implements TariffDao {
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Tariff> tariffs = new ArrayList<>();
                 while (resultSet.next()) {
-                    final Tariff tariff = new Tariff(
-                            resultSet.getInt(1),
-                            resultSet.getString(2),
-                            Tariff.Type.values()[resultSet.getInt(3)],
-                            resultSet.getInt(4),
-                            resultSet.getFloat(5));
+                    final Tariff tariff = buildTariff(resultSet);
                     tariffs.add(tariff);
                 }
                 return tariffs;
@@ -222,12 +204,7 @@ public class TariffDaoImpl implements TariffDao {
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                return new Tariff(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        Tariff.Type.values()[resultSet.getInt(3)],
-                        resultSet.getInt(4),
-                        resultSet.getFloat(5));
+                return buildTariff(resultSet);
             }
         } catch (SQLException e) {
             throw new DaoException("Can't find tariff by id", e);
@@ -275,5 +252,15 @@ public class TariffDaoImpl implements TariffDao {
         } catch (SQLException e) {
             throw new DaoException("Can't delete tariff", e);
         }
+    }
+
+    private Tariff buildTariff(final ResultSet resultSet) throws SQLException {
+
+        return new Tariff(
+                resultSet.getInt(1),
+                resultSet.getString(2),
+                Tariff.Type.values()[resultSet.getInt(3)],
+                resultSet.getInt(4),
+                resultSet.getFloat(5));
     }
 }

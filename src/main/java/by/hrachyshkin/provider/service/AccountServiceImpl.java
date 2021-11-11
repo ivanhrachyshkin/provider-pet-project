@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class AccountServiceImpl implements Service<Account> {
+public class AccountServiceImpl implements AccountService {
 
     private final Transaction transactionImpl;
 
@@ -36,6 +36,7 @@ public class AccountServiceImpl implements Service<Account> {
         }
     }
 
+    @Override
     public List<Account> findAndSortByName() throws ServiceException {
 
         try {
@@ -60,6 +61,7 @@ public class AccountServiceImpl implements Service<Account> {
         }
     }
 
+    @Override
     public Account findOneByEmail(final String email) throws ServiceException {
 
         try {
