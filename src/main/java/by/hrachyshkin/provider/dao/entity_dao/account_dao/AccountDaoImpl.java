@@ -77,7 +77,8 @@ public class AccountDaoImpl implements AccountDao {
             statement.setInt(1, id);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next(); return resultSet.getBoolean(1);
+                resultSet.next();
+                return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);
@@ -91,7 +92,8 @@ public class AccountDaoImpl implements AccountDao {
             statement.setString(1, name);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next(); return resultSet.getBoolean(1);
+                resultSet.next();
+                return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);
@@ -106,7 +108,8 @@ public class AccountDaoImpl implements AccountDao {
             statement.setString(2, password);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next(); return resultSet.getBoolean(1);
+                resultSet.next();
+                return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);
@@ -120,15 +123,7 @@ public class AccountDaoImpl implements AccountDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Account> accounts = new ArrayList<>();
             while (resultSet.next()) {
-                final Account account = new Account(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        Account.Role.values()[resultSet.getInt(4)],
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getFloat(8));
+                final Account account = buildAccount(resultSet);
                 accounts.add(account);
             }
             return accounts;
@@ -144,15 +139,7 @@ public class AccountDaoImpl implements AccountDao {
              final ResultSet resultSet = statement.executeQuery()) {
             final List<Account> accounts = new ArrayList<>();
             while (resultSet.next()) {
-                final Account account = new Account(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        Account.Role.values()[resultSet.getInt(4)],
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getFloat(8));
+                final Account account = buildAccount(resultSet);
                 accounts.add(account);
             }
             return accounts;
@@ -170,15 +157,7 @@ public class AccountDaoImpl implements AccountDao {
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                return new Account(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        Account.Role.values()[resultSet.getInt(4)],
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getFloat(8));
+                return buildAccount(resultSet);
             }
         } catch (SQLException e) {
             throw new DaoException("Can't find account by id", e);
@@ -193,15 +172,7 @@ public class AccountDaoImpl implements AccountDao {
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                return new Account(
-                        resultSet.getInt(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        Account.Role.values()[resultSet.getInt(4)],
-                        resultSet.getString(5),
-                        resultSet.getString(6),
-                        resultSet.getString(7),
-                        resultSet.getFloat(8));
+                return buildAccount(resultSet);
             }
         } catch (SQLException e) {
             throw new DaoException("Can't find account by email", e);
@@ -248,11 +219,23 @@ public class AccountDaoImpl implements AccountDao {
 
     @Override
     public void delete(final Integer id) throws DaoException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Delete operation is not available for account");
     }
 
     private String encrypt(final String password) {
-
         return DigestUtils.md5Hex(password.toUpperCase());
+    }
+
+    private Account buildAccount(final ResultSet resultSet) throws SQLException {
+
+        return new Account(
+                resultSet.getInt(1),
+                resultSet.getString(2),
+                resultSet.getString(3),
+                Account.Role.values()[resultSet.getInt(4)],
+                resultSet.getString(5),
+                resultSet.getString(6),
+                resultSet.getString(7),
+                resultSet.getFloat(8));
     }
 }
