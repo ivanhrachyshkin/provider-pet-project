@@ -28,14 +28,14 @@
                 <li><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
                 <li><a href="${url}/discounts"><b>Discounts</b></a></li>
                 <li><a href="#"><b>About us</b></a></li>
-                <li><a href="#"><b>Personal Cabinet</b></a></li>
+                <li><a href="${url}/cabinet"><b>Personal Cabinet</b></a></li>
             </ul>
         </div>
     </div>
 </nav>
 
 <div class="container">
-    <h1 class="text-center">Discounts for "${tariff.name}" tariff plan</h1>
+    <h1 class="text-center">Tariffs for "${account.email}" tariff plan</h1>
     <h1></h1>
     <h1></h1>
 </div>
@@ -45,22 +45,19 @@
         <tr>
             <th>Name</th>
             <th>Type</th>
-            <th>Value</th>
-            <th>Start</th>
-            <th>End</th>
+            <th>Speed</th>
+            <th>Price</th>
             <th>Action</th>
         </tr>
-        <c:forEach var="discount" items="${tariffDiscounts}">
+        <c:forEach var="tariff" items="${accountTariffs}">
             <tr>
-                    <td>${discount.name}</td>
-                    <td>${discount.value}</td>
-                    <td>${discount.value}</td>
-                    <td>${discount.dateFrom}</td>
-                    <td>${discount.dateTo}</td>
-                <form action="${url}/tariffs/discounts/remove" method="POST">
+                    <td>${tariff.name}</td>
+                    <td>${tariff.type}</td>
+                    <td>${tariff.speed}</td>
+                    <td>${tariff.price}</td>
+                <form action="${url}#" method="POST">
                     <td><button type="submit" class="btn btn-info">remove</button></td>
-                    <input name="tariffId" type="hidden" value="${tariff.id}">
-                    <input name="discountId" type="hidden" value="${discount.id}">
+                    <input name="accountId" type="hidden" value="${account.id}">
                 </form>
             </tr>
         </c:forEach>

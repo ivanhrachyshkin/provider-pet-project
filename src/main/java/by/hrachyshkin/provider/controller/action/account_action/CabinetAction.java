@@ -10,14 +10,13 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/cabinet")
-public class Cabinet extends BaseAction {
+public class CabinetAction extends BaseAction {
 
     @Override
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -27,7 +26,6 @@ public class Cabinet extends BaseAction {
 
             final HttpSession session = request.getSession(false);
             final Integer accountId = (Integer) session.getAttribute("accountId");
-
             final Account account = accountService.findOneById(accountId);
 
             if (account.getRole().equals(Account.Role.BLOCKED)) {
@@ -36,14 +34,17 @@ public class Cabinet extends BaseAction {
             }
 
             request.setAttribute("account", account);
-            switch (account.getRole()) {
-                case ADMINISTRATOR -> request.getRequestDispatcher("/cabinet-admin.jsp").forward(request, response);
-                case USER -> request.getRequestDispatcher("/cabinet-user.jsp").forward(request, response);
-                case BLOCKED -> request.getRequestDispatcher("/login.jsp").forward(request, response);
+            if (account.getRole().equals(Account.Role.ADMINISTRATOR)) {
+                request.getRequestDispatcher("/cabinet-admin.jsp").forward(request, response);
+            }
+
+            if (account.getRole().equals(Account.Role.USER)) {
+                request.getRequestDispatcher("/cabinet-user.jsp").forward(request, response);
             }
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
     }
 }

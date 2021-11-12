@@ -34,6 +34,6 @@ public class ShowDiscountsForTariffAction extends BaseAction {
         request.setAttribute("tariff", tariff);
         request.setAttribute("tariffDiscounts", tariffDiscounts);
         request.setAttribute("discounts", discounts);
-        request.getRequestDispatcher("/discounts_for_tariff.jsp").forward(request, response);
+        request.getRequestDispatcher("/discounts-for-tariff.jsp").forward(request, response);
     }
 }

@@ -26,7 +26,7 @@
                 <li class="nav-item"><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
                 <li><a href="${url}/discounts"><b>Discounts</b></a></li>
                 <li><a href="#"><b>About us</b></a></li>
-                <li><a href="#"><b>Personal Cabinet</b></a></li>
+                <li><a href="${url}/cabinet"><b>Personal Cabinet</b></a></li>
             </ul>
         </div>
     </div>
