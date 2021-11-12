@@ -24,7 +24,7 @@
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li class="nav-item"><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
+                <li class="nav-item"><a href="${url}/accounts"><b>Tariff plans</b></a></li>
                 <li><a href="${url}/discounts"><b>Discounts</b></a></li>
                 <li><a href="#"><b>About us</b></a></li>
                 <li><a href="#"><b>Personal Cabinet</b></a></li>
@@ -52,9 +52,9 @@
                 <form action="${url}/accounts/update" method="POST">
                     <td><input name="email" type="text" value="${account.email}" placeholder="${account.email}"/></td>
                     <td><select name="role">
-                        <c:set var="types" value="<%=Account.Role.values()%>"/>
-                        <c:forEach var="type" items="${types}">
-                            <option value="${type.name()}" ${account.type.name()==type ?'selected':''}>${type.name()}</option>
+                        <c:set var="roles" value="<%=Account.Role.values()%>"/>
+                        <c:forEach var="role" items="${roles}">
+                            <option value="${role.name()}" ${account.role.name()==type ?'selected':''}>${role.name()}</option>
                         </c:forEach>
                     </select></td>
                     <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/></td>
@@ -62,11 +62,6 @@
                     <td><input name="address" type="text" value="${account.address}" placeholder="${account.address}"/></td>
                     <td><input name="balance" type="number" value="${account.balance}" placeholder="${account.balance}"/></td>
                     <td><button type="submit" class="btn btn-info">update</button></td>
-                    <input name="accountId" type="hidden" value="${account.id}">
-
-                </form>
-                <form action="${url}/accounts/tariffs" method="POST">
-                    <td><button type="submit" class="btn btn-info">tariffs</button></td>
                     <input name="accountId" type="hidden" value="${account.id}">
                 </form>
             </tr>
@@ -77,7 +72,7 @@
                 <td><select name="type">
                     <c:set var="types" value="<%=Account.Role.values()%>"/>
                     <c:forEach var="type" items="${types}">
-                        <option value="${account.name()}">${account.name()}</option>
+                        <option value="${type.name()}">${type.name()}</option>
                     </c:forEach>
                 </select></td>
                 <td><input name="name" type="text"/></td>

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/tariffs")
-public class ShowTariffAction extends BaseAction {
+public class ShowTariffsAction extends BaseAction {
 
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

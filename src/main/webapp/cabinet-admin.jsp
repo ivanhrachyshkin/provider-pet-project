@@ -1,7 +1,9 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
-<html lang="be" xml:lang="be" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="ru">
 <head>
-    <title>Providi</title>
+    <c:set var="url">${pageContext.request.contextPath}</c:set>
+    <title>Admin cabinet</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -16,12 +18,12 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand">Providi</a>
+            <a href="${url}/index" class="navbar-brand">Providi</a>
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li><a href="#"><b>Tariff plans</b></a></li>
-                <li><a href="#"><b>Stock</b></a></li>
+                <li><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
+                <li><a href="${url}/discounts"><b>Discounts</b></a></li>
                 <li><a href="#"><b>About us</b></a></li>
                 <li><a href="#"><b>Personal Cabinet</b></a></li>
             </ul>
@@ -29,26 +31,30 @@
     </div>
 </nav>
 
-<div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-        <div class="container col-xs-8">
-            <form role="form">
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                    <label for="password" translate="yes">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Enter password">
-                </div>
-            </form>
+<div class="container">
 
-            <a href="#" class="btn btn-info">Log in</a>
-        </div>
-    </div>
-</div>
-</div>
+    <h2 class="text-center">Admin account information</h2>
+    <br><h4 class="text-center">${account.email}, ${account.role}, ${account.name}, ${account.phone}, ${account.address}, ${account.balance}</h4>
 
+    <br><h3 class="text-center">
+    Accounts
+    <a href="${url}/accounts" class="btn btn-info">show accounts</a>
+</h3>
+
+    <h3 class="text-center">
+        Tariffs
+        <a href="tariffs" class="btn btn-info">show tariffs</a>
+    </h3>
+
+    <h3 class="text-center">
+        Discounts
+        <a href="discounts" class="btn btn-info">show discounts</a>
+    </h3>
+    </tbody>
+    </table>
+</div>
+<div>
+    ${error}
+</div>
 </body>
 </html>

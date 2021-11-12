@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TariffService extends Service<Tariff>{
 
-    public boolean isExist(final Integer id) throws ServiceException;
+    boolean isExist(final Integer id) throws ServiceException;
 
     List<Tariff> findAndSortBySpeedAndPrice() throws ServiceException;
 

@@ -11,11 +11,10 @@ import lombok.SneakyThrows;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.PrintWriter;
+import java.util.List;
 
-@WebServlet("/login")
-public class LoginAction extends BaseAction {
+@WebServlet("/accounts")
+public class ShowAccountsAction extends BaseAction {
 
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
@@ -23,28 +22,13 @@ public class LoginAction extends BaseAction {
         final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
         try {
-            final String email = request.getParameter("email");
-            final String password = request.getParameter("password");
-
-            final Account account;
-
-            if (accountService.isExistByEmailAndPassword(email, password)) {
-                final HttpSession session = request.getSession();
-                account = accountService.findOneByEmail(email);
-                session.setAttribute("accountId", account.getId());
-                request.getRequestDispatcher("/cabinet").forward(request, response);
-
-            } else {
-                request.setAttribute("error", "Check Email and Password");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
-            }
+            final List<Account> accounts = accountService.find();
+            request.setAttribute("accounts", accounts);
 
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
+
+        request.getRequestDispatcher("/accounts.jsp").forward(request, response);
     }
 }
-
-
-

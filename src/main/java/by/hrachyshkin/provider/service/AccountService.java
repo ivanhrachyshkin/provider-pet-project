@@ -9,7 +9,7 @@ public interface AccountService extends Service<Account> {
 
     boolean isExistByEmailAndPassword(final String email, final String password) throws ServiceException, TransactionException;
 
-    public List<Account> findAndSortByName() throws ServiceException, TransactionException;
+    List<Account> findAndSortByName() throws ServiceException, TransactionException;
 
     Account findOneByEmail(final String email) throws ServiceException, TransactionException;
 }

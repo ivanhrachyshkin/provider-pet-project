@@ -105,7 +105,7 @@ public class AccountDaoImpl implements AccountDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_EMAIL_AND_PASSWORD)) {
             statement.setString(1, email);
-            statement.setString(2, password);
+            statement.setString(2, encrypt(password));
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
@@ -221,7 +221,7 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     private String encrypt(final String password) {
-        return DigestUtils.md5Hex(password.toUpperCase());
+        return DigestUtils.md5Hex(password);
     }
 
     private Account buildAccount(final ResultSet resultSet) throws SQLException {
