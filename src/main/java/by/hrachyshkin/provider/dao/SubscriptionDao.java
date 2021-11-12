@@ -17,4 +17,6 @@ public interface SubscriptionDao extends Dao<Subscription> {
     List<Subscription> findAndFilterByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException;
 
     List<Subscription> findAndFilter(Integer accountId) throws DaoException;
+
+    void deleteByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException;
 }

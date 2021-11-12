@@ -38,7 +38,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM subscriptions " +
-                    "WHERE account_id = ? tariff_id = ? " +
+                    "WHERE account_id = ? AND tariff_id = ? " +
                     ")";
 
     private static final String FIND_QUERY =
@@ -69,6 +69,11 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             "DELETE " +
                     "FROM subscriptions " +
                     "WHERE id = ?";
+
+    private static final String DELETE_BY_ACCOUNT_AND_TARIFF_ID_QUERY =
+            "DELETE " +
+                    "FROM subscriptions " +
+                    "WHERE account_id = ? AND tariff_id = ?";
 
     private final Connection connection;
 
@@ -126,14 +131,14 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
             statement.setInt(1, accountId);
-            statement.setInt(1, tariffId);
+            statement.setInt(2, tariffId);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            throw new DaoException("Subscription doesn't exist", e);
+            throw new DaoException("Subscription doesn't exist1111", e);
         }
     }
 
@@ -230,7 +235,19 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, id);
-            statement.executeQuery();
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Can't delete subscription", e);
+        }
+    }
+
+    @Override
+    public void deleteByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
+            statement.setInt(1, accountId);
+            statement.setInt(2, tariffId);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Can't delete subscription", e);
         }

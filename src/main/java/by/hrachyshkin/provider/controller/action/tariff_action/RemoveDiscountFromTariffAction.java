@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/tariffs/discounts/remove")
-public class RemoveDiscountToTariffAction extends BaseAction {
+public class RemoveDiscountFromTariffAction extends BaseAction {
 
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)

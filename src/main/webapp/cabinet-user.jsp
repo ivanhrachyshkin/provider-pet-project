@@ -77,7 +77,7 @@
                 </div>
                 <div class="col-md-4">
                     Tariffs
-                    <a href="${url}/myTariffs" class="btn btn-info">my tariffs</a>
+                    <a href="${url}/cabinet/myTariffs" class="btn btn-info">my tariffs</a>
                 </div>
                 <div class="col-md-4">
                 </div>

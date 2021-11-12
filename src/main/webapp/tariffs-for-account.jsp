@@ -35,7 +35,7 @@
 </nav>
 
 <div class="container">
-    <h1 class="text-center">Tariffs for "${account.email}" tariff plan</h1>
+    <h1 class="text-center">Tariffs for "${account.email}" account</h1>
     <h1></h1>
     <h1></h1>
 </div>
@@ -55,9 +55,9 @@
                     <td>${tariff.type}</td>
                     <td>${tariff.speed}</td>
                     <td>${tariff.price}</td>
-                <form action="${url}#" method="POST">
+                <form action="${url}/cabinet/myTariffs/remove" method="POST">
                     <td><button type="submit" class="btn btn-info">remove</button></td>
-                    <input name="accountId" type="hidden" value="${account.id}">
+                    <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
             </tr>
         </c:forEach>
@@ -65,11 +65,11 @@
 </div>
 
 <span class="text-center">
-<form action="${url}/tariffs/discounts/add" method="POST">
-    <label>Choose a discount:</label>
-    <select name="discountId">
-        <c:forEach var="discount" items="${discounts}">
-            <option value="${discount.id}">${discount.name} | ${discount.type} | ${discount.value} | ${discount.dateFrom} | ${discount.dateTo}</option>
+<form action="${url}/cabinet/myTariffs/add" method="POST">
+    <label>Choose a tariff:</label>
+    <select name="tariffId">
+        <c:forEach var="tariff" items="${tariffs}">
+            <option value="${tariff.id}">${tariff.name} | ${tariff.type} | ${tariff.speed} | ${tariff.price}</option>
         </c:forEach>
     </select>
     <input type="submit" class="btn btn-info" value="add discount">

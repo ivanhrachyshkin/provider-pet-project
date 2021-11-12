@@ -61,7 +61,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 
     @Override
-    public void add(Subscription subscription) throws ServiceException, TransactionException {
+    public void add(final Subscription subscription) throws ServiceException, TransactionException {
 
         try {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
@@ -83,11 +83,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public void delete(final Integer id) throws ServiceException, TransactionException {
+    public void delete(Integer id) throws ServiceException, TransactionException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void deleteByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
 
         try {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            subscriptionDao.delete(id);
+            subscriptionDao.deleteByAccountAndTariffId(accountId, tariffId);
             transactionImpl.commit();
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();

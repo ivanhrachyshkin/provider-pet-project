@@ -8,4 +8,6 @@ import java.util.List;
 public interface SubscriptionService extends Service<Subscription> {
 
     List<Subscription> findAndFilter(final Integer accountId) throws ServiceException, TransactionException;
+
+    void deleteByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException;
 }

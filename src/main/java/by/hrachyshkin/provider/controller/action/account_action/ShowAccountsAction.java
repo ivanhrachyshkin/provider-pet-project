@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@WebServlet("/accounts")
+@WebServlet("/cabinet/accounts")
 public class ShowAccountsAction extends BaseAction {
 
     @SneakyThrows
