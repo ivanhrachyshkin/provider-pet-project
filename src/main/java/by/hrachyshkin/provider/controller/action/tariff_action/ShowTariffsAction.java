@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.controller.action.tariff_action;
 
 import by.hrachyshkin.provider.controller.action.BaseAction;
+import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Tariff;
 import by.hrachyshkin.provider.service.TariffService;
 import by.hrachyshkin.provider.service.impl.TariffServiceImpl;
@@ -22,14 +23,25 @@ public class ShowTariffsAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-       final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+        final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
         final List<Tariff> tariffs;
         final String rawType = request.getParameter("filter");
-        if(rawType != null) {
+
+        if (rawType != null) {
             final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
             tariffs = tariffService.findAndFilterByType(type);
-        } else tariffs = tariffService.find();
+        } else {
+            tariffs = tariffService.find();
+        }
+
         request.setAttribute("tariffs", tariffs);
-        request.getRequestDispatcher("tariffs.jsp").forward(request, response);
+
+        if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
+            request.getRequestDispatcher("/all-tariffs-for-admin.jsp").forward(request, response);
+        } else {
+           final List<Tariff> accountTariffs = tariffService.findTariffsForAccountId(getAccountId(request));
+        request.setAttribute("accountTariffs", accountTariffs);
+            request.getRequestDispatcher("/all-tariffs-for-user.jsp").forward(request, response);
+        }
     }
 }

@@ -19,21 +19,25 @@ public class LoginAction extends BaseAction {
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
 
-        final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-
         try {
+            final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+
             final String email = request.getParameter("email");
             final String password = request.getParameter("password");
             final Account account;
+
             if (accountService.isExistByEmailAndPassword(email, password)) {
                 final HttpSession session = request.getSession();
                 account = accountService.findOneByEmail(email);
                 session.setAttribute("accountId", account.getId());
+                session.setAttribute("accountRole", account.getRole());
                 request.getRequestDispatcher("/cabinet").forward(request, response);
+
             } else {
                 request.setAttribute("error", "Check Email and Password");
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
             }
+
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/login.jsp").forward(request, response);

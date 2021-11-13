@@ -33,16 +33,14 @@
 
 <div class="container">
     <h1 class="text-center">Provider - is the best choice</h1>
-    <h2 class="text-center" translate="yes">Tariff plans</h2>
-    <h2 class="text-center">
-        <a href="tariffs" class="btn btn-info">show tariffs</a>
-    </h2>
-    <h2 class="text-center">Discounts</h2>
-    <h2 class="text-center">
-        <a href="discounts" class="btn btn-info">show discounts</a>
-    </h2>
-    </tbody>
-    </table>
+    <br>
+    <h2 class="text-center">description</h2>
+    <br>
+    <h2 class="text-center">description</h2>
+    <br>
+    <h2 class="text-center">description</h2>
+    <br>
+    <h2 class="text-center">description</h2>
 </div>
 <div>
     ${error}

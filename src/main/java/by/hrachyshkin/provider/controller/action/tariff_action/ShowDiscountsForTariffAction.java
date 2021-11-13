@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.controller.action.tariff_action;
 
 import by.hrachyshkin.provider.controller.action.BaseAction;
+import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Discount;
 import by.hrachyshkin.provider.model.Tariff;
 import by.hrachyshkin.provider.service.DiscountService;
@@ -32,6 +33,12 @@ public class ShowDiscountsForTariffAction extends BaseAction {
         request.setAttribute("tariff", tariff);
         request.setAttribute("tariffDiscounts", tariffDiscounts);
         request.setAttribute("discounts", discounts);
-        request.getRequestDispatcher("/discounts-for-tariff.jsp").forward(request, response);
+
+
+        if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
+            request.getRequestDispatcher("/discounts-for-tariff-admin.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("/discounts-for-tariff-user.jsp").forward(request, response);
+        }
     }
 }

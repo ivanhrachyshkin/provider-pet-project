@@ -1,5 +1,4 @@
 <%@ page import="by.hrachyshkin.provider.model.Tariff" %>
-<%@ page import="by.hrachyshkin.provider.model.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
@@ -17,7 +16,6 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -25,7 +23,7 @@
         </div>
         <div>
             <ul class="nav navbar-nav">
-                <li><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
+                <li class="nav-item"><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
                 <li><a href="${url}/discounts"><b>Discounts</b></a></li>
                 <li><a href="#"><b>About us</b></a></li>
                 <li><a href="${url}/cabinet"><b>Personal Cabinet</b></a></li>
@@ -35,9 +33,11 @@
 </nav>
 
 <div class="container">
-    <h1 class="text-center">Tariffs for "${account.email}" account</h1>
+    <h1 class="text-center">Tariff plans</h1>
     <h1></h1>
     <h1></h1>
+    <a href="${url}/tariffs?filter=trafficked" class="btn btn-info">trafficked</a>
+    <a href="${url}/tariffs?filter=unlimited" class="btn btn-info">unlimited</a>
 </div>
 
 <div class="container">
@@ -47,35 +47,34 @@
             <th>Type</th>
             <th>Speed</th>
             <th>Price</th>
-            <th>Action</th>
+            <th>Discounts</th>
         </tr>
-        <c:forEach var="tariff" items="${accountTariffs}">
-            <tr>
-                    <td>${tariff.name}</td>
-                    <td>${tariff.type}</td>
-                    <td>${tariff.speed}</td>
-                    <td>${tariff.price}</td>
-                <form action="${url}/cabinet/myTariffs/remove" method="POST">
-                    <td><button type="submit" class="btn btn-info">remove</button></td>
-                    <input name="tariffId" type="hidden" value="${tariff.id}">
-                </form>
-            </tr>
-        </c:forEach>
+        <c:forEach var="tariff" items="${tariffs}">
+        <tr>
+            <td>${tariff.name}</td>
+            <td>${tariff.type}</td>
+            <td>${tariff.speed}</td>
+            <td>${tariff.price}</td>
+
+
+            <form action="${url}/tariffs/discounts" method="POST">
+                <td>
+                    <button type="submit" class="btn btn-info">discounts</button>
+                </td>
+                <input name="tariffId" type="hidden" value="${tariff.id}">
+            </form>
+
+
+            <c:forEach var="accountTariff" items="${accountTariffs}">
+            <c:if test="${accountTariff.id == tariff.id}">
+            <td>connected</td>
+            </c:if>
+            </c:forEach>
+            </c:forEach>
+
     </table>
 </div>
 
-<span class="text-center">
-<form action="${url}/cabinet/myTariffs/add" method="POST">
-    <label>Choose a tariff:</label>
-    <select name="tariffId">
-        <c:forEach var="tariff" items="${tariffs}">
-            <option value="${tariff.id}">${tariff.name} | ${tariff.type} | ${tariff.speed} | ${tariff.price}</option>
-        </c:forEach>
-    </select>
-    <input type="submit" class="btn btn-info" value="add tariff">
-    <input name="tariffId" type="hidden" value="${tariff.id}">
-</form>
-</span>
 <div>
     ${error}
 </div>

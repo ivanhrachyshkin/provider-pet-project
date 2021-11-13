@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.controller.action.discount_action;
 
 import by.hrachyshkin.provider.controller.action.BaseAction;
+import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Discount;
 import by.hrachyshkin.provider.service.DiscountService;
 import by.hrachyshkin.provider.service.Service;
@@ -31,6 +32,12 @@ public class ShowDiscountAction extends BaseAction {
             discounts = discountService.findAndFilterByType(type);
         } else discounts = discountService.find();
         request.setAttribute("discounts", discounts);
-        request.getRequestDispatcher("discounts.jsp").forward(request, response);
+
+
+        if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
+            request.getRequestDispatcher("all-discounts-for-admin.jsp").forward(request, response);
+        } else {
+            request.getRequestDispatcher("all-discounts-for-user.jsp").forward(request, response);
+        }
     }
 }

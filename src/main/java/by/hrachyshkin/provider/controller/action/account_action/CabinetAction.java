@@ -12,7 +12,6 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/cabinet")
@@ -23,20 +22,24 @@ public class CabinetAction extends BaseAction {
 
         try {
             final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-            final HttpSession session = request.getSession(false);
-            final Integer accountId = (Integer) session.getAttribute("accountId");
-            final Account account = accountService.findOneById(accountId);
-            if (account.getRole().equals(Account.Role.BLOCKED)) {
+
+            final Account account = accountService.findOneById(getAccountId(request));
+
+            if (getRole(request).equals(Account.Role.BLOCKED)) {
                 request.setAttribute("error", "Account is blocked");
                 request.getRequestDispatcher("/login.jsp").forward(request, response);
             }
-            request.setAttribute("account", account);
-            if (account.getRole().equals(Account.Role.ADMINISTRATOR)) {
+
+            if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
+                request.setAttribute("account", account);
                 request.getRequestDispatcher("/cabinet-admin.jsp").forward(request, response);
             }
-            if (account.getRole().equals(Account.Role.USER)) {
+
+            if (getRole(request).equals(Account.Role.USER)) {
+                request.setAttribute("account", account);
                 request.getRequestDispatcher("/cabinet-user.jsp").forward(request, response);
             }
+
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher("/login.jsp").forward(request, response);
