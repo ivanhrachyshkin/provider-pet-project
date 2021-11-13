@@ -21,9 +21,8 @@ public class DeleteTariffAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-
         try {
+            final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
             tariffService.delete(tariffId);
         } catch (ServiceException | NumberFormatException e) {

@@ -21,17 +21,13 @@ public class AddTariffToAccountAction extends BaseAction {
 
         try {
             final SubscriptionService subscriptionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
-
             final HttpSession session = request.getSession(false);
             final Integer accountId = (Integer) session.getAttribute("accountId");
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
-
             subscriptionService.add(new Subscription(accountId, tariffId));
-
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
         }
-
         request.getRequestDispatcher("/cabinet/myTariffs").forward(request, response);
     }
 }

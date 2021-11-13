@@ -20,7 +20,6 @@ public class ShowAccountsAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
 
         final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-
         try {
             final List<Account> accounts = accountService.find();
             request.setAttribute("accounts", accounts);
@@ -28,7 +27,6 @@ public class ShowAccountsAction extends BaseAction {
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
         }
-
         request.getRequestDispatcher("/accounts.jsp").forward(request, response);
     }
 }

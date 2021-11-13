@@ -12,6 +12,7 @@ public abstract class BaseAction extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
             processRequest(request, response);
         } catch (TransactionException e) {
@@ -21,6 +22,7 @@ public abstract class BaseAction extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
         try {
             processRequest(request, response);
         } catch (TransactionException e) {

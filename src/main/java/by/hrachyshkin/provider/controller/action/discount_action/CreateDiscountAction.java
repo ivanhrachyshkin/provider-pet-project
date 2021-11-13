@@ -18,7 +18,6 @@ public class CreateDiscountAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
 
         final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
-
         try {
             final String name = request.getParameter("name");
             final Discount.Type type = Discount.Type.valueOf(request.getParameter("type").toUpperCase());

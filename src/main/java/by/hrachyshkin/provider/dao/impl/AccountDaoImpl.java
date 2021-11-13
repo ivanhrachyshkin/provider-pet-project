@@ -35,6 +35,13 @@ public class AccountDaoImpl implements AccountDao {
                     "WHERE email = ? AND password = ?" +
                     ")";
 
+    private static final String EXISTS_BY_NOT_ID_AND_EMAIL_QUERY =
+            "SELECT EXISTS (" +
+                    "SELECT * " +
+                    "FROM accounts " +
+                    "WHERE id != ? AND email = ?" +
+                    ")";
+
     private static final String FIND_QUERY =
             "SELECT id, email, password, role, name, phone, address, balance " +
                     "FROM accounts ";
@@ -106,6 +113,22 @@ public class AccountDaoImpl implements AccountDao {
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_EMAIL_AND_PASSWORD)) {
             statement.setString(1, email);
             statement.setString(2, encrypt(password));
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getBoolean(1);
+            }
+        } catch (SQLException e) {
+            throw new DaoException("Account doesn't exist", e);
+        }
+    }
+
+    @Override
+    public boolean isExistByNotIdAndEmail(final Integer id, final String email) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(EXISTS_BY_NOT_ID_AND_EMAIL_QUERY)) {
+            statement.setInt(1, id);
+            statement.setString(2, email);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();

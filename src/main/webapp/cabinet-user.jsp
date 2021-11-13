@@ -48,7 +48,7 @@
                 <th>Balance</th>
             </tr>
             <tr>
-                <form action="${url}/accounts/update" method="POST">
+                <form action="${url}/cabinet/update" method="POST">
                     <td><input name="email" type="text" value="${account.email}" placeholder="${account.email}"/></td>
                     <td><select name="role">
                         <c:set var="roles" value="<%=Account.Role.values()%>"/>
@@ -65,6 +65,7 @@
                         <button type="submit" class="btn btn-info">update</button>
                     </td>
                     <input name="accountId" type="hidden" value="${account.id}">
+                    <input name="balance" type="hidden" value="${account.balance}">
                 </form>
             </tr>
         </table>

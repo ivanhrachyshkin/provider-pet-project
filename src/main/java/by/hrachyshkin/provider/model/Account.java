@@ -47,4 +47,15 @@ public final class Account extends Model {
         this.address = address;
         this.balance = balance;
     }
+
+    public Account(Integer id, String email, Role role, String name, String phone, String address) {
+        this.id = id;
+        this.email = email;
+        this.password = null;
+        this.role = role;
+        this.name = name;
+        this.phone = phone;
+        this.address = address;
+        this.balance = null;
+    }
 }

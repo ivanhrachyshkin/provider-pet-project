@@ -25,12 +25,10 @@ public class ShowDiscountsForTariffAction extends BaseAction {
 
         final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
         final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-
         final String tariffId = request.getParameter("tariffId");
         final Tariff tariff = tariffService.findOneById(Integer.valueOf(tariffId));
         final List<Discount> tariffDiscounts = discountService.findDiscountsForTariff(Integer.valueOf(tariffId));
         final List<Discount> discounts = discountService.find();
-
         request.setAttribute("tariff", tariff);
         request.setAttribute("tariffDiscounts", tariffDiscounts);
         request.setAttribute("discounts", discounts);

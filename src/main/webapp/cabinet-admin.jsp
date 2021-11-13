@@ -32,61 +32,67 @@
     </div>
 </nav>
 
+
+<h2 class="text-center">Admin account information</h2>
+<br>
+
 <div class="container">
-
-    <h2 class="text-center">Admin account information</h2>
-    <br>
-
-    <div class="container">
-        <table class="table table-hover table-stripped">
-            <tr>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Address</th>
-                <th>Balance</th>
-            </tr>
-            <tr>
-                <form action="${url}/accounts/update" method="POST">
-                    <td><input name="email" type="text" value="${account.email}" placeholder="${account.email}"/></td>
-                    <td><select name="role">
-                        <c:set var="roles" value="<%=Account.Role.values()%>"/>
-                        <c:forEach var="role" items="${roles}">
-                            <option value="${role.name()}" ${account.role.name()==role ?'selected':''}>${role.name()}</option>
-                        </c:forEach>
-                    </select></td>
-                    <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/></td>
-                    <td><input name="phone" type="text" value="${account.phone}" placeholder="${account.phone}"/></td>
-                    <td><input name="address" type="text" value="${account.address}" placeholder="${account.address}"/></td>
-                    <td><input name="balance" type="number" value="${account.balance}" placeholder="${account.balance}"/></td>
-                    <td><button type="submit" class="btn btn-info">update</button></td>
-                    <input name="accountId" type="hidden" value="${account.id}">
-                </form>
-            </tr>
-        </table>
-    </div>
-
-    <div class="container">
-        <h3>
-            <div class="row">
-                <div class="col-md-4">
-                    Accounts
-                    <a href="${url}/accounts" class="btn btn-info">show accounts</a>
-                </div>
-                <div class="col-md-4">
-                    Tariffs
-                    <a href="tariffs" class="btn btn-info">show tariffs</a>
-                </div>
-                <div class="col-md-4">
-                    Discounts
-                    <a href="discounts" class="btn btn-info">show discounts</a>
-                </div>
-            </div>
-        </h3>
-    </div>
-
+    <table class="table table-hover table-stripped">
+        <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Balance</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <form action="${url}/cabinet/update" method="POST">
+                <td><input name="email" type="text" value="${account.email}" placeholder="${account.email}"/>
+                </td>
+                <td><select name="role">
+                    <c:set var="roles" value="<%=Account.Role.values()%>"/>
+                    <c:forEach var="role" items="${roles}">
+                        <option value="${role.name()}" ${account.role.name()==role ?'selected':''}>${role.name()}</option>
+                    </c:forEach>
+                </select></td>
+                <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/></td>
+                <td><input name="phone" type="text" value="${account.phone}" placeholder="${account.phone}"/>
+                </td>
+                <td><input name="address" type="text" value="${account.address}"
+                           placeholder="${account.address}"/></td>
+                <td><input name="balance" type="number" value="${account.balance}"
+                           placeholder="${account.balance}"/></td>
+                <td>
+                    <button type="submit" class="btn btn-info">update</button>
+                </td>
+                <input name="accountId" type="hidden" value="${account.id}">
+            </form>
+        </tr>
+    </table>
 </div>
+
+
+<div class="container">
+    <h3>
+        <div class="row text-center">
+            <div class="col-md-4">
+                Accounts
+                <a href="${url}/cabinet/accounts" class="btn btn-info ">show accounts</a>
+            </div>
+            <div class="col-md-4">
+                Tariffs
+                <a href="tariffs" class="btn btn-info">show tariffs</a>
+            </div>
+            <div class="col-md-4">
+                Discounts
+                <a href="discounts" class="btn btn-info">show discounts</a>
+            </div>
+        </div>
+    </h3>
+</div>
+
 <div>
     ${error}
 </div>

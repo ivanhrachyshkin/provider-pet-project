@@ -23,9 +23,8 @@ public class UpdateDiscountAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
-        
         try {
+            final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
             final Integer id = Integer.valueOf(request.getParameter("id"));
             final String name = request.getParameter("name");
             final Discount.Type type = Discount.Type.valueOf(request.getParameter("type").toUpperCase());

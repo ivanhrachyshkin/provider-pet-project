@@ -65,7 +65,7 @@ public class AccountServiceImpl implements AccountService {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
             if (!accountDao.isExistById(id)) {
                 transactionImpl.rollback();
-                throw new ServiceException();
+                throw new ServiceException("Can't find by id account because account doesn't exist");
             }
             final Account account = accountDao.findOneById(id);
             transactionImpl.commit();
@@ -83,7 +83,7 @@ public class AccountServiceImpl implements AccountService {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
             if (!accountDao.isExistByEmail(email)) {
                 transactionImpl.rollback();
-                throw new ServiceException();
+                throw new ServiceException("Can't find by email account because account doesn't exist");
             }
             final Account account = accountDao.findOneByEmail(email);
             transactionImpl.commit();
@@ -101,7 +101,7 @@ public class AccountServiceImpl implements AccountService {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
             if (accountDao.isExistByEmail(account.getEmail())) {
                 transactionImpl.rollback();
-                throw new ServiceException();
+                throw new ServiceException("Can't add account because account is already exist");
             }
             accountDao.add(account);
             transactionImpl.commit();
@@ -118,7 +118,10 @@ public class AccountServiceImpl implements AccountService {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
             if (!accountDao.isExistById(account.getId())) {
                 transactionImpl.rollback();
-                throw new ServiceException();
+                throw new ServiceException("Can't update account because account doesn't exist exist");
+            }
+            if (accountDao.isExistByNotIdAndEmail(account.getId(), account.getEmail())) {
+                throw new ServiceException("Can't update current account because email is used");
             }
             accountDao.update(account);
             transactionImpl.commit();

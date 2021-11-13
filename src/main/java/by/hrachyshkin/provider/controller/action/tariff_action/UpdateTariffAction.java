@@ -22,9 +22,8 @@ public class UpdateTariffAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-
         try {
+            final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
             final Integer id = Integer.valueOf(request.getParameter("tariffId"));
             final String name = request.getParameter("name");
             final Tariff.Type type = Tariff.Type.valueOf(request.getParameter("type").toUpperCase());

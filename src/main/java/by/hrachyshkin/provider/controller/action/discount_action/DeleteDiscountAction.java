@@ -20,7 +20,6 @@ public class DeleteDiscountAction extends BaseAction {
             throws ServletException, IOException {
 
         final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
-
         try {
             final Integer id = Integer.valueOf(request.getParameter("id"));
             discountService.delete(id);

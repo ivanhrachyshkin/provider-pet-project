@@ -24,15 +24,12 @@ public class ShowDiscountAction extends BaseAction {
             throws ServletException, IOException {
 
         final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
-
         final List<Discount> discounts;
         final String rawType = request.getParameter("filter");
-
         if (rawType != null) {
             final Discount.Type type = Discount.Type.valueOf(rawType.toUpperCase());
             discounts = discountService.findAndFilterByType(type);
         } else discounts = discountService.find();
-
         request.setAttribute("discounts", discounts);
         request.getRequestDispatcher("discounts.jsp").forward(request, response);
     }

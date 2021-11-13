@@ -21,9 +21,8 @@ public class RemoveDiscountFromTariffAction extends BaseAction {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        final PromotionService promotionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
-
         try {
+            final PromotionService promotionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
             final String tariffId = request.getParameter("tariffId");
             final String discountId = request.getParameter("discountId");
             promotionService.deleteByTariffAndDiscount(Integer.valueOf(tariffId), Integer.valueOf(discountId));

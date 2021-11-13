@@ -11,35 +11,26 @@ import lombok.SneakyThrows;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-@WebServlet("/login")
-public class LoginAction extends BaseAction {
+@WebServlet("/cabinet/accounts/create")
+public class CreateAccountAction extends BaseAction {
 
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
 
-        final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-
         try {
+            final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
             final String email = request.getParameter("email");
             final String password = request.getParameter("password");
-            final Account account;
-            if (accountService.isExistByEmailAndPassword(email, password)) {
-                final HttpSession session = request.getSession();
-                account = accountService.findOneByEmail(email);
-                session.setAttribute("accountId", account.getId());
-                request.getRequestDispatcher("/cabinet").forward(request, response);
-            } else {
-                request.setAttribute("error", "Check Email and Password");
-                request.getRequestDispatcher("/login.jsp").forward(request, response);
-            }
+            final Account.Role role = Account.Role.valueOf(request.getParameter("role"));
+            final String name = request.getParameter("name");
+            final String phone = request.getParameter("phone");
+            final String address = request.getParameter("address");
+            final Float balance = Float.valueOf(request.getParameter("balance"));
+           accountService.add(new Account(email, password, role, name, phone, address, balance));
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher("/login.jsp").forward(request, response);
         }
+        request.getRequestDispatcher("/cabinet/accounts").forward(request, response);
     }
 }
-
-
-

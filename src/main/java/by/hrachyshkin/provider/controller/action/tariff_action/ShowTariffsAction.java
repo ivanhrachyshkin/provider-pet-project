@@ -23,15 +23,12 @@ public class ShowTariffsAction extends BaseAction {
             throws ServletException, IOException {
 
        final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-
         final List<Tariff> tariffs;
         final String rawType = request.getParameter("filter");
-
         if(rawType != null) {
             final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
             tariffs = tariffService.findAndFilterByType(type);
         } else tariffs = tariffService.find();
-
         request.setAttribute("tariffs", tariffs);
         request.getRequestDispatcher("tariffs.jsp").forward(request, response);
     }
