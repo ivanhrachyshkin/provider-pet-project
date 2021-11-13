@@ -74,17 +74,29 @@
     <div class="container">
         <h3>
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-2">
+                </div>
+                <div class="col-md-4 text-center">
+                    <h3>Subscriptions</h3>
+                    <a href="${url}/cabinet/subscriptions" class="btn btn-info">my subscriptions</a>
                 </div>
                 <div class="col-md-4">
-                    Tariffs
-                    <a href="${url}/cabinet/myTariffs" class="btn btn-info">my tariffs</a>
+                    <form action="${url}/cabinet/deposit" method="POST">
+                        <input class="form-control input-sm" name="card" type="number"
+                               placeholder="card number xxxx xxxx xxxx xxxx"/>
+                        <input class="form-control input-sm" name="sum" type="number" value="sum" placeholder="sum"/>
+                        <input class="form-control input-sm" name="validity" type="date" placeholder="VALID THRU"/>
+                        <button type="submit" class="btn btn-info">deposit</button>
+                    </form>
+
                 </div>
-                <div class="col-md-4">
-                </div>
+            </div>
+            <div class="col-md-2">
             </div>
         </h3>
     </div>
+
+</div>
 </div>
 
 

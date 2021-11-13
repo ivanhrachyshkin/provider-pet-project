@@ -3,7 +3,6 @@ package by.hrachyshkin.provider.controller.action.tariff_action;
 import by.hrachyshkin.provider.controller.action.BaseAction;
 import by.hrachyshkin.provider.model.Promotion;
 import by.hrachyshkin.provider.service.PromotionService;
-import by.hrachyshkin.provider.service.impl.PromotionServiceImpl;
 import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;

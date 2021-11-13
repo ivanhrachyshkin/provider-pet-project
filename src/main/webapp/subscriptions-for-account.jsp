@@ -3,7 +3,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
     <c:set var="url">${pageContext.request.contextPath}</c:set>
     <title>Provider</title>
@@ -17,6 +17,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -34,12 +35,9 @@
 </nav>
 
 <div class="container">
-    <h1 class="text-center">Discounts</h1>
+    <h1 class="text-center">Subscriptions for "${account.email}" account</h1>
     <h1></h1>
     <h1></h1>
-    <a href="${url}/discounts?filter=percentage" class="btn btn-info">percentage</a>
-    <a href="${url}/discounts?filter=coefficient" class="btn btn-info">coefficient</a>
-    <a href="${url}/discounts?filter=all" class="btn btn-info">all</a>
 </div>
 
 <div class="container">
@@ -47,21 +45,47 @@
         <tr>
             <th>Name</th>
             <th>Type</th>
-            <th>Value</th>
-            <th>Start</th>
-            <th>End</th>
+            <th>Speed</th>
+            <th>Price</th>
+            <th>Traffic</th>
+            <th>Bills</th>
+            <th>Remove</th>
         </tr>
-        <c:forEach var="discount" items="${discounts}">
+        <c:forEach var="tariff" items="${accountTariffs}">
             <tr>
-                    <td>${discount.name}</td>
-                    <td>${discount.type}</td>
-                    <td>${discount.value}</td>
-                    <td>${discount.dateFrom}</td>
-                    <td>${discount.dateTo}</td>
+                    <td>${tariff.name}</td>
+                    <td>${tariff.type}</td>
+                    <td>${tariff.speed}</td>
+                    <td>${tariff.price}</td>
+                <form action="${url}/cabinet/subscriptions/traffics" method="POST">
+                    <td><button type="submit" class="btn btn-info">traffics</button></td>
+                    <input name="tariffId" type="hidden" value="${tariff.id}">
+                </form>
+                <form action="#" method="POST">
+                    <td><button type="submit" class="btn btn-info">bills</button></td>
+                    <input name="tariffId" type="hidden" value="${tariff.id}">
+                </form>
+                <form action="${url}/cabinet/subscriptions/remove" method="POST">
+                    <td><button type="submit" class="btn btn-danger">remove</button></td>
+                    <input name="tariffId" type="hidden" value="${tariff.id}">
+                </form>
             </tr>
         </c:forEach>
     </table>
 </div>
+
+<span class="text-center">
+<form action="${url}/cabinet/subscriptions/add" method="POST">
+    <label>Choose a tariff:</label>
+    <select name="tariffId">
+        <c:forEach var="tariff" items="${tariffs}">
+            <option value="${tariff.id}">${tariff.name} | ${tariff.type} | ${tariff.speed} | ${tariff.price}</option>
+        </c:forEach>
+    </select>
+    <input type="submit" class="btn btn-info" value="add tariff">
+    <input name="tariffId" type="hidden" value="${tariff.id}">
+</form>
+</span>
 <div>
     ${error}
 </div>

@@ -38,6 +38,7 @@
     <h1></h1>
     <a href="${url}/tariffs?filter=trafficked" class="btn btn-info">trafficked</a>
     <a href="${url}/tariffs?filter=unlimited" class="btn btn-info">unlimited</a>
+    <a href="${url}/tariffs?filter=all" class="btn btn-info">all</a>
 </div>
 
 <div class="container">

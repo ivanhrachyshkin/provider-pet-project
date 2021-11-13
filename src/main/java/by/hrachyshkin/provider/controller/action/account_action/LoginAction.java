@@ -24,13 +24,15 @@ public class LoginAction extends BaseAction {
 
             final String email = request.getParameter("email");
             final String password = request.getParameter("password");
-            final Account account;
+
 
             if (accountService.isExistByEmailAndPassword(email, password)) {
                 final HttpSession session = request.getSession();
-                account = accountService.findOneByEmail(email);
+                final Account account = accountService.findOneByEmail(email);
+
                 session.setAttribute("accountId", account.getId());
                 session.setAttribute("accountRole", account.getRole());
+
                 request.getRequestDispatcher("/cabinet").forward(request, response);
 
             } else {

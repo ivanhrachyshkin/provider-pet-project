@@ -39,6 +39,7 @@
     <h1></h1>
     <a href="${url}/discounts?filter=percentage" class="btn btn-info">percentage</a>
     <a href="${url}/discounts?filter=coefficient" class="btn btn-info">coefficient</a>
+    <a href="${url}/discounts?filter=all" class="btn btn-info">all</a>
 </div>
 
 <div class="container">

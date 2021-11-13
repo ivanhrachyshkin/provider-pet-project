@@ -38,6 +38,7 @@
     <h1></h1>
     <a href="${url}/tariffs?filter=trafficked" class="btn btn-info">trafficked</a>
     <a href="${url}/tariffs?filter=unlimited" class="btn btn-info">unlimited</a>
+    <a href="${url}/tariffs?filter=all" class="btn btn-info">all</a>
 </div>
 
 <div class="container">
@@ -56,7 +57,6 @@
             <td>${tariff.speed}</td>
             <td>${tariff.price}</td>
 
-
             <form action="${url}/tariffs/discounts" method="POST">
                 <td>
                     <button type="submit" class="btn btn-info">discounts</button>
@@ -64,14 +64,13 @@
                 <input name="tariffId" type="hidden" value="${tariff.id}">
             </form>
 
-
             <c:forEach var="accountTariff" items="${accountTariffs}">
             <c:if test="${accountTariff.id == tariff.id}">
-            <td>connected</td>
+            <td><button type="submit" class="btn btn-success">connected</button></td>
             </c:if>
             </c:forEach>
-            </c:forEach>
-
+        </tr>
+        </c:forEach>
     </table>
 </div>
 

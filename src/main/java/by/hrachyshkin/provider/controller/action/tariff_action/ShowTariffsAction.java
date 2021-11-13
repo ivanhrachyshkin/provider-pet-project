@@ -24,14 +24,15 @@ public class ShowTariffsAction extends BaseAction {
             throws ServletException, IOException {
 
         final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-        final List<Tariff> tariffs;
-        final String rawType = request.getParameter("filter");
 
-        if (rawType != null) {
+        final String rawType = request.getParameter("filter");
+        final List<Tariff> tariffs;
+
+        if (rawType == null || rawType.equals("all")) {
+          tariffs = tariffService.find();
+        } else {
             final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
             tariffs = tariffService.findAndFilterByType(type);
-        } else {
-            tariffs = tariffService.find();
         }
 
         request.setAttribute("tariffs", tariffs);
@@ -39,8 +40,8 @@ public class ShowTariffsAction extends BaseAction {
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
             request.getRequestDispatcher("/all-tariffs-for-admin.jsp").forward(request, response);
         } else {
-           final List<Tariff> accountTariffs = tariffService.findTariffsForAccountId(getAccountId(request));
-        request.setAttribute("accountTariffs", accountTariffs);
+            final List<Tariff> accountTariffs = tariffService.findTariffsForAccountId(getAccountId(request));
+            request.setAttribute("accountTariffs", accountTariffs);
             request.getRequestDispatcher("/all-tariffs-for-user.jsp").forward(request, response);
         }
     }

@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
-@WebServlet("/cabinet/myTariffs")
-public class ShowTariffsForAccountAction extends BaseAction {
+@WebServlet("/cabinet/subscriptions")
+public class ShowSubscriptionsForAccountAction extends BaseAction {
 
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
@@ -32,6 +32,6 @@ public class ShowTariffsForAccountAction extends BaseAction {
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
         }
-        request.getRequestDispatcher("/tariffs-for-account.jsp").forward(request, response);
+        request.getRequestDispatcher("/subscriptions-for-account.jsp").forward(request, response);
     }
 }

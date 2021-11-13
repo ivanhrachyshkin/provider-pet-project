@@ -71,6 +71,10 @@ public class AccountDaoImpl implements AccountDao {
                     "SET email =?, role =?, name =?, phone=?, address=?, balance =? " +
                     "WHERE id = ?";
 
+    private static final String DEPOSIT_QUERY = "UPDATE accounts " +
+            "SET balance =? " +
+            "WHERE id = ?";
+
     private final Connection connection;
 
     public AccountDaoImpl(Connection connection) {
@@ -232,6 +236,18 @@ public class AccountDaoImpl implements AccountDao {
             statement.setFloat(6, account.getBalance());
 
             statement.setInt(7, account.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DaoException("Can't update account", e);
+        }
+    }
+
+    @Override
+    public void deposit(final Integer accountId, final Float sum) throws DaoException {
+        try (final PreparedStatement statement = connection.prepareStatement(DEPOSIT_QUERY)) {
+
+            statement.setFloat(1, sum);
+            statement.setInt(2, accountId);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Can't update account", e);

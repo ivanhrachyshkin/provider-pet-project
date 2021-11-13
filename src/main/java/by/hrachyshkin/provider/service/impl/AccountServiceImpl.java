@@ -10,7 +10,10 @@ import by.hrachyshkin.provider.service.AccountService;
 import by.hrachyshkin.provider.service.ServiceException;
 import lombok.RequiredArgsConstructor;
 
+import javax.servlet.ServletException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
@@ -124,6 +127,36 @@ public class AccountServiceImpl implements AccountService {
                 throw new ServiceException("Can't update current account because email is used");
             }
             accountDao.update(account);
+            transactionImpl.commit();
+        } catch (TransactionException | DaoException e) {
+            transactionImpl.rollback();
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void deposit(final Integer accountId,
+                        String card,
+                        Float deposit,
+                        LocalDate validity) throws ServiceException, TransactionException {
+
+        try {
+            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+
+            if (!accountDao.isExistById(accountId)) {
+                transactionImpl.rollback();
+                throw new ServiceException("Can't update account because account doesn't exist exist");
+            }
+
+            if (!Pattern.matches("^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$", card)) {
+                throw new ServiceException("Check card number");
+            }
+
+            if (validity.isBefore(LocalDate.now())) {
+                throw new ServiceException("Current card had expired");
+            }
+
+            accountDao.deposit(accountId, accountDao.findOneById(accountId).getBalance() + deposit);
             transactionImpl.commit();
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();

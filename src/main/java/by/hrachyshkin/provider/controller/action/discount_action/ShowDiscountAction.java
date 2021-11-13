@@ -25,14 +25,18 @@ public class ShowDiscountAction extends BaseAction {
             throws ServletException, IOException {
 
         final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
-        final List<Discount> discounts;
+
         final String rawType = request.getParameter("filter");
-        if (rawType != null) {
+        final List<Discount> discounts;
+
+        if (rawType == null || rawType.equals("all")) {
+            discounts = discountService.find();
+        } else {
             final Discount.Type type = Discount.Type.valueOf(rawType.toUpperCase());
             discounts = discountService.findAndFilterByType(type);
-        } else discounts = discountService.find();
-        request.setAttribute("discounts", discounts);
+        }
 
+        request.setAttribute("discounts", discounts);
 
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
             request.getRequestDispatcher("all-discounts-for-admin.jsp").forward(request, response);

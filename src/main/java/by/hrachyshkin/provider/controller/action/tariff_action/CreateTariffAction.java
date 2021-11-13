@@ -18,8 +18,6 @@ import java.io.IOException;
 @WebServlet("/tariffs/create")
 public class CreateTariffAction extends BaseAction {
 
-
-
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

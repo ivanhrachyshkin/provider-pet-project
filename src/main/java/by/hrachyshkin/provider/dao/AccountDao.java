@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.dao;
 
 import by.hrachyshkin.provider.model.Account;
+import by.hrachyshkin.provider.service.ServiceException;
 
 import java.util.List;
 
@@ -17,4 +18,6 @@ public interface AccountDao extends Dao<Account> {
     List<Account> findAndSortByName() throws DaoException;
 
     Account findOneByEmail(final String email) throws DaoException;
+
+    void deposit(final Integer accountId, final Float sum) throws DaoException;
 }
