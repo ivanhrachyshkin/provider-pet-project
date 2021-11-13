@@ -90,6 +90,7 @@ public class TariffDaoImpl implements TariffDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Tariff doesn't exist", e);
         }
@@ -105,6 +106,7 @@ public class TariffDaoImpl implements TariffDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Tariff doesn't exist", e);
         }
@@ -121,6 +123,7 @@ public class TariffDaoImpl implements TariffDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Tariff doesn't exist", e);
         }
@@ -131,12 +134,14 @@ public class TariffDaoImpl implements TariffDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Tariff> tariffs = new ArrayList<>();
             while (resultSet.next()) {
                 final Tariff tariff = buildTariff(resultSet);
                 tariffs.add(tariff);
             }
             return tariffs;
+
         } catch (Exception e) {
             throw new DaoException("Can't find tariffs");
         }
@@ -147,13 +152,14 @@ public class TariffDaoImpl implements TariffDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Tariff> tariffs = new ArrayList<>();
             while (resultSet.next()) {
                 final Tariff tariff = buildTariff(resultSet);
                 tariffs.add(tariff);
             }
-
             return tariffs;
+
         } catch (Exception e) {
             throw new DaoException("Can't find or sort tariffs");
         }
@@ -173,6 +179,7 @@ public class TariffDaoImpl implements TariffDao {
                 }
                 return tariffs;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter tariffs");
         }
@@ -192,6 +199,7 @@ public class TariffDaoImpl implements TariffDao {
                 }
                 return tariffs;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter or sort tariffs");
         }
@@ -207,6 +215,7 @@ public class TariffDaoImpl implements TariffDao {
                 resultSet.next();
                 return buildTariff(resultSet);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Can't find tariff by id", e);
         }
@@ -222,6 +231,7 @@ public class TariffDaoImpl implements TariffDao {
             statement.setDouble(4, tariff.getPrice());
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't add tariff", e);
         }
@@ -239,6 +249,7 @@ public class TariffDaoImpl implements TariffDao {
             statement.setInt(5, tariff.getId());
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't update tariff", e);
         }
@@ -250,6 +261,7 @@ public class TariffDaoImpl implements TariffDao {
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, id);
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't delete tariff", e);
         }

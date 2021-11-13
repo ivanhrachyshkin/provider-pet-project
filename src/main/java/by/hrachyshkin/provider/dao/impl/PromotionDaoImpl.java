@@ -69,6 +69,7 @@ public class PromotionDaoImpl implements PromotionDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Promotion doesn't exist", e);
         }
@@ -84,6 +85,7 @@ public class PromotionDaoImpl implements PromotionDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Promotion doesn't exist", e);
         }
@@ -100,6 +102,7 @@ public class PromotionDaoImpl implements PromotionDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Promotion doesn't exist", e);
         }
@@ -110,12 +113,14 @@ public class PromotionDaoImpl implements PromotionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Promotion> promotions = new ArrayList<>();
             while (resultSet.next()) {
                 final Promotion promotion = buildPromotion(resultSet);
                 promotions.add(promotion);
             }
             return promotions;
+
         } catch (Exception e) {
             throw new DaoException("Can't find promotions");
         }
@@ -135,6 +140,7 @@ public class PromotionDaoImpl implements PromotionDao {
                 }
                 return promotions;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter promotions");
         }
@@ -153,6 +159,7 @@ public class PromotionDaoImpl implements PromotionDao {
             statement.setInt(2, promotion.getDiscountId());
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't add promotion", e);
         }
@@ -175,6 +182,7 @@ public class PromotionDaoImpl implements PromotionDao {
             statement.setInt(1, tariffId);
             statement.setInt(2, discountId);
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't delete promotion by tariff id and discount id", e);
         }

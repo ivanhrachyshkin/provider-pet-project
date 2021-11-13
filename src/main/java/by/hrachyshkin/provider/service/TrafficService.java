@@ -13,5 +13,5 @@ public interface TrafficService extends Service<Traffic> {
 
     List<Traffic> findAndFilterAndSort(final Integer subscriptionId) throws ServiceException, TransactionException;
 
-    List<Traffic> findTrafficForTariffPerAccount(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException;
+    List<Traffic> findTrafficForSubscription(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException;
 }

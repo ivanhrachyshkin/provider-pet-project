@@ -10,7 +10,6 @@ import by.hrachyshkin.provider.service.AccountService;
 import by.hrachyshkin.provider.service.ServiceException;
 import lombok.RequiredArgsConstructor;
 
-import javax.servlet.ServletException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -27,6 +26,7 @@ public class AccountServiceImpl implements AccountService {
             final boolean value = accountDao.isExistByEmailAndPassword(email, password);
             transactionImpl.commit();
             return value;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -38,9 +38,10 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
-            List<Account> accounts = accountDao.find();
+            final List<Account> accounts = accountDao.find();
             transactionImpl.commit();
             return accounts;
+
         } catch (DaoException | TransactionException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -55,6 +56,7 @@ public class AccountServiceImpl implements AccountService {
             List<Account> andSortByName = accountDao.findAndSortByName();
             transactionImpl.commit();
             return andSortByName;
+
         } catch (DaoException | TransactionException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -66,13 +68,16 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+
             if (!accountDao.isExistById(id)) {
                 transactionImpl.rollback();
                 throw new ServiceException("Can't find by id account because account doesn't exist");
             }
+
             final Account account = accountDao.findOneById(id);
             transactionImpl.commit();
             return account;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -84,13 +89,16 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+
             if (!accountDao.isExistByEmail(email)) {
                 transactionImpl.rollback();
                 throw new ServiceException("Can't find by email account because account doesn't exist");
             }
+
             final Account account = accountDao.findOneByEmail(email);
             transactionImpl.commit();
             return account;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -102,12 +110,15 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+
             if (accountDao.isExistByEmail(account.getEmail())) {
                 transactionImpl.rollback();
                 throw new ServiceException("Can't add account because account is already exist");
             }
+
             accountDao.add(account);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -119,15 +130,19 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+
             if (!accountDao.isExistById(account.getId())) {
                 transactionImpl.rollback();
                 throw new ServiceException("Can't update account because account doesn't exist exist");
             }
+
             if (accountDao.isExistByNotIdAndEmail(account.getId(), account.getEmail())) {
                 throw new ServiceException("Can't update current account because email is used");
             }
+
             accountDao.update(account);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -156,8 +171,9 @@ public class AccountServiceImpl implements AccountService {
                 throw new ServiceException("Current card had expired");
             }
 
-            accountDao.deposit(accountId, accountDao.findOneById(accountId).getBalance() + deposit);
+            accountDao.updateBalanceForAccountId(accountId, accountDao.findOneById(accountId).getBalance() + deposit);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);

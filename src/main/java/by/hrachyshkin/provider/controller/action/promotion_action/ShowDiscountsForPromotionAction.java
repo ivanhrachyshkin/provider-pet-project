@@ -1,4 +1,4 @@
-package by.hrachyshkin.provider.controller.action.tariff_action;
+package by.hrachyshkin.provider.controller.action.promotion_action;
 
 import by.hrachyshkin.provider.controller.action.BaseAction;
 import by.hrachyshkin.provider.model.Account;
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 @WebServlet("/tariffs/discounts")
-public class ShowDiscountsForTariffAction extends BaseAction {
+public class ShowDiscountsForPromotionAction extends BaseAction {
 
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -26,14 +26,16 @@ public class ShowDiscountsForTariffAction extends BaseAction {
 
         final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
         final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-        final String tariffId = request.getParameter("tariffId");
-        final Tariff tariff = tariffService.findOneById(Integer.valueOf(tariffId));
-        final List<Discount> tariffDiscounts = discountService.findDiscountsForTariff(Integer.valueOf(tariffId));
+
+        final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
+        final Tariff tariff = tariffService.findOneById(tariffId);
+
+        final List<Discount> tariffDiscounts = discountService.findDiscountsForPromotion(tariffId);
         final List<Discount> discounts = discountService.find();
+
         request.setAttribute("tariff", tariff);
         request.setAttribute("tariffDiscounts", tariffDiscounts);
         request.setAttribute("discounts", discounts);
-
 
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
             request.getRequestDispatcher("/discounts-for-tariff-admin.jsp").forward(request, response);

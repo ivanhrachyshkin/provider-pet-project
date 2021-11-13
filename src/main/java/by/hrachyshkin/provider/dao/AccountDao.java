@@ -19,5 +19,5 @@ public interface AccountDao extends Dao<Account> {
 
     Account findOneByEmail(final String email) throws DaoException;
 
-    void deposit(final Integer accountId, final Float sum) throws DaoException;
+    void updateBalanceForAccountId(final Integer accountId, final Float sum) throws DaoException;
 }

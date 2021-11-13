@@ -25,11 +25,10 @@ public class LoginAction extends BaseAction {
             final String email = request.getParameter("email");
             final String password = request.getParameter("password");
 
-
             if (accountService.isExistByEmailAndPassword(email, password)) {
-                final HttpSession session = request.getSession();
                 final Account account = accountService.findOneByEmail(email);
 
+                final HttpSession session = request.getSession();
                 session.setAttribute("accountId", account.getId());
                 session.setAttribute("accountRole", account.getRole());
 

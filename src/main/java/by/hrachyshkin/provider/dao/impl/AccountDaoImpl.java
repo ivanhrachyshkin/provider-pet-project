@@ -71,9 +71,10 @@ public class AccountDaoImpl implements AccountDao {
                     "SET email =?, role =?, name =?, phone=?, address=?, balance =? " +
                     "WHERE id = ?";
 
-    private static final String DEPOSIT_QUERY = "UPDATE accounts " +
-            "SET balance =? " +
-            "WHERE id = ?";
+    private static final String UPDATE_BALANCE_FOR_ACCOUNT_ID_QUERY =
+            "UPDATE accounts " +
+                    "SET balance = ? " +
+                    "WHERE id = ?";
 
     private final Connection connection;
 
@@ -91,6 +92,7 @@ public class AccountDaoImpl implements AccountDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);
         }
@@ -106,6 +108,7 @@ public class AccountDaoImpl implements AccountDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);
         }
@@ -122,6 +125,7 @@ public class AccountDaoImpl implements AccountDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);
         }
@@ -138,6 +142,7 @@ public class AccountDaoImpl implements AccountDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Account doesn't exist", e);
         }
@@ -148,12 +153,14 @@ public class AccountDaoImpl implements AccountDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Account> accounts = new ArrayList<>();
             while (resultSet.next()) {
                 final Account account = buildAccount(resultSet);
                 accounts.add(account);
             }
             return accounts;
+
         } catch (Exception e) {
             throw new DaoException("Can't find accounts");
         }
@@ -164,12 +171,14 @@ public class AccountDaoImpl implements AccountDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_NAME_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Account> accounts = new ArrayList<>();
             while (resultSet.next()) {
                 final Account account = buildAccount(resultSet);
                 accounts.add(account);
             }
             return accounts;
+
         } catch (Exception e) {
             throw new DaoException("Can't find or sort accounts");
         }
@@ -186,6 +195,7 @@ public class AccountDaoImpl implements AccountDao {
                 resultSet.next();
                 return buildAccount(resultSet);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Can't find account by id", e);
         }
@@ -201,6 +211,7 @@ public class AccountDaoImpl implements AccountDao {
                 resultSet.next();
                 return buildAccount(resultSet);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Can't find account by email", e);
         }
@@ -219,6 +230,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.setFloat(7, account.getBalance());
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't add account", e);
         }
@@ -237,18 +249,7 @@ public class AccountDaoImpl implements AccountDao {
 
             statement.setInt(7, account.getId());
             statement.executeUpdate();
-        } catch (SQLException e) {
-            throw new DaoException("Can't update account", e);
-        }
-    }
 
-    @Override
-    public void deposit(final Integer accountId, final Float sum) throws DaoException {
-        try (final PreparedStatement statement = connection.prepareStatement(DEPOSIT_QUERY)) {
-
-            statement.setFloat(1, sum);
-            statement.setInt(2, accountId);
-            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DaoException("Can't update account", e);
         }
@@ -257,6 +258,19 @@ public class AccountDaoImpl implements AccountDao {
     @Override
     public void delete(final Integer id) throws DaoException {
         throw new UnsupportedOperationException("Delete operation is not available for account");
+    }
+
+    @Override
+    public void updateBalanceForAccountId(final Integer accountId, final Float sum) throws DaoException {
+        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_BALANCE_FOR_ACCOUNT_ID_QUERY)) {
+
+            statement.setFloat(1, sum);
+            statement.setInt(2, accountId);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DaoException("Can't update account", e);
+        }
     }
 
     private String encrypt(final String password) {

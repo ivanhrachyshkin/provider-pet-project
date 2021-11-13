@@ -10,9 +10,10 @@ import lombok.SneakyThrows;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 
-@WebServlet("/cabinet/subscriptions/remove")
-public class RemoveSubscriptionAction extends BaseAction {
+@WebServlet("/cabinet/subscriptions/bills/pay")
+public class PayBillForSubscriptionAction extends BaseAction {
 
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
@@ -21,13 +22,17 @@ public class RemoveSubscriptionAction extends BaseAction {
             final SubscriptionService subscriptionService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
 
             final Integer accountId = getAccountId(request);
-            final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
 
-            subscriptionService.deleteByAccountAndTariffId(accountId, tariffId);
+            final Integer subscriptionId = Integer.valueOf(request.getParameter("subscriptionId"));
+            final Float value = Float.valueOf(request.getParameter("value"));
+            final LocalDate date = LocalDate.parse(request.getParameter("date"));
+
+            subscriptionService.payBill(accountId, subscriptionId, value, date);
 
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
         }
-        request.getRequestDispatcher("/cabinet/subscriptions").forward(request, response);
+        request.setAttribute("tariffId", request.getParameter("tariffId"));
+        request.getRequestDispatcher("/cabinet/subscriptions/bills").forward(request, response);
     }
 }

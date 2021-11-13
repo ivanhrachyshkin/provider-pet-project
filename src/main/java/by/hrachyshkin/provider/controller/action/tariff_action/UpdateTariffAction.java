@@ -24,12 +24,15 @@ public class UpdateTariffAction extends BaseAction {
 
         try {
             final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+
             final Integer id = Integer.valueOf(request.getParameter("tariffId"));
             final String name = request.getParameter("name");
             final Tariff.Type type = Tariff.Type.valueOf(request.getParameter("type").toUpperCase());
             final Integer speed = Integer.valueOf(request.getParameter("speed"));
             final Float price = Float.valueOf(request.getParameter("price"));
+
             tariffService.update(new Tariff(id, name, type, speed, price));
+
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
         }

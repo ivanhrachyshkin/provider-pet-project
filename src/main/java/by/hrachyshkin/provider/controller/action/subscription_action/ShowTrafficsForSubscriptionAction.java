@@ -28,7 +28,7 @@ public class ShowTrafficsForSubscriptionAction extends BaseAction {
             final Integer accountId = getAccountId(request);
             final Account account = accountService.findOneById(accountId);
 
-            final List<Traffic> subscriptionTraffics = trafficService.findTrafficForTariffPerAccount(accountId, tariffId);
+            final List<Traffic> subscriptionTraffics = trafficService.findTrafficForSubscription(accountId, tariffId);
 
             request.setAttribute("account", account);
             request.setAttribute("tariff", tariff);

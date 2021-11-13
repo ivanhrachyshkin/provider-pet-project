@@ -41,16 +41,20 @@ public class TransactionImpl implements Transaction {
     }
 
     public void commit() throws TransactionException {
+
         try {
             connection.commit();
+
         } catch (SQLException e) {
             throw new TransactionException(e.getMessage(), e);
         }
     }
 
     public void rollback() throws TransactionException {
+
         try {
             connection.rollback();
+
         } catch (SQLException e) {
             throw new TransactionException(e.getMessage(), e);
         }

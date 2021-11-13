@@ -1,16 +1,15 @@
 package by.hrachyshkin.provider.service.impl;
 
-import by.hrachyshkin.provider.dao.DaoException;
-import by.hrachyshkin.provider.dao.DaoKeys;
-import by.hrachyshkin.provider.dao.SubscriptionDao;
-import by.hrachyshkin.provider.dao.Transaction;
-import by.hrachyshkin.provider.dao.TransactionException;
+import by.hrachyshkin.provider.dao.*;
+import by.hrachyshkin.provider.model.Bill;
 import by.hrachyshkin.provider.model.Subscription;
 import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
@@ -25,6 +24,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             List<Subscription> subscriptions = subscriptionDao.find();
             transactionImpl.commit();
             return subscriptions;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -39,6 +39,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             final List<Subscription> subscriptions = subscriptionDao.findAndFilter(accountId);
             transactionImpl.commit();
             return subscriptions;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -53,6 +54,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             final Subscription subscription = subscriptionDao.findOneById(id);
             transactionImpl.commit();
             return subscription;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -65,12 +67,42 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
         try {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
+
             if (subscriptionDao.isExistByAccountAndTariffId(subscription.getAccountId(), subscription.getTariffId())) {
                 transactionImpl.rollback();
                 throw new ServiceException();
             }
+
             subscriptionDao.add(subscription);
             transactionImpl.commit();
+
+        } catch (TransactionException | DaoException e) {
+            transactionImpl.rollback();
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public void payBill(final Integer accountId, final Integer subscriptionIdForBill, final Float value, final LocalDate date) throws ServiceException, TransactionException {
+
+        try {
+            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
+
+            if (!accountDao.isExistById(accountId)) {
+                transactionImpl.rollback();
+                throw new ServiceException("Can't pay the bill because account doesn't exist");
+            }
+
+            if (!billDao.isExists(subscriptionIdForBill, value, date)) {
+                transactionImpl.rollback();
+                throw new ServiceException("Can't pay the bill because bill doesn't exist");
+            }
+
+            billDao.updateBillStatus(subscriptionIdForBill, value, date);
+            accountDao.updateBalanceForAccountId(accountId, accountDao.findOneById(accountId).getBalance() - value);
+            transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -94,6 +126,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
             subscriptionDao.deleteByAccountAndTariffId(accountId, tariffId);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);

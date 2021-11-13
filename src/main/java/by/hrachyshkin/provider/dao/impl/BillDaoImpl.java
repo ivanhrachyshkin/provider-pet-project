@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class BillDaoImpl implements BillDao {
             "SELECT EXISTS (" +
                     "SELECT * " +
                     "FROM bills " +
-                    "WHERE subscription_id = ? AND value = ? AND date = ? AND status = ? " +
+                    "WHERE subscription_id = ? AND value = ? AND date = ?" +
                     ")";
 
     private static final String FIND_QUERY =
@@ -57,18 +58,18 @@ public class BillDaoImpl implements BillDao {
     }
 
     @Override
-    public boolean isExists(final Bill bill) throws DaoException {
+    public boolean isExists(final Integer subscriptionId, final Float value, final LocalDate date) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(EXISTS_QUERY)) {
-            statement.setInt(1, bill.getSubscriptionId());
-            statement.setFloat(2, bill.getValue());
-            statement.setDate(3, java.sql.Date.valueOf(bill.getDate()));
-            statement.setBoolean(4, bill.getStatus());
+            statement.setInt(1, subscriptionId);
+            statement.setFloat(2, value);
+            statement.setDate(3, java.sql.Date.valueOf(date));
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Bill doesn't exist", e);
         }
@@ -79,12 +80,14 @@ public class BillDaoImpl implements BillDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Bill> bills = new ArrayList<>();
             while (resultSet.next()) {
                 final Bill bill = buildBill(resultSet);
                 bills.add(bill);
             }
             return bills;
+
         } catch (Exception e) {
             throw new DaoException("Can't find bills");
         }
@@ -95,12 +98,14 @@ public class BillDaoImpl implements BillDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_DATE_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Bill> bills = new ArrayList<>();
             while (resultSet.next()) {
                 final Bill bill = buildBill(resultSet);
                 bills.add(bill);
             }
             return bills;
+
         } catch (Exception e) {
             throw new DaoException("Can't find or sort bills");
         }
@@ -120,6 +125,7 @@ public class BillDaoImpl implements BillDao {
                 }
                 return bills;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter bills");
         }
@@ -139,6 +145,7 @@ public class BillDaoImpl implements BillDao {
                 }
                 return bills;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter or sort bills");
         }
@@ -159,6 +166,7 @@ public class BillDaoImpl implements BillDao {
             statement.setBoolean(4, bill.getStatus());
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't create bill", e);
         }
@@ -173,6 +181,7 @@ public class BillDaoImpl implements BillDao {
             statement.setDate(3, java.sql.Date.valueOf(bill.getDate()));
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't update bill", e);
         }
@@ -181,6 +190,21 @@ public class BillDaoImpl implements BillDao {
     @Override
     public void delete(final Integer subscriptionId) throws DaoException {
         throw new UnsupportedOperationException("Delete operation is not available for bill");
+    }
+
+    @Override
+    public void updateBillStatus(final Integer subscriptionId, final Float value, final LocalDate date) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_BILL_STATUS_QUERY)) {
+            statement.setInt(1, subscriptionId);
+            statement.setFloat(2, value);
+            statement.setDate(3, java.sql.Date.valueOf(date));
+
+            statement.executeUpdate();
+
+        } catch (Exception e) {
+            throw new DaoException("Can't find current bill");
+        }
     }
 
     private Bill buildBill(final ResultSet resultSet) throws SQLException {

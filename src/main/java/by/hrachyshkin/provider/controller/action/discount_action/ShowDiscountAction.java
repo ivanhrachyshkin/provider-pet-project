@@ -4,8 +4,6 @@ import by.hrachyshkin.provider.controller.action.BaseAction;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Discount;
 import by.hrachyshkin.provider.service.DiscountService;
-import by.hrachyshkin.provider.service.Service;
-import by.hrachyshkin.provider.service.impl.DiscountServiceImpl;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
 import lombok.SneakyThrows;

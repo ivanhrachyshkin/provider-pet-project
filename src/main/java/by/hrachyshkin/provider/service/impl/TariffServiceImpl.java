@@ -29,6 +29,7 @@ public class TariffServiceImpl implements TariffService {
             final boolean value = tariffDao.isExistById(id);
             transactionImpl.commit();
             return value;
+
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -42,6 +43,7 @@ public class TariffServiceImpl implements TariffService {
             final List<Tariff> tariffs = tariffDao.find();
             transactionImpl.commit();
             return tariffs;
+
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -55,6 +57,7 @@ public class TariffServiceImpl implements TariffService {
             final List<Tariff> tariffs = tariffDao.findAndSortBySpeedAndPrice();
             transactionImpl.commit();
             return tariffs;
+
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -68,6 +71,7 @@ public class TariffServiceImpl implements TariffService {
             final List<Tariff> tariffs = tariffDao.findAndFilterByType(type);
             transactionImpl.commit();
             return tariffs;
+
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -81,6 +85,7 @@ public class TariffServiceImpl implements TariffService {
            final List<Tariff> tariffs = tariffDao.findAndFilterAndSort(type);
             transactionImpl.commit();
             return tariffs;
+
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
@@ -92,19 +97,22 @@ public class TariffServiceImpl implements TariffService {
 
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
+
             if (!tariffDao.isExistById(id)) {
                 throw new ServiceException("Can't find tariff by id");
             }
+
             final Tariff tariff = tariffDao.findOneById(id);
             transactionImpl.commit();
             return tariff;
+
         } catch (TransactionException | DaoException e) {
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
     @Override
-    public List<Tariff> findTariffsForAccountId(final Integer accountId) throws ServiceException, TransactionException {
+    public List<Tariff> findTariffsForSubscription(final Integer accountId) throws ServiceException, TransactionException {
 
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
@@ -123,6 +131,7 @@ public class TariffServiceImpl implements TariffService {
             }
             transactionImpl.commit();
             return accountTariffs;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -134,11 +143,14 @@ public class TariffServiceImpl implements TariffService {
 
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
+
             if (tariffDao.isExistByName(tariff.getName())) {
                 throw new ServiceException("Can't add tariff");
             }
+
             tariffDao.add(tariff);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -150,14 +162,18 @@ public class TariffServiceImpl implements TariffService {
 
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
+
             if (!tariffDao.isExistById(tariff.getId())) {
                 throw new ServiceException("Can't update current tariff");
             }
+
             if (tariffDao.isExistByNotIdAndName(tariff.getId(), tariff.getName())) {
                 throw new ServiceException("Can't update current tariff");
             }
+
             tariffDao.update(tariff);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -171,13 +187,16 @@ public class TariffServiceImpl implements TariffService {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
             final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
+
             if (!tariffDao.isExistById(id)
                     || subscriptionDao.isExistByTariffId(id)
                     || promotionDao.isExistByTariffId(id)) {
                 throw new ServiceException("Can't delete current tariff");
             }
+
             tariffDao.delete(id);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);

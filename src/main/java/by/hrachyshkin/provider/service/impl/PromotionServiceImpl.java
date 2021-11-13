@@ -25,6 +25,7 @@ public class PromotionServiceImpl implements PromotionService {
             final List<Promotion> promotions = promotionDao.find();
             transactionImpl.commit();
             return promotions;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -39,6 +40,7 @@ public class PromotionServiceImpl implements PromotionService {
             final List<Promotion> promotions = promotionDao.findAndFilterByTariffId(tariffId);
             transactionImpl.commit();
             return promotions;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -55,12 +57,15 @@ public class PromotionServiceImpl implements PromotionService {
 
         try {
             final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
+
             if (promotionDao.isExistByTariffAndDiscountId(promotion.getTariffId(), promotion.getDiscountId())) {
                 transactionImpl.rollback();
                 throw new ServiceException("Discount is already added to current tariff");
             }
+
             promotionDao.add(promotion);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -82,12 +87,15 @@ public class PromotionServiceImpl implements PromotionService {
 
         try {
             final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
+
             if (!promotionDao.isExistByTariffAndDiscountId(tariffId, discountId)) {
                 transactionImpl.rollback();
                 throw new ServiceException("There is no such discount for current tariff");
             }
+
             promotionDao.deleteByTariffAndDiscount(tariffId, discountId);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);

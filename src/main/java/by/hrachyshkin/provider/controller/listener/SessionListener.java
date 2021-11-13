@@ -11,13 +11,13 @@ public class SessionListener implements HttpSessionAttributeListener {
     }
 
     public void attributeAdded(HttpSessionBindingEvent ev) {
-// запись в log-файл или иные действия
-        System.out.println("add: " + ev.getClass().getSimpleName() + " : "+ ev.getName()
+
+        System.out.println("add: " + ev.getClass().getSimpleName() + " : " + ev.getName()
                 + " : " + ev.getValue());
     }
 
     public void attributeReplaced(HttpSessionBindingEvent ev) {
-// запись в log-файл или иные действия
+
         System.out.println("replace: " + ev.getClass().getSimpleName() + " : " + ev.getName()
                 + " : " + ev.getValue());
     }

@@ -70,7 +70,7 @@
                 </form>
                 <form action="${url}/discounts/delete" method="POST">
                     <td><button type="submit" class="btn btn-info">delete</button></td>
-                    <input name="id" type="hidden" value="${discount.id}">
+                    <input name="discountId" type="hidden" value="${discount.id}">
                 </form>
             </tr>
         </c:forEach>

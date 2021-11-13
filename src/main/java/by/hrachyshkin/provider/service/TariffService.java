@@ -13,7 +13,7 @@ public interface TariffService extends Service<Tariff>{
 
     List<Tariff> findAndFilterByType(final Tariff.Type type) throws ServiceException;
 
-    List<Tariff> findTariffsForAccountId(final Integer accountId) throws ServiceException, TransactionException;
+    List<Tariff> findTariffsForSubscription(final Integer accountId) throws ServiceException, TransactionException;
 
     List<Tariff> findAndFilterAndSort(final Tariff.Type type) throws ServiceException;
 }

@@ -3,10 +3,9 @@ package by.hrachyshkin.provider.controller.action.tariff_action;
 import by.hrachyshkin.provider.controller.action.BaseAction;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Tariff;
-import by.hrachyshkin.provider.service.TariffService;
-import by.hrachyshkin.provider.service.impl.TariffServiceImpl;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
+import by.hrachyshkin.provider.service.TariffService;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;
@@ -29,7 +28,7 @@ public class ShowTariffsAction extends BaseAction {
         final List<Tariff> tariffs;
 
         if (rawType == null || rawType.equals("all")) {
-          tariffs = tariffService.find();
+            tariffs = tariffService.find();
         } else {
             final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
             tariffs = tariffService.findAndFilterByType(type);
@@ -40,7 +39,7 @@ public class ShowTariffsAction extends BaseAction {
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
             request.getRequestDispatcher("/all-tariffs-for-admin.jsp").forward(request, response);
         } else {
-            final List<Tariff> accountTariffs = tariffService.findTariffsForAccountId(getAccountId(request));
+            final List<Tariff> accountTariffs = tariffService.findTariffsForSubscription(getAccountId(request));
             request.setAttribute("accountTariffs", accountTariffs);
             request.getRequestDispatcher("/all-tariffs-for-user.jsp").forward(request, response);
         }

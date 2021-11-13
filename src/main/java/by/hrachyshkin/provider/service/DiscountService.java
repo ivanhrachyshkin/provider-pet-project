@@ -13,5 +13,5 @@ public interface DiscountService extends Service<Discount> {
 
     List<Discount> findAndFilterAndSort(final Discount.Type type) throws ServiceException, TransactionException;
 
-    List<Discount> findDiscountsForTariff(final Integer tariffId) throws ServiceException, TransactionException;
+    List<Discount> findDiscountsForPromotion(final Integer tariffId) throws ServiceException, TransactionException;
     }

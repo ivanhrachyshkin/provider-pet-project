@@ -12,6 +12,7 @@ import by.hrachyshkin.provider.service.BillService;
 import by.hrachyshkin.provider.service.ServiceException;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,7 @@ public class BillServiceImpl implements BillService {
             final List<Bill> bills = billDao.find();
             transactionImpl.commit();
             return bills;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -42,6 +44,7 @@ public class BillServiceImpl implements BillService {
             final List<Bill> bills = billDao.findAndSortByDate();
             transactionImpl.commit();
             return bills;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -56,6 +59,7 @@ public class BillServiceImpl implements BillService {
             final List<Bill> bills = billDao.findAndFilterBySubscriptionId(subscriptionId);
             transactionImpl.commit();
             return bills;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -70,19 +74,19 @@ public class BillServiceImpl implements BillService {
             final List<Bill> bills = billDao.findAndFilterAndSort(subscriptionId);
             transactionImpl.commit();
             return bills;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
         }
     }
 
-
     @Override
     public Bill findOneById(final Integer id) throws ServiceException {
         throw new UnsupportedOperationException();
     }
 
-    public List<Bill> findBillsForTariffPerAccount(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
+    public List<Bill> findBillsForSubscription(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
 
         try {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
@@ -102,6 +106,7 @@ public class BillServiceImpl implements BillService {
             }
             transactionImpl.commit();
             return subscriptionBills;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -113,12 +118,15 @@ public class BillServiceImpl implements BillService {
 
         try {
             final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
-            if (billDao.isExists(bill)) {
+
+            if (billDao.isExists(bill.getSubscriptionId(), bill.getValue(), bill.getDate())) {
                 transactionImpl.rollback();
                 throw new ServiceException();
             }
+
             billDao.add(bill);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -127,20 +135,7 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public void update(final Bill bill) throws ServiceException, TransactionException {
-
-        try {
-            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
-            if (billDao.isExists(bill) || !bill.getStatus()) {
-                billDao.update(bill);
-                transactionImpl.commit();
-            } else {
-                transactionImpl.rollback();
-                throw new ServiceException();
-            }
-        } catch (TransactionException | DaoException e) {
-            transactionImpl.rollback();
-            throw new ServiceException(e.getMessage(), e);
-        }
+        throw new UnsupportedOperationException();
     }
 
     @Override

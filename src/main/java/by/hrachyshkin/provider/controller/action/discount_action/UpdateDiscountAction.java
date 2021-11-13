@@ -3,7 +3,6 @@ package by.hrachyshkin.provider.controller.action.discount_action;
 import by.hrachyshkin.provider.controller.action.BaseAction;
 import by.hrachyshkin.provider.model.Discount;
 import by.hrachyshkin.provider.service.DiscountService;
-import by.hrachyshkin.provider.service.impl.DiscountServiceImpl;
 import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
@@ -25,13 +24,16 @@ public class UpdateDiscountAction extends BaseAction {
 
         try {
             final DiscountService discountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+
             final Integer id = Integer.valueOf(request.getParameter("id"));
             final String name = request.getParameter("name");
             final Discount.Type type = Discount.Type.valueOf(request.getParameter("type").toUpperCase());
             final Integer value = Integer.valueOf(request.getParameter("value"));
             final LocalDate dateFrom = LocalDate.parse(request.getParameter("dateFrom"));
             final LocalDate dateTo = LocalDate.parse(request.getParameter("dateTo"));
-            discountService.update(new Discount(id,name, type, value, dateFrom, dateTo));
+
+            discountService.update(new Discount(id, name, type, value, dateFrom, dateTo));
+
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
         }

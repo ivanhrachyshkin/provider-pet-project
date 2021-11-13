@@ -87,6 +87,7 @@ public class DiscountDaoImpl implements DiscountDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Discount doesn't exist", e);
         }
@@ -102,6 +103,7 @@ public class DiscountDaoImpl implements DiscountDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Discount doesn't exist", e);
         }
@@ -118,6 +120,7 @@ public class DiscountDaoImpl implements DiscountDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Discount doesn't exist", e);
         }
@@ -129,12 +132,14 @@ public class DiscountDaoImpl implements DiscountDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Discount> discounts = new ArrayList<>();
             while (resultSet.next()) {
                 final Discount discount = buildDiscount(resultSet);
                 discounts.add(discount);
             }
             return discounts;
+
         } catch (Exception e) {
             throw new DaoException("Can't find discounts");
         }
@@ -144,12 +149,14 @@ public class DiscountDaoImpl implements DiscountDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_VALUE_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Discount> discounts = new ArrayList<>();
             while (resultSet.next()) {
                 final Discount discount = buildDiscount(resultSet);
                 discounts.add(discount);
             }
             return discounts;
+
         } catch (Exception e) {
             throw new DaoException("Can't find or sort discounts");
         }
@@ -169,6 +176,7 @@ public class DiscountDaoImpl implements DiscountDao {
                 }
                 return discounts;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter discounts");
         }
@@ -188,6 +196,7 @@ public class DiscountDaoImpl implements DiscountDao {
                 }
                 return discounts;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter or sort discounts");
         }
@@ -202,6 +211,7 @@ public class DiscountDaoImpl implements DiscountDao {
                 resultSet.next();
                 return buildDiscount(resultSet);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Can't find discount by id", e);
         }
@@ -219,6 +229,7 @@ public class DiscountDaoImpl implements DiscountDao {
             statement.setDate(5, java.sql.Date.valueOf(discount.getDateTo()));
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't add discount", e);
         }
@@ -237,6 +248,7 @@ public class DiscountDaoImpl implements DiscountDao {
             statement.setInt(6, discount.getId());
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't update discount", e);
         }
@@ -248,6 +260,7 @@ public class DiscountDaoImpl implements DiscountDao {
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, id);
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't delete discount", e);
         }

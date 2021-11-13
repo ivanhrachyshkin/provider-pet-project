@@ -17,6 +17,7 @@ public abstract class BaseAction extends HttpServlet {
 
         try {
             processRequest(request, response);
+
         } catch (TransactionException e) {
             throw new ServletException("Transaction exception");
         }
@@ -27,6 +28,7 @@ public abstract class BaseAction extends HttpServlet {
 
         try {
             processRequest(request, response);
+
         } catch (TransactionException e) {
             throw new ServletException("Transaction exception");
         }
@@ -37,11 +39,13 @@ public abstract class BaseAction extends HttpServlet {
             throws ServletException, IOException, TransactionException;
 
     protected Integer getAccountId(HttpServletRequest request) {
+
         final HttpSession session = request.getSession(false);
         return (Integer) session.getAttribute("accountId");
     }
 
     protected Account.Role getRole(HttpServletRequest request) {
+
         final HttpSession session = request.getSession(false);
         return (Account.Role) session.getAttribute("accountRole");
     }

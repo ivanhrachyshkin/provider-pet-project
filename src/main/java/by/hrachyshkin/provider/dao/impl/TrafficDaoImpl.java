@@ -64,6 +64,7 @@ public class TrafficDaoImpl implements TrafficDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Traffic doesn't exist", e);
         }
@@ -74,12 +75,14 @@ public class TrafficDaoImpl implements TrafficDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Traffic> traffics = new ArrayList<>();
             while (resultSet.next()) {
                 final Traffic traffic = buildTraffic(resultSet);
                 traffics.add(traffic);
             }
             return traffics;
+
         } catch (Exception e) {
             throw new DaoException("Can't find traffics");
         }
@@ -90,12 +93,14 @@ public class TrafficDaoImpl implements TrafficDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_DATE_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Traffic> traffics = new ArrayList<>();
             while (resultSet.next()) {
                 final Traffic traffic = buildTraffic(resultSet);
                 traffics.add(traffic);
             }
             return traffics;
+
         } catch (Exception e) {
             throw new DaoException("Can't find or sort traffics");
         }
@@ -115,6 +120,7 @@ public class TrafficDaoImpl implements TrafficDao {
                 }
                 return traffics;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter traffics");
         }
@@ -134,6 +140,7 @@ public class TrafficDaoImpl implements TrafficDao {
                 }
                 return traffics;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter traffics");
         }
@@ -154,6 +161,7 @@ public class TrafficDaoImpl implements TrafficDao {
             statement.setDate(3, java.sql.Date.valueOf(traffic.getDate()));
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't add traffic", e);
         }

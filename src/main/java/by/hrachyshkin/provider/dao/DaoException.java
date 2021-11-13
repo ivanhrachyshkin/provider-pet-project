@@ -5,19 +5,23 @@ public class DaoException extends Exception {
     public DaoException() {
     }
 
-    public DaoException(String message) {
+    public DaoException(final String message) {
         super(message);
     }
 
-    public DaoException(String message, Throwable cause) {
+    public DaoException(final String message,
+                        final Throwable cause) {
         super(message, cause);
     }
 
-    public DaoException(Throwable cause) {
+    public DaoException(final Throwable cause) {
         super(cause);
     }
 
-    public DaoException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public DaoException(final String message,
+                        final Throwable cause,
+                        final boolean enableSuppression,
+                        final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

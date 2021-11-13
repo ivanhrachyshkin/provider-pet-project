@@ -18,7 +18,9 @@ import java.io.IOException;
 public class CabinetAction extends BaseAction {
 
     @Override
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void processRequest(final HttpServletRequest request,
+                                  HttpServletResponse response)
+            throws ServletException, IOException {
 
         try {
             final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);

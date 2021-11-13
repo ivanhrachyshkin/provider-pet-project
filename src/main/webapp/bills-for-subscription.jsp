@@ -33,45 +33,46 @@
 </nav>
 
 <div class="container">
-    <h1 class="text-center">Tariff plans</h1>
-    <h1></h1>
-    <h1></h1>
-    <a href="${url}/tariffs?filter=trafficked" class="btn btn-info">trafficked</a>
-    <a href="${url}/tariffs?filter=unlimited" class="btn btn-info">unlimited</a>
-    <a href="${url}/tariffs?filter=all" class="btn btn-info">all</a>
+    <h2 class="text-center">Bills for "${account.email}" for "${tariff.name}"</h2>
 </div>
 
-<div class="container">
-    <table class="table table-hover table-stripped">
-        <tr>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Speed</th>
-            <th>Price</th>
-            <th>Discounts</th>
-        </tr>
-        <c:forEach var="tariff" items="${tariffs}">
-        <tr>
-            <td>${tariff.name}</td>
-            <td>${tariff.type}</td>
-            <td>${tariff.speed}</td>
-            <td>${tariff.price}</td>
 
-            <form action="${url}/tariffs/discounts" method="POST">
-                <td>
-                    <button type="submit" class="btn btn-info">discounts</button>
-                </td>
-                <input name="tariffId" type="hidden" value="${tariff.id}">
-            </form>
-
-            <c:forEach var="accountTariff" items="${accountTariffs}">
-            <c:if test="${accountTariff.id == tariff.id}">
-            <td><button disabled class="btn btn-success">connected</button></td>
-            </c:if>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <table class="table table-hover table-stripped">
+            <tr>
+                <th>Value</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            <c:forEach var="bill" items="${subscriptionBills}">
+                <tr>
+                    <td>${bill.value}</td>
+                    <td>${bill.date}</td>
+                    <td>${bill.status}</td>
+                    <td>
+                        <form action="${url}/cabinet/subscriptions/bills/pay" method="POST">
+                            <c:choose>
+                                <c:when test="${bill.status == false}">
+                                    <input name="subscriptionId" type="hidden" value="${bill.subscriptionId}">
+                                    <input name="value" type="hidden" value="${bill.value}">
+                                    <input name="date" type="hidden" value="${bill.date}">
+                                    <input name="tariffId" type="hidden" value="${tariff.id}">
+                                    <button type="submit" class="btn btn-danger">pay</button>
+                                </c:when>
+                                <c:otherwise>
+                                    <button disabled class="btn btn-success">PAID</button>
+                                </c:otherwise>
+                            </c:choose>
+                        </form>
+                    </td>
+                </tr>
             </c:forEach>
-        </tr>
-        </c:forEach>
-    </table>
+        </table>
+    </div>
+    <div class="col-md-3"></div>
 </div>
 
 <div>

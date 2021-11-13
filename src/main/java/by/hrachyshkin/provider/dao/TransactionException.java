@@ -9,7 +9,8 @@ public class TransactionException extends Exception {
         super(message);
     }
 
-    public TransactionException(final String message, final Throwable cause) {
+    public TransactionException(final String message,
+                                final Throwable cause) {
         super(message, cause);
     }
 

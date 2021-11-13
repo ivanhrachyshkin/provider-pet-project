@@ -61,7 +61,7 @@
                     <td><button type="submit" class="btn btn-info">traffics</button></td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
-                <form action="#" method="POST">
+                <form action="${url}/cabinet/subscriptions/bills" method="POST">
                     <td><button type="submit" class="btn btn-info">bills</button></td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>

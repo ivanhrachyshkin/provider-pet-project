@@ -28,6 +28,7 @@ public class DiscountServiceImpl implements DiscountService {
             final List<Discount> discounts = discountDao.find();
             transactionImpl.commit();
             return discounts;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -57,6 +58,7 @@ public class DiscountServiceImpl implements DiscountService {
             final List<Discount> discounts = discountDao.findAndFilterByType(type);
             transactionImpl.commit();
             return discounts;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -71,6 +73,7 @@ public class DiscountServiceImpl implements DiscountService {
             final List<Discount> discounts = discountDao.findAndFilterAndSort(type);
             transactionImpl.commit();
             return discounts;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -83,13 +86,16 @@ public class DiscountServiceImpl implements DiscountService {
 
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
+
             if (!discountDao.isExistById(id)) {
                 transactionImpl.rollback();
                 throw new ServiceException("Can't find discount by id");
             }
+
             final Discount discount = discountDao.findOneById(id);
             transactionImpl.commit();
             return discount;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -97,7 +103,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> findDiscountsForTariff(final Integer tariffId) throws ServiceException, TransactionException {
+    public List<Discount> findDiscountsForPromotion(final Integer tariffId) throws ServiceException, TransactionException {
 
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
@@ -114,6 +120,7 @@ public class DiscountServiceImpl implements DiscountService {
             }
             transactionImpl.commit();
             return discounts;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -124,12 +131,15 @@ public class DiscountServiceImpl implements DiscountService {
     public void add(final Discount discount) throws ServiceException, TransactionException {
 
         try {
-            DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
+            final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
+
             if (discountDao.isExistByName(discount.getName())) {
                 throw new ServiceException("Can't add discount");
             }
+
             discountDao.add(discount);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -141,14 +151,18 @@ public class DiscountServiceImpl implements DiscountService {
 
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
+
             if (!discountDao.isExistById(discount.getId())) {
                 throw new ServiceException("Can't update discount");
             }
+
             if (discountDao.isExistByNotIdAndName(discount.getId(), discount.getName())) {
                 throw new ServiceException("Can't update discount");
             }
+
             discountDao.update(discount);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -161,11 +175,14 @@ public class DiscountServiceImpl implements DiscountService {
         try {
             final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
+
             if (!discountDao.isExistById(id) || promotionDao.isExistByDiscountId(id)) {
                 throw new ServiceException("Can't delete discount");
             }
+
             discountDao.delete(id);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);

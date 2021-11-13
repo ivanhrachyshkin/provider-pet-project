@@ -5,7 +5,6 @@ import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactoryImpl;
 import by.hrachyshkin.provider.service.ServiceKeys;
 import by.hrachyshkin.provider.service.TariffService;
-import by.hrachyshkin.provider.service.impl.TariffServiceImpl;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;
@@ -23,8 +22,10 @@ public class DeleteTariffAction extends BaseAction {
 
         try {
             final TariffService tariffService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
             tariffService.delete(tariffId);
+
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
         }

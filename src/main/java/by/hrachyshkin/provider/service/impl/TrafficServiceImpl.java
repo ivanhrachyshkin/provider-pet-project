@@ -28,6 +28,7 @@ public class TrafficServiceImpl implements TrafficService {
             final List<Traffic> traffic = trafficDao.find();
             transactionImpl.commit();
             return traffic;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -42,6 +43,7 @@ public class TrafficServiceImpl implements TrafficService {
             List<Traffic> traffics = trafficDao.findAndSortByDate();
             transactionImpl.commit();
             return traffics;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -56,6 +58,7 @@ public class TrafficServiceImpl implements TrafficService {
             final List<Traffic> traffics = trafficDao.findAndFilterBySubscriptionId(subscriptionId);
             transactionImpl.commit();
             return traffics;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -70,6 +73,7 @@ public class TrafficServiceImpl implements TrafficService {
             List<Traffic> traffics = trafficDao.findAndFilterAndSort(subscriptionId);
             transactionImpl.commit();
             return traffics;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -77,7 +81,7 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     @Override
-    public List<Traffic> findTrafficForTariffPerAccount(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
+    public List<Traffic> findTrafficForSubscription(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
 
         try {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
@@ -97,6 +101,7 @@ public class TrafficServiceImpl implements TrafficService {
             }
             transactionImpl.commit();
             return subscriptionTraffics;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -113,12 +118,15 @@ public class TrafficServiceImpl implements TrafficService {
 
         try {
             final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
+
             if (trafficDao.isExists(traffic)) {
                 transactionImpl.rollback();
                 throw new ServiceException();
             }
+
             trafficDao.add(traffic);
             transactionImpl.commit();
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -127,13 +135,11 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     public void update(final Traffic traffic) throws ServiceException {
-
         throw new UnsupportedOperationException();
     }
 
     @Override
     public void delete(final Integer id) throws ServiceException {
-
         throw new UnsupportedOperationException();
     }
 }

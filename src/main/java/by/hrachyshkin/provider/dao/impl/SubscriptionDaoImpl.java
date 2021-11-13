@@ -91,6 +91,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Subscription doesn't exist", e);
         }
@@ -106,6 +107,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Subscription doesn't exist", e);
         }
@@ -121,6 +123,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Subscription doesn't exist", e);
         }
@@ -137,6 +140,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                 resultSet.next();
                 return resultSet.getBoolean(1);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Subscription doesn't exist1111", e);
         }
@@ -147,12 +151,14 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_QUERY);
              final ResultSet resultSet = statement.executeQuery()) {
+
             final List<Subscription> subscriptions = new ArrayList<>();
             while (resultSet.next()) {
                 final Subscription subscription = buildSubscription(resultSet);
                 subscriptions.add(subscription);
             }
             return subscriptions;
+
         } catch (Exception e) {
             throw new DaoException("Can't find subscriptions");
         }
@@ -172,6 +178,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                 }
                 return subscriptions;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter subscriptions");
         }
@@ -192,6 +199,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                 }
                 return subscriptions;
             }
+
         } catch (Exception e) {
             throw new DaoException("Can't find or filter subscriptions");
         }
@@ -207,6 +215,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                 resultSet.next();
                 return buildSubscription(resultSet);
             }
+
         } catch (SQLException e) {
             throw new DaoException("Can't find subscription by id", e);
         }
@@ -220,6 +229,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             statement.setInt(2, subscription.getTariffId());
 
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't add subscription", e);
         }
@@ -236,6 +246,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
         try (final PreparedStatement statement = connection.prepareStatement(DELETE_QUERY)) {
             statement.setInt(1, id);
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't delete subscription", e);
         }
@@ -248,6 +259,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             statement.setInt(1, accountId);
             statement.setInt(2, tariffId);
             statement.executeUpdate();
+
         } catch (SQLException e) {
             throw new DaoException("Can't delete subscription", e);
         }
