@@ -110,7 +110,7 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     public Traffic findOneById(final Integer id) throws ServiceException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Find one by id operation is not available for traffic");
     }
 
     @Override
@@ -121,7 +121,7 @@ public class TrafficServiceImpl implements TrafficService {
 
             if (trafficDao.isExists(traffic)) {
                 transactionImpl.rollback();
-                throw new ServiceException();
+                throw new ServiceException("Can't add traffic because is already exists");
             }
 
             trafficDao.add(traffic);
@@ -135,11 +135,11 @@ public class TrafficServiceImpl implements TrafficService {
 
     @Override
     public void update(final Traffic traffic) throws ServiceException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Update operation is not available for traffic");
     }
 
     @Override
     public void delete(final Integer id) throws ServiceException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Delete operation is not available for traffic");
     }
 }

@@ -93,7 +93,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Subscription doesn't exist", e);
+            throw new DaoException("Subscription doesn't exist by id", e);
         }
     }
 
@@ -109,7 +109,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Subscription doesn't exist", e);
+            throw new DaoException("Subscription doesn't exist by account id", e);
         }
     }
 
@@ -125,7 +125,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Subscription doesn't exist", e);
+            throw new DaoException("Subscription doesn't exist by tariff id", e);
         }
     }
 
@@ -142,7 +142,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Subscription doesn't exist1111", e);
+            throw new DaoException("Subscription doesn't exist by account and tariff id", e);
         }
     }
 
@@ -180,7 +180,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter subscriptions");
+            throw new DaoException("Can't find or filter by account subscriptions");
         }
     }
 
@@ -201,7 +201,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter subscriptions");
+            throw new DaoException("Can't find and filter subscription by account id and tariff id");
         }
     }
 
@@ -261,7 +261,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't delete subscription", e);
+            throw new DaoException("Can't delete subscription by account id and tariff id", e);
         }
     }
 

@@ -17,64 +17,48 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a href="${url}/index" class="navbar-brand">Provider</a>
-        </div>
-        <div>
-            <ul class="nav navbar-nav">
-                <li class="nav-item"><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
-                <li><a href="${url}/discounts"><b>Discounts</b></a></li>
-                <li><a href="#"><b>About us</b></a></li>
-                <li><a href="${url}/cabinet"><b>Personal Cabinet</b></a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
+<jsp:include page="navbar.jsp"/>
 
 <h1 class="text-center">Accounts</h1>
 
-
 <div class="container">
-<table class="table table-hover table-stripped">
-    <tr>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Name</th>
-        <th>Phone</th>
-        <th>Address</th>
-        <th>Balance</th>
-        <th>Action</th>
-    </tr>
-    <c:forEach var="account" items="${accounts}">
+    <table class="table table-hover table-stripped">
         <tr>
-            <form action="${url}/cabinet/update" method="POST">
-                <td><input name="email" type="text" value="${account.email}"
-                           placeholder="${account.email}"/></td>
-                <td><select name="role">
-                    <c:set var="roles" value="<%=Account.Role.values()%>"/>
-                    <c:forEach var="role" items="${roles}">
-                        <option value="${role.name()}" ${account.role.name()==role ?'selected':''}>${role.name()}</option>
-                    </c:forEach>
-                </select></td>
-                <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/>
-                </td>
-                <td><input name="phone" type="text" value="${account.phone}"
-                           placeholder="${account.phone}"/></td>
-                <td><input name="address" type="text" value="${account.address}"
-                           placeholder="${account.address}"/></td>
-                <td><input name="balance" type="number" value="${account.balance}"
-                           placeholder="${account.balance}"/></td>
-                <td>
-                    <button type="submit" class="btn btn-info">update</button>
-                </td>
-                <input name="accountId" type="hidden" value="${account.id}">
-            </form>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Balance</th>
+            <th>Action</th>
         </tr>
-    </c:forEach>
-</table>
+        <c:forEach var="account" items="${accounts}">
+            <tr>
+                <form action="${url}/cabinet/update" method="POST">
+                    <td><input name="email" type="text" value="${account.email}"
+                               placeholder="${account.email}"/></td>
+                    <td><select name="role">
+                        <c:set var="roles" value="<%=Account.Role.values()%>"/>
+                        <c:forEach var="role" items="${roles}">
+                            <option value="${role.name()}" ${account.role.name()==role ?'selected':''}>${role.name()}</option>
+                        </c:forEach>
+                    </select></td>
+                    <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/>
+                    </td>
+                    <td><input name="phone" type="text" value="${account.phone}"
+                               placeholder="${account.phone}"/></td>
+                    <td><input name="address" type="text" value="${account.address}"
+                               placeholder="${account.address}"/></td>
+                    <td><input name="balance" type="number" value="${account.balance}"
+                               placeholder="${account.balance}"/></td>
+                    <td>
+                        <button type="submit" class="btn btn-info">update</button>
+                    </td>
+                    <input name="accountId" type="hidden" value="${account.id}">
+                </form>
+            </tr>
+        </c:forEach>
+    </table>
 </div>
 
 <br>
@@ -99,8 +83,6 @@
     </div>
     <div class="col-md-2"></div>
 </div>
-<div>
-    ${error}
-</div>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

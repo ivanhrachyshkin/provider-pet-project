@@ -16,21 +16,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a href="${url}/index" class="navbar-brand">Provider</a>
-        </div>
-        <div>
-            <ul class="nav navbar-nav">
-                <li class="nav-item"><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
-                <li><a href="${url}/discounts"><b>Discounts</b></a></li>
-                <li><a href="#"><b>About us</b></a></li>
-                <li><a href="${url}/cabinet"><b>Personal Cabinet</b></a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="navbar.jsp" />
 
 <div class="container">
     <h1 class="text-center">Tariff plans</h1>
@@ -91,9 +77,6 @@
         </tr>
     </table>
 </div>
-
-<div>
-    ${error}
-</div>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

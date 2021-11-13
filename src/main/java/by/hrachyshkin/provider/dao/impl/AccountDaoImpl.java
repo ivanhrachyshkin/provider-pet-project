@@ -94,7 +94,7 @@ public class AccountDaoImpl implements AccountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Account doesn't exist", e);
+            throw new DaoException("Account doesn't exist by id", e);
         }
     }
 
@@ -110,7 +110,7 @@ public class AccountDaoImpl implements AccountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Account doesn't exist", e);
+            throw new DaoException("Account doesn't exist email", e);
         }
     }
 
@@ -127,7 +127,7 @@ public class AccountDaoImpl implements AccountDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Account doesn't exist", e);
+            throw new DaoException("Account doesn't exist by email and password", e);
         }
     }
 
@@ -180,7 +180,7 @@ public class AccountDaoImpl implements AccountDao {
             return accounts;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or sort accounts");
+            throw new DaoException("Can't find or sort by name accounts");
         }
     }
 
@@ -269,7 +269,7 @@ public class AccountDaoImpl implements AccountDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't update account", e);
+            throw new DaoException("Can't update balance for account", e);
         }
     }
 

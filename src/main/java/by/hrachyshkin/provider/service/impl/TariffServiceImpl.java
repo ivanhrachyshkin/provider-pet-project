@@ -82,7 +82,7 @@ public class TariffServiceImpl implements TariffService {
 
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
-           final List<Tariff> tariffs = tariffDao.findAndFilterAndSort(type);
+            final List<Tariff> tariffs = tariffDao.findAndFilterAndSort(type);
             transactionImpl.commit();
             return tariffs;
 
@@ -99,7 +99,7 @@ public class TariffServiceImpl implements TariffService {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
             if (!tariffDao.isExistById(id)) {
-                throw new ServiceException("Can't find tariff by id");
+                throw new ServiceException("Can't find tariff by id because tariff doesn't exist");
             }
 
             final Tariff tariff = tariffDao.findOneById(id);
@@ -145,7 +145,7 @@ public class TariffServiceImpl implements TariffService {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
             if (tariffDao.isExistByName(tariff.getName())) {
-                throw new ServiceException("Can't add tariff");
+                throw new ServiceException("Can't add tariff because is already exists");
             }
 
             tariffDao.add(tariff);
@@ -164,7 +164,7 @@ public class TariffServiceImpl implements TariffService {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
 
             if (!tariffDao.isExistById(tariff.getId())) {
-                throw new ServiceException("Can't update current tariff");
+                throw new ServiceException("Can't update current tariff because tariff doesn't exist");
             }
 
             if (tariffDao.isExistByNotIdAndName(tariff.getId(), tariff.getName())) {
@@ -188,10 +188,16 @@ public class TariffServiceImpl implements TariffService {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
             final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
 
-            if (!tariffDao.isExistById(id)
-                    || subscriptionDao.isExistByTariffId(id)
-                    || promotionDao.isExistByTariffId(id)) {
-                throw new ServiceException("Can't delete current tariff");
+            if (!tariffDao.isExistById(id)) {
+                throw new ServiceException("Can't delete current tariff because tariff doesn't exist");
+            }
+
+            if (subscriptionDao.isExistByTariffId(id)) {
+                throw new ServiceException("Can't delete current tariff because tariff has subscriptions");
+            }
+
+            if (promotionDao.isExistByTariffId(id)) {
+                throw new ServiceException("Can't delete current tariff because tariff has promotions");
             }
 
             tariffDao.delete(id);

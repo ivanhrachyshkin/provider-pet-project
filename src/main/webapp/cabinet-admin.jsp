@@ -16,22 +16,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a href="${url}/index" class="navbar-brand">Providi</a>
-        </div>
-        <div>
-            <ul class="nav navbar-nav">
-                <li><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
-                <li><a href="${url}/discounts"><b>Discounts</b></a></li>
-                <li><a href="#"><b>About us</b></a></li>
-                <li><a href="${url}/cabinet"><b>Personal Cabinet</b></a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
-
+<jsp:include page="navbar.jsp" />
 
 <h2 class="text-center">Admin account information</h2>
 <br>
@@ -83,18 +68,15 @@
             </div>
             <div class="col-md-4">
                 Tariffs
-                <a href="tariffs" class="btn btn-info">show tariffs</a>
+                <a href="${url}/tariffs" class="btn btn-info">show tariffs</a>
             </div>
             <div class="col-md-4">
                 Discounts
-                <a href="discounts" class="btn btn-info">show discounts</a>
+                <a href="${url}/discounts" class="btn btn-info">show discounts</a>
             </div>
         </div>
     </h3>
 </div>
-
-<div>
-    ${error}
-</div>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

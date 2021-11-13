@@ -70,7 +70,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
             if (subscriptionDao.isExistByAccountAndTariffId(subscription.getAccountId(), subscription.getTariffId())) {
                 transactionImpl.rollback();
-                throw new ServiceException();
+                throw new ServiceException("Can't add subscription because is already exists");
             }
 
             subscriptionDao.add(subscription);
@@ -111,12 +111,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
     @Override
     public void update(Subscription subscription) throws ServiceException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Update operation is not available for subscription");
     }
 
     @Override
     public void delete(Integer id) throws ServiceException, TransactionException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Delete operation is not available for subscription");
     }
 
     @Override

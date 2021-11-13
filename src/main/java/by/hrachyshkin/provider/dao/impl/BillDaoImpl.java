@@ -107,7 +107,7 @@ public class BillDaoImpl implements BillDao {
             return bills;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or sort bills");
+            throw new DaoException("Can't find or sort by date bills");
         }
     }
 
@@ -127,7 +127,7 @@ public class BillDaoImpl implements BillDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter bills");
+            throw new DaoException("Can't find or filter by subscription id bills");
         }
     }
 
@@ -147,7 +147,7 @@ public class BillDaoImpl implements BillDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter or sort bills");
+            throw new DaoException("Can't find or filter or sort by subscription id bills");
         }
     }
 
@@ -168,7 +168,7 @@ public class BillDaoImpl implements BillDao {
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException("Can't create bill", e);
+            throw new DaoException("Can't add bill", e);
         }
     }
 
@@ -203,7 +203,7 @@ public class BillDaoImpl implements BillDao {
             statement.executeUpdate();
 
         } catch (Exception e) {
-            throw new DaoException("Can't find current bill");
+            throw new DaoException("Can't update status for current bill");
         }
     }
 

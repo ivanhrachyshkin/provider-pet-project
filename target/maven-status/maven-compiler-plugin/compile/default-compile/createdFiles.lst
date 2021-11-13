@@ -1,6 +1,0 @@
-by\hrachyshkin\entity\User.class
-by\hrachyshkin\dao\BaseDAO.class
-by\hrachyshkin\UserServlet.class
-by\hrachyshkin\dao\DAOException.class
-by\hrachyshkin\dao\DAOFactory.class
-by\hrachyshkin\dao\UserDAO.class

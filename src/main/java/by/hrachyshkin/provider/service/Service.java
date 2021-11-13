@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface Service<T extends Model> {
 
-    public void add(T t) throws ServiceException, TransactionException;
+    void add(T t) throws ServiceException, TransactionException;
 
     List<T> find() throws ServiceException, TransactionException;
 

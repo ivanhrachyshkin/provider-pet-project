@@ -18,21 +18,7 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a href="${url}/index" class="navbar-brand">Provider</a>
-        </div>
-        <div>
-            <ul class="nav navbar-nav">
-                <li><a href="${url}/tariffs"><b>Tariff plans</b></a></li>
-                <li><a href="${url}/discounts"><b>Discounts</b></a></li>
-                <li><a href="#"><b>About us</b></a></li>
-                <li><a href="${url}/cabinet"><b>Personal Cabinet</b></a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<jsp:include page="navbar.jsp" />
 
 <div class="container">
     <h1 class="text-center">Subscriptions for "${account.email}" account</h1>
@@ -86,8 +72,6 @@
     <input name="tariffId" type="hidden" value="${tariff.id}">
 </form>
 </span>
-<div>
-    ${error}
-</div>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

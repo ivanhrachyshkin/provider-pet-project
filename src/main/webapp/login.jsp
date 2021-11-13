@@ -49,9 +49,6 @@
     <div class="col-md-4"></div>
 </div>
 </div>
-
-<div>
-    ${error}
-</div>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

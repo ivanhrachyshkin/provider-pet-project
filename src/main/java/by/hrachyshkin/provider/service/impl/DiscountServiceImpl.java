@@ -89,7 +89,7 @@ public class DiscountServiceImpl implements DiscountService {
 
             if (!discountDao.isExistById(id)) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't find discount by id");
+                throw new ServiceException("Can't find discount by id because discount doesn't exist");
             }
 
             final Discount discount = discountDao.findOneById(id);
@@ -134,7 +134,7 @@ public class DiscountServiceImpl implements DiscountService {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
 
             if (discountDao.isExistByName(discount.getName())) {
-                throw new ServiceException("Can't add discount");
+                throw new ServiceException("Can't add discount because discount is already exists");
             }
 
             discountDao.add(discount);
@@ -153,7 +153,7 @@ public class DiscountServiceImpl implements DiscountService {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
 
             if (!discountDao.isExistById(discount.getId())) {
-                throw new ServiceException("Can't update discount");
+                throw new ServiceException("Can't update discount because discount doesn't exist ");
             }
 
             if (discountDao.isExistByNotIdAndName(discount.getId(), discount.getName())) {
@@ -176,8 +176,11 @@ public class DiscountServiceImpl implements DiscountService {
             final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
 
-            if (!discountDao.isExistById(id) || promotionDao.isExistByDiscountId(id)) {
-                throw new ServiceException("Can't delete discount");
+            if (!discountDao.isExistById(id)) {
+                throw new ServiceException("Can't delete discount because discount ");
+            }
+            if (promotionDao.isExistByDiscountId(id)) {
+                throw new ServiceException("Can't delete discount because there are connected promotions");
             }
 
             discountDao.delete(id);

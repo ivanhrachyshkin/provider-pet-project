@@ -121,7 +121,7 @@ public class BillServiceImpl implements BillService {
 
             if (billDao.isExists(bill.getSubscriptionId(), bill.getValue(), bill.getDate())) {
                 transactionImpl.rollback();
-                throw new ServiceException();
+                throw new ServiceException("Can't add bill because is already exists");
             }
 
             billDao.add(bill);
@@ -135,11 +135,11 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public void update(final Bill bill) throws ServiceException, TransactionException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Update operation is not available for bill");
     }
 
     @Override
     public void delete(final Integer id) throws ServiceException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Delete operation is not available for bill");
     }
 }

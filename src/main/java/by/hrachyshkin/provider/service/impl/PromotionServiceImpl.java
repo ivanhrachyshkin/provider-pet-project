@@ -74,12 +74,12 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public void update(final Promotion promotion) throws ServiceException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Update operation is not available for promotion");
     }
 
     @Override
     public void delete(Integer id) throws ServiceException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Delete operation is not available for promotion");
     }
 
     @Override

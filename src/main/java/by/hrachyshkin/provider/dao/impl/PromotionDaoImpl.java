@@ -71,7 +71,7 @@ public class PromotionDaoImpl implements PromotionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Promotion doesn't exist", e);
+            throw new DaoException("Promotion doesn't exist by tariff id", e);
         }
     }
 
@@ -87,7 +87,7 @@ public class PromotionDaoImpl implements PromotionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Promotion doesn't exist", e);
+            throw new DaoException("Promotion doesn't exist by discount id", e);
         }
     }
 
@@ -104,7 +104,7 @@ public class PromotionDaoImpl implements PromotionDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Promotion doesn't exist", e);
+            throw new DaoException("Promotion doesn't exist by tariff id and discount id", e);
         }
     }
 
@@ -142,7 +142,7 @@ public class PromotionDaoImpl implements PromotionDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter promotions");
+            throw new DaoException("Can't find or filter by tariff id promotions");
         }
     }
 
@@ -167,7 +167,7 @@ public class PromotionDaoImpl implements PromotionDao {
 
     @Override
     public void update(final Promotion promotion) throws DaoException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Update operation is not available for promotion");
     }
 
     @Override

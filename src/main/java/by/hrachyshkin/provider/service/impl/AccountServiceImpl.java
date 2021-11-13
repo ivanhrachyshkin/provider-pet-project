@@ -137,7 +137,7 @@ public class AccountServiceImpl implements AccountService {
             }
 
             if (accountDao.isExistByNotIdAndEmail(account.getId(), account.getEmail())) {
-                throw new ServiceException("Can't update current account because email is used");
+                throw new ServiceException("Can't update account because email is used");
             }
 
             accountDao.update(account);
@@ -160,15 +160,15 @@ public class AccountServiceImpl implements AccountService {
 
             if (!accountDao.isExistById(accountId)) {
                 transactionImpl.rollback();
-                throw new ServiceException("Can't update account because account doesn't exist exist");
+                throw new ServiceException("Can't deposit because account doesn't exist exist");
             }
 
             if (!Pattern.matches("^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$", card)) {
-                throw new ServiceException("Check card number");
+                throw new ServiceException("Can't deposit because current card number is invalid");
             }
 
             if (validity.isBefore(LocalDate.now())) {
-                throw new ServiceException("Current card had expired");
+                throw new ServiceException("Can't deposit because current card had expired");
             }
 
             accountDao.updateBalanceForAccountId(accountId, accountDao.findOneById(accountId).getBalance() + deposit);
@@ -182,6 +182,6 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void delete(final Integer id) throws ServiceException {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("Delete operation is not available for account");
     }
 }

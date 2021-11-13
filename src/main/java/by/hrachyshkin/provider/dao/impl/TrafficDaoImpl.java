@@ -102,7 +102,7 @@ public class TrafficDaoImpl implements TrafficDao {
             return traffics;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or sort traffics");
+            throw new DaoException("Can't find or sort by date traffics");
         }
     }
 
@@ -122,7 +122,7 @@ public class TrafficDaoImpl implements TrafficDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter traffics");
+            throw new DaoException("Can't find or filter by subscription id traffics");
         }
     }
 
@@ -142,7 +142,7 @@ public class TrafficDaoImpl implements TrafficDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter traffics");
+            throw new DaoException("Can't find or filter by subscription id or sort by date traffics");
         }
     }
 

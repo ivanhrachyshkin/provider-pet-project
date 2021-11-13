@@ -92,7 +92,7 @@ public class TariffDaoImpl implements TariffDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Tariff doesn't exist", e);
+            throw new DaoException("Tariff doesn't exist by id", e);
         }
     }
 
@@ -108,7 +108,7 @@ public class TariffDaoImpl implements TariffDao {
             }
 
         } catch (SQLException e) {
-            throw new DaoException("Tariff doesn't exist", e);
+            throw new DaoException("Tariff doesn't exist by name", e);
         }
     }
 
@@ -161,7 +161,7 @@ public class TariffDaoImpl implements TariffDao {
             return tariffs;
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or sort tariffs");
+            throw new DaoException("Can't find or sort by speed and price tariffs");
         }
     }
 
@@ -181,7 +181,7 @@ public class TariffDaoImpl implements TariffDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter tariffs");
+            throw new DaoException("Can't find or filter by type tariffs");
         }
     }
 
@@ -201,7 +201,7 @@ public class TariffDaoImpl implements TariffDao {
             }
 
         } catch (Exception e) {
-            throw new DaoException("Can't find or filter or sort tariffs");
+            throw new DaoException("Can't find or filter by type or sort by speed and price tariffs");
         }
     }
 
