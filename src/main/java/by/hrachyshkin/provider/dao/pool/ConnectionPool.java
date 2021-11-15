@@ -78,46 +78,62 @@ final public class ConnectionPool {
         }
     }
 
-    synchronized void freeConnection(PooledConnection connection) {
+    void freeConnection(final PooledConnection connection) {
+
+        lock.lock();
         try {
-            if (connection.isValid(checkConnectionTimeout)) {
-
-                connection.clearWarnings();
-                connection.setAutoCommit(true);
-
-                usedConnections.remove(connection);
-                freeConnections.put(connection);
-
-                LOGGER.debug(String.format("Connection was returned into pool." +
-                                "Current pool size: %d used connections; %d free connection",
-                        usedConnections.size(), freeConnections.size()));
-            }
-        } catch (SQLException | InterruptedException e1) {
-            LOGGER.warn("It is impossible to return database connection into pool", e1);
             try {
-                connection.getConnection().close();
-            } catch (SQLException e2) {
+                if (connection.isValid(checkConnectionTimeout)) {
+
+                    connection.clearWarnings();
+                    connection.setAutoCommit(true);
+
+                    usedConnections.remove(connection);
+                    freeConnections.put(connection);
+
+                    LOGGER.debug(String.format("Connection was returned into pool." +
+                                    "Current pool size: %d used connections; %d free connection",
+                            usedConnections.size(), freeConnections.size()));
+                }
+            } catch (SQLException | InterruptedException e1) {
+                LOGGER.warn("It is impossible to return database connection into pool", e1);
+                try {
+                    connection.getConnection().close();
+                } catch (SQLException e2) {
+                }
             }
+        } finally {
+            lock.unlock();
         }
     }
 
-    public synchronized void init(String driverClass, String url, String user,
-                                  String password, int startSize, int maxSize,
-                                  int checkConnectionTimeout) throws PoolException {
+    public void init(final String driverClass,
+                     final String url,
+                     final String user,
+                     final String password,
+                     final int startSize,
+                     final int maxSize,
+                     final int checkConnectionTimeout) throws PoolException {
+
+        lock.lock();
         try {
-            destroy();
-            Class.forName(driverClass);
-            this.url = url;
-            this.user = user;
-            this.password = password;
-            this.maxSize = maxSize;
-            this.checkConnectionTimeout = checkConnectionTimeout;
-            for (int counter = 0; counter < startSize; counter++) {
-                freeConnections.put(createConnection());
+            try {
+                destroy();
+                Class.forName(driverClass);
+                this.url = url;
+                this.user = user;
+                this.password = password;
+                this.maxSize = maxSize;
+                this.checkConnectionTimeout = checkConnectionTimeout;
+                for (int counter = 0; counter < startSize; counter++) {
+                    freeConnections.put(createConnection());
+                }
+            } catch (ClassNotFoundException | SQLException | InterruptedException e) {
+                LOGGER.error("It is impossible to initialize connection pool", e);
+                throw new PoolException(e);
             }
-        } catch (ClassNotFoundException | SQLException | InterruptedException e) {
-            LOGGER.error("It is impossible to initialize connection pool", e);
-            throw new PoolException(e);
+        } finally {
+            lock.unlock();
         }
     }
 
@@ -131,18 +147,24 @@ final public class ConnectionPool {
         return new PooledConnection(DriverManager.getConnection(url, user, password));
     }
 
-    public synchronized void destroy() {
+    public void destroy() {
 
-        usedConnections.addAll(freeConnections);
-        freeConnections.clear();
+        lock.lock();
+        try {
 
-        for (PooledConnection connection : usedConnections) {
-            try {
-                connection.getConnection().close();
-            } catch (SQLException e) {
+            usedConnections.addAll(freeConnections);
+            freeConnections.clear();
+
+            for (PooledConnection connection : usedConnections) {
+                try {
+                    connection.getConnection().close();
+                } catch (SQLException e) {
+                }
             }
+            usedConnections.clear();
+        }finally {
+            lock.unlock();
         }
-        usedConnections.clear();
     }
 
     @Override
