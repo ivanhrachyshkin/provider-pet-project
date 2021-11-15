@@ -116,6 +116,12 @@ public class AccountServiceImpl implements AccountService {
                 throw new ServiceException("Can't add account because account is already exist");
             }
 
+            if(!Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).*[A-Za-z0-9].{7,}$",
+                    account.getPassword())) {
+                transactionImpl.rollback();
+                throw new ServiceException("Can't add account check password");
+            }
+
             accountDao.add(account);
             transactionImpl.commit();
 
@@ -169,6 +175,10 @@ public class AccountServiceImpl implements AccountService {
 
             if (validity.isBefore(LocalDate.now())) {
                 throw new ServiceException("Can't deposit because current card had expired");
+            }
+
+            if (deposit < 0) {
+                throw new ServiceException("Can't deposit because of negative value");
             }
 
             accountDao.updateBalanceForAccountId(accountId, accountDao.findOneById(accountId).getBalance() + deposit);

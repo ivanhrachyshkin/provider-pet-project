@@ -74,7 +74,6 @@
                 <input name="name" type="text" placeholder="name"/>
                 <input name="phone" type="text" placeholder="phone"/>
                 <input name="address" type="text" placeholder="address"/>
-                <input name="balance" type="number" placeholder="balance"/>
                 <button type="submit" class="btn btn-info">create</button>
             </form>
         </div>

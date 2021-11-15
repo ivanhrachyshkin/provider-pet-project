@@ -27,7 +27,7 @@ public class CreateAccountAction extends BaseAction {
             final String name = request.getParameter("name");
             final String phone = request.getParameter("phone");
             final String address = request.getParameter("address");
-            final Float balance = Float.valueOf(request.getParameter("balance"));
+            final Float balance = 0.0f;
 
             accountService.add(new Account(email, password, role, name, phone, address, balance));
 
