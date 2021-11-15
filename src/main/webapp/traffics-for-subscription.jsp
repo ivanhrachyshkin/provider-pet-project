@@ -16,30 +16,33 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
+<jsp:include page="header.jsp"/>
 
 <div class="container">
     <h2 class="text-center">Traffics for "${account.email}" for "${tariff.name}" subscription</h2>
-</div>
-
-<div class="row">
-    <div class="col-md-3"></div>
-    <div class="col-md-6">
-        <table class="table table-hover table-stripped">
-            <tr>
-                <th>Value</th>
-                <th>Date</th>
-            </tr>
-            <c:forEach var="subscriptionTraffic" items="${subscriptionTraffics}">
+    <br>
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <table class="table table-hover table-stripped">
                 <tr>
-                    <td>${subscriptionTraffic.value}</td>
-                    <td>${subscriptionTraffic.date}</td>
+                    <th>Value</th>
+                    <th>Date</th>
                 </tr>
-            </c:forEach>
-        </table>
+                <c:forEach var="subscriptionTraffic" items="${subscriptionTraffics}">
+                    <tr>
+                        <td>${subscriptionTraffic.value}</td>
+                        <td>${subscriptionTraffic.date}</td>
+                    </tr>
+                </c:forEach>
+            </table>
+        </div>
+        <div class="col-md-3"></div>
     </div>
-    <div class="col-md-3"></div>
 </div>
-<jsp:include page="footer.jsp" />
+<br>
+<br>
+<br>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

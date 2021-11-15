@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 final public class ConnectionPool {
@@ -22,51 +24,58 @@ final public class ConnectionPool {
     private int maxSize;
     private int checkConnectionTimeout;
 
+
     private BlockingQueue<PooledConnection> freeConnections = new LinkedBlockingQueue<>();
     private Set<PooledConnection> usedConnections = new ConcurrentSkipListSet<>();
+    private final Lock lock = new ReentrantLock();
 
     private ConnectionPool() {
     }
 
-    public synchronized Connection getConnection() throws PoolException {
+    public Connection getConnection() throws PoolException {
 
-        PooledConnection connection = null;
-        while (connection == null) {
+        lock.lock();
+        try {
+            PooledConnection connection = null;
+            while (connection == null) {
 
-            try {
-                if (!freeConnections.isEmpty()) {
-                    connection = freeConnections.take();
-                    connection.setAutoCommit(false);
+                try {
+                    if (!freeConnections.isEmpty()) {
+                        connection = freeConnections.take();
+                        connection.setAutoCommit(false);
 
-                    if (!connection.isValid(checkConnectionTimeout)) {
+                        if (!connection.isValid(checkConnectionTimeout)) {
 
-                        try {
-                            connection.getConnection().close();
-                        } catch (SQLException e) {
-                            throw new PoolException(e);
+                            try {
+                                connection.getConnection().close();
+                            } catch (SQLException e) {
+                                throw new PoolException(e);
+                            }
+                            connection = null;
                         }
-                        connection = null;
+
+                    } else if (usedConnections.size() < maxSize) {
+                        connection = createConnection();
+                        connection.setAutoCommit(false);
+
+                    } else {
+                        LOGGER.error("The limit of number of database connections is exceeded");
+                        throw new PoolException();
                     }
 
-                } else if (usedConnections.size() < maxSize) {
-                    connection = createConnection();
-                    connection.setAutoCommit(false);
-
-                } else {
-                    LOGGER.error("The limit of number of database connections is exceeded");
-                    throw new PoolException();
+                } catch (InterruptedException | SQLException e) {
+                    LOGGER.error("It is impossible to connect to a database", e);
+                    throw new PoolException(e);
                 }
-
-            } catch (InterruptedException | SQLException e) {
-                LOGGER.error("It is impossible to connect to a database", e);
-                throw new PoolException(e);
             }
+            usedConnections.add(connection);
+            LOGGER.debug(String.format("Connection was received from pool." +
+                            "Current pool size: %d used connections; %d free connection",
+                    usedConnections.size(), freeConnections.size()));
+            return connection;
+        } finally {
+            lock.unlock();
         }
-        usedConnections.add(connection);
-        LOGGER.debug(String.format("Connection was received from pool." +
-                        "Current pool size: %d used connections; %d free connection",
-                usedConnections.size(), freeConnections.size()));
-        return connection;
     }
 
     synchronized void freeConnection(PooledConnection connection) {

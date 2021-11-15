@@ -16,14 +16,10 @@
 </head>
 <body>
 
-<jsp:include page="navbar.jsp"/>
-
-<div class="container">
-
-    <h2 class="text-center">User account information</h2>
-    <br>
-
+<jsp:include page="header.jsp"/>
     <div class="container">
+        <h1 class="text-center">User account information</h1>
+        <br>
         <table class="table table-hover table-stripped">
             <tr>
                 <th>Email</th>
@@ -80,7 +76,6 @@
             <div class="col-md-2"></div>
         </h3>
     </div>
-</div
 <jsp:include page="footer.jsp"/>
 </body>
 </html>

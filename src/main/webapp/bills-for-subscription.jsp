@@ -16,13 +16,11 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
-
+<jsp:include page="header.jsp" />
 <div class="container">
-    <h2 class="text-center">Bills for "${account.email}" for "${tariff.name}"</h2>
+    <h1 class="text-center">Bills for "${account.email}" for "${tariff.name}"</h1>
+    <br>
 </div>
-
-
 <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-6">
@@ -60,6 +58,9 @@
     </div>
     <div class="col-md-3"></div>
 </div>
+<br>
+<br>
+<br>
 <jsp:include page="footer.jsp" />
 </body>
 </html>

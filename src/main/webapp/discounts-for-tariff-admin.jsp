@@ -18,15 +18,10 @@
 </head>
 <body>
 
-<jsp:include page="navbar.jsp" />
-
+<jsp:include page="header.jsp" />
 <div class="container">
     <h1 class="text-center">Discounts for "${tariff.name}" tariff plan</h1>
-    <h1></h1>
-    <h1></h1>
-</div>
-
-<div class="container">
+    <br>
     <table class="table table-hover table-stripped">
         <tr>
             <th>Name</th>
@@ -65,8 +60,9 @@
     <input name="tariffId" type="hidden" value="${tariff.id}">
 </form>
 </span>
-<div>
-    ${error}
-</div>
+<br>
+<br>
+<br>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

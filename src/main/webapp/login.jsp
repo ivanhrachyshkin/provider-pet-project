@@ -15,40 +15,39 @@
 </head>
 <body>
 
-<nav class="navbar navbar-default">
+<nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="${url}/" class="navbar-brand">Providi</a>
+            <a href="${url}/" class="navbar-brand">Provider</a>
         </div>
-        <div>
-            <ul class="nav navbar-nav">
-                <li><a href="${url}/"><b>Tariff plans</b></a></li>
-                <li><a href="${url}/"><b>Discounts</b></a></li>
-                <li><a href="${url}/"><b>About us</b></a></li>
-                <li><a href="${url}/"><b>Personal Cabinet</b></a></li>
-            </ul>
-        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="${url}/"><b>Tariff plans</b></a></li>
+            <li><a href="${url}/"><b>Discounts</b></a></li>
+            <li><a href="${url}/"><b>About us</b></a></li>
+            <li><a href="${url}/"><b>Personal Cabinet</b></a></li>
+        </ul>
     </div>
 </nav>
 
-<div class="row">
-    <div class="col-md-4"></div>
-    <div class="col-md-4">
-        <form role="form" action="${url}/login" method="POST">
-            <div class="form-group">
-                <label>Email</label>
-                <input type="text" class="form-control" name="email" placeholder="Enter email">
-            </div>
-            <div class="form-group">
-                <label>Password</label>
-                <input type="text" class="form-control" name="password" placeholder="Enter password">
-            </div>
-            <input type="submit" class="btn btn-info" value="Log in">
-        </form>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form role="form" action="${url}/login" method="POST">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="text" class="form-control" name="email" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="text" class="form-control" name="password" placeholder="Enter password">
+                </div>
+                <input type="submit" class="btn btn-info" value="Log in">
+            </form>
+        </div>
+        <div class="col-md-4"></div>
     </div>
-    <div class="col-md-4"></div>
 </div>
-</div>
-<jsp:include page="footer.jsp" />
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

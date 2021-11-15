@@ -1,13 +1,16 @@
-package by.hrachyshkin.provider.controller;
+package by.hrachyshkin.provider.controller.filter;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@WebFilter(urlPatterns = "/*")
 public class EncodingFilter implements Filter {
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig fConfig) throws ServletException {
     }
 
     @Override

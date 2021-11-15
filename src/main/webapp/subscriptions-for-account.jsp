@@ -17,16 +17,10 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-
-<jsp:include page="navbar.jsp" />
-
+<jsp:include page="header.jsp"/>
 <div class="container">
     <h1 class="text-center">Subscriptions for "${account.email}" account</h1>
-    <h1></h1>
-    <h1></h1>
-</div>
-
-<div class="container">
+    <br>
     <table class="table table-hover table-stripped">
         <tr>
             <th>Name</th>
@@ -39,20 +33,26 @@
         </tr>
         <c:forEach var="tariff" items="${accountTariffs}">
             <tr>
-                    <td>${tariff.name}</td>
-                    <td>${tariff.type}</td>
-                    <td>${tariff.speed}</td>
-                    <td>${tariff.price}</td>
+                <td>${tariff.name}</td>
+                <td>${tariff.type}</td>
+                <td>${tariff.speed}</td>
+                <td>${tariff.price}</td>
                 <form action="${url}/cabinet/subscriptions/traffics" method="POST">
-                    <td><button type="submit" class="btn btn-info">traffics</button></td>
+                    <td>
+                        <button type="submit" class="btn btn-info">traffics</button>
+                    </td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
                 <form action="${url}/cabinet/subscriptions/bills" method="POST">
-                    <td><button type="submit" class="btn btn-info">bills</button></td>
+                    <td>
+                        <button type="submit" class="btn btn-info">bills</button>
+                    </td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
                 <form action="${url}/cabinet/subscriptions/remove" method="POST">
-                    <td><button type="submit" class="btn btn-danger">remove</button></td>
+                    <td>
+                        <button type="submit" class="btn btn-danger">remove</button>
+                    </td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
             </tr>
@@ -72,6 +72,9 @@
     <input name="tariffId" type="hidden" value="${tariff.id}">
 </form>
 </span>
-<jsp:include page="footer.jsp" />
+<br>
+<br>
+<br>
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

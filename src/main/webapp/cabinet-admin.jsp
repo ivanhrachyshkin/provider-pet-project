@@ -15,13 +15,10 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-
-<jsp:include page="navbar.jsp" />
-
-<h2 class="text-center">Admin account information</h2>
-<br>
-
+<jsp:include page="header.jsp" />
 <div class="container">
+    <h1 class="text-center">Admin account information</h1>
+    <br>
     <table class="table table-hover table-stripped">
         <tr>
             <th>Email</th>
@@ -30,7 +27,6 @@
             <th>Phone</th>
             <th>Address</th>
             <th>Balance</th>
-            <th>Action</th>
         </tr>
         <tr>
             <form action="${url}/cabinet/update" method="POST">
@@ -47,19 +43,17 @@
                 </td>
                 <td><input name="address" type="text" value="${account.address}"
                            placeholder="${account.address}"/></td>
-                <td><input name="balance" type="number" value="${account.balance}"
-                           placeholder="${account.balance}"/></td>
+                <td>${account.balance}</td>
                 <td>
                     <button type="submit" class="btn btn-info">update</button>
                 </td>
                 <input name="accountId" type="hidden" value="${account.id}">
+                <input name="balance" type="hidden" value="${account.balance}">
             </form>
         </tr>
     </table>
-</div>
 
 
-<div class="container">
     <h3>
         <div class="row text-center">
             <div class="col-md-4">

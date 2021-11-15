@@ -11,23 +11,20 @@ import lombok.SneakyThrows;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import javax.servlet.http.HttpSession;
 
-@WebServlet("/cabinet/accounts")
-public class ShowAccountsAction extends BaseAction {
+@WebServlet("/logout")
+public class LogoutAction extends BaseAction {
 
     @SneakyThrows
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) {
 
-        try {
-            final AccountService accountService = ServiceFactoryImpl.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+        final HttpSession session = request.getSession(false);
+        session.invalidate();
 
-            final List<Account> accounts = accountService.findAndSortByName();
-            request.setAttribute("accounts", accounts);
-
-        } catch (ServiceException | NumberFormatException e) {
-            request.setAttribute("error", e.getMessage());
-        }
-        request.getRequestDispatcher("/accounts.jsp").forward(request, response);
+        request.getRequestDispatcher("/").forward(request, response);
     }
 }
+
+
+

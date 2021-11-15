@@ -17,11 +17,11 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="navbar.jsp"/>
-
-<h1 class="text-center">Accounts</h1>
+<jsp:include page="header.jsp"/>
 
 <div class="container">
+    <h1 class="text-center">Accounts</h1>
+    <br>
     <table class="table table-hover table-stripped">
         <tr>
             <th>Email</th>
@@ -30,7 +30,6 @@
             <th>Phone</th>
             <th>Address</th>
             <th>Balance</th>
-            <th>Action</th>
         </tr>
         <c:forEach var="account" items="${accounts}">
             <tr>
@@ -49,40 +48,41 @@
                                placeholder="${account.phone}"/></td>
                     <td><input name="address" type="text" value="${account.address}"
                                placeholder="${account.address}"/></td>
-                    <td><input name="balance" type="number" value="${account.balance}"
-                               placeholder="${account.balance}"/></td>
+                    <td>${account.balance}</td>
                     <td>
                         <button type="submit" class="btn btn-info">update</button>
                     </td>
                     <input name="accountId" type="hidden" value="${account.id}">
+                    <input name="balance" type="hidden" value="${account.balance}">
                 </form>
             </tr>
         </c:forEach>
     </table>
-</div>
 
-<br>
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-        <form action="${url}/cabinet/accounts/create" method="POST">
-            <input name="email" type="text" placeholder="email"/>
-            <input name="password" type="text" placeholder="password"/>
-            <select name="role">
-                <c:set var="roles" value="<%=Account.Role.values()%>"/>
-                <c:forEach var="role" items="${roles}">
-                    <option value="${role.name()}">${role.name()}</option>
-                </c:forEach>
-            </select>
-            <input name="name" type="text" placeholder="name"/>
-            <input name="phone" type="text" placeholder="phone"/>
-            <br> <input name="address" type="text" placeholder="address"/>
-            <input name="balance" type="number" placeholder="balance"/>
-            <button type="submit" class="btn btn-info">create</button>
-        </form>
+    <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-8">
+            <form action="${url}/cabinet/accounts/create" method="POST">
+                <input name="email" type="text" placeholder="email"/>
+                <input name="password" type="text" placeholder="password"/>
+                <select name="role">
+                    <c:set var="roles" value="<%=Account.Role.values()%>"/>
+                    <c:forEach var="role" items="${roles}">
+                        <option value="${role.name()}">${role.name()}</option>
+                    </c:forEach>
+                </select>
+                <input name="name" type="text" placeholder="name"/>
+                <input name="phone" type="text" placeholder="phone"/>
+                <input name="address" type="text" placeholder="address"/>
+                <input name="balance" type="number" placeholder="balance"/>
+                <button type="submit" class="btn btn-info">create</button>
+            </form>
+        </div>
+        <div class="col-md-2"></div>
     </div>
-    <div class="col-md-2"></div>
-</div>
-<jsp:include page="footer.jsp" />
+    <br>
+    <br>
+    <br>
+    <jsp:include page="footer.jsp"/>
 </body>
 </html>

@@ -17,12 +17,11 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
+<jsp:include page="header.jsp" />
 
 <div class="container">
     <h1 class="text-center">Discounts</h1>
-    <h1></h1>
-    <h1></h1>
+    <br>
     <a href="${url}/discounts?filter=percentage" class="btn btn-info">percentage</a>
     <a href="${url}/discounts?filter=coefficient" class="btn btn-info">coefficient</a>
     <a href="${url}/discounts?filter=all" class="btn btn-info">all</a>
@@ -39,15 +38,18 @@
         </tr>
         <c:forEach var="discount" items="${discounts}">
             <tr>
-                    <td>${discount.name}</td>
-                    <td>${discount.type}</td>
-                    <td>${discount.value}</td>
-                    <td>${discount.dateFrom}</td>
-                    <td>${discount.dateTo}</td>
+                <td>${discount.name}</td>
+                <td>${discount.type}</td>
+                <td>${discount.value}</td>
+                <td>${discount.dateFrom}</td>
+                <td>${discount.dateTo}</td>
             </tr>
         </c:forEach>
     </table>
 </div>
+<br>
+<br>
+<br>
 <jsp:include page="footer.jsp" />
 </body>
 </html>

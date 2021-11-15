@@ -16,12 +16,11 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
+<jsp:include page="header.jsp" />
 
 <div class="container">
     <h1 class="text-center">Tariff plans</h1>
-    <h1></h1>
-    <h1></h1>
+    <br>
     <a href="${url}/tariffs?filter=trafficked" class="btn btn-info">trafficked</a>
     <a href="${url}/tariffs?filter=unlimited" class="btn btn-info">unlimited</a>
     <a href="${url}/tariffs?filter=all" class="btn btn-info">all</a>
@@ -77,6 +76,9 @@
         </tr>
     </table>
 </div>
+<br>
+<br>
+<br>
 <jsp:include page="footer.jsp" />
 </body>
 </html>

@@ -32,6 +32,7 @@ public class AddPromotionAction extends BaseAction {
         } catch (ServiceException | NumberFormatException e) {
             request.setAttribute("error", e.getMessage());
         }
+
         request.getRequestDispatcher("/tariffs/discounts").forward(request, response);
     }
 }

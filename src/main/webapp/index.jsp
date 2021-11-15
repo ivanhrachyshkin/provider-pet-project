@@ -14,9 +14,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-
-<jsp:include page="navbar.jsp" />
-
+<jsp:include page="header.jsp" />
 <div class="container">
     <h1 class="text-center">Provider - is the best choice</h1>
     <br>
@@ -28,8 +26,6 @@
     <br>
     <h2 class="text-center">description</h2>
 </div>
-<div>
-    ${error}
-</div>
+<jsp:include page="footer.jsp" />
 </body>
 </html>

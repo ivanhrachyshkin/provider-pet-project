@@ -49,7 +49,7 @@ public class AccountDaoImpl implements AccountDao {
     private static final String FIND_AND_SORT_BY_NAME_QUERY =
             "SELECT id, email, password, role, name, phone, address, balance " +
                     "FROM accounts " +
-                    "ORDER BY name DESC";
+                    "ORDER BY name ASC";
 
     private static final String FIND_ONE_ACCOUNT_BY_ID_QUERY =
             "SELECT id, email, password, role, name, phone, address, balance " +
