@@ -5,16 +5,16 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(filterName = "SessionLocaleFilter", urlPatterns = {"/*"})
+@WebFilter(urlPatterns = "/*")
 public class SessionLocaleFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
 
-        if (req.getParameter("sessionLocale") != null) {
-            req.getSession().setAttribute("lang", req.getParameter("sessionLocale"));
+        if (httpRequest.getParameter("sessionLocale") != null) {
+            httpRequest.getSession().setAttribute("lang", httpRequest.getParameter("sessionLocale"));
         }
         chain.doFilter(request, response);
     }

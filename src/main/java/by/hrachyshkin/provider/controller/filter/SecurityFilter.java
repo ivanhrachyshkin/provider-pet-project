@@ -3,7 +3,6 @@ package by.hrachyshkin.provider.controller.filter;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
@@ -11,7 +10,7 @@ import java.io.IOException;
 public class SecurityFilter implements Filter {
 
     @Override
-    public void init(FilterConfig fConfig) throws ServletException {
+    public void init(FilterConfig fConfig) {
     }
 
     @Override
@@ -20,7 +19,7 @@ public class SecurityFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         final HttpSession session = httpRequest.getSession(true);
 
-        String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+        final String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
 
         if (session.getAttribute("accountId") == null
                 && session.getAttribute("accountRole") == null
