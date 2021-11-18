@@ -21,7 +21,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
+<jsp:include page="navbar.jsp"/>
 
 <div class="container">
     <h1 class="text-center"><fmt:message key="discountsLabel"/></h1>
@@ -50,14 +50,21 @@
                             <option value="${type.name()}" ${discount.type.name()==type ?'selected':''}>${type.name()}</option>
                         </c:forEach>
                     </select></td>
-                    <td><input name="value" type="number" value="${discount.value}" placeholder="${discount.value}"/></td>
-                    <td><input name="dateFrom" type="date" value="${discount.dateFrom}" placeholder="${discount.dateFrom}"/></td>
-                    <td><input name="dateTo" type="date" value="${discount.dateTo}" placeholder="${discount.dateTo}"/></td>
-                    <td><button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button></td>
+                    <td><input name="value" type="number" value="${discount.value}" placeholder="${discount.value}"/>
+                    </td>
+                    <td><input name="dateFrom" type="date" value="${discount.dateFrom}"
+                               placeholder="${discount.dateFrom}"/></td>
+                    <td><input name="dateTo" type="date" value="${discount.dateTo}" placeholder="${discount.dateTo}"/>
+                    </td>
+                    <td>
+                        <button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button>
+                    </td>
                     <input name="id" type="hidden" value="${discount.id}">
                 </form>
                 <form action="${url}/discounts/delete" method="POST">
-                    <td><button type="submit" class="btn btn-info"><fmt:message key="deleteLabel"/></button></td>
+                    <td>
+                        <button type="submit" class="btn btn-info"><fmt:message key="deleteLabel"/></button>
+                    </td>
                     <input name="discountId" type="hidden" value="${discount.id}">
                 </form>
             </tr>
@@ -74,11 +81,13 @@
                 <td><input name="value" type="number"/></td>
                 <td><input name="dateFrom" type="date"/></td>
                 <td><input name="dateTo" type="date"/></td>
-                <td><button type="submit" class="btn btn-info"><fmt:message key="createLabel"/></button></td>
+                <td>
+                    <button type="submit" class="btn btn-info"><fmt:message key="createLabel"/></button>
+                </td>
             </form>
         </tr>
     </table>
 </div>
-<jsp:include page="footer.jsp" />
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

@@ -22,7 +22,7 @@
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
-            <a href="${url}/main" class="navbar-brand"><fmt:message key="providerLabel"/></a>
+            <a href="${url}/main" class="navbar-brand">Provider</a>
         </div>
         <ul class="nav navbar-nav">
             <li><a href="${url}/tariffs"><b><fmt:message key="tariffsLabel"/></b></a></li>
@@ -33,7 +33,7 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false"> &#127760;Language <span class="caret"></span></a>
+                   aria-expanded="false"> &#127760;<fmt:message key="languageLabel"/> <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="?sessionLocale=en_US">eng</a></li>
                     <li><a href="?sessionLocale=ru_RU">rus</a></li>

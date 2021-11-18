@@ -24,16 +24,16 @@
 <jsp:include page="navbar.jsp"/>
 
 <div class="container">
-    <h1 class="text-center">Accounts</h1>
+    <h1 class="text-center"><fmt:message key="accountsLabel"/></h1>
     <br>
     <table class="table table-hover table-stripped">
         <tr>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Name</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Balance</th>
+            <th><fmt:message key="emailLabel"/></th>
+            <th><fmt:message key="roleLabel"/></th>
+            <th><fmt:message key="nameLabel"/></th>
+            <th><fmt:message key="telephoneLabel"/></th>
+            <th><fmt:message key="addressLabel"/></th>
+            <th><fmt:message key="balanceLabel"/></th>
         </tr>
         <c:forEach var="account" items="${accounts}">
             <tr>
@@ -67,17 +67,17 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <form action="${url}/cabinet/accounts/create" method="POST">
-                <input name="email" type="text" placeholder="email"/>
-                <input name="password" type="text" placeholder="password"/>
+                <input name="email" type="text" placeholder="<fmt:message key="emailLabel"/>"/>
+                <input name="password" type="text" placeholder="<fmt:message key="passwordLabel"/>"/>
                 <select name="role">
                     <c:set var="roles" value="<%=Account.Role.values()%>"/>
                     <c:forEach var="role" items="${roles}">
                         <option value="${role.name()}">${role.name()}</option>
                     </c:forEach>
                 </select>
-                <input name="name" type="text" placeholder="name"/>
-                <input name="phone" type="text" placeholder="phone"/>
-                <input name="address" type="text" placeholder="address"/>
+                <input name="name" type="text" placeholder="<fmt:message key="nameLabel"/>"/>
+                <input name="phone" type="text" placeholder="<fmt:message key="telephoneLabel"/>"/>
+                <input name="address" type="text" placeholder="<fmt:message key="addressLabel"/>"/>
                 <button type="submit" class="btn btn-info"><fmt:message key="createLabel"/></button>
             </form>
         </div>

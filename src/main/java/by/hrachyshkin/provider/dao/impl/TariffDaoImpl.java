@@ -41,7 +41,8 @@ public class TariffDaoImpl implements TariffDao {
     private static final String FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
-                    "ORDER BY speed DESC, price ASC";
+                    "ORDER BY speed DESC, price ASC " +
+                    "LIMIT 5 OFFSET ?";
 
     private static final String FIND_AND_FILTER_BY_TYPE_QUERY =
             "SELECT id, name, type, speed, price " +
@@ -148,18 +149,20 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public List<Tariff> findAndSortBySpeedAndPrice() throws DaoException {
+    public List<Tariff> findAndSortBySpeedAndPrice(final Integer offset) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY)) {
+            statement.setInt(1, offset);
 
-            final List<Tariff> tariffs = new ArrayList<>();
-            while (resultSet.next()) {
-                final Tariff tariff = buildTariff(resultSet);
-                tariffs.add(tariff);
+            try (final ResultSet resultSet = statement.executeQuery()) {
+
+                final List<Tariff> tariffs = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Tariff tariff = buildTariff(resultSet);
+                    tariffs.add(tariff);
+                }
+                return tariffs;
             }
-            return tariffs;
-
         } catch (Exception e) {
             throw new DaoException("Can't find or sort by speed and price tariffs");
         }

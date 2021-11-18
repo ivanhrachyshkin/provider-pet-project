@@ -50,11 +50,11 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public List<Tariff> findAndSortBySpeedAndPrice() throws ServiceException {
+    public List<Tariff> findAndSortBySpeedAndPrice(final Integer offset) throws ServiceException {
 
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
-            final List<Tariff> tariffs = tariffDao.findAndSortBySpeedAndPrice();
+            final List<Tariff> tariffs = tariffDao.findAndSortBySpeedAndPrice(offset);
             transactionImpl.commit();
             return tariffs;
 

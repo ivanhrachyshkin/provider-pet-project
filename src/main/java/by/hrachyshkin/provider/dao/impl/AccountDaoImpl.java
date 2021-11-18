@@ -49,7 +49,8 @@ public class AccountDaoImpl implements AccountDao {
     private static final String FIND_AND_SORT_BY_NAME_QUERY =
             "SELECT id, email, password, role, name, phone, address, balance " +
                     "FROM accounts " +
-                    "ORDER BY name ASC";
+                    "ORDER BY name ASC " +
+                    "LIMIT 5 OFFSET ?";
 
     private static final String FIND_ONE_ACCOUNT_BY_ID_QUERY =
             "SELECT id, email, password, role, name, phone, address, balance " +
@@ -167,18 +168,20 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public List<Account> findAndSortByName() throws DaoException {
+    public List<Account> findAndSortByName(final Integer offset) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_NAME_QUERY);
-             final ResultSet resultSet = statement.executeQuery()) {
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_NAME_QUERY)) {
+            statement.setInt(1, offset);
 
-            final List<Account> accounts = new ArrayList<>();
-            while (resultSet.next()) {
-                final Account account = buildAccount(resultSet);
-                accounts.add(account);
+            try (final ResultSet resultSet = statement.executeQuery()){
+
+                final List<Account> accounts = new ArrayList<>();
+                while (resultSet.next()) {
+                    final Account account = buildAccount(resultSet);
+                    accounts.add(account);
+                }
+                return accounts;
             }
-            return accounts;
-
         } catch (Exception e) {
             throw new DaoException("Can't find or sort by name accounts");
         }

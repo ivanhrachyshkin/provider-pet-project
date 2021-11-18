@@ -37,10 +37,10 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false"> &#127760;Language <span class="caret"></span></a>
+                   aria-expanded="false"> &#127760;<fmt:message key="languageLabel"/><span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="?sessionLocale=ru_RU">RUS</a></li>
-                    <li><a href="?sessionLocale=en_US">ENG</a></li>
+                    <li><a href="?sessionLocale=en_US">eng</a></li>
+                    <li><a href="?sessionLocale=ru_RU">rus</a></li>
                 </ul>
             </li>
         </ul>
@@ -54,7 +54,7 @@
             <form role="form" action="${url}/login" method="POST">
                 <div class="form-group">
                     <label><fmt:message key="emailLabel"/></label>
-                    <input type="text" class="form-control" name="email" placeholder=<fmt:message key="emailLabel"/>>
+                    <input type="text" class="form-control" name="email" placeholder="<fmt:message key="emailLabel"/>">
                 </div>
                 <div class="form-group">
                     <label><fmt:message key="passwordLabel"/></label>

@@ -10,7 +10,7 @@ public interface AccountService extends Service<Account> {
 
     boolean isExistByEmailAndPassword(String email, String password) throws ServiceException, TransactionException;
 
-    List<Account> findAndSortByName() throws ServiceException, TransactionException;
+    List<Account> findAndSortByName(Integer offset) throws ServiceException, TransactionException;
 
     Account findOneByEmail(String email) throws ServiceException, TransactionException;
 

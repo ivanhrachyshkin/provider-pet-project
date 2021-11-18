@@ -1,7 +1,7 @@
 package by.hrachyshkin.provider.controller;
 
 import by.hrachyshkin.provider.controller.action.Action;
-import by.hrachyshkin.provider.controller.action.action_factory.ActionFactory;
+import by.hrachyshkin.provider.controller.action.ActionFactory;
 import lombok.SneakyThrows;
 
 import javax.servlet.ServletException;

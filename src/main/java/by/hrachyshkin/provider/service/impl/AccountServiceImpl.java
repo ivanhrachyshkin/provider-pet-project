@@ -49,11 +49,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> findAndSortByName() throws ServiceException, TransactionException {
+    public List<Account> findAndSortByName(final Integer offset) throws ServiceException, TransactionException {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
-            List<Account> andSortByName = accountDao.findAndSortByName();
+            List<Account> andSortByName = accountDao.findAndSortByName(offset);
             transactionImpl.commit();
             return andSortByName;
 

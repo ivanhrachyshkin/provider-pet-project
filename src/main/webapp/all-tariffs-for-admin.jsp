@@ -22,7 +22,7 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<jsp:include page="navbar.jsp" />
+<jsp:include page="navbar.jsp"/>
 
 <div class="container">
     <h1 class="text-center"><fmt:message key="tariffsLabel"/></h1>
@@ -52,15 +52,21 @@
                     </select></td>
                     <td><input name="speed" type="number" value="${tariff.speed}" placeholder="${tariff.speed}"/></td>
                     <td><input name="price" type="number" value="${tariff.price}" placeholder="${tariff.price}"/></td>
-                    <td><button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button></td>
+                    <td>
+                        <button type="submit" class="btn btn-info"><fmt:message key="updateLabel"/></button>
+                    </td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
                 <form action="${url}/tariffs/delete" method="POST">
-                    <td><button type="submit" class="btn btn-info"><fmt:message key="deleteLabel"/></button></td>
+                    <td>
+                        <button type="submit" class="btn btn-info"><fmt:message key="deleteLabel"/></button>
+                    </td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
                 <form action="${url}/tariffs/discounts" method="POST">
-                    <td><button type="submit" class="btn btn-info"><fmt:message key="discountsLabel"/></button></td>
+                    <td>
+                        <button type="submit" class="btn btn-info"><fmt:message key="discountsLabel"/></button>
+                    </td>
                     <input name="tariffId" type="hidden" value="${tariff.id}">
                 </form>
             </tr>
@@ -76,11 +82,13 @@
                 </select></td>
                 <td><input name="speed" type="number"/></td>
                 <td><input name="price" type="number"/></td>
-                <td><button type="submit" class="btn btn-info"><fmt:message key="createLabel"/></button></td>
+                <td>
+                    <button type="submit" class="btn btn-info"><fmt:message key="createLabel"/></button>
+                </td>
             </form>
         </tr>
     </table>
 </div>
-<jsp:include page="footer.jsp" />
+<jsp:include page="footer.jsp"/>
 </body>
 </html>

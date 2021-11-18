@@ -15,7 +15,7 @@ public interface AccountDao extends Dao<Account> {
 
     boolean isExistByNotIdAndEmail(final Integer id, final String email) throws DaoException;
 
-    List<Account> findAndSortByName() throws DaoException;
+    List<Account> findAndSortByName(Integer offset) throws DaoException;
 
     Account findOneByEmail(final String email) throws DaoException;
 
