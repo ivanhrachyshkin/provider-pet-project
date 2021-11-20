@@ -33,7 +33,7 @@ public class UpdateAccountAction extends BaseAction{
             accountService.update(new Account(id, email, password, role, name, phone, address, balance));
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet";
     }

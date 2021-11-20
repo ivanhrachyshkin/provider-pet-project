@@ -31,7 +31,7 @@ public class CreateDiscountAction extends BaseAction {
             discountService.add(new Discount(name, type, value, dateFrom, dateTo));
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/discounts";
     }

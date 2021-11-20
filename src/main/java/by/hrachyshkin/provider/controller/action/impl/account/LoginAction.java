@@ -37,12 +37,12 @@ public class LoginAction extends BaseAction {
                 path = "/cabinet";
 
             } else {
-                request.setAttribute("error", "Check Email and Password");
+                setErrorAttributeToSession(request, "Check Email and Password");
                 path = "/";
             }
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
             path = "/";
         }
         return path;

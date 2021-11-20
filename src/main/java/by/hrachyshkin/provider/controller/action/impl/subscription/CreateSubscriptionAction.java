@@ -28,7 +28,7 @@ public class CreateSubscriptionAction extends BaseAction{
             subscriptionService.add(new Subscription(accountId, tariffId));
 
         } catch (ServiceException | NumberFormatException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet/subscriptions";
     }

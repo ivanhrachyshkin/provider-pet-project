@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSessionBindingEvent;
 public class SessionListener implements HttpSessionAttributeListener {
 
     public void attributeRemoved(HttpSessionBindingEvent ev) {
+        System.out.println("remove: " + ev.getClass().getSimpleName() + " : " + ev.getName()
+                + " : " + ev.getValue());
     }
 
     //TODO refactor sout to logs

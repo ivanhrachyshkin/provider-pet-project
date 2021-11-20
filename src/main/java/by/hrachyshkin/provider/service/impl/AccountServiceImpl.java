@@ -121,7 +121,6 @@ public class AccountServiceImpl implements AccountService {
                     || account.getPhone().isEmpty()
                     || account.getAddress().isEmpty()) {
 
-                System.out.println(account.toString());
                 throw new ServiceException(rb.getString("account.add.empty.input.exception"));
             }
 

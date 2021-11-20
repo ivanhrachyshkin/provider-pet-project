@@ -15,24 +15,25 @@ import java.util.List;
 
 public abstract class BaseAction implements Action {
 
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+
+    public void postExecute(final HttpServletRequest request, final HttpServletResponse response, final String path) throws ServletException, IOException, ServiceException, TransactionException {
 
         request.getRequestDispatcher(path).forward(request, response);
     }
 
-    protected Integer getAccountId(HttpServletRequest request) {
+    protected Integer getAccountId(final HttpServletRequest request) {
 
         final HttpSession session = request.getSession(false);
         return (Integer) session.getAttribute("accountId");
     }
 
-    protected Account.Role getRole(HttpServletRequest request) {
+    protected Account.Role getRole(final HttpServletRequest request) {
 
         final HttpSession session = request.getSession(false);
         return (Account.Role) session.getAttribute("accountRole");
     }
 
-    protected int getOffset(HttpServletRequest request) {
+    protected int getOffset(final HttpServletRequest request) {
 
         int offset = 0;
         if (request.getParameter("page") != null) {
@@ -41,17 +42,23 @@ public abstract class BaseAction implements Action {
         return offset;
     }
 
-    protected void setTotalPagesAttribute(HttpServletRequest request, final List<? extends Model> list) {
+    protected void setTotalPagesAttribute(final HttpServletRequest request, final List<? extends Model> list) {
 
         request.setAttribute("totalPages", list.size() / 5 + 1);
     }
 
-    protected void pagination(HttpServletRequest request) {
+    protected void pagination(final HttpServletRequest request) {
 
         if (request.getParameter("page") == null) {
             request.setAttribute("page", request.getParameter("page"));
         } else {
             request.setAttribute("page", Integer.valueOf(request.getParameter("page")));
         }
+    }
+
+    protected void setErrorAttributeToSession(final HttpServletRequest request, final String value) {
+
+        final HttpSession session = request.getSession(false);
+        session.setAttribute("error", value);
     }
 }

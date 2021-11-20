@@ -30,7 +30,7 @@ public class UpdateTariffAction extends BaseAction {
             tariffService.update(new Tariff(id, name, type, speed, price));
 
         } catch (ServiceException | NumberFormatException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/tariffs";
     }

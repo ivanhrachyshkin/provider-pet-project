@@ -32,7 +32,7 @@ public class UpdateDiscountAction extends BaseAction {
             discountService.update(new Discount(id, name, type, value, dateFrom, dateTo));
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/discounts";
     }

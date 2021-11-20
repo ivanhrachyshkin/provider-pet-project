@@ -28,7 +28,7 @@ public class CreateTariffAction extends BaseAction {
             tariffService.add(new Tariff(name, Tariff.Type.valueOf(type.toUpperCase()), Integer.valueOf(speed), Float.valueOf(price)));
 
         } catch (ServiceException | NumberFormatException | NullPointerException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/tariffs";
     }

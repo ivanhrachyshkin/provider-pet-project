@@ -11,12 +11,15 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CreateAccountAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+
+
 
         try {
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
@@ -30,9 +33,8 @@ public class CreateAccountAction extends BaseAction {
             final Float balance = 0.0f;
 
             accountService.add(new Account(email, password, role, name, phone, address, balance));
-
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet/accounts";
     }
@@ -40,6 +42,6 @@ public class CreateAccountAction extends BaseAction {
     @Override
     public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
 
-        response.sendRedirect(request.getContextPath() + "/cabinet");
+        response.sendRedirect(request.getContextPath() + path);
     }
 }
