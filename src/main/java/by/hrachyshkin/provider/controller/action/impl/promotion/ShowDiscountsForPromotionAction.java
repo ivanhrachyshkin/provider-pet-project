@@ -15,6 +15,8 @@ import java.util.List;
 
 public class ShowDiscountsForPromotionAction extends BaseAction{
 
+    public static final String DISCOUNTS_FOR_PROMOTION = "/tariffs/discounts";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 

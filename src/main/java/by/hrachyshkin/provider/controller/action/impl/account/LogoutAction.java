@@ -8,8 +8,10 @@ import javax.servlet.http.HttpSession;
 
 public class LogoutAction extends BaseAction {
 
+    public static final String LOGOUT = "/logout";
+
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response){
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         final HttpSession session = request.getSession(false);
         session.invalidate();
 

@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class WelcomeAction extends BaseAction {
 
+   public static final String WELCOME = "/";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 

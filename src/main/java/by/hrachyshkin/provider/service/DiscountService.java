@@ -9,9 +9,9 @@ public interface DiscountService extends Service<Discount> {
 
     List<Discount> findAndSortByValue(Integer offset) throws ServiceException, TransactionException;
 
-    List<Discount> findAndFilterByType(final Discount.Type type) throws ServiceException, TransactionException;
+    List<Discount> findAndFilterByType(final Discount.Type type, int offset) throws ServiceException, TransactionException;
 
-    List<Discount> findAndFilterAndSort(final Discount.Type type) throws ServiceException, TransactionException;
+    List<Discount> findAndFilterAndSortByValue(final Discount.Type type) throws ServiceException, TransactionException;
 
     List<Discount> findDiscountsForPromotion(final Integer tariffId) throws ServiceException, TransactionException;
     }

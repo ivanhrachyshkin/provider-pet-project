@@ -14,7 +14,7 @@ public interface DiscountDao extends Dao<Discount> {
 
    List<Discount> findAndSortByValue(Integer offset) throws DaoException;
 
-   List<Discount> findAndFilterByType(Discount.Type type) throws DaoException;
+   List<Discount> findAndFilterByType(Discount.Type type, int offset) throws DaoException;
 
    List<Discount> findAndFilterAndSort( Discount.Type type) throws DaoException;
 }

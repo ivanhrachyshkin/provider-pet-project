@@ -53,11 +53,11 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> findAndFilterByType(final Discount.Type type) throws ServiceException, TransactionException {
+    public List<Discount> findAndFilterByType(final Discount.Type type, int offset) throws ServiceException, TransactionException {
 
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
-            final List<Discount> discounts = discountDao.findAndFilterByType(type);
+            final List<Discount> discounts = discountDao.findAndFilterByType(type, offset);
             transactionImpl.commit();
             return discounts;
 
@@ -68,7 +68,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> findAndFilterAndSort(final Discount.Type type) throws ServiceException, TransactionException {
+    public List<Discount> findAndFilterAndSortByValue(final Discount.Type type) throws ServiceException, TransactionException {
 
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);

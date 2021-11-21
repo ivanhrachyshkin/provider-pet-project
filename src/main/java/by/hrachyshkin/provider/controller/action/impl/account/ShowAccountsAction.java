@@ -10,10 +10,11 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 
 public class ShowAccountsAction extends BaseAction {
+
+    public static final String ACCOUNTS = "/cabinet/accounts";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -24,13 +25,13 @@ public class ShowAccountsAction extends BaseAction {
             final int offset = getOffset(request);
             final List<Account> accounts = accountService.findAndSortByName(offset);
 
-            pagination(request);
+            setPage(request);
             setTotalPagesAttribute(request, accountService.find());
             request.setAttribute("accounts", accounts);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             request.setAttribute("error", e.getMessage());
         }
-       return "/accounts.jsp";
+        return "/accounts.jsp";
     }
 }

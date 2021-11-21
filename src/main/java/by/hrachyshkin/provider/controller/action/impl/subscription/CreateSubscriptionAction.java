@@ -15,6 +15,7 @@ import java.io.IOException;
 
 public class CreateSubscriptionAction extends BaseAction{
 
+    public static final String CREATE_SUBSCRIPTION = "/cabinet/subscriptions/create";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {

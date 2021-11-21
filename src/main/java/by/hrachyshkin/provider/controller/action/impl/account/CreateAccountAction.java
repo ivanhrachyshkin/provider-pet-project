@@ -16,10 +16,10 @@ import java.io.IOException;
 
 public class CreateAccountAction extends BaseAction {
 
+    public static final String CREATE_ACCOUNT = "/cabinet/accounts/create";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-
-
 
         try {
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);

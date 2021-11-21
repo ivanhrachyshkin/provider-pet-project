@@ -14,6 +14,8 @@ import java.io.IOException;
 
 public class DeleteDiscountAction extends BaseAction {
 
+    public static final String DELETE_DISCOUNT = "/discounts/delete";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 

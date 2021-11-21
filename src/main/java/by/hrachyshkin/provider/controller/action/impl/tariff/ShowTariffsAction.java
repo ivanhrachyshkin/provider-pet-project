@@ -17,6 +17,8 @@ import java.util.List;
 
 public class ShowTariffsAction extends BaseAction {
 
+    public static final String TARIFFS = "/tariffs";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
@@ -26,22 +28,24 @@ public class ShowTariffsAction extends BaseAction {
         final String rawType = request.getParameter("filter");
 
         List<Tariff> tariffs;
-        if (rawType == null || rawType.equals("all")) {
+        if (rawType == null || rawType.isEmpty() || rawType.equals("all")) {
             tariffs = tariffService.findAndSortBySpeedAndPrice(offset);
+
+            setTotalPagesAttribute(request, tariffService.find());
         } else {
             final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
-            tariffs = tariffService.findAndFilterByType(type);
-        }
+            tariffs = tariffService.findAndFilterByType(type, offset);
 
-        pagination(request);
-        setTotalPagesAttribute(request, tariffService.find());
+            setTotalPagesAttribute(request, tariffService.findAndFilterAndSortBySpeedAndPrice(type));
+        }
+        setPage(request);
+
         request.setAttribute("tariffs", tariffs);
+        request.setAttribute("filter", rawType);
 
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
             return "/all-tariffs-for-admin.jsp";
         } else {
-            final List<Tariff> accountTariffs = tariffService.findTariffsForSubscription(getAccountId(request));
-            request.setAttribute("accountTariffs", accountTariffs);
             return "/all-tariffs-for-user.jsp";
         }
     }

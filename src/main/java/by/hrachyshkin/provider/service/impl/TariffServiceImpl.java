@@ -66,11 +66,11 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public List<Tariff> findAndFilterByType(final Tariff.Type type) throws ServiceException {
+    public List<Tariff> findAndFilterByType(final Tariff.Type type, final int offset) throws ServiceException {
 
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
-            final List<Tariff> tariffs = tariffDao.findAndFilterByType(type);
+            final List<Tariff> tariffs = tariffDao.findAndFilterByType(type, offset);
             transactionImpl.commit();
             return tariffs;
 
@@ -80,7 +80,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public List<Tariff> findAndFilterAndSort(final Tariff.Type type) throws ServiceException {
+    public List<Tariff> findAndFilterAndSortBySpeedAndPrice(final Tariff.Type type) throws ServiceException {
 
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);

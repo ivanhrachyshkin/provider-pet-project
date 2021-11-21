@@ -14,6 +14,8 @@ import java.io.IOException;
 
 public class DeleteSubscriptionAction extends BaseAction {
 
+    public static final String DELETE_SUBSCRIPTION = "/cabinet/subscriptions/delete";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
@@ -26,7 +28,7 @@ public class DeleteSubscriptionAction extends BaseAction {
             subscriptionService.deleteByAccountAndTariffId(accountId, tariffId);
 
         } catch (ServiceException | NumberFormatException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet/subscriptions";
     }

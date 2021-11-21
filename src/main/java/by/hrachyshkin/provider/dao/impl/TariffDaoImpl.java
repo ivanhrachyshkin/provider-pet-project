@@ -48,7 +48,8 @@ public class TariffDaoImpl implements TariffDao {
     private static final String FIND_AND_FILTER_BY_TYPE_QUERY =
             "SELECT id, name, type, speed, price " +
                     "FROM tariffs " +
-                    "WHERE type = ? ";
+                    "WHERE type = ? " +
+                    "LIMIT 5 OFFSET ?";
 
     private static final String FIND_AND_FILTER_AND_SORT_QUERY =
             "SELECT id, name, type, speed, price " +
@@ -152,7 +153,7 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public List<Tariff> findAndSortBySpeedAndPrice(final Integer offset) throws DaoException {
+    public List<Tariff> findAndSortBySpeedAndPrice(final int offset) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_SORT_BY_SPEED_AND_PRICE_QUERY)) {
             statement.setInt(1, offset);
@@ -172,10 +173,11 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public List<Tariff> findAndFilterByType(final Tariff.Type type) throws DaoException {
+    public List<Tariff> findAndFilterByType(final Tariff.Type type, final int offset) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_TYPE_QUERY)) {
             statement.setInt(1, type.ordinal());
+            statement.setInt(2, offset);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Tariff> tariffs = new ArrayList<>();
@@ -222,7 +224,8 @@ public class TariffDaoImpl implements TariffDao {
                 return buildTariff(resultSet);
             }
 
-        } catch (SQLException e) {rb.getString("tariff.find.one.by.id.exception");
+        } catch (SQLException e) {
+            rb.getString("tariff.find.one.by.id.exception");
             throw new DaoException("Can't find tariff by id", e);
         }
     }

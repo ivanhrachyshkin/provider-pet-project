@@ -15,6 +15,8 @@ import java.io.IOException;
 
 public class CreatePromotionAction extends BaseAction {
 
+    public static final String CREATE_PROMOTION = "/tariffs/discounts/create";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

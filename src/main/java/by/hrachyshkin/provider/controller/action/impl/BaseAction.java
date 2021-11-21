@@ -44,20 +44,15 @@ public abstract class BaseAction implements Action {
 
     protected void setTotalPagesAttribute(final HttpServletRequest request, final List<? extends Model> list) {
 
-        if (list.size() % 5 == 0) {
-            request.setAttribute("totalPages", list.size() / 5);
-        } else {
-            request.setAttribute("totalPages", list.size() / 5 + 1);
-        }
+        final int totalPages = list.size() % 5 == 0 ? list.size() / 5 : list.size() / 5 + 1;
+        request.setAttribute("totalPages", totalPages);
     }
 
-    protected void pagination(final HttpServletRequest request) {
+    protected void setPage(final HttpServletRequest request) {
 
-        if (request.getParameter("page") == null) {
-            request.setAttribute("page", 1);
-        } else {
-            request.setAttribute("page", Integer.valueOf(request.getParameter("page")));
-        }
+        final String page = request.getParameter("page");
+        final int pageNumber = page == null ? 1 : Integer.parseInt(page);
+        request.setAttribute("page", pageNumber);
     }
 
     protected void setErrorAttributeToSession(final HttpServletRequest request, final String value) {

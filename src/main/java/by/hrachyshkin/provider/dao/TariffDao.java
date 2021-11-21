@@ -12,9 +12,9 @@ public interface TariffDao extends Dao<Tariff> {
 
     boolean isExistByNotIdAndName(final Integer id, final String name) throws DaoException;
 
-    List<Tariff> findAndSortBySpeedAndPrice(Integer offset) throws DaoException;
+    List<Tariff> findAndSortBySpeedAndPrice(int offset) throws DaoException;
 
-    List<Tariff> findAndFilterByType(Tariff.Type type) throws DaoException;
+    List<Tariff> findAndFilterByType(Tariff.Type type, int offset) throws DaoException;
 
     List<Tariff> findAndFilterAndSort(Tariff.Type type) throws DaoException;
 }

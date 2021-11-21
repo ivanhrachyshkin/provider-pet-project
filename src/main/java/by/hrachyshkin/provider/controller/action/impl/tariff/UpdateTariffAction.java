@@ -15,6 +15,8 @@ import java.io.IOException;
 
 public class UpdateTariffAction extends BaseAction {
 
+    public static final String UPDATE_TARIFF = "/tariffs/update";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
@@ -38,6 +40,6 @@ public class UpdateTariffAction extends BaseAction {
     @Override
     public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
 
-        response.sendRedirect(request.getContextPath() + "/tariffs");
+        response.sendRedirect(request.getContextPath() + path);
     }
 }

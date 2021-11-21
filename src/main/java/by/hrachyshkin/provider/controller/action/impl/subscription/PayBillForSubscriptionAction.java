@@ -15,6 +15,8 @@ import java.time.LocalDate;
 
 public class PayBillForSubscriptionAction extends BaseAction {
 
+    public static final String PAY_BILL_FOR_SUBSCRIPTION = "/cabinet/subscriptions/bills/pay";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 

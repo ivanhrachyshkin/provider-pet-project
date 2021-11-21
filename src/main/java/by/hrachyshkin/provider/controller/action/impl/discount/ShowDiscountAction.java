@@ -15,6 +15,8 @@ import java.util.List;
 
 public class ShowDiscountAction extends BaseAction {
 
+    public static final String DISCOUNTS = "/discounts";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
@@ -26,15 +28,17 @@ public class ShowDiscountAction extends BaseAction {
             final String rawType = request.getParameter("filter");
 
             final List<Discount> discounts;
-            if (rawType == null || rawType.equals("all")) {
+            if (rawType == null || rawType.isEmpty() || rawType.equals("all")) {
                 discounts = discountService.findAndSortByValue(offset);
+                setTotalPagesAttribute(request, discountService.find());
             } else {
                 final Discount.Type type = Discount.Type.valueOf(rawType.toUpperCase());
-                discounts = discountService.findAndFilterByType(type);
+                discounts = discountService.findAndFilterByType(type, offset);
+
+                setTotalPagesAttribute(request, discountService.findAndFilterAndSortByValue(type));
             }
 
-            pagination(request);
-            setTotalPagesAttribute(request, discountService.find());
+            setPage(request);
             request.setAttribute("discounts", discounts);
 
             if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {

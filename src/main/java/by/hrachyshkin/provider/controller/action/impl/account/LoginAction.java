@@ -16,8 +16,10 @@ import java.io.IOException;
 
 public class LoginAction extends BaseAction {
 
+    public static final String LOGIN = "/login";
+
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response){
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         String path;
 
@@ -52,7 +54,6 @@ public class LoginAction extends BaseAction {
     public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
 
         response.sendRedirect(request.getContextPath() + "/cabinet");
-
     }
 }
 

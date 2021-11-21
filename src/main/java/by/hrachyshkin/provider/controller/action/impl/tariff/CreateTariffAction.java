@@ -15,6 +15,8 @@ import java.io.IOException;
 
 public class CreateTariffAction extends BaseAction {
 
+    public static final String CREATE_TARIFF = "/tariffs/create";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
         try {
@@ -36,7 +38,6 @@ public class CreateTariffAction extends BaseAction {
     @Override
     public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
 
-        response.sendRedirect(request.getContextPath() + "/tariffs");
-
+        response.sendRedirect(request.getContextPath() + path);
     }
 }

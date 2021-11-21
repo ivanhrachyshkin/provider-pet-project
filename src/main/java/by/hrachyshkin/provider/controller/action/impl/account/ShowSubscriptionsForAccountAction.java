@@ -12,6 +12,8 @@ import java.util.List;
 
 public class ShowSubscriptionsForAccountAction extends BaseAction {
 
+    public static final String SUBSCRIPTIONS = "/cabinet/subscriptions";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 

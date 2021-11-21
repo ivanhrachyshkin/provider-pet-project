@@ -15,6 +15,8 @@ import java.util.List;
 
 public class ShowTrafficsForSubscriptionAction extends BaseAction {
 
+    public static final String SHOW_TRAFFICS_FOR_SUBSCRIPTION = "/cabinet/subscriptions/traffics";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
@@ -30,7 +32,7 @@ public class ShowTrafficsForSubscriptionAction extends BaseAction {
             final Account account = accountService.findOneById(accountId);
             final List<Traffic> subscriptionTraffics = trafficService.findTrafficForSubscription(accountId, tariffId, offset);
 
-            pagination(request);
+            setPage(request);
             setTotalPagesAttribute(request, subscriptionTraffics);
             request.setAttribute("account", account);
             request.setAttribute("tariff", tariff);

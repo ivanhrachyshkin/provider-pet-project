@@ -14,6 +14,8 @@ import java.io.IOException;
 
 public class DeleteTariffAction extends BaseAction  {
 
+    public static final String DELETE_TARIFF = "/tariffs/delete";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 

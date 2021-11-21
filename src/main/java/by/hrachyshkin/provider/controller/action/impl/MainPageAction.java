@@ -5,8 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class MainPageAction extends BaseAction {
 
+    public static final String MAIN = "/main";
+
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response){
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         return "/main.jsp";
     }

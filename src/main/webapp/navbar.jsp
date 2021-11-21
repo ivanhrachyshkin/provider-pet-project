@@ -1,24 +1,11 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page isELIgnored="false" %>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
 
-<!doctype html>
-<head>
-    <c:set var="url">${pageContext.request.contextPath}</c:set>
-    <title>Provider</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js"></script>
-</head>
-<body>
+<c:set var="url">${pageContext.request.contextPath}</c:set>
+
 <nav class="navbar navbar-inverse">
     <div class="container">
         <div class="navbar-header">
@@ -39,7 +26,8 @@
                     <li><a href="?sessionLocale=ru_RU">rus</a></li>
                 </ul>
             </li>
-            <li><a href="${url}/logout"><span class="glyphicon glyphicon-user"><fmt:message key="logoutLabel"/></span></a></li>
+            <li><a href="${url}/logout"><span class="glyphicon glyphicon-user"><fmt:message
+                    key="logoutLabel"/></span></a></li>
         </ul>
     </div>
 </nav>

@@ -16,6 +16,8 @@ import java.time.LocalDate;
 
 public class UpdateDiscountAction extends BaseAction {
 
+    public static final String UPDATE_DISCOUNTS = "/discounts/update";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

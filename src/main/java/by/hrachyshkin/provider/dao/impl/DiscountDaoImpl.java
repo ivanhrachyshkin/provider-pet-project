@@ -46,7 +46,8 @@ public class DiscountDaoImpl implements DiscountDao {
     private static final String FIND_AND_FILTER_BY_TYPE_QUERY =
             "SELECT id, name, type, value, date_from, date_to " +
                     "FROM discounts " +
-                    "WHERE type = ? ";
+                    "WHERE type = ? " +
+                    "LIMIT 5 OFFSET ?";
 
     private static final String FIND_AND_FILTER_AND_SORT_QUERY =
             "SELECT id, name, type, value, date_from, date_to " +
@@ -172,10 +173,11 @@ public class DiscountDaoImpl implements DiscountDao {
     }
 
     @Override
-    public List<Discount> findAndFilterByType(final Discount.Type type) throws DaoException {
+    public List<Discount> findAndFilterByType(final Discount.Type type, int offset) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_TYPE_QUERY)) {
             statement.setInt(1, type.ordinal());
+            statement.setInt(2, offset);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 final List<Discount> discounts = new ArrayList<>();

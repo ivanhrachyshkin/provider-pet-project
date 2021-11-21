@@ -15,6 +15,8 @@ import java.time.LocalDate;
 
 public class DepositMoneyForAccount extends BaseAction {
 
+    public static final String DEPOSIT = "/cabinet/deposit";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
@@ -29,7 +31,7 @@ public class DepositMoneyForAccount extends BaseAction {
             accountService.deposit(accountId, card, deposit, validity);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet";
     }

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 public class CabinetAction extends BaseAction {
 
+    public static final String CABINET = "/cabinet";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
@@ -25,12 +27,12 @@ public class CabinetAction extends BaseAction {
 
             if (getRole(request).equals(Account.Role.BLOCKED)) {
                 request.setAttribute("error", "Account is blocked");
-                page ="/";
+                page = "/";
             }
 
             if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
                 request.setAttribute("account", account);
-                page ="/cabinet-admin.jsp";
+                page = "/cabinet-admin.jsp";
             }
 
             if (getRole(request).equals(Account.Role.USER)) {
@@ -40,7 +42,7 @@ public class CabinetAction extends BaseAction {
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             request.setAttribute("error", e.getMessage());
-             page = "/";
+            page = "/";
         }
         return page;
     }

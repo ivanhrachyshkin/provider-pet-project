@@ -13,8 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class UpdateAccountAction extends BaseAction{
+public class UpdateAccountAction extends BaseAction {
 
+    public static final String UPDATE_ACCOUNT = "/cabinet/accounts/update";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -35,12 +36,13 @@ public class UpdateAccountAction extends BaseAction{
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
+
         return "/cabinet";
     }
 
     @Override
     public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
 
-        response.sendRedirect(request.getContextPath() + "/accounts");
+        response.sendRedirect(request.getContextPath() + path);
     }
 }

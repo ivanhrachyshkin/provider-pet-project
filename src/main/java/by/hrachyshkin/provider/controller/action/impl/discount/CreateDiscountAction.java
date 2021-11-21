@@ -16,6 +16,8 @@ import java.time.LocalDate;
 
 public class CreateDiscountAction extends BaseAction {
 
+    public static final String CREATE_DISCOUNT = "/discounts/create";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
