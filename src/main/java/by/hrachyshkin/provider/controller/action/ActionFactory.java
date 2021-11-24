@@ -45,8 +45,10 @@ public class ActionFactory {
             put(CreateSubscriptionAction.CREATE_SUBSCRIPTION, new CreateSubscriptionAction());
             put(PayBillForSubscriptionAction.PAY_BILL_FOR_SUBSCRIPTION, new PayBillForSubscriptionAction());
             put(DeleteSubscriptionAction.DELETE_SUBSCRIPTION, new DeleteSubscriptionAction());
-            put(ShowBillsForSubscriptionAction.SHOW_BILLS_FOR_SUBSCRIPTION, new ShowBillsForSubscriptionAction());
+            put(TrafficsForSubscriptionAction.TRAFFICS_FOR_SUBSCRIPTION, new TrafficsForSubscriptionAction());
             put(ShowTrafficsForSubscriptionAction.SHOW_TRAFFICS_FOR_SUBSCRIPTION, new ShowTrafficsForSubscriptionAction());
+            put(BillsForSubscriptionAction.BILLS_FOR_SUBSCRIPTION, new BillsForSubscriptionAction());
+            put(ShowBillsForSubscriptionAction.SHOW_BILLS_FOR_SUBSCRIPTION, new ShowBillsForSubscriptionAction());
 
             put(CreateTariffAction.CREATE_TARIFF, new CreateTariffAction());
             put(DeleteTariffAction.DELETE_TARIFF, new DeleteTariffAction());

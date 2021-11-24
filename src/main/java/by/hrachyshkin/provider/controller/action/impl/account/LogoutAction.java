@@ -12,6 +12,7 @@ public class LogoutAction extends BaseAction {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+
         final HttpSession session = request.getSession(false);
         session.invalidate();
 

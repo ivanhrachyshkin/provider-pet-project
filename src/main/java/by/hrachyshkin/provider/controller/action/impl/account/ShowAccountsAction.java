@@ -30,7 +30,7 @@ public class ShowAccountsAction extends BaseAction {
             request.setAttribute("accounts", accounts);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/accounts.jsp";
     }

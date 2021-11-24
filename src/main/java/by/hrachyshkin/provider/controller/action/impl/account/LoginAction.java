@@ -53,8 +53,7 @@ public class LoginAction extends BaseAction {
 
     @Override
     public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
-
-        response.sendRedirect(request.getContextPath() + "/cabinet");
+        response.sendRedirect(request.getContextPath() + path);
     }
 }
 

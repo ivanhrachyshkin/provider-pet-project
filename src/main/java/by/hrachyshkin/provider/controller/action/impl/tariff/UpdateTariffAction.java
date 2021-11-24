@@ -12,6 +12,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class UpdateTariffAction extends BaseAction {
 
@@ -41,7 +44,6 @@ public class UpdateTariffAction extends BaseAction {
 
     @Override
     public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
-
         response.sendRedirect(request.getContextPath() + path);
     }
 }

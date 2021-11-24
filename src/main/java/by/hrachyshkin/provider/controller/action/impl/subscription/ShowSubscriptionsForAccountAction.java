@@ -1,4 +1,4 @@
-package by.hrachyshkin.provider.controller.action.impl.account;
+package by.hrachyshkin.provider.controller.action.impl.subscription;
 
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
@@ -32,7 +32,7 @@ public class ShowSubscriptionsForAccountAction extends BaseAction {
             request.setAttribute("tariffs", tariffs);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/subscriptions-for-account.jsp";
     }

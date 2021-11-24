@@ -61,6 +61,18 @@ public abstract class BaseAction implements Action {
         session.setAttribute("error", value);
     }
 
+    protected void setTariffIdAttributeToSession(final HttpServletRequest request, final String value) {
+
+        final HttpSession session = request.getSession(false);
+        session.setAttribute("tariffId", value);
+    }
+
+    protected String getTariffIdAttributeSession(final HttpServletRequest request) {
+
+        final HttpSession session = request.getSession(false);
+        return (String) session.getAttribute("tariffId");
+    }
+
     protected void checkHttpMethod(final HttpServletRequest request) throws ServletException {
 
       if (request.getMethod().equals("GET")){

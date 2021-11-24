@@ -10,6 +10,7 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class DeletePromotionAction extends BaseAction {
@@ -24,14 +25,22 @@ public class DeletePromotionAction extends BaseAction {
 
             final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
 
-            final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
+            final String tariffId = request.getParameter("tariffId");
             final Integer discountId = Integer.valueOf(request.getParameter("discountId"));
 
-            promotionService.deleteByTariffAndDiscount(tariffId, discountId);
+            promotionService.deleteByTariffAndDiscount(Integer.valueOf(tariffId), discountId);
+
+            HttpSession session = request.getSession();
+            session.setAttribute("tariffId", tariffId);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/tariffs/discounts";
+    }
+
+    @Override
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+        response.sendRedirect(request.getContextPath() + path);
     }
 }

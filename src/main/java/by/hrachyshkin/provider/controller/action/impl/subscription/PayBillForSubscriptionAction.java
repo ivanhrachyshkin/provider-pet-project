@@ -34,9 +34,15 @@ public class PayBillForSubscriptionAction extends BaseAction {
             subscriptionService.payBill(accountId, subscriptionId, value, date);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         request.setAttribute("tariffId", request.getParameter("tariffId"));
+
         return "/cabinet/subscriptions/bills";
+    }
+
+    @Override
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+        response.sendRedirect(request.getContextPath() + path);
     }
 }

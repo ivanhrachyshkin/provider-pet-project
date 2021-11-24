@@ -48,7 +48,7 @@ public class ShowDiscountAction extends BaseAction {
             }
 
         } catch (TransactionException | ServiceException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return path;
     }

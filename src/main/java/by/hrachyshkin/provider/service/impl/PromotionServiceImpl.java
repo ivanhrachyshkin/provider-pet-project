@@ -92,7 +92,7 @@ public class PromotionServiceImpl implements PromotionService {
 
             if (!promotionDao.isExistByTariffAndDiscountId(tariffId, discountId)) {
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("promotion.delete.by.tariff.discount.promotions.exception"));
+                throw new ServiceException(rb.getString("promotion.delete.by.tariff.and.discount.exception"));
             }
 
             promotionDao.deleteByTariffAndDiscount(tariffId, discountId);

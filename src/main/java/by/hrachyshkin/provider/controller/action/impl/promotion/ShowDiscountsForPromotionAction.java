@@ -10,25 +10,33 @@ import by.hrachyshkin.provider.service.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-public class ShowDiscountsForPromotionAction extends BaseAction{
+public class ShowDiscountsForPromotionAction extends BaseAction {
 
     public static final String DISCOUNTS_FOR_PROMOTION = "/tariffs/discounts";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
-        checkHttpMethod(request);
+        final String tariffId;
+
+        if (request.getMethod().equals("GET")) {
+            HttpSession session = request.getSession();
+            tariffId = (String) session.getAttribute("tariffId");
+        } else {
+            tariffId = request.getParameter("tariffId");
+        }
 
         final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
         final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
-        final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
-        final Tariff tariff = tariffService.findOneById(tariffId);
 
-        final List<Discount> tariffDiscounts = discountService.findDiscountsForPromotion(tariffId);
+        final Tariff tariff = tariffService.findOneById(Integer.valueOf(tariffId));
+
+        final List<Discount> tariffDiscounts = discountService.findDiscountsForPromotion(Integer.valueOf(tariffId));
         final List<Discount> discounts = discountService.find();
 
         request.setAttribute("tariff", tariff);

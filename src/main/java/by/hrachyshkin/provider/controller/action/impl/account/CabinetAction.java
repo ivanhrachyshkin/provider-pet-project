@@ -41,7 +41,7 @@ public class CabinetAction extends BaseAction {
             }
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
-            request.setAttribute("error", e.getMessage());
+            setErrorAttributeToSession(request, e.getMessage());
             page = "/";
         }
         return page;
