@@ -68,7 +68,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> findAndFilterAndSortByValue(final Discount.Type type) throws ServiceException, TransactionException {
+    public List<Discount> findAndFilterByTypeAndSortByValue(final Discount.Type type) throws ServiceException, TransactionException {
 
         try {
             final DiscountDao discountDao = transactionImpl.createDao(DaoKeys.DISCOUNT_DAO);
@@ -120,6 +120,7 @@ public class DiscountServiceImpl implements DiscountService {
                     discounts.add(discount);
                 }
             }
+
             transactionImpl.commit();
             return discounts;
 

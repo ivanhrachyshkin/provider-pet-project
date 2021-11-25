@@ -35,7 +35,7 @@ public class ShowDiscountAction extends BaseAction {
                 final Discount.Type type = Discount.Type.valueOf(rawType.toUpperCase());
                 discounts = discountService.findAndFilterByType(type, offset);
 
-                setTotalPagesAttribute(request, discountService.findAndFilterAndSortByValue(type));
+                setTotalPagesAttribute(request, discountService.findAndFilterByTypeAndSortByValue(type));
             }
 
             setPage(request);

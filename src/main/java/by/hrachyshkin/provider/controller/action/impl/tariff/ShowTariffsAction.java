@@ -36,10 +36,10 @@ public class ShowTariffsAction extends BaseAction {
             final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
             tariffs = tariffService.findAndFilterByType(type, offset);
 
-            setTotalPagesAttribute(request, tariffService.findAndFilterAndSortBySpeedAndPrice(type));
+            setTotalPagesAttribute(request, tariffService.findAndFilterByTypeAndSortBySpeedAndPrice(type));
         }
-        setPage(request);
 
+        setPage(request);
         request.setAttribute("tariffs", tariffs);
         request.setAttribute("filter", rawType);
 

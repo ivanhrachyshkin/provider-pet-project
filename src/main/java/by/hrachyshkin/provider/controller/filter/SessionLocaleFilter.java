@@ -8,6 +8,9 @@ import java.io.IOException;
 @WebFilter(urlPatterns = "/*")
 public class SessionLocaleFilter implements Filter {
 
+    public void init(FilterConfig arg0) {
+    }
+
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
@@ -20,8 +23,5 @@ public class SessionLocaleFilter implements Filter {
     }
 
     public void destroy() {
-    }
-
-    public void init(FilterConfig arg0) throws ServletException {
     }
 }

@@ -80,7 +80,7 @@ public class TariffServiceImpl implements TariffService {
     }
 
     @Override
-    public List<Tariff> findAndFilterAndSortBySpeedAndPrice(final Tariff.Type type) throws ServiceException {
+    public List<Tariff> findAndFilterByTypeAndSortBySpeedAndPrice(final Tariff.Type type) throws ServiceException {
 
         try {
             final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);

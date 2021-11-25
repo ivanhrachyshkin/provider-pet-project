@@ -46,6 +46,10 @@ public class TrafficDaoImpl implements TrafficDao {
                     "INTO traffics (subscription_id, value, date) " +
                     "VALUES (?, ?, ?)";
 
+    private static final String DELETE_BY_SUBSCRIPTION_ID_QUERY =
+            "DELETE " +
+                    "FROM traffics WHERE subscription_id = ? ";
+
     private final Connection connection;
     private final ResourceBundle rb;
 
@@ -175,8 +179,16 @@ public class TrafficDaoImpl implements TrafficDao {
     }
 
     @Override
-    public void delete(final Integer id) {
-        throw new UnsupportedOperationException(rb.getString("traffic.delete.unsupported.exception"));
+    public void delete(final Integer subscriptionId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_SUBSCRIPTION_ID_QUERY)) {
+            statement.setInt(1, subscriptionId);
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DaoException(rb.getString("traffic.delete.exception"), e);
+        }
     }
 
 

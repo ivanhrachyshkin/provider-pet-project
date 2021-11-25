@@ -20,12 +20,12 @@ public class DeleteDiscountAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            checkHttpMethod(request);
+            checkGetHTTPMethod(request);
 
             final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 
-            final Integer id = Integer.valueOf(request.getParameter("discountId"));
-            discountService.delete(id);
+            final Integer discountId = Integer.valueOf(request.getParameter("discountId"));
+            discountService.delete(discountId);
 
         } catch (ServiceException | NumberFormatException | TransactionException | ServletException e) {
             setErrorAttributeToSession(request, e.getMessage());

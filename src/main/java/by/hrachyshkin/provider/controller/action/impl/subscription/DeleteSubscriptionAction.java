@@ -2,10 +2,7 @@ package by.hrachyshkin.provider.controller.action.impl.subscription;
 
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
-import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.ServiceFactory;
-import by.hrachyshkin.provider.service.ServiceKeys;
-import by.hrachyshkin.provider.service.SubscriptionService;
+import by.hrachyshkin.provider.service.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -20,13 +17,18 @@ public class DeleteSubscriptionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
-            checkHttpMethod(request);
+            checkGetHTTPMethod(request);
 
             final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+            final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
+            final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
 
             final Integer accountId = getAccountId(request);
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
+            final Integer subscriptionId = subscriptionService.findOneByAccountIdAndTariffId(accountId, tariffId).getId();
 
+            billService.delete(subscriptionId);
+            trafficService.delete(subscriptionId);
             subscriptionService.deleteByAccountAndTariffId(accountId, tariffId);
 
         } catch (ServiceException | NumberFormatException e) {

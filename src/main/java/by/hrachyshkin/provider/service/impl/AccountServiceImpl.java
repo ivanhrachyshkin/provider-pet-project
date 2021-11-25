@@ -28,6 +28,7 @@ public class AccountServiceImpl implements AccountService {
             final boolean value = accountDao.isExistByEmailAndPassword(email, password);
             transactionImpl.commit();
             return value;
+
         } catch (TransactionException | DaoException e) {
             transactionImpl.rollback();
             throw new ServiceException(e.getMessage(), e);
@@ -54,9 +55,9 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
-            List<Account> andSortByName = accountDao.findAndSortByName(offset);
+           final List<Account> accounts = accountDao.findAndSortByName(offset);
             transactionImpl.commit();
-            return andSortByName;
+            return accounts;
 
         } catch (DaoException | TransactionException e) {
             transactionImpl.rollback();

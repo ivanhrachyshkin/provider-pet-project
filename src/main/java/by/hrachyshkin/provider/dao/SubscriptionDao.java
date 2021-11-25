@@ -6,17 +6,17 @@ import java.util.List;
 
 public interface SubscriptionDao extends Dao<Subscription> {
 
-    boolean isExistById(final Integer id) throws DaoException;
+    boolean isExistById( Integer id) throws DaoException;
 
     boolean isExistByAccountId(Integer accountId) throws DaoException;
 
-    boolean isExistByTariffId(final Integer tariffId) throws DaoException;
+    boolean isExistByTariffId( Integer tariffId) throws DaoException;
 
-    boolean isExistByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException;
+    boolean isExistByAccountAndTariffId( Integer accountId,  Integer tariffId) throws DaoException;
 
     List<Subscription> findAndFilterByAccountId(Integer accountId) throws DaoException;
 
-    List<Subscription> findAndFilterByAccountIdAndTariffId(final Integer accountId, final Integer tariffId, Integer offset) throws DaoException;
+    Subscription findOneByAccountIdAndTariffId( Integer accountId,  Integer tariffId) throws DaoException;
 
-    void deleteByAccountAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException;
+    void deleteByAccountAndTariffId( Integer accountId,  Integer tariffId) throws DaoException;
 }

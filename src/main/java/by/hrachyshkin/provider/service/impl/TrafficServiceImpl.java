@@ -6,6 +6,7 @@ import by.hrachyshkin.provider.dao.SubscriptionDao;
 import by.hrachyshkin.provider.dao.TrafficDao;
 import by.hrachyshkin.provider.dao.Transaction;
 import by.hrachyshkin.provider.dao.TransactionException;
+import by.hrachyshkin.provider.model.Bill;
 import by.hrachyshkin.provider.model.Subscription;
 import by.hrachyshkin.provider.model.Traffic;
 import by.hrachyshkin.provider.service.ServiceException;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class TrafficServiceImpl implements TrafficService {
@@ -68,7 +70,7 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     @Override
-    public List<Traffic> findAndFilterAndSort(final Integer subscriptionId) throws ServiceException, TransactionException {
+    public List<Traffic> findAndFilterBySubscriptionIdAndSortByDate(final Integer subscriptionId) throws ServiceException, TransactionException {
 
         try {
             final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
@@ -82,33 +84,29 @@ public class TrafficServiceImpl implements TrafficService {
         }
     }
 
-   @Override
-   public List<Traffic> findTrafficForSubscription(final Integer accountId, final Integer tariffId, final Integer offset) throws ServiceException, TransactionException {
+    @Override
+    public List<Traffic> findTrafficForSubscription(final Integer accountId, final Integer tariffId, final Integer offset) throws ServiceException, TransactionException {
 
-       try {
-           final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-           final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
+        try {
+            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
+            final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
 
-           final List<Traffic> traffics = trafficDao.find();
-           final List<Traffic> subscriptionTraffics = new ArrayList<>();
-           final List<Subscription> subscriptions = subscriptionDao.findAndFilterByAccountIdAndTariffId(accountId, tariffId, offset);
+            final List<Traffic> traffics = trafficDao.find();
+            final Subscription subscription = subscriptionDao.findOneByAccountIdAndTariffId(accountId, tariffId);
 
-           for (Subscription subs : subscriptions) {
-               for (Traffic traffic : traffics) {
-                   if (subs.getId().equals(traffic.getSubscriptionId())) {
-                       subscriptionTraffics.add(traffic);
-                   }
-               }
+            final List<Traffic> subscriptionTraffics = traffics
+                    .stream()
+                    .filter(traffic -> traffic.getSubscriptionId().equals(subscription.getId()))
+                    .collect(Collectors.toList());
 
-           }
-           transactionImpl.commit();
-           return subscriptionTraffics;
+            transactionImpl.commit();
+            return subscriptionTraffics;
 
-       } catch (TransactionException | DaoException e) {
-           transactionImpl.rollback();
-           throw new ServiceException(e.getMessage(), e);
-       }
-   }
+        } catch (TransactionException | DaoException e) {
+            transactionImpl.rollback();
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
 
     @Override
     public Traffic findOneById(final Integer id) throws ServiceException {
@@ -151,7 +149,17 @@ public class TrafficServiceImpl implements TrafficService {
     }
 
     @Override
-    public void delete(final Integer id) throws ServiceException {
-        throw new UnsupportedOperationException(rb.getString("traffic.delete.unsupported.exception"));
+    public void delete(final Integer subscriptionId) throws ServiceException, TransactionException {
+
+        try {
+            final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
+
+            trafficDao.delete(subscriptionId);
+            transactionImpl.commit();
+
+        } catch (TransactionException | DaoException e) {
+            transactionImpl.rollback();
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 }

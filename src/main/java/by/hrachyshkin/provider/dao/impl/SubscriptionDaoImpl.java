@@ -51,7 +51,7 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
                     "FROM subscriptions " +
                     "WHERE account_id = ? ";
 
-    private static final String FIND_AND_FILTER_BY_ACCOUNT_AND_TARIFF_ID_QUERY =
+    private static final String FIND_AND_FILTER_BY_ACCOUNT_AND_TARIFF_ID_OFFSET_QUERY =
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions " +
                     "WHERE account_id = ? AND tariff_id = ? " +
@@ -61,6 +61,11 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
             "SELECT id, account_id, tariff_id " +
                     "FROM subscriptions " +
                     "WHERE id = ?";
+
+    private static final String FIND_ONE_SUBSCRIPTION_BY_ACCOUNT_AND_TARIFF_ID_QUERY =
+            "SELECT id, account_id, tariff_id " +
+                    "FROM subscriptions " +
+                    "WHERE account_id = ? and tariff_id = ?";;
 
     private static final String ADD_QUERY =
             "INSERT " +
@@ -189,32 +194,27 @@ public class SubscriptionDaoImpl implements SubscriptionDao {
     }
 
     @Override
-    public List<Subscription> findAndFilterByAccountIdAndTariffId(final Integer accountId, final Integer tariffId, final Integer offset) throws DaoException {
-
-        try (final PreparedStatement statement = connection.prepareStatement(FIND_AND_FILTER_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
-            statement.setInt(1, accountId);
-            statement.setInt(2, tariffId);
-            statement.setInt(3, offset);
-
-            try (final ResultSet resultSet = statement.executeQuery()) {
-                final List<Subscription> subscriptions = new ArrayList<>();
-                while (resultSet.next()) {
-                    final Subscription subscription = buildSubscription(resultSet);
-                    subscriptions.add(subscription);
-                }
-                return subscriptions;
-            }
-
-        } catch (Exception e) {
-            throw new DaoException(rb.getString("subscription.find.or.filter.by.account.id.and.tariff.id.exception"));
-        }
-    }
-
-    @Override
     public Subscription findOneById(final Integer id) throws DaoException {
 
         try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_SUBSCRIPTION_QUERY_BY_ID)) {
             statement.setInt(1, id);
+
+            try (final ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return buildSubscription(resultSet);
+            }
+
+        } catch (SQLException e) {
+            throw new DaoException(rb.getString("subscription.find.one.by.id.exception"), e);
+        }
+    }
+
+    @Override
+    public Subscription findOneByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(FIND_ONE_SUBSCRIPTION_BY_ACCOUNT_AND_TARIFF_ID_QUERY)) {
+            statement.setInt(1, accountId);
+            statement.setInt(2, tariffId);
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();

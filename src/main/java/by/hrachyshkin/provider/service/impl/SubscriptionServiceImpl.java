@@ -32,7 +32,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<Subscription> findAndFilter(final Integer accountId) throws ServiceException, TransactionException {
+    public List<Subscription> findAndFilterByAccountId(final Integer accountId) throws ServiceException, TransactionException {
 
         try {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
@@ -52,6 +52,21 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         try {
             final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
             final Subscription subscription = subscriptionDao.findOneById(id);
+            transactionImpl.commit();
+            return subscription;
+
+        } catch (TransactionException | DaoException e) {
+            transactionImpl.rollback();
+            throw new ServiceException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Subscription findOneByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
+
+        try {
+            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
+            final Subscription subscription = subscriptionDao.findOneByAccountIdAndTariffId(accountId, tariffId);
             transactionImpl.commit();
             return subscription;
 
@@ -83,7 +98,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public void payBill(final Integer accountId, final Integer subscriptionIdForBill, final Float value, final LocalDate date) throws ServiceException, TransactionException {
+    public void payBillForSubscription(final Integer accountId, final Integer subscriptionIdForBill, final Float value, final LocalDate date) throws ServiceException, TransactionException {
 
         try {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);

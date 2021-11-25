@@ -21,8 +21,6 @@ public class PayBillForSubscriptionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
-            checkHttpMethod(request);
-
             final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
 
             final Integer accountId = getAccountId(request);
@@ -31,7 +29,7 @@ public class PayBillForSubscriptionAction extends BaseAction {
             final Float value = Float.valueOf(request.getParameter("value"));
             final LocalDate date = LocalDate.parse(request.getParameter("date"));
 
-            subscriptionService.payBill(accountId, subscriptionId, value, date);
+            subscriptionService.payBillForSubscription(accountId, subscriptionId, value, date);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
@@ -39,10 +37,5 @@ public class PayBillForSubscriptionAction extends BaseAction {
         request.setAttribute("tariffId", request.getParameter("tariffId"));
 
         return "/cabinet/subscriptions/bills";
-    }
-
-    @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
-        response.sendRedirect(request.getContextPath() + path);
     }
 }

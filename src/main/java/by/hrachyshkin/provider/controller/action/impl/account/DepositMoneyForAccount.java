@@ -21,7 +21,7 @@ public class DepositMoneyForAccount extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         try {
-            checkHttpMethod(request);
+            checkGetHTTPMethod(request);
 
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 

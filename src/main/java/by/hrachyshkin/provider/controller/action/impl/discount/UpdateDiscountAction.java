@@ -22,7 +22,7 @@ public class UpdateDiscountAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            checkHttpMethod(request);
+            checkGetHTTPMethod(request);
 
             final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 

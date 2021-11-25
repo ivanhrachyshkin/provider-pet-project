@@ -3,7 +3,6 @@ package by.hrachyshkin.provider.dao.impl;
 import by.hrachyshkin.provider.dao.DaoException;
 import by.hrachyshkin.provider.dao.BillDao;
 import by.hrachyshkin.provider.model.Bill;
-import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -52,6 +51,10 @@ public class BillDaoImpl implements BillDao {
             "UPDATE bills " +
                     "SET status = true " +
                     "WHERE subscription_id = ? AND value = ? AND date = ?";
+
+    private static final String DELETE_BY_SUBSCRIPTION_ID_QUERY =
+            "DELETE FROM bills " +
+                    "WHERE subscription_id = ?";
 
     private final Connection connection;
     private final ResourceBundle rb;
@@ -179,21 +182,21 @@ public class BillDaoImpl implements BillDao {
     @Override
     public void update(final Bill bill) throws DaoException {
 
-        try (final PreparedStatement statement = connection.prepareStatement(UPDATE_BILL_STATUS_QUERY)) {
-            statement.setInt(1, bill.getSubscriptionId());
-            statement.setFloat(2, bill.getValue());
-            statement.setDate(3, java.sql.Date.valueOf(bill.getDate()));
+        throw new UnsupportedOperationException(rb.getString("bill.update.unsupported.exception"));
+    }
+
+
+    @Override
+    public void delete(final Integer subscriptionId) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_SUBSCRIPTION_ID_QUERY)) {
+            statement.setInt(1, subscriptionId);
 
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new DaoException(rb.getString("bill.update.exception"), e);
+            throw new DaoException(rb.getString("bill.delete.exception"), e);
         }
-    }
-
-    @Override
-    public void delete(final Integer subscriptionId) throws DaoException {
-        throw new UnsupportedOperationException(rb.getString("bill.delete.unsupported.exception"));
     }
 
     @Override

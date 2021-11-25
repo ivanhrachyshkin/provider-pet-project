@@ -15,5 +15,5 @@ public interface TariffService extends Service<Tariff> {
 
     List<Tariff> findTariffsForSubscription(Integer accountId) throws ServiceException, TransactionException;
 
-    List<Tariff> findAndFilterAndSortBySpeedAndPrice(Tariff.Type type) throws ServiceException;
+    List<Tariff> findAndFilterByTypeAndSortBySpeedAndPrice(Tariff.Type type) throws ServiceException;
 }

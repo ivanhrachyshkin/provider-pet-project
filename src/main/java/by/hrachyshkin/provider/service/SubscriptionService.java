@@ -9,10 +9,12 @@ import java.util.List;
 
 public interface SubscriptionService extends Service<Subscription> {
 
-    List<Subscription> findAndFilter( Integer accountId) throws ServiceException, TransactionException;
+    List<Subscription> findAndFilterByAccountId(Integer accountId) throws ServiceException, TransactionException;
+
+    Subscription findOneByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException;
 
     void deleteByAccountAndTariffId(Integer accountId, final Integer tariffId) throws ServiceException, TransactionException;
 
-    void payBill(Integer accountId, Integer subscriptionIdForBill, Float value, LocalDate date) throws ServiceException, TransactionException;
+    void payBillForSubscription(Integer accountId, Integer subscriptionIdForBill, Float value, LocalDate date) throws ServiceException, TransactionException;
 
 }

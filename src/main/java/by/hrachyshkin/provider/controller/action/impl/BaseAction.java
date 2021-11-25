@@ -73,7 +73,7 @@ public abstract class BaseAction implements Action {
         return (String) session.getAttribute("tariffId");
     }
 
-    protected void checkHttpMethod(final HttpServletRequest request) throws ServletException {
+    protected void checkGetHTTPMethod(final HttpServletRequest request) throws ServletException {
 
       if (request.getMethod().equals("GET")){
          throw new ServletException("Unsupported get operation");

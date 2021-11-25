@@ -7,7 +7,6 @@ import by.hrachyshkin.provider.service.ServiceException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class BillsForSubscriptionAction extends BaseAction {
@@ -18,7 +17,7 @@ public class BillsForSubscriptionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
-            checkHttpMethod(request);
+            checkGetHTTPMethod(request);
             setTariffIdAttributeToSession(request, request.getParameter("tariffId"));
 
         } catch (NumberFormatException e) {

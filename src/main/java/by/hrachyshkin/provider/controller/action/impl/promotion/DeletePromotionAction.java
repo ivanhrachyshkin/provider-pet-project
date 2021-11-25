@@ -10,7 +10,6 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class DeletePromotionAction extends BaseAction {
@@ -21,7 +20,7 @@ public class DeletePromotionAction extends BaseAction {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
-            checkHttpMethod(request);
+            checkGetHTTPMethod(request);
 
             final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
 
@@ -30,8 +29,7 @@ public class DeletePromotionAction extends BaseAction {
 
             promotionService.deleteByTariffAndDiscount(Integer.valueOf(tariffId), discountId);
 
-            HttpSession session = request.getSession();
-            session.setAttribute("tariffId", tariffId);
+            setTariffIdAttributeToSession(request, tariffId);
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());

@@ -12,10 +12,10 @@ import by.hrachyshkin.provider.service.BillService;
 import by.hrachyshkin.provider.service.ServiceException;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
@@ -54,22 +54,7 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public List<Bill> findAndFilterBySubscriptionId(final Integer subscriptionId) throws ServiceException, TransactionException {
-
-        try {
-            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
-            final List<Bill> bills = billDao.findAndFilterBySubscriptionId(subscriptionId);
-            transactionImpl.commit();
-            return bills;
-
-        } catch (TransactionException | DaoException e) {
-            transactionImpl.rollback();
-            throw new ServiceException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public List<Bill> findAndFilterAndSort(final Integer subscriptionId) throws ServiceException, TransactionException {
+    public List<Bill> findAndFilterBySubscriptionIdAndSortByDate(final Integer subscriptionId) throws ServiceException, TransactionException {
 
         try {
             final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
@@ -88,6 +73,7 @@ public class BillServiceImpl implements BillService {
         throw new UnsupportedOperationException();
     }
 
+    @Override
     public List<Bill> findBillsForSubscription(final Integer accountId, final Integer tariffId, final Integer offset) throws ServiceException, TransactionException {
 
         try {
@@ -95,17 +81,13 @@ public class BillServiceImpl implements BillService {
             final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
 
             final List<Bill> bills = billDao.find();
-            final List<Bill> subscriptionBills = new ArrayList<>();
-            final List<Subscription> subscriptions = subscriptionDao.findAndFilterByAccountIdAndTariffId(accountId, tariffId, offset);
+            final Subscription subscription = subscriptionDao.findOneByAccountIdAndTariffId(accountId, tariffId);
 
-            for (Subscription subs : subscriptions) {
-                for (Bill bill : bills) {
-                    if (subs.getId().equals(bill.getSubscriptionId())) {
-                        subscriptionBills.add(bill);
-                    }
-                }
+            final List<Bill> subscriptionBills = bills
+                    .stream()
+                    .filter(bill -> bill.getSubscriptionId().equals(subscription.getId()))
+                    .collect(Collectors.toList());
 
-            }
             transactionImpl.commit();
             return subscriptionBills;
 
@@ -122,7 +104,7 @@ public class BillServiceImpl implements BillService {
             final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
 
             if (bill.getValue() == null
-            || bill.getDate() == null) {
+                    || bill.getDate() == null) {
                 throw new ServiceException(rb.getString("bill.add.empty.input.exception"));
             }
 
@@ -151,7 +133,27 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public void delete(final Integer id) throws ServiceException {
-        throw new UnsupportedOperationException(rb.getString("bill.delete.unsupported.exception"));
+    public void delete(final Integer subscriptionId) throws ServiceException, TransactionException {
+
+        try {
+            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
+            final List<Bill> bills = billDao.findAndFilterAndSort(subscriptionId);
+
+            final List<Boolean> billStatuses = bills.stream()
+                    .map(Bill::getStatus)
+                    .collect(Collectors.toList());
+
+            if (billStatuses.contains(false)) {
+                transactionImpl.rollback();
+                throw new ServiceException(rb.getString("bill.delete.unpaid.exception"));
+            }
+
+            billDao.delete(subscriptionId);
+            transactionImpl.commit();
+
+        } catch (DaoException | TransactionException e) {
+            transactionImpl.rollback();
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 }

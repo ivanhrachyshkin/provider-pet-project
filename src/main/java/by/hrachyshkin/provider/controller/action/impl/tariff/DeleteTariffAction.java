@@ -20,7 +20,7 @@ public class DeleteTariffAction extends BaseAction  {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
 
         try {
-            checkHttpMethod(request);
+            checkGetHTTPMethod(request);
 
             final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 

@@ -11,13 +11,13 @@ public interface AccountDao extends Dao<Account> {
 
     boolean isExistByEmail(String email) throws DaoException;
 
-    boolean isExistByEmailAndPassword(final String email, final String password) throws DaoException;
+    boolean isExistByEmailAndPassword( String email,  String password) throws DaoException;
 
-    boolean isExistByNotIdAndEmail(final Integer id, final String email) throws DaoException;
+    boolean isExistByNotIdAndEmail( Integer id,  String email) throws DaoException;
 
     List<Account> findAndSortByName(Integer offset) throws DaoException;
 
-    Account findOneByEmail(final String email) throws DaoException;
+    Account findOneByEmail( String email) throws DaoException;
 
-    void updateBalanceForAccountId(final Integer accountId, final Float sum) throws DaoException;
+    void updateBalanceForAccountId( Integer accountId,  Float sum) throws DaoException;
 }

@@ -30,8 +30,7 @@ public class Controller extends HttpServlet {
 
     @SneakyThrows
     private void processRequest(HttpServletRequest request,
-                                HttpServletResponse response)
-            throws ServletException, IOException {
+                                HttpServletResponse response) {
 
         final String commandName = request.getRequestURI()
                 .substring(request.getContextPath().length());
