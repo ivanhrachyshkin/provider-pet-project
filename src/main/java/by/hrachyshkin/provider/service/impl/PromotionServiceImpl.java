@@ -1,11 +1,6 @@
 package by.hrachyshkin.provider.service.impl;
 
-import by.hrachyshkin.provider.controller.listener.SessionListener;
-import by.hrachyshkin.provider.dao.DaoException;
-import by.hrachyshkin.provider.dao.DaoKeys;
-import by.hrachyshkin.provider.dao.PromotionDao;
-import by.hrachyshkin.provider.dao.Transaction;
-import by.hrachyshkin.provider.dao.TransactionException;
+import by.hrachyshkin.provider.dao.*;
 import by.hrachyshkin.provider.model.Promotion;
 import by.hrachyshkin.provider.service.PromotionService;
 import by.hrachyshkin.provider.service.ServiceException;

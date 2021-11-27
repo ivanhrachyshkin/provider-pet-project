@@ -14,6 +14,6 @@ public class TransactionFactory {
     private static final TransactionFactory INSTANCE = new TransactionFactory();
 
     public Transaction createTransactionImpl(final ResourceBundle rb) throws PoolException {
-        return new TransactionImpl(ConnectionPool.getInstance().getConnection(), rb);
+        return new TransactionImpl(ConnectionPool.getINSTANCE().getConnection(), rb);
     }
 }

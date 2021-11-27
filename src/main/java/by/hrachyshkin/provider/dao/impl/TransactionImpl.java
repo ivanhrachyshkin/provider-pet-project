@@ -4,14 +4,7 @@ import by.hrachyshkin.provider.dao.Dao;
 import by.hrachyshkin.provider.dao.DaoKeys;
 import by.hrachyshkin.provider.dao.Transaction;
 import by.hrachyshkin.provider.dao.TransactionException;
-import by.hrachyshkin.provider.dao.impl.AccountDaoImpl;
-import by.hrachyshkin.provider.dao.impl.BillDaoImpl;
-import by.hrachyshkin.provider.dao.impl.DiscountDaoImpl;
-import by.hrachyshkin.provider.dao.impl.PromotionDaoImpl;
-import by.hrachyshkin.provider.dao.impl.SubscriptionDaoImpl;
-import by.hrachyshkin.provider.dao.impl.TariffDaoImpl;
-import by.hrachyshkin.provider.dao.impl.TrafficDaoImpl;
-import lombok.Getter;
+import by.hrachyshkin.provider.dao.pool.ConnectionPool;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
@@ -46,7 +39,9 @@ public class TransactionImpl implements Transaction {
     public void commit() throws TransactionException {
 
         try {
+            connection.setAutoCommit(false);
             connection.commit();
+            ConnectionPool.getINSTANCE().releaseConnection(connection);
 
         } catch (SQLException e) {
             throw new TransactionException(e.getMessage(), e);
@@ -56,7 +51,9 @@ public class TransactionImpl implements Transaction {
     public void rollback() throws TransactionException {
 
         try {
+            connection.setAutoCommit(false);
             connection.rollback();
+            ConnectionPool.getINSTANCE().releaseConnection(connection);
 
         } catch (SQLException e) {
             throw new TransactionException(e.getMessage(), e);

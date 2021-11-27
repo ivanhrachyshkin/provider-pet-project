@@ -18,7 +18,7 @@ public class CreateSubscriptionAction extends BaseAction{
     public static final String CREATE_SUBSCRIPTION = "/cabinet/subscriptions/create";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
         try {
             checkGetHTTPMethod(request);
@@ -30,14 +30,14 @@ public class CreateSubscriptionAction extends BaseAction{
 
             subscriptionService.add(new Subscription(accountId, tariffId));
 
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet/subscriptions";
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

@@ -18,7 +18,7 @@ public class PayBillForSubscriptionAction extends BaseAction {
     public static final String PAY_BILL_FOR_SUBSCRIPTION = "/cabinet/subscriptions/bills/pay";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
         try {
             checkGetHTTPMethod(request);
@@ -41,7 +41,7 @@ public class PayBillForSubscriptionAction extends BaseAction {
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

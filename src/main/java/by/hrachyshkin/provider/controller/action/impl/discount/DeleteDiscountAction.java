@@ -27,14 +27,14 @@ public class DeleteDiscountAction extends BaseAction {
             final Integer discountId = Integer.valueOf(request.getParameter("discountId"));
             discountService.delete(discountId);
 
-        } catch (ServiceException | NumberFormatException | TransactionException  e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/discounts";
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

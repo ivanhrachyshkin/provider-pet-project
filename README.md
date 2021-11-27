@@ -32,6 +32,7 @@
 - просматривать список пользователей
 - регистрировать / блокировать / разблокировать пользователей  
 
-Используемые технологии: PostgreSQL, JDBC, шаблон DAO, шаблон Factory Method, шаблон Command, Servlet, Bootstrap, JSP, JSTL, TestNG, Log4J2/SLF4J
+#### Используемые технологии: PostgreSQL, JDBC, шаблон DAO, шаблон Factory Method, шаблон Command, шаблон Chain of responsibility,
+шаблон Observer, Servlet API, Bootstrap, JSP, JSTL, TestNG, Log4J2/SLF4J
 
 

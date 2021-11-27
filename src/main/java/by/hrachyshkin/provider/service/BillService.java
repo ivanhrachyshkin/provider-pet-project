@@ -3,7 +3,6 @@ package by.hrachyshkin.provider.service;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Bill;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface BillService extends Service<Bill> {

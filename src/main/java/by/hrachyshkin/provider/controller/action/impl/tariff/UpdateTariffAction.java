@@ -18,7 +18,7 @@ public class UpdateTariffAction extends BaseAction {
     public static final String UPDATE_TARIFF = "/tariffs/update";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
         try {
             checkGetHTTPMethod(request);
@@ -33,14 +33,14 @@ public class UpdateTariffAction extends BaseAction {
 
             tariffService.update(new Tariff(id, name, type, speed, price));
 
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/tariffs";
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

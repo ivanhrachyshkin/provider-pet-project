@@ -19,7 +19,7 @@ public class ShowTrafficsForSubscriptionAction extends BaseAction {
     public static final String SHOW_TRAFFICS_FOR_SUBSCRIPTION = "/cabinet/subscriptions/traffics-for-subscription";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
         try {
             final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
@@ -45,7 +45,7 @@ public class ShowTrafficsForSubscriptionAction extends BaseAction {
             request.setAttribute("subscriptionTraffics", subscriptionTraffics);
 
 
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/traffics-for-subscription.jsp";

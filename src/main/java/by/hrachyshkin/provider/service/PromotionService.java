@@ -9,6 +9,6 @@ public interface PromotionService extends Service<Promotion> {
 
     List<Promotion> findAndFilterByTariffId(final Integer tariffId) throws ServiceException, TransactionException;
 
-    void deleteByTariffAndDiscount(final Integer tariffId, final Integer discountId) throws ServiceException, TransactionException;
+    void deleteByTariffAndDiscount(final Integer tariffId, final Integer discountId) throws ServiceException, TransactionException, TransactionException;
 
 }

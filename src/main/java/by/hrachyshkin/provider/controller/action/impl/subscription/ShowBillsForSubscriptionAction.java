@@ -11,7 +11,6 @@ import by.hrachyshkin.provider.service.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -20,7 +19,7 @@ public class ShowBillsForSubscriptionAction extends BaseAction {
     public static final String SHOW_BILLS_FOR_SUBSCRIPTION = "/cabinet/subscriptions/bills-for-subscription";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
         try {
             final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
@@ -45,7 +44,7 @@ public class ShowBillsForSubscriptionAction extends BaseAction {
             request.setAttribute("account", account);
             request.setAttribute("subscriptionBills", subscriptionBills);
 
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/bills-for-subscription.jsp";

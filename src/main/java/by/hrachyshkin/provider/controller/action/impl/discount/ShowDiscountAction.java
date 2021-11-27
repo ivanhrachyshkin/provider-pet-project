@@ -47,7 +47,7 @@ public class ShowDiscountAction extends BaseAction {
                 path = "all-discounts-for-user.jsp";
             }
 
-        } catch (TransactionException | ServiceException e) {
+        } catch (ServiceException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return path;

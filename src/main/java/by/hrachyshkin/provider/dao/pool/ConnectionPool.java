@@ -1,174 +1,114 @@
 package by.hrachyshkin.provider.dao.pool;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.Getter;
+import lombok.SneakyThrows;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.Lock;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+public class ConnectionPool {
 
-final public class ConnectionPool {
-
-    private final static Logger LOGGER = LoggerFactory.getLogger(ConnectionPool.class);
-
+    @Getter
+    private static final ConnectionPool INSTANCE = new ConnectionPool();
     private String url;
     private String user;
     private String password;
-    private int maxSize;
+    private int poolMaxSize;
     private int checkConnectionTimeout;
 
+    private List<Connection> freeConnections;
+    private List<Connection> usedConnections = new ArrayList<>();
+    private ReentrantLock lock = new ReentrantLock();
 
-    private BlockingQueue<PooledConnection> freeConnections = new LinkedBlockingQueue<>();
-    private Set<PooledConnection> usedConnections = new ConcurrentSkipListSet<>();
-    private final Lock lock = new ReentrantLock();
+    public void init(final String driver,
+                     final String url,
+                     final String user,
+                     final String password,
+                     final int poolStartSize,
+                     final int poolMaxSize,
+                     final int checkConnectionTimeout) throws PoolException {
 
-    private ConnectionPool() {
+        try {
+            Class.forName(driver);
+
+            this.url = url;
+            this.user = user;
+            this.password = password;
+            this.poolMaxSize = poolMaxSize;
+            this.checkConnectionTimeout = checkConnectionTimeout;
+
+            this.freeConnections = Stream
+                    .generate(() -> createConnection(url, user, password))
+                    .limit(poolStartSize)
+                    .collect(Collectors.toList());
+
+        } catch (ClassNotFoundException e) {
+           throw new PoolException(e.getMessage());
+        }
     }
 
     public Connection getConnection() throws PoolException {
 
-        lock.lock();
         try {
-            PooledConnection connection = null;
-            while (connection == null) {
-
-                try {
-                    if (!freeConnections.isEmpty()) {
-                        connection = freeConnections.take();
-                        connection.setAutoCommit(false);
-
-                        if (!connection.isValid(checkConnectionTimeout)) {
-
-                            try {
-                                connection.getConnection().close();
-                            } catch (SQLException e) {
-                                throw new PoolException(e);
-                            }
-                            connection = null;
-                        }
-
-                    } else if (usedConnections.size() < maxSize) {
-                        connection = createConnection();
-                        connection.setAutoCommit(false);
-
-                    } else {
-                        LOGGER.error("The limit of number of database connections is exceeded");
-                        throw new PoolException();
-                    }
-
-                } catch (InterruptedException | SQLException e) {
-                    LOGGER.error("It is impossible to connect to a database", e);
-                    throw new PoolException(e);
+            lock.lock();
+            if (freeConnections.isEmpty()) {
+                if (usedConnections.size() < poolMaxSize) {
+                    freeConnections.add(createConnection(url, user, password));
+                } else {
+                    throw new PoolException("Maximum pool size reached, no available connections!");
                 }
             }
+
+            Connection connection = freeConnections.remove(freeConnections.size() - 1);
+            if (!isValidConnection(connection, checkConnectionTimeout)) {
+                connection = createConnection(url, user, password);
+            }
+
             usedConnections.add(connection);
-            LOGGER.debug(String.format("Connection was received from pool." +
-                            "Current pool size: %d used connections; %d free connection",
-                    usedConnections.size(), freeConnections.size()));
+
             return connection;
+
         } finally {
             lock.unlock();
         }
     }
 
-    void freeConnection(final PooledConnection connection) {
+    public void releaseConnection(final Connection connection) {
 
-        lock.lock();
         try {
-            try {
-                if (connection.isValid(checkConnectionTimeout)) {
-
-                    connection.clearWarnings();
-                    connection.setAutoCommit(true);
-
-                    usedConnections.remove(connection);
-                    freeConnections.put(connection);
-
-                    LOGGER.debug(String.format("Connection was returned into pool." +
-                                    "Current pool size: %d used connections; %d free connection",
-                            usedConnections.size(), freeConnections.size()));
-                }
-            } catch (SQLException | InterruptedException e1) {
-                LOGGER.warn("It is impossible to return database connection into pool", e1);
-                try {
-                    connection.getConnection().close();
-                } catch (SQLException e2) {
-                }
-            }
+            lock.lock();
+            freeConnections.add(connection);
+            usedConnections.remove(connection);
         } finally {
             lock.unlock();
         }
-    }
-
-    public void init(final String driverClass,
-                     final String url,
-                     final String user,
-                     final String password,
-                     final int startSize,
-                     final int maxSize,
-                     final int checkConnectionTimeout) throws PoolException {
-
-        lock.lock();
-        try {
-            try {
-                destroy();
-                Class.forName(driverClass);
-                this.url = url;
-                this.user = user;
-                this.password = password;
-                this.maxSize = maxSize;
-                this.checkConnectionTimeout = checkConnectionTimeout;
-                for (int counter = 0; counter < startSize; counter++) {
-                    freeConnections.put(createConnection());
-                }
-            } catch (ClassNotFoundException | SQLException | InterruptedException e) {
-                LOGGER.error("It is impossible to initialize connection pool", e);
-                throw new PoolException(e);
-            }
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    private static ConnectionPool instance = new ConnectionPool();
-
-    public static ConnectionPool getInstance() {
-        return instance;
-    }
-
-    private PooledConnection createConnection() throws SQLException {
-        return new PooledConnection(DriverManager.getConnection(url, user, password));
     }
 
     public void destroy() {
-
-        lock.lock();
-        try {
-
-            usedConnections.addAll(freeConnections);
-            freeConnections.clear();
-
-            for (PooledConnection connection : usedConnections) {
-                try {
-                    connection.getConnection().close();
-                } catch (SQLException e) {
-                }
-            }
-            usedConnections.clear();
-        }finally {
-            lock.unlock();
-        }
+        usedConnections.forEach(this::releaseConnection);
+        freeConnections.forEach(ConnectionPool::closeConnection);
+        freeConnections.clear();
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        destroy();
+    @SneakyThrows
+    private static Connection createConnection(final String url,
+                                               final String user,
+                                               final String password) {
+        return DriverManager.getConnection(url, user, password);
+    }
+
+    @SneakyThrows
+    private static void closeConnection(final Connection connection) {
+        connection.close();
+    }
+
+    @SneakyThrows
+    private static boolean isValidConnection(final Connection connection, final int checkConnectionTimeout) {
+        return connection.isValid(checkConnectionTimeout);
     }
 }

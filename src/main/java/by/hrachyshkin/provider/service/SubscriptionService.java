@@ -1,7 +1,6 @@
 package by.hrachyshkin.provider.service;
 
 import by.hrachyshkin.provider.dao.TransactionException;
-import by.hrachyshkin.provider.model.Bill;
 import by.hrachyshkin.provider.model.Subscription;
 
 import java.time.LocalDate;

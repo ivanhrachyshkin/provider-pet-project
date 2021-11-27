@@ -26,8 +26,8 @@ public class AccountServiceImpl implements AccountService {
             LOGGER.debug("method isExistByEmailAndPassword starts ");
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
             final boolean value = accountDao.isExistByEmailAndPassword(email, password);
-            LOGGER.debug("method isExistByEmailAndPassword finish ");
             transactionImpl.commit();
+            LOGGER.debug("method isExistByEmailAndPassword finish ");
             return value;
 
         } catch (TransactionException | DaoException e) {
@@ -44,8 +44,8 @@ public class AccountServiceImpl implements AccountService {
             LOGGER.debug("method find starts ");
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
             final List<Account> accounts = accountDao.find();
-            LOGGER.debug("method find finish ");
             transactionImpl.commit();
+            LOGGER.debug("method find finish ");
             return accounts;
 
         } catch (DaoException | TransactionException e) {
@@ -62,13 +62,13 @@ public class AccountServiceImpl implements AccountService {
             LOGGER.debug("method findAndSortByName starts ");
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
             final List<Account> accounts = accountDao.findAndSortByName(offset);
-            LOGGER.debug("method findAndSortByName finish ");
             transactionImpl.commit();
+            LOGGER.debug("method findAndSortByName finish ");
             return accounts;
 
         } catch (DaoException | TransactionException e) {
-            LOGGER.error(e.getMessage());
             transactionImpl.rollback();
+            LOGGER.error(e.getMessage());
             throw new ServiceException(e.getMessage(), e);
         }
     }
@@ -81,13 +81,13 @@ public class AccountServiceImpl implements AccountService {
             final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
 
             if (!accountDao.isExistById(id)) {
-                LOGGER.error(rb.getString("account.find.by.id.exist.exception"));
                 transactionImpl.rollback();
+                LOGGER.error(rb.getString("account.find.by.id.exist.exception"));
                 throw new ServiceException(rb.getString("account.find.by.id.exist.exception"));
             }
 
-            LOGGER.debug("method findOneById finish");
             transactionImpl.commit();
+            LOGGER.debug("method findOneById finish");
             return accountDao.findOneById(id);
 
         } catch (TransactionException | DaoException e) {

@@ -20,8 +20,9 @@ public class ShowTariffsAction extends BaseAction {
     public static final String TARIFFS = "/tariffs";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
+        try {
         final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
         final int offset = getOffset(request);
@@ -29,13 +30,13 @@ public class ShowTariffsAction extends BaseAction {
 
         List<Tariff> tariffs;
         if (rawType == null || rawType.isEmpty() || rawType.equals("all")) {
-            tariffs = tariffService.findAndSortBySpeedAndPrice(offset);
+
+                tariffs = tariffService.findAndSortBySpeedAndPrice(offset);
 
             setTotalPagesAttribute(request, tariffService.find());
 
         } else {
-            final
-            Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
+            final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
             tariffs = tariffService.findAndFilterByType(type, offset);
 
             setTotalPagesAttribute(request, tariffService.findAndFilterByTypeAndSortBySpeedAndPrice(type));
@@ -44,6 +45,10 @@ public class ShowTariffsAction extends BaseAction {
         setPage(request);
         request.setAttribute("tariffs", tariffs);
         request.setAttribute("filter", rawType);
+
+        } catch (TransactionException e) {
+            setErrorAttributeToSession(request, e.getMessage());
+        }
 
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
             return "/all-tariffs-for-admin.jsp";

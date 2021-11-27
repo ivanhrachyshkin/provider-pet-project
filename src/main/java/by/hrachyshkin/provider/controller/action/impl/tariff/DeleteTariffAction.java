@@ -12,12 +12,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class DeleteTariffAction extends BaseAction  {
+public class DeleteTariffAction extends BaseAction {
 
     public static final String DELETE_TARIFF = "/tariffs/delete";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
         try {
             checkGetHTTPMethod(request);
@@ -27,14 +27,14 @@ public class DeleteTariffAction extends BaseAction  {
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
             tariffService.delete(tariffId);
 
-        } catch (ServiceException | NumberFormatException e) {
-            setErrorAttributeToSession(request,e.getMessage());
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
+            setErrorAttributeToSession(request, e.getMessage());
         }
         return "/tariffs";
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

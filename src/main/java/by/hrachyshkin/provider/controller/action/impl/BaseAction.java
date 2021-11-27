@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class BaseAction implements Action {
 
 
-    public void postExecute(final HttpServletRequest request, final HttpServletResponse response, final String path) throws ServletException, IOException, ServiceException, TransactionException {
+    public void postExecute(final HttpServletRequest request, final HttpServletResponse response, final String path) throws ServletException, IOException, ServiceException {
 
         request.getRequestDispatcher(path).forward(request, response);
     }

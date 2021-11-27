@@ -15,14 +15,12 @@ public class DeleteSubscriptionAction extends BaseAction {
     public static final String DELETE_SUBSCRIPTION = "/cabinet/subscriptions/delete";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
         try {
             checkGetHTTPMethod(request);
 
             final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
-            final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
-            final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
 
             final Integer accountId = getAccountId(request);
             final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
@@ -30,14 +28,14 @@ public class DeleteSubscriptionAction extends BaseAction {
 
             subscriptionService.delete(subscription);
 
-        } catch (ServiceException | NumberFormatException e) {
+        } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/cabinet/subscriptions";
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

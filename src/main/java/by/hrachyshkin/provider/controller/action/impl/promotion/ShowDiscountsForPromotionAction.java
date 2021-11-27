@@ -10,7 +10,6 @@ import by.hrachyshkin.provider.service.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -19,21 +18,29 @@ public class ShowDiscountsForPromotionAction extends BaseAction {
     public static final String SHOW_DISCOUNTS_FOR_PROMOTION = "/tariffs/discounts-for-promotion";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
-        final String tariffId = getTariffIdAttributeSession(request);
+        try {
+            final String tariffId = getTariffIdAttributeSession(request);
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
-        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+            final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
-        final Tariff tariff = tariffService.findOneById(Integer.valueOf(tariffId));
+            final Tariff tariff;
 
-        final List<Discount> tariffDiscounts = discountService.findDiscountsForPromotion(Integer.valueOf(tariffId));
-        final List<Discount> discounts = discountService.find();
+            tariff = tariffService.findOneById(Integer.valueOf(tariffId));
 
-        request.setAttribute("tariff", tariff);
-        request.setAttribute("tariffDiscounts", tariffDiscounts);
-        request.setAttribute("discounts", discounts);
+
+            final List<Discount> tariffDiscounts = discountService.findDiscountsForPromotion(Integer.valueOf(tariffId));
+            final List<Discount> discounts = discountService.find();
+
+            request.setAttribute("tariff", tariff);
+            request.setAttribute("tariffDiscounts", tariffDiscounts);
+            request.setAttribute("discounts", discounts);
+
+        } catch (TransactionException e) {
+            setErrorAttributeToSession(request, e.getMessage());
+        }
 
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
             return "/discounts-for-tariff-admin.jsp";

@@ -1,6 +1,5 @@
 package by.hrachyshkin.provider.controller.listener;
 
-import by.hrachyshkin.provider.dao.pool.ConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

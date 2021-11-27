@@ -4,9 +4,9 @@ import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Tariff;
 import by.hrachyshkin.provider.service.ServiceException;
-import by.hrachyshkin.provider.service.TariffService;
 import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
+import by.hrachyshkin.provider.service.TariffService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ public class CreateTariffAction extends BaseAction {
     public static final String CREATE_TARIFF = "/tariffs/create";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException, TransactionException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
 
         try {
             checkGetHTTPMethod(request);
@@ -32,14 +32,14 @@ public class CreateTariffAction extends BaseAction {
 
             tariffService.add(new Tariff(name, Tariff.Type.valueOf(type.toUpperCase()), Integer.valueOf(speed), Float.valueOf(price)));
 
-        } catch (ServiceException | NumberFormatException | NullPointerException e) {
+        } catch (ServiceException | NumberFormatException | NullPointerException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/tariffs";
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException, TransactionException {
+    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

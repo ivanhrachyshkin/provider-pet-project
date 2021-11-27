@@ -1,7 +1,6 @@
 package by.hrachyshkin.provider.service;
 
 import by.hrachyshkin.provider.dao.Transaction;
-import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.dao.TransactionFactory;
 import by.hrachyshkin.provider.service.impl.*;
 import lombok.Getter;
@@ -20,7 +19,7 @@ public class ServiceFactory {
     private final TransactionFactory factory = TransactionFactory.getINSTANCE();
 
     @SuppressWarnings("unchecked")
-    public <T extends Service> T getService(final ServiceKeys serviceKeys) throws TransactionException {
+    public <T extends Service> T getService(final ServiceKeys serviceKeys) throws ServiceException {
 
         try {
             final Transaction transactionImpl = factory.createTransactionImpl(rb);
@@ -36,7 +35,7 @@ public class ServiceFactory {
             };
 
         } catch (Exception e) {
-            throw new TransactionException(e.getMessage(), e);
+            throw new ServiceException(e.getMessage(), e);
         }
     }
 }

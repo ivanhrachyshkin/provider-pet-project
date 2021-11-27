@@ -1,27 +1,23 @@
 package by.hrachyshkin.provider.dao;
 
-public class TransactionException extends Exception {
+public class TransactionException extends Exception{
 
     public TransactionException() {
     }
 
-    public TransactionException(final String message) {
+    public TransactionException(String message) {
         super(message);
     }
 
-    public TransactionException(final String message,
-                                final Throwable cause) {
+    public TransactionException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public TransactionException(final Throwable cause) {
+    public TransactionException(Throwable cause) {
         super(cause);
     }
 
-    public TransactionException(final String message,
-                                final Throwable cause,
-                                final boolean enableSuppression,
-                                final boolean writableStackTrace) {
+    public TransactionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
