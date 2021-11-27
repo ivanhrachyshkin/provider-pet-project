@@ -162,8 +162,6 @@ VALUES (1, 111, '2021-4-01'),
 INSERT
 INTO bills (subscription_id, value, date, status)
 VALUES (1, 4, '2021-11-01', false),
-       (1, 5, '2021-4-02', false),
-       (1, 7, '2021-12-03', false),
        (2, 2, '2021-4-01', false),
        (2, 4, '2021-2-02', false),
        (2, 3, '2021-12-03', false),

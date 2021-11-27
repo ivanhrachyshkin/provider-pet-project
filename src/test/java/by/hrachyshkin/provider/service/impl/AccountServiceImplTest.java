@@ -76,7 +76,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldReturnAccount_On_FindOneById_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_FindOneById_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.findOneById(1000);
@@ -94,17 +94,6 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void ShouldReturnAccounts_On_Find_Neg() throws ServiceException, TransactionException {
-
-        final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-        final List<Account> accounts = new ArrayList<>();
-        accounts.add(jackWhite);
-        accounts.add(charlesPalahniuk);
-        accounts.add(edgarPoe);
-        Assert.assertFalse(accountService.find().equals(accounts));
-    }
-
-    @Test
     public void ShouldReturnAccount_On_FindAndSortByName_Pos() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
@@ -116,17 +105,6 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void ShouldReturnAccount_On_FindAndSortByName_Neg() throws ServiceException, TransactionException {
-
-        final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-        final List<Account> accounts = new ArrayList<>();
-        accounts.add(charlesPalahniuk);
-        accounts.add(jackWhite);
-        accounts.add(edgarPoe);
-        Assert.assertFalse(accountService.findAndSortByName(0).equals(accounts));
-    }
-
-    @Test
     public void ShouldReturnAccount_On_FindOneByEmail_Pos() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
@@ -134,7 +112,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldReturnAccount_On_FindOneByEmail_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_FindOneByEmail_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.findOneByEmail("a@outlasdook.com");
@@ -151,7 +129,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddAccount_On_Add_EmptyEmail_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Add_EmptyEmail_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         Account testAccount = (new Account(
@@ -166,7 +144,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddAccount_On_Add_EmptyPassword_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Add_EmptyPassword_Exception() throws ServiceException, TransactionException {
 
         AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         Account testAccount = (new Account(
@@ -181,7 +159,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddAccount_On_Add_InvalidPassword_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Add_InvalidPassword_Exception() throws ServiceException, TransactionException {
 
         AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         Account testAccount = (new Account(
@@ -196,7 +174,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddAccount_On_Add_NullRole_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Add_NullRole_Exception() throws ServiceException, TransactionException {
 
         AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         Account testAccount = (new Account(
@@ -211,7 +189,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddAccount_On_Add_NullName_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Add_NullName_Exception() throws ServiceException, TransactionException {
 
         AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         Account testAccount = (new Account(
@@ -226,7 +204,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddAccount_On_Add_EmptyName_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Add_EmptyName_Exception() throws ServiceException, TransactionException {
 
         AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         Account testAccount = (new Account(
@@ -241,7 +219,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddAccount_On_Add_EmptyPhone_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Add_EmptyPhone_Exception() throws ServiceException, TransactionException {
 
         AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         Account testAccount = (new Account(
@@ -256,10 +234,10 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddAccount_On_Add_EmptyAddress_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Add_EmptyAddress_Exception() throws ServiceException, TransactionException {
 
-        AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-        Account testAccount = (new Account(
+     final    AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+       final Account testAccount = (new Account(
                 "added@outlook.com",
                 "9372273Aaa",
                 Account.Role.USER,
@@ -291,7 +269,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateAccount_On_Update_IdNull_exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Update_IdNull_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         final Account testAccount = new Account(null,
@@ -306,7 +284,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateAccount_On_Update_EmptyEmail_exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Update_EmptyEmail_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         final Account testAccount = new Account(
@@ -322,7 +300,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateAccount_On_Update_NullRole_exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Update_NullRole_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         final Account testAccount = new Account(
@@ -338,7 +316,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateAccount_On_Update_EmptyName_exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Update_EmptyName_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         final Account testAccount = new Account(
@@ -354,7 +332,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateAccount_On_Update_EmptyPhone_exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Update_EmptyPhone_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         final Account testAccount = new Account(
@@ -370,7 +348,7 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateAccount_On_Update_EmptyAddress_exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Update_EmptyAddress_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         final Account testAccount = new Account(
@@ -395,56 +373,56 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldDeleteAccount_On_Delete_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Delete_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.delete(1000);
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldDeposit_On_Deposit_EmptyCard_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Deposit_EmptyCard_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.deposit(1, "", 10.0f, LocalDate.of(2040, 10,10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldDeposit_On_Deposit_InvalidCard_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Deposit_InvalidCard_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.deposit(1, "11111111", 10.0f, LocalDate.of(2040, 10,10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldDeposit_On_Deposit_NullDeposit_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Deposit_NullDeposit_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.deposit(1, "4496550182593597", null, LocalDate.of(2040, 10,10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldDeposit_On_Deposit_NegativeDeposit_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Deposit_NegativeDeposit_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.deposit(1, "4496550182593597", -10.0f, LocalDate.of(2040, 10,10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldDeposit_On_Deposit_NullValidity_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Deposit_NullValidity_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.deposit(1, "4496550182593597", 10.0f, null);
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldDeposit_On_Deposit_ValidityIsBefore_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Deposit_ValidityIsBefore_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.deposit(1, "4496550182593597", 10.0f, LocalDate.of(2010, 10,10));
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldDeposit_On_Deposit_AccountExist_Exception() throws ServiceException, TransactionException {
+    public void ShouldThrowException_On_Deposit_AccountExist_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
         accountService.deposit(10000, "4496550182593597", 10.0f, LocalDate.of(2040, 10,10));
