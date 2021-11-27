@@ -260,8 +260,26 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void delete(final Integer id) throws ServiceException {
-        LOGGER.debug(rb.getString("account.deposit.negative.deposit.exception"));
-        throw new UnsupportedOperationException(rb.getString("account.deposit.negative.deposit.exception"));
+    public void delete(final Integer id) throws ServiceException, TransactionException {
+
+        try {
+            LOGGER.debug("method delete starts ");
+            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+
+            if (!accountDao.isExistById(id)) {
+                LOGGER.error(rb.getString("account.delete.exist.exception"));
+                transactionImpl.rollback();
+                throw new ServiceException(rb.getString("account.delete.exist.exception"));
+            }
+
+            accountDao.delete(id);
+            LOGGER.debug("method delete finish ");
+            transactionImpl.commit();
+
+        } catch (TransactionException | DaoException e) {
+            LOGGER.error(e.getMessage());
+            transactionImpl.rollback();
+            throw new ServiceException(e.getMessage(), e);
+        }
     }
 }

@@ -45,22 +45,22 @@ public class AccountDaoImpl implements AccountDao {
                     ")";
 
     private static final String FIND_QUERY =
-            "SELECT id, email, password, role, name, phone, address, balance " +
+            "SELECT id, email, role, name, phone, address, balance " +
                     "FROM accounts ";
 
     private static final String FIND_AND_SORT_BY_NAME_QUERY =
-            "SELECT id, email, password, role, name, phone, address, balance " +
+            "SELECT id, email, role, name, phone, address, balance " +
                     "FROM accounts " +
                     "ORDER BY name ASC " +
                     "LIMIT 5 OFFSET ?";
 
     private static final String FIND_ONE_ACCOUNT_BY_ID_QUERY =
-            "SELECT id, email, password, role, name, phone, address, balance " +
+            "SELECT id, email, role, name, phone, address, balance " +
                     "FROM accounts " +
                     "WHERE id = ?";
 
     private static final String FIND_ONE_ACCOUNT_BY_EMAIL_QUERY =
-            "SELECT id, email, password, role, name, phone, address, balance " +
+            "SELECT id, email, role, name, phone, address, balance " +
                     "FROM accounts " +
                     "WHERE email = ?";
 
@@ -79,6 +79,11 @@ public class AccountDaoImpl implements AccountDao {
                     "SET balance = ? " +
                     "WHERE id = ?";
 
+    private static final String DELETE_BY_ID_QUERY =
+            "DELETE " +
+                    "FROM accounts " +
+                    "WHERE id = ?";
+
     private final Connection connection;
     private final ResourceBundle rb;
 
@@ -86,7 +91,6 @@ public class AccountDaoImpl implements AccountDao {
         this.connection = connection;
         this.rb = rb;
     }
-
 
     @Override
     public boolean isExistById(final Integer id) throws DaoException {
@@ -264,11 +268,6 @@ public class AccountDaoImpl implements AccountDao {
     }
 
     @Override
-    public void delete(final Integer id) throws DaoException {
-        throw new UnsupportedOperationException(rb.getString("account.delete.unsupported.exception"));
-    }
-
-    @Override
     public void updateBalanceForAccountId(final Integer accountId, final Float sum) throws DaoException {
         try (final PreparedStatement statement = connection.prepareStatement(UPDATE_BALANCE_FOR_ACCOUNT_ID_QUERY)) {
 
@@ -281,6 +280,18 @@ public class AccountDaoImpl implements AccountDao {
         }
     }
 
+    @Override
+    public void delete(final Integer id) throws DaoException {
+
+        try (final PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID_QUERY)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DaoException(rb.getString("account.delete.exception"), e);
+        }
+    }
+
     private String encrypt(final String password) {
         return DigestUtils.md5Hex(password);
     }
@@ -290,11 +301,10 @@ public class AccountDaoImpl implements AccountDao {
         return new Account(
                 resultSet.getInt(1),
                 resultSet.getString(2),
-                resultSet.getString(3),
-                Account.Role.values()[resultSet.getInt(4)],
+                Account.Role.values()[resultSet.getInt(3)],
+                resultSet.getString(4),
                 resultSet.getString(5),
                 resultSet.getString(6),
-                resultSet.getString(7),
-                resultSet.getFloat(8));
+                resultSet.getFloat(7));
     }
 }
