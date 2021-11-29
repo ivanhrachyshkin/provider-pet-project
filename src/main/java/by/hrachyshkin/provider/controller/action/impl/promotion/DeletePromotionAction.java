@@ -21,7 +21,6 @@ public class DeletePromotionAction extends BaseAction {
 
         try {
             checkGetHTTPMethod(request);
-
             final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
 
             final String tariffId = request.getParameter("tariffId");
@@ -34,7 +33,7 @@ public class DeletePromotionAction extends BaseAction {
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/tariffs/discounts";
+        return ShowDiscountsForPromotionAction.SHOW_DISCOUNTS_FOR_PROMOTION;
     }
 
     @Override

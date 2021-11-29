@@ -173,7 +173,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
             final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
 
-            if (!billDao.isExistsOpenBills(subscription.getId())) {
+            if (billDao.isExistsOpenBills(subscription.getId())) {
                 LOGGER.error(rb.getString("bill.delete.open.exception"));
                 transactionImpl.rollback();
                 throw new ServiceException(rb.getString("bill.delete.open.exception"));

@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.controller.action.impl.account;
 
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
+import by.hrachyshkin.provider.controller.action.impl.WelcomeAction;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ public class LogoutAction extends BaseAction {
         final HttpSession session = request.getSession(false);
         session.invalidate();
 
-        return "/";
+        return WelcomeAction.WELCOME;
     }
 }
 

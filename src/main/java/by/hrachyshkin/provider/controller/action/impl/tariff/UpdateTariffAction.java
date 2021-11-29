@@ -36,7 +36,7 @@ public class UpdateTariffAction extends BaseAction {
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/tariffs";
+        return ShowTariffsAction.TARIFFS;
     }
 
     @Override

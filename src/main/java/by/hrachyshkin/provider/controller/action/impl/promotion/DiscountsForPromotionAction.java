@@ -18,7 +18,7 @@ public class DiscountsForPromotionAction extends BaseAction {
         checkGetHTTPMethod(request);
         setTariffIdAttributeToSession(request, request.getParameter("tariffId"));
 
-        return "/tariffs/discounts-for-promotion";
+        return ShowDiscountsForPromotionAction.SHOW_DISCOUNTS_FOR_PROMOTION;
     }
 
     @Override

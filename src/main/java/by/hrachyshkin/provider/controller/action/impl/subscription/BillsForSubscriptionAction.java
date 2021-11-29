@@ -18,7 +18,7 @@ public class BillsForSubscriptionAction extends BaseAction {
         checkGetHTTPMethod(request);
         setTariffIdAttributeToSession(request, request.getParameter("tariffId"));
 
-        return "/cabinet/subscriptions/bills-for-subscription";
+        return ShowBillsForSubscriptionAction.SHOW_BILLS_FOR_SUBSCRIPTION;
     }
 
     @Override

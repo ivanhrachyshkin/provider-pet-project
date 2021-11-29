@@ -22,7 +22,6 @@ public class CreateAccountAction extends BaseAction {
 
         try {
             checkGetHTTPMethod(request);
-
             final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
 
             final String email = request.getParameter("email");
@@ -37,7 +36,7 @@ public class CreateAccountAction extends BaseAction {
         } catch (ServiceException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/cabinet/accounts";
+        return ShowAccountsAction.ACCOUNTS;
     }
 
     @Override

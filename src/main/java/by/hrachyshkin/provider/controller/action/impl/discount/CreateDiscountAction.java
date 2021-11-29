@@ -23,7 +23,6 @@ public class CreateDiscountAction extends BaseAction {
 
         try {
             checkGetHTTPMethod(request);
-
             final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
 
             final String name = request.getParameter("name");
@@ -37,7 +36,7 @@ public class CreateDiscountAction extends BaseAction {
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/discounts";
+        return ShowDiscountAction.DISCOUNTS;
     }
 
     @Override

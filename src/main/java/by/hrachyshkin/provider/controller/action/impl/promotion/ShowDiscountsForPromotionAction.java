@@ -27,9 +27,7 @@ public class ShowDiscountsForPromotionAction extends BaseAction {
             final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
 
             final Tariff tariff;
-
             tariff = tariffService.findOneById(Integer.valueOf(tariffId));
-
 
             final List<Discount> tariffDiscounts = discountService.findDiscountsForPromotion(Integer.valueOf(tariffId));
             final List<Discount> discounts = discountService.find();

@@ -22,7 +22,6 @@ public class PayBillForSubscriptionAction extends BaseAction {
 
         try {
             checkGetHTTPMethod(request);
-
             final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
 
             final Integer accountId = getAccountId(request);
@@ -37,7 +36,7 @@ public class PayBillForSubscriptionAction extends BaseAction {
         }
         request.setAttribute("tariffId", request.getParameter("tariffId"));
 
-        return "/cabinet/subscriptions/bills-for-subscription";
+        return ShowBillsForSubscriptionAction.SHOW_BILLS_FOR_SUBSCRIPTION;
     }
 
     @Override

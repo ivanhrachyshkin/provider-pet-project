@@ -45,7 +45,7 @@
         </tr>
         <c:forEach var="account" items="${accounts}">
             <tr>
-                <form action="${url}/cabinet/accounts/update" method="POST">
+                <form action="${url}/cabinet/accounts/update-list" method="POST">
                     <td><input name="email" type="text" value="${account.email}"
                                placeholder="${account.email}"/></td>
                     <td><select name="role">

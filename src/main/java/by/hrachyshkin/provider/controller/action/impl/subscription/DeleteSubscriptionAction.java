@@ -19,7 +19,6 @@ public class DeleteSubscriptionAction extends BaseAction {
 
         try {
             checkGetHTTPMethod(request);
-
             final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
 
             final Integer accountId = getAccountId(request);
@@ -31,7 +30,7 @@ public class DeleteSubscriptionAction extends BaseAction {
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/cabinet/subscriptions";
+        return ShowSubscriptionsForAccountAction.SUBSCRIPTIONS;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.controller.action.impl.account;
 
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
+import by.hrachyshkin.provider.controller.action.impl.WelcomeAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.service.AccountService;
@@ -27,7 +28,7 @@ public class CabinetAction extends BaseAction {
 
             if (getRole(request).equals(Account.Role.BLOCKED)) {
                 request.setAttribute("error", "Account is blocked");
-                page = "/";
+                page = WelcomeAction.WELCOME;
             }
 
             if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
@@ -42,7 +43,7 @@ public class CabinetAction extends BaseAction {
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
-            page = "/";
+            page = WelcomeAction.WELCOME;
         }
         return page;
     }

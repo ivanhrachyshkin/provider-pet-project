@@ -31,7 +31,8 @@ public class ActionFactory {
             put(LogoutAction.LOGOUT, new LogoutAction());
             put(ShowAccountsAction.ACCOUNTS, new ShowAccountsAction());
             put(ShowSubscriptionsForAccountAction.SUBSCRIPTIONS, new ShowSubscriptionsForAccountAction());
-            put(UpdateAccountAction.UPDATE_ACCOUNT, new UpdateAccountAction());
+            put(UpdateAccountAction.UPDATE_ACCOUNT_LIST, new UpdateAccountAction());
+            put(UpdateAccountAction.UPDATE_ACCOUNT_CABINET, new UpdateAccountAction());
             put(MainPageAction.MAIN, new MainPageAction());
 
             put(ShowDiscountAction.DISCOUNTS, new ShowDiscountAction());

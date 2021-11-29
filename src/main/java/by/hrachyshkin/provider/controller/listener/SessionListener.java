@@ -17,7 +17,6 @@ public class SessionListener implements HttpSessionAttributeListener {
                 + " : " + ev.getValue());
     }
 
-    //TODO refactor sout to logs
     public void attributeAdded(HttpSessionBindingEvent ev) {
 
         LOGGER.info("add: " + ev.getClass().getSimpleName() + " : " + ev.getName()

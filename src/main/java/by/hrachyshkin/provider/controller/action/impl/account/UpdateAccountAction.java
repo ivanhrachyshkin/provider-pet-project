@@ -15,7 +15,8 @@ import java.io.IOException;
 
 public class UpdateAccountAction extends BaseAction {
 
-    public static final String UPDATE_ACCOUNT = "/cabinet/accounts/update";
+    public static final String UPDATE_ACCOUNT_CABINET = "/cabinet/accounts/update-cabinet";
+    public static final String UPDATE_ACCOUNT_LIST = "/cabinet/accounts/update-list";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
@@ -39,7 +40,12 @@ public class UpdateAccountAction extends BaseAction {
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/cabinet";
+
+        if (request.getServletPath().equals(UPDATE_ACCOUNT_CABINET)) {
+            return CabinetAction.CABINET;
+        } else {
+            return ShowAccountsAction.ACCOUNTS;
+        }
     }
 
     @Override

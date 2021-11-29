@@ -38,7 +38,7 @@ public class LoginAction extends BaseAction {
                 session.setAttribute("accountId", account.getId());
                 session.setAttribute("accountRole", account.getRole());
 
-                path = "/cabinet";
+                path = CabinetAction.CABINET;
 
             } else {
                 setErrorAttributeToSession(request, "Check Email and Password");

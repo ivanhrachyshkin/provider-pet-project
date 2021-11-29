@@ -98,8 +98,6 @@ public class BillDaoImpl implements BillDao {
 
             try (final ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                System.out.println(resultSet.getBoolean(1));
-
                 return resultSet.getBoolean(1);
             }
 

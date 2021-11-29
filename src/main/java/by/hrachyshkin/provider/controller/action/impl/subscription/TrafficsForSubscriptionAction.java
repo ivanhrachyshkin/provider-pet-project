@@ -18,7 +18,7 @@ public class TrafficsForSubscriptionAction extends BaseAction {
         checkGetHTTPMethod(request);
         setTariffIdAttributeToSession(request, request.getParameter("tariffId"));
 
-        return "/cabinet/subscriptions/traffics-for-subscription";
+        return ShowTrafficsForSubscriptionAction.SHOW_TRAFFICS_FOR_SUBSCRIPTION;
     }
 
     @Override

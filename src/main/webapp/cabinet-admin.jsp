@@ -30,7 +30,7 @@
             <th><fmt:message key="balanceLabel"/></th>
         </tr>
         <tr>
-            <form action="${url}/cabinet/accounts/update" method="POST">
+            <form action="${url}/cabinet/accounts/update-cabinet" method="POST">
                 <td><input name="email" type="email" value="${account.email}" placeholder="${account.email}"/></td>
                 <td>${account.role.name()}</td>
                 <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/></td>
