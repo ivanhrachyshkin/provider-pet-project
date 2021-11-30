@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.controller.action.impl.account;
 
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
+import by.hrachyshkin.provider.controller.action.impl.WelcomeAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.service.AccountService;
@@ -42,12 +43,12 @@ public class LoginAction extends BaseAction {
 
             } else {
                 setErrorAttributeToSession(request, "Check Email and Password");
-                path = "/";
+                path = WelcomeAction.WELCOME;
             }
 
         } catch (ServiceException | NumberFormatException | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
-            path = "/";
+            path = WelcomeAction.WELCOME;
         }
         return path;
     }
