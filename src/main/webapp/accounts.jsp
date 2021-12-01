@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ex" uri="/WEB-INF/custom.tld" %>
 
 <%@ page import="by.hrachyshkin.provider.model.Account" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
@@ -12,7 +13,7 @@
 
 <html>
 <head>
-    <jsp:include page="head.jsp"/>
+    <ex:Head/>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
@@ -86,7 +87,8 @@
                     </c:forEach>
                 </select>
                 <input name="name" type="text" placeholder="<fmt:message key="nameLabel"/>"/>
-                <input name="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}" placeholder="<fmt:message key="telephoneLabel"/>"/>
+                <input name="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}"
+                       placeholder="<fmt:message key="telephoneLabel"/>"/>
                 <input name="address" type="text" placeholder="<fmt:message key="addressLabel"/>"/>
                 <button type="submit" class="btn btn-info btn-sm"><fmt:message key="createLabel"/></button>
                 <input name="page" type="hidden" value="${requestScope.page}">

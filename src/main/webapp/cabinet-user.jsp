@@ -1,18 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ex" uri="/WEB-INF/custom.tld" %>
 
-<%@ page import="by.hrachyshkin.provider.model.Account" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
-
 <c:set var="url">${pageContext.request.contextPath}</c:set>
 
 <html>
 <head>
-    <jsp:include page="head.jsp"/>
+        <ex:Head/>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
@@ -34,7 +33,7 @@
                 <td><input name="email" type="email" value="${account.email}" placeholder="${account.email}"/></td>
                 <td>${account.role.name()}</td>
                 <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/></td>
-                <td><input name="phone" type="tel" value="${account.phone}" placeholder="${account.phone}"/></td>
+                <td><input name="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{2} value="${account.phone}" placeholder="${account.phone}"/></td>
                 <td><input name="address" type="text" value="${account.address}" placeholder="${account.address}"/>
                 </td>
                 <td>${account.balance}</td>

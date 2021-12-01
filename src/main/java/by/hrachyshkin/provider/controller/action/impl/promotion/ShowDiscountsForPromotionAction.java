@@ -41,9 +41,9 @@ public class ShowDiscountsForPromotionAction extends BaseAction {
         }
 
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
-            return "/discounts-for-tariff-admin.jsp";
+            return "/disounts-for-promotion-admin.jsp";
         } else {
-            return "/discounts-for-tariff-user.jsp";
+            return "/discounts-for-promotion-user.jsp";
         }
     }
 }

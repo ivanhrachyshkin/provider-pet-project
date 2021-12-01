@@ -1,23 +1,24 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ex" uri="/WEB-INF/custom.tld" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
-
 <c:set var="url">${pageContext.request.contextPath}</c:set>
 
 <html>
 <head>
-    <jsp:include page="head.jsp"/>
+    <ex:Head/>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
 
 <div class="container">
-    <h2 class="text-center"><fmt:message key="trafficForSubscriptionLabel"/> "${account.email}" <fmt:message key="subscriptionLabel"/> "${tariff.name}"</h2>
+    <h2 class="text-center"><fmt:message key="trafficForSubscriptionLabel"/> "${account.email}" <fmt:message
+            key="subscriptionLabel"/> "${tariff.name}"</h2>
     <br>
     <div class="row">
         <div class="col-md-3"></div>

@@ -1,17 +1,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ex" uri="/WEB-INF/custom.tld" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
-
 <c:set var="url">${pageContext.request.contextPath}</c:set>
 
 <html>
 <head>
-    <jsp:include page="head.jsp"/>
+    <ex:Head/>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>

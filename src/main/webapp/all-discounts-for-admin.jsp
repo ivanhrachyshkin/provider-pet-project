@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ex" uri="/WEB-INF/custom.tld" %>
 
-<%@ page import="by.hrachyshkin.provider.model.Tariff" %>
 <%@ page import="by.hrachyshkin.provider.model.Discount" %>
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
@@ -13,7 +13,7 @@
 
 <html>
 <head>
-    <jsp:include page="head.jsp"/>
+    <ex:Head/>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
@@ -24,7 +24,8 @@
     <div class="btn-group">
         <a href="${url}/discounts?filter=percentage" class="btn btn-info btn-sm" aria-current="page"><fmt:message
                 key="percentageLabel"/></a>
-        <a href="${url}/discounts?filter=coefficient" class="btn btn-info btn-sm"><fmt:message key="coefficientLabel"/></a>
+        <a href="${url}/discounts?filter=coefficient" class="btn btn-info btn-sm"><fmt:message
+                key="coefficientLabel"/></a>
         <a href="${url}/discounts?filter=all" class="btn btn-info btn-sm"><fmt:message key="allLabel"/></a>
     </div>
 

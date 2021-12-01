@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="ex" uri="/WEB-INF/custom.tld" %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
@@ -11,7 +12,7 @@
 
 <html>
 <head>
-    <jsp:include page="head.jsp"/>
+    <ex:Head/>
 </head>
 <body>
 <nav class="navbar navbar-inverse">

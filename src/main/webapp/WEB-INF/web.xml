@@ -41,4 +41,11 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
+
+    <jsp-config>
+        <taglib>
+            <taglib-uri>customtags</taglib-uri>
+            <taglib-location>/WEB-INF/custom.tld</taglib-location>
+        </taglib>
+    </jsp-config>
 </web-app>

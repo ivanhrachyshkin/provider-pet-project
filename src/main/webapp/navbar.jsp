@@ -3,7 +3,6 @@
 
 <fmt:setLocale value="${sessionScope.lang}"/>
 <fmt:setBundle basename="langs"/>
-
 <c:set var="url">${pageContext.request.contextPath}</c:set>
 
 <nav class="navbar navbar-inverse">
