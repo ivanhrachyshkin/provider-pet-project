@@ -33,7 +33,7 @@
                 <td><input name="email" type="email" value="${account.email}" placeholder="${account.email}"/></td>
                 <td>${account.role.name()}</td>
                 <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/></td>
-                <td><input name="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{2} value="${account.phone}" placeholder="${account.phone}"/></td>
+                <td><input name="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}" value="${account.phone}" placeholder="${account.phone}"/></td>
                 <td><input name="address" type="text" value="${account.address}" placeholder="${account.address}"/>
                 </td>
                 <td>${account.balance}</td>

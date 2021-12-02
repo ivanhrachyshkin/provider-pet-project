@@ -7,11 +7,12 @@ import java.util.List;
 
 public interface Service<T extends Model> {
 
-    void add(T t) throws ServiceException, TransactionException, TransactionException;
+    void add(T t) throws ServiceException, TransactionException;
 
     List<T> find() throws ServiceException, TransactionException;
 
-    T findOneById(final Integer id) throws ServiceException, TransactionException;
+    T findOneById(final Integer id)
+            throws ServiceException, TransactionException;
 
     void update(T t) throws ServiceException, TransactionException;
 

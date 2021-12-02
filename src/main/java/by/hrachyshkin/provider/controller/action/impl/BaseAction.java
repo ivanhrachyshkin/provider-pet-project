@@ -15,7 +15,10 @@ import java.util.List;
 public abstract class BaseAction implements Action {
 
 
-    public void postExecute(final HttpServletRequest request, final HttpServletResponse response, final String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
 
         request.getRequestDispatcher(path).forward(request, response);
     }
@@ -50,9 +53,11 @@ public abstract class BaseAction implements Action {
         return offset;
     }
 
-    protected void setTotalPagesAttribute(final HttpServletRequest request, final List<? extends Model> list) {
+    protected void setTotalPagesAttribute(final HttpServletRequest request,
+                                          final List<? extends Model> list) {
 
-        final int totalPages = list.size() % 5 == 0 ? list.size() / 5 : list.size() / 5 + 1;
+        final int totalPages =
+                list.size() % 5 == 0 ? list.size() / 5 : list.size() / 5 + 1;
         request.setAttribute("totalPages", totalPages);
     }
 
@@ -66,43 +71,51 @@ public abstract class BaseAction implements Action {
             pageNumber = (String) session.getAttribute("page");
         } else {
             final String page = request.getParameter("page");
-            pageNumber = String.valueOf(page == null ? 1 : Integer.parseInt(page));
+            pageNumber =
+                    String.valueOf(page == null ? 1 : Integer.parseInt(page));
         }
         request.setAttribute("page", pageNumber);
     }
 
-    protected void setPageNumberAttributeToSession(final HttpServletRequest request) {
+    protected void setPageNumberAttributeToSession(
+            final HttpServletRequest request) {
 
         final HttpSession session = request.getSession();
         session.setAttribute("page", request.getParameter("page"));
     }
 
-    protected void setErrorAttributeToSession(final HttpServletRequest request, final String value) {
+    protected void setErrorAttributeToSession(final HttpServletRequest request,
+                                              final String value) {
 
         final HttpSession session = request.getSession(false);
         session.setAttribute("error", value);
     }
 
-    protected void setTariffIdAttributeToSession(final HttpServletRequest request, final String value) {
+    protected void setTariffIdAttributeToSession(
+            final HttpServletRequest request,
+            final String value) {
 
         final HttpSession session = request.getSession(false);
         session.setAttribute("tariffId", value);
     }
 
-    protected String getTariffIdAttributeSession(final HttpServletRequest request) {
+    protected String getTariffIdAttributeSession(
+            final HttpServletRequest request) {
 
         final HttpSession session = request.getSession(false);
         return (String) session.getAttribute("tariffId");
     }
 
-    protected void checkGetHTTPMethod(final HttpServletRequest request) throws ServletException {
+    protected void checkGetHTTPMethod(final HttpServletRequest request)
+            throws ServletException {
 
         if (request.getMethod().equals("GET")) {
             throw new ServletException("Unsupported get operation");
         }
     }
 
-    protected void removeAttribute(final HttpServletRequest request, final String value) {
+    protected void removeAttribute(final HttpServletRequest request,
+                                   final String value) {
 
         final HttpSession session = request.getSession();
         session.removeAttribute(value);

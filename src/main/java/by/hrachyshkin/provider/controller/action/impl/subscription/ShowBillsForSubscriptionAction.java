@@ -16,37 +16,49 @@ import java.util.List;
 
 public class ShowBillsForSubscriptionAction extends BaseAction {
 
-    public static final String SHOW_BILLS_FOR_SUBSCRIPTION = "/cabinet/subscriptions/bills-for-subscription";
+    public static final String SHOW_BILLS_FOR_SUBSCRIPTION =
+            "/cabinet/subscriptions/bills-for-subscription";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException, ServiceException {
 
         try {
-            final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
-            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-            final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+            final BillService billService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.BILL);
+            final TariffService tariffService = ServiceFactory
+                    .getINSTANCE().getService(ServiceKeys.TARIFF);
+            final AccountService accountService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.ACCOUNT);
+            final SubscriptionService subscriptionService = ServiceFactory
+                    .getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
 
             final int offset = getOffset(request);
 
-            final Integer tariffId = Integer.valueOf(getTariffIdAttributeSession(request));
+            final Integer tariffId =
+                    Integer.valueOf(getTariffIdAttributeSession(request));
             final Tariff tariff = tariffService.findOneById(tariffId);
 
             final Integer accountId = getAccountId(request);
             final Account account = accountService.findOneById(accountId);
 
-            final Subscription subscription = subscriptionService.findOneByAccountIdAndTariffId(accountId, tariffId);
-            final List<Bill> subscriptionBills = billService.findAndFilterAndSortOffset(subscription.getId(), offset);
+            final Subscription subscription = subscriptionService
+                    .findOneByAccountIdAndTariffId(accountId, tariffId);
+            final List<Bill> subscriptionBills = billService
+                    .findAndFilterAndSortOffset(subscription.getId(), offset);
 
             setPageNumber(request);
-            setTotalPagesAttribute(request, billService.findAndFilterBySubscriptionId(subscription.getId()));
+            setTotalPagesAttribute(request, billService
+                    .findAndFilterBySubscriptionId(subscription.getId()));
             request.setAttribute("tariff", tariff);
             request.setAttribute("account", account);
             request.setAttribute("subscriptionBills", subscriptionBills);
 
             removeAttribute(request, "page");
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/bills-for-subscription.jsp";

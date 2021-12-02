@@ -32,7 +32,7 @@ public class SubscriptionServiceImplTest {
     @Test
     public void ShouldReturnSubscriptions_On_Find_Pos() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         final List<Subscription> subscriptions = new ArrayList<>();
         subscriptions.add(subscription1);
         subscriptions.add(subscription2);
@@ -50,7 +50,7 @@ public class SubscriptionServiceImplTest {
     @Test
     public void ShouldReturnSubscriptions_On_FindAndFilterByAccountId_Pos() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         final List<Subscription> subscriptions = new ArrayList<>();
         subscriptions.add(subscription1);
         subscriptions.add(subscription2);
@@ -62,84 +62,84 @@ public class SubscriptionServiceImplTest {
     @Test
     public void ShouldReturnSubscription_On_FindOneById_Pos() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         Assert.assertEquals(subscriptionService.findOneById(1), subscription1);
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_FindOneById_Exceptions() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         subscriptionService.findOneById(-1);
     }
 
     @Test
     public void ShouldReturnSubscription_On_FindOneByAccountIdAndTariffId_Pos() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         Assert.assertEquals(subscriptionService.findOneByAccountIdAndTariffId(1,1), subscription1);
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_FindOneByAccountIdAndTariffId_Exceptions() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         subscriptionService.findOneByAccountIdAndTariffId(-1,-1);
     }
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_Update_Exception() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         subscriptionService.update(new Subscription(1,1));
     }
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_Delete_Exception() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         subscriptionService.delete(1);
     }
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_DeleteSubscription_Exception() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         subscriptionService.delete(-1);
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Add_AccountExist_Exception() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         subscriptionService.add(new Subscription(-1,1));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Add_TariffExist_Exception() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         subscriptionService.add(new Subscription(1,-1));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Add_Exist_Exception() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         subscriptionService.add(new Subscription(1,1));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_PayBill_AccountExist_Exception() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
        subscriptionService.payBillForSubscription(-1, 1,10.0f, LocalDate.now());
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_PayBill_BillExist_Exception() throws ServiceException, TransactionException {
 
-        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+        final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
         subscriptionService.payBillForSubscription(3, -1,10.0f, LocalDate.now());
     }
 }

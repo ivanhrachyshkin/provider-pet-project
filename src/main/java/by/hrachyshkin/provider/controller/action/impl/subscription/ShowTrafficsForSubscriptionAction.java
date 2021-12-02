@@ -16,36 +16,49 @@ import java.util.List;
 
 public class ShowTrafficsForSubscriptionAction extends BaseAction {
 
-    public static final String SHOW_TRAFFICS_FOR_SUBSCRIPTION = "/cabinet/subscriptions/traffics-for-subscription";
+    public static final String SHOW_TRAFFIC_FOR_SUBSCRIPTION =
+            "/cabinet/subscriptions/traffics-for-subscription";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException, ServiceException {
 
         try {
-            final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
-            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-            final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+            final TrafficService trafficService = ServiceFactory
+                    .getINSTANCE().getService(ServiceKeys.TRAFFIC);
+            final TariffService tariffService = ServiceFactory
+                    .getINSTANCE().getService(ServiceKeys.TARIFF);
+            final AccountService accountService = ServiceFactory
+                    .getINSTANCE().getService(ServiceKeys.ACCOUNT);
+            final SubscriptionService subscriptionService = ServiceFactory
+                    .getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
 
             final int offset = getOffset(request);
 
-            final Integer tariffId = Integer.valueOf(getTariffIdAttributeSession(request));
-            final Tariff tariff = tariffService.findOneById(tariffId);
+            final Integer tariffId =
+                    Integer.valueOf(getTariffIdAttributeSession(request));
+            final Tariff tariff =
+                    tariffService.findOneById(tariffId);
 
             final Integer accountId = getAccountId(request);
             final Account account = accountService.findOneById(accountId);
 
-            final Subscription subscription = subscriptionService.findOneByAccountIdAndTariffId(accountId, tariffId);
-            final List<Traffic> subscriptionTraffics = trafficService.findAndFilterAndSortOffset(subscription.getId(), offset);
+            final Subscription subscription = subscriptionService
+                    .findOneByAccountIdAndTariffId(accountId, tariffId);
+            final List<Traffic> subscriptionTraffics = trafficService
+                    .findAndFilterAndSortOffset(subscription.getId(), offset);
 
             setPageNumber(request);
-            setTotalPagesAttribute(request, trafficService.findAndFilterBySubscriptionId(subscription.getId()));
+            setTotalPagesAttribute(request, trafficService
+                    .findAndFilterBySubscriptionId(subscription.getId()));
             request.setAttribute("account", account);
             request.setAttribute("tariff", tariff);
-            request.setAttribute("subscriptionTraffics", subscriptionTraffics);
+            request.setAttribute("subscriptionTraffics",
+                    subscriptionTraffics);
 
-
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/traffics-for-subscription.jsp";

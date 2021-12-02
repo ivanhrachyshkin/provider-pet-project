@@ -12,29 +12,39 @@ import java.io.IOException;
 
 public class DeleteSubscriptionAction extends BaseAction {
 
-    public static final String DELETE_SUBSCRIPTION = "/cabinet/subscriptions/delete";
+    public static final String DELETE_SUBSCRIPTION =
+            "/cabinet/subscriptions/delete";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException, ServiceException {
 
         try {
             checkGetHTTPMethod(request);
-            final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+            final SubscriptionService subscriptionService = ServiceFactory
+                    .getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
 
             final Integer accountId = getAccountId(request);
-            final Integer tariffId = Integer.valueOf(request.getParameter("tariffId"));
-            final Subscription subscription = subscriptionService.findOneByAccountIdAndTariffId(accountId, tariffId);
+            final Integer tariffId =
+                    Integer.valueOf(request.getParameter("tariffId"));
+            final Subscription subscription = subscriptionService.
+                    findOneByAccountIdAndTariffId(accountId, tariffId);
 
             subscriptionService.delete(subscription);
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return ShowSubscriptionsForAccountAction.SUBSCRIPTIONS;
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

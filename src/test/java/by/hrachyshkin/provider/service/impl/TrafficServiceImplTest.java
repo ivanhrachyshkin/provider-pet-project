@@ -31,7 +31,7 @@ public class TrafficServiceImplTest {
     @Test
     public void ShouldReturnTraffics_On_Find_Pos() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         final List<Traffic> traffics = new ArrayList<>();
         traffics.add(traffic1);
         traffics.add(traffic2);
@@ -48,7 +48,7 @@ public class TrafficServiceImplTest {
     @Test
     public void ShouldReturnTraffics_On_FindAndSortByDate_Pos() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         final List<Traffic> traffics = new ArrayList<>();
         traffics.add(traffic4);
         traffics.add(traffic5);
@@ -65,7 +65,7 @@ public class TrafficServiceImplTest {
     @Test
     public void ShouldReturnTraffics_On_FindAndFilter_Pos() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         final List<Traffic> traffics = new ArrayList<>();
         traffics.add(traffic1);
         traffics.add(traffic2);
@@ -76,7 +76,7 @@ public class TrafficServiceImplTest {
     @Test
     public void ShouldReturnTraffics_On_FindAndFilterAndSortByDate_Pos() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         final List<Traffic> traffics = new ArrayList<>();
         traffics.add(traffic1);
         traffics.add(traffic2);
@@ -87,49 +87,49 @@ public class TrafficServiceImplTest {
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldReturnTraffics_On_FindOneById_Exception() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         trafficService.findOneById(1);
     }
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldReturnTraffics_On_Update_Exception() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         trafficService.update(null);
     }
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldReturnTraffics_On_Delete_Exception() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         trafficService.delete(1);
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldReturnTraffics_On_Add_NullValue_Exception() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         trafficService.add(new Traffic(1, null, LocalDate.now()));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldReturnTraffics_On_Add_NegativeValue_Exception() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         trafficService.add(new Traffic(1, -10, LocalDate.now()));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldReturnTraffics_On_Add_NullDate_Exception() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         trafficService.add(new Traffic(1, -10, null));
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldReturnTraffics_On_Add_Exist_Exception() throws ServiceException, TransactionException {
 
-        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC_SERVICE);
+        final TrafficService trafficService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TRAFFIC);
         trafficService.add(new Traffic(-1, 10, LocalDate.now()));
     }
 }

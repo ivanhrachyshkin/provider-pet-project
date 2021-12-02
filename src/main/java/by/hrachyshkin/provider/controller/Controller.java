@@ -4,32 +4,31 @@ import by.hrachyshkin.provider.controller.action.Action;
 import by.hrachyshkin.provider.controller.action.ActionFactory;
 import lombok.SneakyThrows;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
 
 @WebServlet("/")
 public class Controller extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+    protected void doGet(final HttpServletRequest request,
+                         final HttpServletResponse response) {
         processRequest(request, response);
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) {
+    protected void doPost(final HttpServletRequest request,
+                          final HttpServletResponse response) {
+
         processRequest(request, response);
     }
 
 
     @SneakyThrows
-    private void processRequest(HttpServletRequest request,
-                                HttpServletResponse response) {
+    private void processRequest(final HttpServletRequest request,
+                                final HttpServletResponse response) {
 
         final String commandName = request.getRequestURI()
                 .substring(request.getContextPath().length());

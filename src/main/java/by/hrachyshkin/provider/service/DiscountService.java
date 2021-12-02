@@ -7,13 +7,18 @@ import java.util.List;
 
 public interface DiscountService extends Service<Discount> {
 
-    boolean isExistByName(final String name) throws ServiceException, TransactionException;
+    boolean isExistByName(String name)
+            throws ServiceException, TransactionException;
 
-    List<Discount> findAndSortByValue(Integer offset) throws ServiceException, TransactionException;
+    List<Discount> findAndSortByValue(Integer offset)
+            throws ServiceException, TransactionException;
 
-    List<Discount> findAndFilterByType(final Discount.Type type, int offset) throws ServiceException, TransactionException;
+    List<Discount> findAndFilterByType(Discount.Type type, int offset)
+            throws ServiceException, TransactionException;
 
-    List<Discount> findAndFilterByTypeAndSortByValue(final Discount.Type type) throws ServiceException, TransactionException;
+    List<Discount> findAndFilterByTypeAndSortByValue(Discount.Type type)
+            throws ServiceException, TransactionException;
 
-    List<Discount> findDiscountsForPromotion(final Integer tariffId) throws ServiceException, TransactionException;
-    }
+    List<Discount> findDiscountsForPromotion(Integer tariffId)
+            throws ServiceException, TransactionException;
+}

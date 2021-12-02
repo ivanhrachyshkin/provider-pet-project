@@ -13,16 +13,22 @@ public class DiscountsForPromotionAction extends BaseAction {
     public static final String DISCOUNTS_FOR_PROMOTION = "/tariffs/discounts";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException, ServiceException {
 
         checkGetHTTPMethod(request);
-        setTariffIdAttributeToSession(request, request.getParameter("tariffId"));
+        setTariffIdAttributeToSession(request,
+                request.getParameter("tariffId"));
 
         return ShowDiscountsForPromotionAction.SHOW_DISCOUNTS_FOR_PROMOTION;
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

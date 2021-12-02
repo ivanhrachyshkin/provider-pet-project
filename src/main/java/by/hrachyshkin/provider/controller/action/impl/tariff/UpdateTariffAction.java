@@ -11,7 +11,6 @@ import by.hrachyshkin.provider.service.TariffService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class UpdateTariffAction extends BaseAction {
@@ -19,24 +18,31 @@ public class UpdateTariffAction extends BaseAction {
     public static final String UPDATE_TARIFF = "/tariffs/update";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException, ServiceException {
 
         try {
             checkGetHTTPMethod(request);
 
-            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+            final TariffService tariffService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.TARIFF);
 
-            final Integer id = Integer.valueOf(request.getParameter("tariffId"));
+            final Integer id =
+                    Integer.valueOf(request.getParameter("tariffId"));
             final String name = request.getParameter("name");
-            final Tariff.Type type = Tariff.Type.valueOf(request.getParameter("type").toUpperCase());
-            final Integer speed = Integer.valueOf(request.getParameter("speed"));
+            final Tariff.Type type = Tariff.Type.valueOf(
+                    request.getParameter("type").toUpperCase());
+            final Integer speed =
+                    Integer.valueOf(request.getParameter("speed"));
             final Float price = Float.valueOf(request.getParameter("price"));
 
             tariffService.update(new Tariff(id, name, type, speed, price));
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }
@@ -44,7 +50,10 @@ public class UpdateTariffAction extends BaseAction {
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

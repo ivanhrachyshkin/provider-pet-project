@@ -37,7 +37,13 @@ public final class Account extends Model {
         this(null, email, password, role, name, phone, address, balance);
     }
 
-    public Account(Integer id, String email, Role role, String name, String phone, String address, Float balance) {
+    public Account(final Integer id,
+                   final String email,
+                   final Role role,
+                   final String name,
+                   final String phone,
+                   final String address,
+                   final Float balance) {
         this.id = id;
         this.email = email;
         this.password = null;
@@ -48,7 +54,12 @@ public final class Account extends Model {
         this.balance = balance;
     }
 
-    public Account(Integer id, String email, Role role, String name, String phone, String address) {
+    public Account(final Integer id,
+                   final String email,
+                   final Role role,
+                   final String name,
+                   final String phone,
+                   final String address) {
         this.id = id;
         this.email = email;
         this.password = null;

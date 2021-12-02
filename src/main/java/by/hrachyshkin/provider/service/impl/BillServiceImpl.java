@@ -14,7 +14,8 @@ import java.util.ResourceBundle;
 @RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(BillServiceImpl.class);
+    private final static Logger LOGGER =
+            LoggerFactory.getLogger(BillServiceImpl.class);
     private final Transaction transactionImpl;
     private final ResourceBundle rb;
 
@@ -23,7 +24,7 @@ public class BillServiceImpl implements BillService {
 
         try {
             LOGGER.debug("method find starts ");
-            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
+            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL);
             final List<Bill> bills = billDao.find();
             LOGGER.debug("method find finish ");
             transactionImpl.commit();
@@ -37,11 +38,12 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public List<Bill> findAndSortByDate() throws ServiceException, TransactionException {
+    public List<Bill> findAndSortByDate()
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findAndSortByDate starts ");
-            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
+            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL);
             final List<Bill> bills = billDao.findAndSortByDate();
             LOGGER.debug("method findAndSortByDate finish ");
             transactionImpl.commit();
@@ -55,12 +57,15 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public List<Bill> findAndFilterBySubscriptionId(final Integer subscriptionId) throws ServiceException, TransactionException {
+    public List<Bill> findAndFilterBySubscriptionId(
+            final Integer subscriptionId)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findAndFilterBySubscriptionId starts ");
-            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
-            final List<Bill> bills = billDao.findAndFilterBySubscriptionId(subscriptionId);
+            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL);
+            final List<Bill> bills =
+                    billDao.findAndFilterBySubscriptionId(subscriptionId);
             LOGGER.debug("method findAndFilterBySubscriptionId finish ");
             transactionImpl.commit();
             return bills;
@@ -73,12 +78,15 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public List<Bill> findAndFilterAndSortOffset(final Integer subscriptionId, final int offset) throws ServiceException, TransactionException {
+    public List<Bill> findAndFilterAndSortOffset(final Integer subscriptionId,
+                                                 final int offset)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findAndFilterAndSortOffset starts ");
-            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
-            final List<Bill> bills = billDao.findAndFilterAndSortOffset(subscriptionId, offset);
+            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL);
+            final List<Bill> bills =
+                    billDao.findAndFilterAndSortOffset(subscriptionId, offset);
             LOGGER.debug("method findAndFilterAndSortOffset finish ");
             transactionImpl.commit();
             return bills;
@@ -92,34 +100,42 @@ public class BillServiceImpl implements BillService {
 
     @Override
     public Bill findOneById(final Integer id) throws ServiceException {
-        LOGGER.debug(rb.getString("bill.find.one.by.id.unsupported.exception"));
-        throw new UnsupportedOperationException(rb.getString("bill.find.one.by.id.unsupported.exception"));
+        LOGGER.debug(rb.getString("bill.find.one.by.id.unsupported"
+                + ".exception"));
+        throw new UnsupportedOperationException(rb.getString("bill.find"
+                + ".one.by.id.unsupported.exception"));
     }
 
     @Override
-    public void add(final Bill bill) throws ServiceException, TransactionException {
+    public void add(final Bill bill)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method add starts ");
-            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
+            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL);
 
             if (bill.getValue() == null
                     || bill.getDate() == null) {
-                LOGGER.error(rb.getString("bill.add.empty.input.exception"));
+                LOGGER.error(rb.getString("bill.add.empty.input"
+                        + ".exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("bill.add.empty.input.exception"));
+                throw new ServiceException(rb.getString("bill.add.empty"
+                        + ".input.exception"));
             }
 
-            if (billDao.isExists(bill.getSubscriptionId(), bill.getValue(), bill.getDate())) {
+            if (billDao.isExists(bill.getSubscriptionId(), bill.getValue(),
+                    bill.getDate())) {
                 LOGGER.error(rb.getString("bill.add.exist.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("bill.add.exist.exception"));
+                throw new ServiceException(rb.getString("bill.add.exist"
+                        + ".exception"));
             }
 
             if (bill.getValue() < 0) {
                 LOGGER.error(rb.getString("bill.add.negative.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("bill.add.negative.exception"));
+                throw new ServiceException(rb.getString("bill.add"
+                        + ".negative.exception"));
             }
 
             billDao.add(bill);
@@ -134,14 +150,18 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
-    public void update(final Bill bill) throws ServiceException, TransactionException {
+    public void update(final Bill bill)
+            throws ServiceException, TransactionException {
         LOGGER.error(rb.getString("bill.update.unsupported.exception"));
-        throw new UnsupportedOperationException(rb.getString("bill.update.unsupported.exception"));
+        throw new UnsupportedOperationException(rb.getString("bill.update"
+                + ".unsupported.exception"));
     }
 
     @Override
-    public void delete(final Integer subscriptionId) throws ServiceException, TransactionException {
+    public void delete(final Integer subscriptionId)
+            throws ServiceException, TransactionException {
         LOGGER.error(rb.getString("bill.delete.unsupported.exception"));
-        throw new UnsupportedOperationException(rb.getString("bill.delete.unsupported.exception"));
+        throw new UnsupportedOperationException(rb.getString("bill.delete"
+                + ".unsupported.exception"));
     }
 }

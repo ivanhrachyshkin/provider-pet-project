@@ -16,16 +16,21 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(AccountServiceImpl.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(AccountServiceImpl.class);
     private final Transaction transactionImpl;
     private final ResourceBundle rb;
 
-    public boolean isExistByEmailAndPassword(final String email, final String password) throws ServiceException, TransactionException {
+    public boolean isExistByEmailAndPassword(final String email,
+                                             final String password)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method isExistByEmailAndPassword starts ");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
-            final boolean value = accountDao.isExistByEmailAndPassword(email, password);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
+            final boolean value =
+                    accountDao.isExistByEmailAndPassword(email, password);
             transactionImpl.commit();
             LOGGER.debug("method isExistByEmailAndPassword finish ");
             return value;
@@ -42,7 +47,8 @@ public class AccountServiceImpl implements AccountService {
 
         try {
             LOGGER.debug("method find starts ");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
             final List<Account> accounts = accountDao.find();
             transactionImpl.commit();
             LOGGER.debug("method find finish ");
@@ -56,11 +62,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> findAndSortByName(final Integer offset) throws ServiceException, TransactionException {
+    public List<Account> findAndSortByName(final Integer offset)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findAndSortByName starts ");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
             final List<Account> accounts = accountDao.findAndSortByName(offset);
             transactionImpl.commit();
             LOGGER.debug("method findAndSortByName finish ");
@@ -74,16 +82,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account findOneById(final Integer id) throws ServiceException, TransactionException {
+    public Account findOneById(final Integer id)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findOneById starts ");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
 
             if (!accountDao.isExistById(id)) {
                 transactionImpl.rollback();
-                LOGGER.error(rb.getString("account.find.by.id.exist.exception"));
-                throw new ServiceException(rb.getString("account.find.by.id.exist.exception"));
+                LOGGER.error(rb.getString("account.find.by.id.exist"
+                        + ".exception"));
+                throw new ServiceException(rb.getString("account.find.by"
+                        + ".id.exist.exception"));
             }
 
             transactionImpl.commit();
@@ -98,16 +110,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account findOneByEmail(final String email) throws ServiceException, TransactionException {
+    public Account findOneByEmail(final String email)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findOneByEmail starts ");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
 
             if (!accountDao.isExistByEmail(email)) {
-                LOGGER.error(rb.getString("account.find.one.by.email.exception"));
+                LOGGER.error(rb.getString("account.find.one.by.email"
+                        + ".exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.find.one.by.email.exception"));
+                throw new ServiceException(rb.getString("account.find.one"
+                        + ".by.email.exception"));
             }
 
             transactionImpl.commit();
@@ -122,11 +138,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void add(final Account account) throws ServiceException, TransactionException {
+    public void add(final Account account)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method add starts");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
 
             if (account.getEmail().isEmpty()
                     || account.getPassword().isEmpty()
@@ -135,22 +153,28 @@ public class AccountServiceImpl implements AccountService {
                     || account.getName().isEmpty()
                     || account.getPhone().isEmpty()
                     || account.getAddress().isEmpty()) {
-                LOGGER.error(rb.getString("account.add.empty.input.exception"));
+                LOGGER.error(rb.getString("account.add.empty.input"
+                        + ".exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.add.empty.input.exception"));
+                throw new ServiceException(rb.getString("account.add"
+                        + ".empty.input.exception"));
             }
 
             if (accountDao.isExistByEmail(account.getEmail())) {
                 LOGGER.error(rb.getString("account.add.exist.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.add.exist.exception"));
+                throw new ServiceException(
+                        rb.getString("account.add.exist.exception"));
             }
 
-            if (!Pattern.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).*[A-Za-z0-9].{7,}$",
+            if (!Pattern.matches("^(?=.*[0-9])(?=.*[a-z])"
+                            + "(?=.*[A-Z])(?=\\S+$).*[A-Za-z0-9].{7,}$",
                     account.getPassword())) {
-                LOGGER.error(rb.getString("account.add.password.exception"));
+                LOGGER.error(
+                        rb.getString("account.add.password.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.add.password.exception"));
+                throw new ServiceException(
+                        rb.getString("account.add.password.exception"));
             }
 
             accountDao.add(account);
@@ -165,11 +189,13 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void update(final Account account) throws ServiceException, TransactionException {
+    public void update(final Account account)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method update starts ");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
 
             if (account.getId() == null
                     || account.getEmail().isEmpty()
@@ -178,21 +204,28 @@ public class AccountServiceImpl implements AccountService {
                     || account.getName().isEmpty()
                     || account.getPhone().isEmpty()
                     || account.getAddress().isEmpty()) {
-                LOGGER.error(rb.getString("account.update.empty.input.exception"));
+                LOGGER.error(rb.getString("account.update.empty.input"
+                        + ".exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.update.empty.input.exception"));
+                throw new ServiceException(rb.getString("account.update"
+                        + ".empty.input.exception"));
             }
 
             if (!accountDao.isExistById(account.getId())) {
                 transactionImpl.rollback();
-                LOGGER.error(rb.getString("account.update.not.exist.exception"));
-                throw new ServiceException(rb.getString("account.update.not.exist.exception"));
+                LOGGER.error(
+                        rb.getString("account.update.not.exist.exception"));
+                throw new ServiceException(
+                        rb.getString("account.update.not.exist.exception"));
             }
 
-            if (accountDao.isExistByNotIdAndEmail(account.getId(), account.getEmail())) {
+            if (accountDao.isExistByNotIdAndEmail(
+                    account.getId(), account.getEmail())) {
                 transactionImpl.rollback();
-                LOGGER.error(rb.getString("account.update.used.email.exception"));
-                throw new ServiceException(rb.getString("account.update.used.email.exception"));
+                LOGGER.error(rb.getString("account.update.used.email"
+                        + ".exception"));
+                throw new ServiceException(rb.getString("account.update"
+                        + ".used.email.exception"));
             }
 
             accountDao.update(account);
@@ -208,47 +241,65 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public void deposit(final Integer accountId,
-                        String card,
-                        Float deposit,
-                        LocalDate validity) throws ServiceException, TransactionException {
+                        final String card,
+                        final Float deposit,
+                        final LocalDate validity)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method deposit starts ");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
 
             if (card.isEmpty()
                     || deposit == null
                     || validity == null) {
                 transactionImpl.rollback();
-                LOGGER.error(rb.getString("account.deposit.empty.input.exception"));
-                throw new ServiceException(rb.getString("account.deposit.empty.input.exception"));
+                LOGGER.error(rb.getString("account.deposit.empty.input"
+                        +
+                        ".exception"));
+                throw new ServiceException(rb.getString("account.deposit"
+                        + ".empty.input.exception"));
             }
 
             if (!accountDao.isExistById(accountId)) {
-                LOGGER.error(rb.getString("account.deposit.not.exist.exception"));
+                LOGGER.error(rb.getString("account.deposit.not"
+                        + ".exist.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.deposit.not.exist.exception"));
+                throw new ServiceException(rb.getString("account.deposit"
+                        + ".not.exist.exception"));
             }
 
-            if (!Pattern.matches("^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$", card)) {
-                LOGGER.error(rb.getString("account.deposit.card.number.exception"));
+            if (!Pattern.matches(
+                    "^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14})$",
+                    card)) {
+                LOGGER.error(
+                        rb.getString("account.deposit.card.number"
+                                + ".exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.deposit.card.number.exception"));
+                throw new ServiceException(rb.getString("account.deposit"
+                        + ".card.number.exception"));
             }
 
             if (validity.isBefore(LocalDate.now())) {
-                LOGGER.error(rb.getString("account.deposit.card.expired.exception"));
+                LOGGER.error(rb.getString("account.deposit.card.expired"
+                        + ".exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.deposit.card.expired.exception"));
+                throw new ServiceException(rb.getString("account.deposit"
+                        + ".card.expired.exception"));
             }
 
             if (deposit < 0) {
-                LOGGER.error(rb.getString("account.deposit.negative.deposit.exception"));
+                LOGGER.error(rb.getString("account.deposit.negative"
+                        + ".deposit.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.deposit.negative.deposit.exception"));
+                throw new ServiceException(rb.getString("account.deposit"
+                        + ".negative.deposit.exception"));
             }
 
-            accountDao.updateBalanceForAccountId(accountId, accountDao.findOneById(accountId).getBalance() + deposit);
+            accountDao.updateBalanceForAccountId(accountId,
+                    accountDao.findOneById(accountId).getBalance()
+                            + deposit);
             LOGGER.debug("method deposit finish ");
             transactionImpl.commit();
 
@@ -260,16 +311,20 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void delete(final Integer id) throws ServiceException, TransactionException {
+    public void delete(final Integer id)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method delete starts ");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
 
             if (!accountDao.isExistById(id)) {
-                LOGGER.error(rb.getString("account.delete.exist.exception"));
+                LOGGER.error(rb.getString("account.delete.exist"
+                        + ".exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.delete.exist.exception"));
+                throw new ServiceException(rb.getString("account.delete"
+                        + ".exist.exception"));
             }
 
             accountDao.delete(id);

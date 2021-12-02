@@ -29,7 +29,7 @@ public class PromotionServiceImplTest {
     @Test
     public void ShouldReturnPromotion_On_Find_Pos() throws ServiceException, TransactionException {
 
-        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION);
         final List<Promotion> promotions = new ArrayList<>();
         promotions.add(promotion1);
         promotions.add(promotion2);
@@ -45,7 +45,7 @@ public class PromotionServiceImplTest {
     @Test
     public void ShouldReturnPromotion_On_FindAndFilterByTariffId_Pos() throws ServiceException, TransactionException {
 
-        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION);
         final List<Promotion> promotions = new ArrayList<>();
         promotions.add(promotion1);
         promotions.add(promotion2);
@@ -55,14 +55,14 @@ public class PromotionServiceImplTest {
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_FindOneById_Exception() throws ServiceException, TransactionException {
 
-        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION);
         promotionService.findOneById(1);
     }
 
     @Test
     public void ShouldAddPromotion_On_Add_Pos() throws ServiceException, TransactionException {
 
-        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION);
         final Promotion promotion = new Promotion(1, 1);
         promotionService.add(promotion);
         final List<Promotion> promotions = new ArrayList<>();
@@ -76,7 +76,7 @@ public class PromotionServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Add_Exception() throws ServiceException, TransactionException {
 
-        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION);
         final Promotion promotion = new Promotion(2, 2);
         promotionService.add(promotion);
     }
@@ -84,7 +84,7 @@ public class PromotionServiceImplTest {
     @Test
     public void ShouldDeletePromotion_On_DeleteByTariffAndDiscount_Pos() throws ServiceException, TransactionException {
 
-        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION);
         final Promotion promotion = new Promotion(1, 1);
         promotionService.add(promotion);
         final List<Promotion> promotions = new ArrayList<>();
@@ -97,21 +97,21 @@ public class PromotionServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_DeleteByTariffAndDiscount_Exception() throws ServiceException, TransactionException {
 
-        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION);
         promotionService.deleteByTariffAndDiscount(8,8);
     }
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_Update_Exception() throws ServiceException, TransactionException {
 
-        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION);
         promotionService.update(new Promotion(1,1));
     }
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_Delete_Exception() throws ServiceException, TransactionException {
 
-        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+        final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION);
         promotionService.delete(1);
     }
 }

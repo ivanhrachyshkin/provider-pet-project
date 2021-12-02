@@ -17,27 +17,36 @@ public class DeletePromotionAction extends BaseAction {
     public static final String DELETE_PROMOTION = "/tariffs/discounts/delete";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException {
 
         try {
             checkGetHTTPMethod(request);
-            final PromotionService promotionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.PROMOTION_SERVICE);
+            final PromotionService promotionService = ServiceFactory
+                    .getINSTANCE().getService(ServiceKeys.PROMOTION);
 
             final String tariffId = request.getParameter("tariffId");
-            final Integer discountId = Integer.valueOf(request.getParameter("discountId"));
+            final Integer discountId =
+                    Integer.valueOf(request.getParameter("discountId"));
 
-            promotionService.deleteByTariffAndDiscount(Integer.valueOf(tariffId), discountId);
+            promotionService.deleteByTariffAndDiscount(
+                    Integer.valueOf(tariffId), discountId);
 
             setTariffIdAttributeToSession(request, tariffId);
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return ShowDiscountsForPromotionAction.SHOW_DISCOUNTS_FOR_PROMOTION;
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

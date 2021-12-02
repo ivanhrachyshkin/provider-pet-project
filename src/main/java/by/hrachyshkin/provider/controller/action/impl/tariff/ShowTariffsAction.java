@@ -20,10 +20,13 @@ public class ShowTariffsAction extends BaseAction {
     public static final String TARIFFS = "/tariffs";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException, ServiceException {
 
         try {
-            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
+            final TariffService tariffService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.TARIFF);
 
             final int offset = getOffset(request);
             final String rawType = request.getParameter("filter");
@@ -35,10 +38,12 @@ public class ShowTariffsAction extends BaseAction {
                 setTotalPagesAttribute(request, tariffService.find());
 
             } else {
-                final Tariff.Type type = Tariff.Type.valueOf(rawType.toUpperCase());
+                final Tariff.Type type =
+                        Tariff.Type.valueOf(rawType.toUpperCase());
                 tariffs = tariffService.findAndFilterByType(type, offset);
 
-                setTotalPagesAttribute(request, tariffService.findAndFilterByTypeAndSortBySpeedAndPrice(type));
+                setTotalPagesAttribute(request,
+                        tariffService.findAndFilterAndSort(type));
             }
 
             setPageNumber(request);

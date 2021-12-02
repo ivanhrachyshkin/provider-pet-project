@@ -11,7 +11,6 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 
@@ -20,24 +19,33 @@ public class UpdateDiscountAction extends BaseAction {
     public static final String UPDATE_DISCOUNTS = "/discounts/update";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException {
 
         try {
             checkGetHTTPMethod(request);
-            final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+            final DiscountService discountService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.DISCOUNT);
 
             final Integer id = Integer.valueOf(request.getParameter("id"));
             final String name = request.getParameter("name");
-            final Discount.Type type = Discount.Type.valueOf(request.getParameter("type").toUpperCase());
-            final Integer value = Integer.valueOf(request.getParameter("value"));
-            final LocalDate dateFrom = LocalDate.parse(request.getParameter("dateFrom"));
-            final LocalDate dateTo = LocalDate.parse(request.getParameter("dateTo"));
+            final Discount.Type type = Discount.Type.valueOf(request
+                    .getParameter("type").toUpperCase());
+            final Integer value =
+                    Integer.valueOf(request.getParameter("value"));
+            final LocalDate dateFrom =
+                    LocalDate.parse(request.getParameter("dateFrom"));
+            final LocalDate dateTo =
+                    LocalDate.parse(request.getParameter("dateTo"));
 
-            discountService.update(new Discount(id, name, type, value, dateFrom, dateTo));
+            discountService.update(
+                    new Discount(id, name, type, value, dateFrom, dateTo));
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }
@@ -45,7 +53,10 @@ public class UpdateDiscountAction extends BaseAction {
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

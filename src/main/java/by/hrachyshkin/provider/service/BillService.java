@@ -7,9 +7,12 @@ import java.util.List;
 
 public interface BillService extends Service<Bill> {
 
-    public List<Bill> findAndSortByDate() throws ServiceException, TransactionException;
+    List<Bill> findAndSortByDate()
+            throws ServiceException, TransactionException;
 
-    List<Bill> findAndFilterBySubscriptionId(Integer subscriptionId) throws ServiceException, TransactionException;
+    List<Bill> findAndFilterBySubscriptionId(Integer subscriptionId)
+            throws ServiceException, TransactionException;
 
-    List<Bill> findAndFilterAndSortOffset(Integer subscriptionId, int offset) throws ServiceException, TransactionException;
+    List<Bill> findAndFilterAndSortOffset(Integer subscriptionId, int offset)
+            throws ServiceException, TransactionException;
 }

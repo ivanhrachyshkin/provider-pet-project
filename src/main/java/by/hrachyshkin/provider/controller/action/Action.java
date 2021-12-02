@@ -9,7 +9,11 @@ import java.io.IOException;
 
 public interface Action {
 
-    String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException;
+    String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, ServiceException;
 
-     void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException;
+    void postExecute(HttpServletRequest request,
+                     HttpServletResponse response,
+                     String path)
+            throws ServletException, IOException, ServiceException;
 }

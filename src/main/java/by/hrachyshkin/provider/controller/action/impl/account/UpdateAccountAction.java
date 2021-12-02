@@ -11,36 +11,44 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class UpdateAccountAction extends BaseAction {
 
-    public static final String UPDATE_ACCOUNT_CABINET = "/cabinet/accounts/update-cabinet";
-    public static final String UPDATE_ACCOUNT_LIST = "/cabinet/accounts/update-list";
+    public static final String UPDATE_ACCOUNT_CABINET =
+            "/cabinet/accounts/update-cabinet";
+    public static final String UPDATE_ACCOUNT_LIST =
+            "/cabinet/accounts/update-list";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException {
 
         try {
             checkGetHTTPMethod(request);
+            final AccountService accountService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.ACCOUNT);
 
-            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
-
-            final Integer accountId = Integer.valueOf(request.getParameter("accountId"));
+            final Integer accountId = Integer.valueOf(request
+                    .getParameter("accountId"));
             final String email = request.getParameter("email");
             final String password = request.getParameter("password");
-            final Account.Role role = Account.Role.valueOf(request.getParameter("role"));
+            final Account.Role role =
+                    Account.Role.valueOf(request.getParameter("role"));
             final String name = request.getParameter("name");
             final String phone = request.getParameter("phone");
             final String address = request.getParameter("address");
-            final Float balance = Float.valueOf(request.getParameter("balance"));
+            final Float balance =
+                    Float.valueOf(request.getParameter("balance"));
 
-            accountService.update(new Account(accountId, email, password, role, name, phone, address, balance));
+            accountService.update(new Account(accountId, email, password, role,
+                    name, phone, address, balance));
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }
@@ -53,7 +61,10 @@ public class UpdateAccountAction extends BaseAction {
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

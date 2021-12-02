@@ -7,13 +7,18 @@ import java.util.List;
 
 public interface TariffService extends Service<Tariff> {
 
-    boolean isExist(Integer id) throws ServiceException, TransactionException;
+    boolean isExist(Integer id)
+            throws ServiceException, TransactionException;
 
-    List<Tariff> findAndSortBySpeedAndPrice(Integer offset) throws ServiceException, TransactionException;
+    List<Tariff> findAndSortBySpeedAndPrice(Integer offset)
+            throws ServiceException, TransactionException;
 
-    List<Tariff> findAndFilterByType(Tariff.Type type, int offset) throws ServiceException, TransactionException;
+    List<Tariff> findAndFilterByType(Tariff.Type type, int offset)
+            throws ServiceException, TransactionException;
 
-    List<Tariff> findTariffsForSubscription(Integer accountId) throws ServiceException, TransactionException;
+    List<Tariff> findTariffsForSubscription(Integer accountId)
+            throws ServiceException, TransactionException;
 
-    List<Tariff> findAndFilterByTypeAndSortBySpeedAndPrice(Tariff.Type type) throws ServiceException, TransactionException;
+    List<Tariff> findAndFilterAndSort(Tariff.Type type)
+            throws ServiceException, TransactionException;
 }

@@ -13,11 +13,15 @@ import java.util.Properties;
 public class ConnectionListener implements ServletContextListener {
 
     @Override
-    public void contextInitialized(ServletContextEvent servletContextEvent) {
+    public void contextInitialized(
+            final ServletContextEvent servletContextEvent) {
 
         try {
             Properties properties = new Properties();
-            properties.load(getClass().getClassLoader().getResourceAsStream("database.properties"));
+            properties
+                    .load(getClass()
+                            .getClassLoader()
+                            .getResourceAsStream("database.properties"));
             ConnectionPool.getINSTANCE().init(
                     properties.getProperty("db.driver"),
                     properties.getProperty("db.url"),
@@ -25,14 +29,16 @@ public class ConnectionListener implements ServletContextListener {
                     properties.getProperty("db.password"),
                     Integer.parseInt(properties.getProperty("pool.startSize")),
                     Integer.parseInt(properties.getProperty("pool.maxSize")),
-                    Integer.parseInt(properties.getProperty("checkConnectionTimeout")));
+                    Integer.parseInt(properties
+                            .getProperty("checkConnectionTimeout")));
         } catch (IOException | PoolException e) {
             throw new ExceptionInInitializerError();
         }
     }
 
     @Override
-    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+    public void contextDestroyed(
+            final ServletContextEvent servletContextEvent) {
         ConnectionPool.getINSTANCE().destroy();
     }
 }

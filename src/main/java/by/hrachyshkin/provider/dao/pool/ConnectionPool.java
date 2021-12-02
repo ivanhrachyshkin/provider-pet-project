@@ -60,11 +60,13 @@ public class ConnectionPool {
                 if (usedConnections.size() < poolMaxSize) {
                     freeConnections.add(createConnection(url, user, password));
                 } else {
-                    throw new PoolException("Maximum pool size reached, no available connections!");
+                    throw new PoolException("Maximum pool size reached,"
+                            + " no available connections!");
                 }
             }
 
-            Connection connection = freeConnections.remove(freeConnections.size() - 1);
+            Connection connection =
+                    freeConnections.remove(freeConnections.size() - 1);
             if (!isValidConnection(connection, checkConnectionTimeout)) {
                 connection = createConnection(url, user, password);
             }
@@ -108,7 +110,8 @@ public class ConnectionPool {
     }
 
     @SneakyThrows
-    private static boolean isValidConnection(final Connection connection, final int checkConnectionTimeout) {
+    private static boolean isValidConnection(final Connection connection,
+                                             final int checkConnectionTimeout) {
         return connection.isValid(checkConnectionTimeout);
     }
 }

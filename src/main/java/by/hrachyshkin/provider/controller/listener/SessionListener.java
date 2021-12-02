@@ -10,22 +10,26 @@ import javax.servlet.http.HttpSessionBindingEvent;
 @WebListener
 public class SessionListener implements HttpSessionAttributeListener {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(SessionListener.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(
+            SessionListener.class);
 
-    public void attributeRemoved(HttpSessionBindingEvent ev) {
-        LOGGER.info("remove: " + ev.getClass().getSimpleName() + " : " + ev.getName()
+    public void attributeRemoved(final HttpSessionBindingEvent ev) {
+        LOGGER.info("remove: " + ev.getClass().getSimpleName()
+                + " : " + ev.getName()
                 + " : " + ev.getValue());
     }
 
-    public void attributeAdded(HttpSessionBindingEvent ev) {
+    public void attributeAdded(final HttpSessionBindingEvent ev) {
 
-        LOGGER.info("add: " + ev.getClass().getSimpleName() + " : " + ev.getName()
+        LOGGER.info("add: " + ev.getClass().getSimpleName() + " : "
+                + ev.getName()
                 + " : " + ev.getValue());
     }
 
-    public void attributeReplaced(HttpSessionBindingEvent ev) {
+    public void attributeReplaced(final HttpSessionBindingEvent ev) {
 
-        LOGGER.info("replace: " + ev.getClass().getSimpleName() + " : " + ev.getName()
+        LOGGER.info("replace: " + ev.getClass().getSimpleName() + " : "
+                + ev.getName()
                 + " : " + ev.getValue());
     }
 }

@@ -17,14 +17,17 @@ public class CabinetAction extends BaseAction {
     public static final String CABINET = "/cabinet";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response) {
 
         String page = null;
 
         try {
-            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.ACCOUNT);
 
-            final Account account = accountService.findOneById(getAccountId(request));
+            final Account account =
+                    accountService.findOneById(getAccountId(request));
 
             if (getRole(request).equals(Account.Role.BLOCKED)) {
                 request.setAttribute("error", "Account is blocked");
@@ -41,7 +44,8 @@ public class CabinetAction extends BaseAction {
                 page = "/cabinet-user.jsp";
             }
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             page = WelcomeAction.WELCOME;
         }

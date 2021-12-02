@@ -20,14 +20,16 @@ public class LoginAction extends BaseAction {
     public static final String LOGIN = "/login";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException {
 
         String path;
 
         try {
             checkGetHTTPMethod(request);
-
-            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.ACCOUNT);
 
             final String email = request.getParameter("email");
             final String password = request.getParameter("password");
@@ -42,11 +44,13 @@ public class LoginAction extends BaseAction {
                 path = CabinetAction.CABINET;
 
             } else {
-                setErrorAttributeToSession(request, "Check Email and Password");
+                setErrorAttributeToSession(request,
+                        "Check Email and Password");
                 path = WelcomeAction.WELCOME;
             }
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             path = WelcomeAction.WELCOME;
         }
@@ -54,7 +58,10 @@ public class LoginAction extends BaseAction {
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

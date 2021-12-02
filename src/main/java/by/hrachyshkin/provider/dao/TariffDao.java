@@ -10,11 +10,14 @@ public interface TariffDao extends Dao<Tariff> {
 
     boolean isExistByName(String name) throws DaoException;
 
-    boolean isExistByNotIdAndName(final Integer id, final String name) throws DaoException;
+    boolean isExistByNotIdAndName(Integer id, String name)
+            throws DaoException;
 
-    List<Tariff> findAndSortBySpeedAndPrice(int offset) throws DaoException;
+    List<Tariff> findAndSortBySpeedAndPrice(int offset)
+            throws DaoException;
 
-    List<Tariff> findAndFilterByType(Tariff.Type type, int offset) throws DaoException;
+    List<Tariff> findAndFilterByType(Tariff.Type type, int offset)
+            throws DaoException;
 
     List<Tariff> findAndFilterAndSort(Tariff.Type type) throws DaoException;
 }

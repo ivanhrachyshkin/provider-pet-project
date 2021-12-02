@@ -4,7 +4,7 @@
     <short-name>custom</short-name>
     <tag>
         <name>Head</name>
-        <tag-class>by.hrachyshkin.provider.controller.HeadTag</tag-class>
+        <tag-class>by.hrachyshkin.provider.controller.taghandler.HeadTagHandler</tag-class>
         <body-content>empty</body-content>
     </tag>
 </taglib>

@@ -1,23 +1,27 @@
 package by.hrachyshkin.provider.dao.pool;
 
-public class PoolException extends Exception{
+public class PoolException extends Exception {
 
     public PoolException() {
     }
 
-    public PoolException(String message) {
+    public PoolException(final String message) {
         super(message);
     }
 
-    public PoolException(String message, Throwable cause) {
+    public PoolException(final String message,
+                         final Throwable cause) {
         super(message, cause);
     }
 
-    public PoolException(Throwable cause) {
+    public PoolException(final Throwable cause) {
         super(cause);
     }
 
-    public PoolException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    public PoolException(final String message,
+                         final Throwable cause,
+                         final boolean enableSuppression,
+                         final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

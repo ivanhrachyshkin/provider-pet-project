@@ -6,7 +6,6 @@ import by.hrachyshkin.provider.service.DiscountService;
 import by.hrachyshkin.provider.service.ServiceException;
 import by.hrachyshkin.provider.service.ServiceFactory;
 import by.hrachyshkin.provider.service.ServiceKeys;
-import org.checkerframework.checker.units.qual.A;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -33,14 +32,14 @@ public class DiscountServiceImplTest {
     @Test
     public void ShouldReturnDiscount_On_isExistByName_Pos() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         Assert.assertTrue(discountService.isExistByName("Winter Is Coming"));
     }
 
     @Test
     public void ShouldReturnDiscounts_On_Find_Pos() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final List<Discount> discounts = new ArrayList<>();
         discounts.add(discount1);
         discounts.add(discount2);
@@ -51,7 +50,7 @@ public class DiscountServiceImplTest {
     @Test
     public void ShouldReturnDiscounts_On_FindAndSortByValue_Pos() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final List<Discount> discounts = new ArrayList<>();
         discounts.add(discount3);
         discounts.add(discount1);
@@ -62,7 +61,7 @@ public class DiscountServiceImplTest {
     @Test
     public void ShouldReturnDiscounts_On_FindAndFilterByTypeSortByValue_Pos() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final List<Discount> discounts = new ArrayList<>();
         discounts.add(discount3);
         discounts.add(discount1);
@@ -73,21 +72,21 @@ public class DiscountServiceImplTest {
     @Test
     public void ShouldReturnDiscounts_On_FindOneById_Pos() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         Assert.assertEquals(discountService.findOneById(1), discount1);
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldReturnDiscounts_On_FindOneById_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         discountService.findOneById(10000);
     }
 
     @Test
     public void ShouldReturnDiscountsForPromotion_On_FindDiscountsForPromotion_Pos() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final List<Discount> discounts = new ArrayList<>();
         discounts.add(discount3);
         discounts.add(discount1);
@@ -98,21 +97,21 @@ public class DiscountServiceImplTest {
     @Test
     public void ShouldReturnDiscount_On_FindOneById_Pos() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         Assert.assertEquals(discountService.findOneById(3), discount3);
     }
 
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldReturnDiscount_On_FindOneById_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         discountService.findOneById(10000);
     }
 
     @Test
     public void ShouldAddDiscount_On_Add_Pos() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.add(added);
@@ -129,7 +128,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldAddDiscount_On_Add_EmptyName_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount added = new Discount("", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.add(added);
@@ -138,7 +137,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldAddDiscount_On_Add_NullType_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount added = new Discount("Added Name", null, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.add(added);
@@ -147,7 +146,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldAddDiscount_On_Add_NullValue_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, null,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.add(added);
@@ -156,7 +155,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldAddDiscount_On_Add_NullDateFrom_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
                 null, LocalDate.of(2023, 1, 10));
         discountService.add(added);
@@ -165,7 +164,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldAddDiscount_On_Add_NullDateTo_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), null);
         discountService.add(added);
@@ -174,7 +173,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldAddDiscount_On_Add_Exists_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount added = new Discount("Winter Is Coming", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.add(added);
@@ -183,7 +182,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldAddDiscount_On_Add_DateFromIsAfter_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2024, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.add(added);
@@ -192,7 +191,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldAddDiscount_On_Add_NegativeValue_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, -10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.add(added);
@@ -201,7 +200,7 @@ public class DiscountServiceImplTest {
     @Test
     public void ShouldUpdateDiscount_On_Add_Pos() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
 
         final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
@@ -218,7 +217,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldUpdateDiscount_On_Add_EmptyName_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount updated = new Discount("", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.update(updated);
@@ -227,7 +226,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldUpdateDiscount_On_Add_NullType_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount updated = new Discount("Added Name", null, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.update(updated);
@@ -236,7 +235,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldUpdateDiscount_On_Add_NullValue_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount updated = new Discount("Added Name", Discount.Type.COEFFICIENT, null,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.update(updated);
@@ -245,7 +244,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldUpdateDiscount_On_Add_NullDateFrom_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount updated = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
                 null, LocalDate.of(2023, 1, 10));
         discountService.update(updated);
@@ -254,7 +253,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldUpdateDiscount_On_Add_NullDateTo_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount updated = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), null);
         discountService.update(updated);
@@ -263,7 +262,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldUpdateDiscount_On_Add_Exists_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount updated = new Discount(100,"Winter Is Coming", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.update(updated);
@@ -272,7 +271,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldUpdateDiscount_On_Add_DateFromIsAfter_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount updated = new Discount(1,"Added Name", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2024, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.update(updated);
@@ -281,7 +280,7 @@ public class DiscountServiceImplTest {
     @Test(expectedExceptions = ServiceException.class)
     public void ShouldUpdateDiscount_On_Add_NegativeValue_Exception() throws ServiceException, TransactionException {
 
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
         final Discount updated = new Discount(1,"Added Name", Discount.Type.COEFFICIENT, -10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.update(updated);

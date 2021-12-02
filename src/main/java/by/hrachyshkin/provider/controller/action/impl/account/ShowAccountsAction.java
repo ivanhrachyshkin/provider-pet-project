@@ -17,13 +17,16 @@ public class ShowAccountsAction extends BaseAction {
     public static final String ACCOUNTS = "/cabinet/accounts";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response) {
 
         try {
-            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.ACCOUNT);
 
             final int offset = getOffset(request);
-            final List<Account> accounts = accountService.findAndSortByName(offset);
+            final List<Account> accounts = accountService
+                    .findAndSortByName(offset);
 
             setPageNumber(request);
             setTotalPagesAttribute(request, accountService.find());
@@ -31,7 +34,8 @@ public class ShowAccountsAction extends BaseAction {
 
             removeAttribute(request, "page");
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/accounts.jsp";

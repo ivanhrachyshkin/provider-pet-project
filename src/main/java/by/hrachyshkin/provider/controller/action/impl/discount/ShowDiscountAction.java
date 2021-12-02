@@ -18,11 +18,13 @@ public class ShowDiscountAction extends BaseAction {
     public static final String DISCOUNTS = "/discounts";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response) {
 
         String path = null;
         try {
-            final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT_SERVICE);
+            final DiscountService discountService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.DISCOUNT);
 
             final int offset = getOffset(request);
             final String rawType = request.getParameter("filter");
@@ -32,10 +34,12 @@ public class ShowDiscountAction extends BaseAction {
                 discounts = discountService.findAndSortByValue(offset);
                 setTotalPagesAttribute(request, discountService.find());
             } else {
-                final Discount.Type type = Discount.Type.valueOf(rawType.toUpperCase());
+                final Discount.Type type = Discount.Type.valueOf(rawType
+                        .toUpperCase());
                 discounts = discountService.findAndFilterByType(type, offset);
 
-                setTotalPagesAttribute(request, discountService.findAndFilterByTypeAndSortByValue(type));
+                setTotalPagesAttribute(request, discountService
+                        .findAndFilterByTypeAndSortByValue(type));
             }
 
             setPageNumber(request);

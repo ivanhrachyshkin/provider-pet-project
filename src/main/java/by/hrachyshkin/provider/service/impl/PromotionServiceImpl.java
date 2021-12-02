@@ -14,16 +14,19 @@ import java.util.ResourceBundle;
 @RequiredArgsConstructor
 public class PromotionServiceImpl implements PromotionService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(PromotionServiceImpl.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(PromotionServiceImpl.class);
     private final Transaction transactionImpl;
     private final ResourceBundle rb;
 
     @Override
-    public List<Promotion> find() throws ServiceException, TransactionException {
+    public List<Promotion> find()
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method find starts ");
-            final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
+            final PromotionDao promotionDao =
+                    transactionImpl.createDao(DaoKeys.PROMOTION);
             final List<Promotion> promotions = promotionDao.find();
             LOGGER.debug("method find finish ");
             transactionImpl.commit();
@@ -37,12 +40,15 @@ public class PromotionServiceImpl implements PromotionService {
     }
 
     @Override
-    public List<Promotion> findAndFilterByTariffId(final Integer tariffId) throws ServiceException, TransactionException {
+    public List<Promotion> findAndFilterByTariffId(final Integer tariffId)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findAndFilterByTariffId starts ");
-            final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
-            final List<Promotion> promotions = promotionDao.findAndFilterByTariffId(tariffId);
+            final PromotionDao promotionDao =
+                    transactionImpl.createDao(DaoKeys.PROMOTION);
+            final List<Promotion> promotions =
+                    promotionDao.findAndFilterByTariffId(tariffId);
             LOGGER.debug("method findAndFilterByTariffId finish ");
             transactionImpl.commit();
             return promotions;
@@ -56,21 +62,27 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public Promotion findOneById(final Integer id) throws ServiceException {
-        LOGGER.error(rb.getString("promotion.find.one.by.id.unsupported.exception"));
-        throw new UnsupportedOperationException(rb.getString("promotion.find.one.by.id.unsupported.exception"));
+        LOGGER.error(rb.getString("promotion.find.one.by.id"
+                + ".unsupported.exception"));
+        throw new UnsupportedOperationException(rb.getString("promotion"
+                + ".find.one.by.id.unsupported.exception"));
     }
 
     @Override
-    public void add(final Promotion promotion) throws ServiceException, TransactionException {
+    public void add(final Promotion promotion)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method add starts ");
-            final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
+            final PromotionDao promotionDao =
+                    transactionImpl.createDao(DaoKeys.PROMOTION);
 
-            if (promotionDao.isExistByTariffAndDiscountId(promotion.getTariffId(), promotion.getDiscountId())) {
+            if (promotionDao.isExistByTariffAndDiscountId(
+                    promotion.getTariffId(), promotion.getDiscountId())) {
                 LOGGER.error(rb.getString("promotion.add.added.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("promotion.add.added.exception"));
+                throw new ServiceException(rb.getString("promotion.add"
+                        + ".added.exception"));
             }
 
             promotionDao.add(promotion);
@@ -86,27 +98,36 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public void update(final Promotion promotion) throws ServiceException {
-        LOGGER.error(rb.getString("promotion.update.unsupported.exception"));
-        throw new UnsupportedOperationException(rb.getString("promotion.update.unsupported.exception"));
+        LOGGER.error(rb.getString("promotion.update"
+                + ".unsupported.exception"));
+        throw new UnsupportedOperationException(rb.getString("promotion"
+                + ".update.unsupported.exception"));
     }
 
     @Override
-    public void delete(Integer id) throws ServiceException {
-        LOGGER.error(rb.getString("promotion.delete.unsupported.exception"));
-        throw new UnsupportedOperationException(rb.getString("promotion.delete.unsupported.exception"));
+    public void delete(final Integer id) throws ServiceException {
+        LOGGER.error(rb.getString("promotion.delete.unsupported"
+                + ".exception"));
+        throw new UnsupportedOperationException(rb.getString("promotion"
+                + ".delete.unsupported.exception"));
     }
 
     @Override
-    public void deleteByTariffAndDiscount(final Integer tariffId, final Integer discountId) throws ServiceException, TransactionException {
+    public void deleteByTariffAndDiscount(final Integer tariffId,
+                                          final Integer discountId)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method deleteByTariffAndDiscount starts ");
-            final PromotionDao promotionDao = transactionImpl.createDao(DaoKeys.PROMOTION_DAO);
+            final PromotionDao promotionDao =
+                    transactionImpl.createDao(DaoKeys.PROMOTION);
 
             if (!promotionDao.isExistByTariffAndDiscountId(tariffId, discountId)) {
-                LOGGER.error(rb.getString("promotion.delete.by.tariff.and.discount.exception"));
+                LOGGER.error(rb.getString("promotion.delete.by.tariff"
+                        + ".and.discount.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("promotion.delete.by.tariff.and.discount.exception"));
+                throw new ServiceException(rb.getString("promotion"
+                        + ".delete.by.tariff.and.discount.exception"));
             }
 
             promotionDao.deleteByTariffAndDiscount(tariffId, discountId);

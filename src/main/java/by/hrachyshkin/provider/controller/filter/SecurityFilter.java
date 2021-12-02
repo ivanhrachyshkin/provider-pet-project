@@ -10,25 +10,33 @@ import java.io.IOException;
 public class SecurityFilter implements Filter {
 
     @Override
-    public void init(FilterConfig fConfig) {
+    public void init(final FilterConfig fConfig) {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+    public void doFilter(final ServletRequest request,
+                         final ServletResponse response,
+                         final FilterChain chain)
+            throws IOException, ServletException {
 
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        final HttpServletRequest httpRequest = (HttpServletRequest) request;
         final HttpSession session = httpRequest.getSession(true);
 
-        final String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
+        final String path = httpRequest.getRequestURI()
+                .substring(httpRequest.getContextPath().length());
 
         if (session.getAttribute("accountId") == null
                 && session.getAttribute("accountRole") == null
                 && !path.startsWith("/login")) {
-            httpRequest.getRequestDispatcher("/login.jsp").forward(request, response);
+            httpRequest
+                    .getRequestDispatcher("/login.jsp")
+                    .forward(request, response);
         }
 
         if (path.equals("/")) {
-            httpRequest.getRequestDispatcher("/cabinet").forward(request, response);
+            httpRequest
+                    .getRequestDispatcher("/cabinet")
+                    .forward(request, response);
         }
         chain.doFilter(request, response);
     }

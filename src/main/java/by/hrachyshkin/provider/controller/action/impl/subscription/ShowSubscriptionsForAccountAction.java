@@ -15,23 +15,28 @@ public class ShowSubscriptionsForAccountAction extends BaseAction {
     public static final String SUBSCRIPTIONS = "/cabinet/subscriptions";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response) {
 
         try {
-            final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF_SERVICE);
-            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final TariffService tariffService = ServiceFactory.getINSTANCE().
+                    getService(ServiceKeys.TARIFF);
+            final AccountService accountService = ServiceFactory.getINSTANCE().
+                    getService(ServiceKeys.ACCOUNT);
 
             final Integer accountId = getAccountId(request);
             final Account account = accountService.findOneById(accountId);
 
-            final List<Tariff> accountTariffs = tariffService.findTariffsForSubscription(accountId);
+            final List<Tariff> accountTariffs = tariffService
+                    .findTariffsForSubscription(accountId);
             final List<Tariff> tariffs = tariffService.find();
 
             request.setAttribute("account", account);
             request.setAttribute("accountTariffs", accountTariffs);
             request.setAttribute("tariffs", tariffs);
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return "/subscriptions-for-account.jsp";

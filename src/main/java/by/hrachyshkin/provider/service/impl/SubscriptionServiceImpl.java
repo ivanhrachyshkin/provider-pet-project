@@ -15,17 +15,21 @@ import java.util.ResourceBundle;
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(SubscriptionServiceImpl.class);
+    private static final Logger LOGGER =
+            LoggerFactory.getLogger(SubscriptionServiceImpl.class);
     private final Transaction transactionImpl;
     private final ResourceBundle rb;
 
     @Override
-    public List<Subscription> find() throws ServiceException, TransactionException {
+    public List<Subscription> find()
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method find starts ");
-            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            final List<Subscription> subscriptions = subscriptionDao.find();
+            final SubscriptionDao subscriptionDao =
+                    transactionImpl.createDao(DaoKeys.SUBSCRIPTION);
+            final List<Subscription> subscriptions =
+                    subscriptionDao.find();
             LOGGER.debug("method find finish ");
             transactionImpl.commit();
             return subscriptions;
@@ -38,12 +42,15 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<Subscription> findAndFilterByAccountId(final Integer accountId) throws ServiceException, TransactionException {
+    public List<Subscription> findAndFilterByAccountId(final Integer accountId)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findAndFilterByAccountId starts ");
-            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            final List<Subscription> subscriptions = subscriptionDao.findAndFilterByAccountId(accountId);
+            final SubscriptionDao subscriptionDao =
+                    transactionImpl.createDao(DaoKeys.SUBSCRIPTION);
+            final List<Subscription> subscriptions =
+                    subscriptionDao.findAndFilterByAccountId(accountId);
             LOGGER.debug("method findAndFilterByAccountId finish ");
             transactionImpl.commit();
             return subscriptions;
@@ -56,11 +63,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Subscription findOneById(final Integer id) throws ServiceException, TransactionException {
+    public Subscription findOneById(final Integer id)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findOneById starts ");
-            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
+            final SubscriptionDao subscriptionDao =
+                    transactionImpl.createDao(DaoKeys.SUBSCRIPTION);
             final Subscription subscription = subscriptionDao.findOneById(id);
             LOGGER.debug("method findOneById finish ");
             transactionImpl.commit();
@@ -74,12 +83,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public Subscription findOneByAccountIdAndTariffId(final Integer accountId, final Integer tariffId) throws ServiceException, TransactionException {
+    public Subscription findOneByAccountIdAndTariffId(final Integer accountId,
+                                                      final Integer tariffId)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method findOneByAccountIdAndTariffId starts ");
-            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            final Subscription subscription = subscriptionDao.findOneByAccountIdAndTariffId(accountId, tariffId);
+            final SubscriptionDao subscriptionDao =
+                    transactionImpl.createDao(DaoKeys.SUBSCRIPTION);
+            final Subscription subscription = subscriptionDao
+                    .findOneByAccountIdAndTariffId(accountId, tariffId);
             LOGGER.debug("method findOneByAccountIdAndTariffId finish ");
             transactionImpl.commit();
             return subscription;
@@ -93,20 +106,28 @@ public class SubscriptionServiceImpl implements SubscriptionService {
 
 
     @Override
-    public void add(final Subscription subscription) throws ServiceException, TransactionException {
+    public void add(final Subscription subscription)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method add starts ");
-            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
-            final TariffDao tariffDao = transactionImpl.createDao(DaoKeys.TARIFF_DAO);
+            final SubscriptionDao subscriptionDao =
+                    transactionImpl.createDao(DaoKeys.SUBSCRIPTION);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
+            final TariffDao tariffDao =
+                    transactionImpl.createDao(DaoKeys.TARIFF);
 
-            if (subscriptionDao.isExistByAccountAndTariffId(subscription.getAccountId(), subscription.getTariffId())
+            if (subscriptionDao.isExistByAccountAndTariffId(
+                    subscription.getAccountId(),
+                    subscription.getTariffId())
                     || !accountDao.isExistById(subscription.getAccountId())
                     || !tariffDao.isExistById(subscription.getTariffId())) {
-                LOGGER.error(rb.getString("subscription.add.exist.exception"));
+                LOGGER.error(rb.getString("subscription.add"
+                        + ".exist.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("subscription.add.exist.exception"));
+                throw new ServiceException(rb.getString("subscription"
+                        + ".add.exist.exception"));
             }
 
             subscriptionDao.add(subscription);
@@ -121,27 +142,38 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public void payBillForSubscription(final Integer accountId, final Integer subscriptionIdForBill, final Float value, final LocalDate date) throws ServiceException, TransactionException {
+    public void payBillForSubscription(final Integer accountId,
+                                       final Integer subscriptionIdForBill,
+                                       final Float value, final LocalDate date)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method payBillForSubscription starts ");
-            final AccountDao accountDao = transactionImpl.createDao(DaoKeys.ACCOUNT_DAO);
-            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
+            final AccountDao accountDao =
+                    transactionImpl.createDao(DaoKeys.ACCOUNT);
+            final BillDao billDao =
+                    transactionImpl.createDao(DaoKeys.BILL);
 
             if (accountId == null || !accountDao.isExistById(accountId)) {
-                LOGGER.error(rb.getString("subscription.payBill.account.exist.exception"));
+                LOGGER.error(rb.getString("subscription.payBill.account"
+                        + ".exist.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("subscription.payBill.account.exist.exception"));
+                throw new ServiceException(rb.getString("subscription"
+                        + ".payBill.account.exist.exception"));
             }
 
-            if (subscriptionIdForBill == null || !billDao.isExists(subscriptionIdForBill, value, date)) {
-                LOGGER.error(rb.getString("subscription.payBill.bill.exist.exception"));
+            if (subscriptionIdForBill == null
+                    || !billDao.isExists(subscriptionIdForBill, value, date)) {
+                LOGGER.error(rb.getString("subscription.payBill.bill"
+                        + ".exist.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("subscription.payBill.bill.exist.exception"));
+                throw new ServiceException(rb.getString("subscription"
+                        + ".payBill.bill.exist.exception"));
             }
 
             billDao.updateBillStatus(subscriptionIdForBill, value, date);
-            accountDao.updateBalanceForAccountId(accountId, accountDao.findOneById(accountId).getBalance() - value);
+            accountDao.updateBalanceForAccountId(accountId,
+                    accountDao.findOneById(accountId).getBalance() - value);
             LOGGER.debug("method payBillForSubscription finish ");
             transactionImpl.commit();
 
@@ -153,30 +185,41 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public void update(Subscription subscription) throws ServiceException, TransactionException {
-        LOGGER.error(rb.getString("subscription.update.unsupported.exception"));
-        throw new UnsupportedOperationException(rb.getString("subscription.update.unsupported.exception"));
+    public void update(final Subscription subscription)
+            throws ServiceException, TransactionException {
+        LOGGER.error(rb.getString("subscription.update.unsupported"
+                + ".exception"));
+        throw new UnsupportedOperationException(rb.getString("subscription"
+                + ".update.unsupported.exception"));
     }
 
     @Override
-    public void delete(Integer id) throws ServiceException, TransactionException {
-        LOGGER.error(rb.getString("subscription.delete.unsupported.exception"));
-        throw new UnsupportedOperationException(rb.getString("subscription.delete.unsupported.exception"));
+    public void delete(final Integer id)
+            throws ServiceException, TransactionException {
+        LOGGER.error(rb.getString("subscription.delete.unsupported"
+                + ".exception"));
+        throw new UnsupportedOperationException(rb.getString("subscription"
+                + ".delete.unsupported.exception"));
     }
 
     @Override
-    public void delete(final Subscription subscription) throws ServiceException, TransactionException {
+    public void delete(final Subscription subscription)
+            throws ServiceException, TransactionException {
 
         try {
             LOGGER.debug("method delete starts ");
-            final SubscriptionDao subscriptionDao = transactionImpl.createDao(DaoKeys.SUBSCRIPTION_DAO);
-            final BillDao billDao = transactionImpl.createDao(DaoKeys.BILL_DAO);
-            final TrafficDao trafficDao = transactionImpl.createDao(DaoKeys.TRAFFIC_DAO);
+            final SubscriptionDao subscriptionDao =
+                    transactionImpl.createDao(DaoKeys.SUBSCRIPTION);
+            final BillDao billDao =
+                    transactionImpl.createDao(DaoKeys.BILL);
+            final TrafficDao trafficDao =
+                    transactionImpl.createDao(DaoKeys.TRAFFIC);
 
             if (billDao.isExistsOpenBills(subscription.getId())) {
                 LOGGER.error(rb.getString("bill.delete.open.exception"));
                 transactionImpl.rollback();
-                throw new ServiceException(rb.getString("bill.delete.open.exception"));
+                throw new ServiceException(rb.getString("bill.delete"
+                        + ".open.exception"));
             }
 
             billDao.delete(subscription.getId());

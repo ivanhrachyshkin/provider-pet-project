@@ -10,19 +10,26 @@ import java.io.IOException;
 
 public class BillsForSubscriptionAction extends BaseAction {
 
-    public static final String BILLS_FOR_SUBSCRIPTION = "/cabinet/subscriptions/bills";
+    public static final String BILLS_FOR_SUBSCRIPTION =
+            "/cabinet/subscriptions/bills";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException, ServiceException {
 
         checkGetHTTPMethod(request);
-        setTariffIdAttributeToSession(request, request.getParameter("tariffId"));
+        setTariffIdAttributeToSession(request,
+                request.getParameter("tariffId"));
 
         return ShowBillsForSubscriptionAction.SHOW_BILLS_FOR_SUBSCRIPTION;
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

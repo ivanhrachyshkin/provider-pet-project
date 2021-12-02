@@ -6,7 +6,6 @@ import java.time.LocalDate;
 
 @Getter
 @ToString
-@EqualsAndHashCode
 @AllArgsConstructor
 public final class Discount extends Model {
 

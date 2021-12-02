@@ -32,7 +32,7 @@ public class BillServiceImplTest {
     @Test
     public void ShouldReturnBills_On_Find_Pos() throws ServiceException, TransactionException {
 
-        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
+        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL);
         final List<Bill> bills = new ArrayList<>();
         bills.add(bill1);
         bills.add(bill2);
@@ -49,7 +49,7 @@ public class BillServiceImplTest {
     @Test
     public void ShouldReturnBills_On_FindAndSortByDate() throws ServiceException, TransactionException {
 
-        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
+        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL);
         final List<Bill> bills = new ArrayList<>();
         bills.add(bill5);
         bills.add(bill8);
@@ -66,7 +66,7 @@ public class BillServiceImplTest {
     @Test
     public void ShouldReturnBills_On_FindAndFilterBySubscriptionId() throws ServiceException, TransactionException {
 
-        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
+        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL);
         final List<Bill> bills = new ArrayList<>();
         bills.add(bill1);
         bills.add(bill2);
@@ -77,7 +77,7 @@ public class BillServiceImplTest {
     @Test
     public void ShouldReturnBills_On_FindAndSortOffset() throws ServiceException, TransactionException {
 
-        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
+        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL);
         final List<Bill> bills = new ArrayList<>();
         bills.add(bill2);
         bills.add(bill1);
@@ -88,21 +88,21 @@ public class BillServiceImplTest {
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_FindOneById_Exception() throws ServiceException, TransactionException {
 
-        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
+        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL);
         billService.findOneById(1);
     }
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_Update_Exception() throws ServiceException, TransactionException {
 
-        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
+        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL);
         billService.update(new Bill(1, 10.0f, LocalDate.now(), false));
     }
 
     @Test(expectedExceptions = UnsupportedOperationException.class)
     public void ShouldThrowException_On_Delete_Exception() throws ServiceException, TransactionException {
 
-        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL_SERVICE);
+        final BillService billService = ServiceFactory.getINSTANCE().getService(ServiceKeys.BILL);
         billService.delete(1);
     }
 

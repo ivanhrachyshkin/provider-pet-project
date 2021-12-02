@@ -10,31 +10,38 @@ import by.hrachyshkin.provider.service.SubscriptionService;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDate;
 
 public class PayBillForSubscriptionAction extends BaseAction {
 
-    public static final String PAY_BILL_FOR_SUBSCRIPTION = "/cabinet/subscriptions/bills/pay";
+    public static final String PAY_BILL_FOR_SUBSCRIPTION =
+            "/cabinet/subscriptions/bills/pay";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, ServiceException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException, IOException, ServiceException {
 
         try {
             checkGetHTTPMethod(request);
-            final SubscriptionService subscriptionService = ServiceFactory.getINSTANCE().getService(ServiceKeys.SUBSCRIPTION_SERVICE);
+            final SubscriptionService subscriptionService = ServiceFactory
+                    .getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
 
             final Integer accountId = getAccountId(request);
-            final Integer subscriptionId = Integer.valueOf(request.getParameter("subscriptionId"));
+            final Integer subscriptionId =
+                    Integer.valueOf(request.getParameter("subscriptionId"));
             final Float value = Float.valueOf(request.getParameter("value"));
-            final LocalDate date = LocalDate.parse(request.getParameter("date"));
+            final LocalDate date =
+                    LocalDate.parse(request.getParameter("date"));
 
-            subscriptionService.payBillForSubscription(accountId, subscriptionId, value, date);
+            subscriptionService.payBillForSubscription(
+                    accountId, subscriptionId, value, date);
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException | TransactionException e) {
+        } catch (ServiceException | NumberFormatException
+                | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }
@@ -44,7 +51,10 @@ public class PayBillForSubscriptionAction extends BaseAction {
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }

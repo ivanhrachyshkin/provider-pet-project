@@ -5,10 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class WelcomeAction extends BaseAction {
 
-   public static final String WELCOME = "/";
+    public static final String WELCOME = "/";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response) {
 
         return "/login.jsp";
     }

@@ -11,7 +11,6 @@ import by.hrachyshkin.provider.service.ServiceKeys;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class CreateAccountAction extends BaseAction {
@@ -19,21 +18,26 @@ public class CreateAccountAction extends BaseAction {
     public static final String CREATE_ACCOUNT = "/cabinet/accounts/create";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    public String execute(final HttpServletRequest request,
+                          final HttpServletResponse response)
+            throws ServletException {
 
         try {
             checkGetHTTPMethod(request);
-            final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT_SERVICE);
+            final AccountService accountService = ServiceFactory.getINSTANCE()
+                    .getService(ServiceKeys.ACCOUNT);
 
             final String email = request.getParameter("email");
             final String password = request.getParameter("password");
-            final Account.Role role = Account.Role.valueOf(request.getParameter("role"));
+            final Account.Role role =
+                    Account.Role.valueOf(request.getParameter("role"));
             final String name = request.getParameter("name");
             final String phone = request.getParameter("phone");
             final String address = request.getParameter("address");
             final Float balance = 0.0f;
 
-            accountService.add(new Account(email, password, role, name, phone, address, balance));
+            accountService.add(new Account(email, password, role, name,
+                    phone, address, balance));
 
             setPageNumberAttributeToSession(request);
 
@@ -45,7 +49,10 @@ public class CreateAccountAction extends BaseAction {
     }
 
     @Override
-    public void postExecute(HttpServletRequest request, HttpServletResponse response, String path) throws ServletException, IOException, ServiceException {
+    public void postExecute(final HttpServletRequest request,
+                            final HttpServletResponse response,
+                            final String path)
+            throws ServletException, IOException, ServiceException {
         response.sendRedirect(request.getContextPath() + path);
     }
 }
