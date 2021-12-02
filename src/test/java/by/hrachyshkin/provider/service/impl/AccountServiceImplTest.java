@@ -55,7 +55,8 @@ public class AccountServiceImplTest {
             100.0f);
 
     @Test
-    public void ShouldReturnAccount_On_IsExistByEmailAndPassword_Pos() throws ServiceException, TransactionException {
+    public void ShouldReturnAccount_On_IsExistByEmailAndPassword_Pos()
+            throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT);
         Assert.assertTrue(accountService.isExistByEmailAndPassword("a@outlook.com", "user"));

@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public final class Account extends Model {
+public final class Account implements Model {
 
     @ToString
     public enum Role {

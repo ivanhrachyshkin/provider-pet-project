@@ -116,13 +116,13 @@ public class DiscountServiceImplTest {
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.add(added);
 
-        discountService.update(new Discount(discountService.findAndFilterByType(Discount.Type.COEFFICIENT, 0).get(0).getId(),
+        discountService.update(new Discount(discountService.findAndFilterByTypeOffset(Discount.Type.COEFFICIENT, 0).get(0).getId(),
                 "Added Name", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10))
         );
 
         Assert.assertTrue(discountService.isExistByName("Added Name"));
-        discountService.delete(discountService.findAndFilterByType(Discount.Type.COEFFICIENT, 0).get(0).getId());
+        discountService.delete(discountService.findAndFilterByTypeOffset(Discount.Type.COEFFICIENT, 0).get(0).getId());
     }
 
     @Test(expectedExceptions = ServiceException.class)
@@ -206,12 +206,12 @@ public class DiscountServiceImplTest {
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.add(added);
 
-        final Discount updated = new Discount(discountService.findAndFilterByType(Discount.Type.COEFFICIENT, 0).get(0).getId(), "Updated Name", Discount.Type.COEFFICIENT, 10,
+        final Discount updated = new Discount(discountService.findAndFilterByTypeOffset(Discount.Type.COEFFICIENT, 0).get(0).getId(), "Updated Name", Discount.Type.COEFFICIENT, 10,
                 LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
         discountService.update(updated);
 
         Assert.assertTrue(discountService.isExistByName("Updated Name"));
-        discountService.delete(discountService.findAndFilterByType(Discount.Type.COEFFICIENT, 0).get(0).getId());
+        discountService.delete(discountService.findAndFilterByTypeOffset(Discount.Type.COEFFICIENT, 0).get(0).getId());
     }
 
     @Test(expectedExceptions = ServiceException.class)

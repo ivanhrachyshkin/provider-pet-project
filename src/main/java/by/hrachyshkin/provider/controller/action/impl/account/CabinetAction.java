@@ -36,12 +36,12 @@ public class CabinetAction extends BaseAction {
 
             if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
                 request.setAttribute("account", account);
-                page = "/cabinet-admin.jsp";
+                page = "/jsp/cabinet-admin.jsp";
             }
 
             if (getRole(request).equals(Account.Role.USER)) {
                 request.setAttribute("account", account);
-                page = "/cabinet-user.jsp";
+                page = "/jsp/cabinet-user.jsp";
             }
 
         } catch (ServiceException | NumberFormatException

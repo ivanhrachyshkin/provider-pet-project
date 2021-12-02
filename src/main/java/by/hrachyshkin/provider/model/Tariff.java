@@ -6,7 +6,7 @@ import lombok.*;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public final class Tariff extends Model {
+public final class Tariff implements Model {
 
     @ToString
     public enum Type {

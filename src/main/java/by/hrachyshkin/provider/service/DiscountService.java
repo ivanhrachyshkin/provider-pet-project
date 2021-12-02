@@ -13,7 +13,7 @@ public interface DiscountService extends Service<Discount> {
     List<Discount> findAndSortByValue(Integer offset)
             throws ServiceException, TransactionException;
 
-    List<Discount> findAndFilterByType(Discount.Type type, int offset)
+    List<Discount> findAndFilterByTypeOffset(Discount.Type type, int offset)
             throws ServiceException, TransactionException;
 
     List<Discount> findAndFilterByTypeAndSortByValue(Discount.Type type)

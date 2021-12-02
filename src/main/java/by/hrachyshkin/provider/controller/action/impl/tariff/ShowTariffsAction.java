@@ -57,9 +57,9 @@ public class ShowTariffsAction extends BaseAction {
         }
 
         if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
-            return "/all-tariffs-for-admin.jsp";
+            return "/jsp/all-tariffs-for-admin.jsp";
         } else {
-            return "/all-tariffs-for-user.jsp";
+            return "/jsp/all-tariffs-for-user.jsp";
         }
     }
 }

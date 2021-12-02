@@ -12,6 +12,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Represents operations for Subscription.
+ *
+ * @see Subscription
+ */
 @RequiredArgsConstructor
 public class SubscriptionServiceImpl implements SubscriptionService {
 
@@ -141,10 +146,21 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         }
     }
 
+    /**
+     * Pay bill for subscription by account id and subscription id.
+     *
+     * @param accountId account's id
+     * @param subscriptionIdForBill subscription's id for bill
+     * @param value bill's value
+     * @param date date
+     * @throws ServiceException in case of transaction or dao exception,
+     * or bill doesn't exist,
+     */
     @Override
     public void payBillForSubscription(final Integer accountId,
                                        final Integer subscriptionIdForBill,
-                                       final Float value, final LocalDate date)
+                                       final Float value,
+                                       final LocalDate date)
             throws ServiceException, TransactionException {
 
         try {

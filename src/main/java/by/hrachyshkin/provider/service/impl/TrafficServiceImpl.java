@@ -11,6 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Represents operations for Traffic.
+ *
+ * @see Traffic
+ */
 @RequiredArgsConstructor
 public class TrafficServiceImpl implements TrafficService {
 

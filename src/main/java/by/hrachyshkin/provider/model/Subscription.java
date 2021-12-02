@@ -1,11 +1,12 @@
 package by.hrachyshkin.provider.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-public class Subscription extends Model {
+public class Subscription implements Model {
 
     private final Integer id;
     private final Integer accountId;

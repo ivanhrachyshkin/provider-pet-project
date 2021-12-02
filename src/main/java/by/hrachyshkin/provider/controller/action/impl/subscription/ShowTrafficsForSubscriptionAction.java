@@ -61,6 +61,6 @@ public class ShowTrafficsForSubscriptionAction extends BaseAction {
                 | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/traffics-for-subscription.jsp";
+        return "/jsp/traffics-for-subscription.jsp";
     }
 }

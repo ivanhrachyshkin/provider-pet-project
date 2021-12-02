@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public final class Traffic extends Model {
+public final class Traffic implements Model {
 
     private final Integer subscriptionId;
     private final Integer value;

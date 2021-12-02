@@ -13,6 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Represents operations for Tariffs.
+ *
+ * @see Tariff
+ */
 @RequiredArgsConstructor
 public class TariffServiceImpl implements TariffService {
 
@@ -156,6 +161,12 @@ public class TariffServiceImpl implements TariffService {
         }
     }
 
+    /**
+     * Find tariffs for subscription.
+     *
+     * @param accountId account's id
+     * @throws ServiceException in case of transaction or dao exception
+     */
     @Override
     public List<Tariff> findTariffsForSubscription(final Integer accountId)
             throws ServiceException, TransactionException {

@@ -38,6 +38,6 @@ public class ShowAccountsAction extends BaseAction {
                 | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/accounts.jsp";
+        return "/jsp/accounts.jsp";
     }
 }

@@ -11,6 +11,6 @@ public class WelcomeAction extends BaseAction {
     public String execute(final HttpServletRequest request,
                           final HttpServletResponse response) {
 
-        return "/login.jsp";
+        return "/jsp/login.jsp";
     }
 }

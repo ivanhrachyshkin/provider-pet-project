@@ -23,7 +23,6 @@
         <ul class="nav navbar-nav">
             <li><a href="${url}/tariffs"><b><fmt:message key="tariffsLabel"/></b></a></li>
             <li><a href="${url}/discounts"><b><fmt:message key="discountsLabel"/></b></a></li>
-            <li><a href="#"><b><fmt:message key="aboutUsLabel"/></b></a></li>
             <li><a href="${url}/cabinet"><b><fmt:message key="cabinetLabel"/></b></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">

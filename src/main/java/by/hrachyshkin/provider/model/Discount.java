@@ -6,8 +6,9 @@ import java.time.LocalDate;
 
 @Getter
 @ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-public final class Discount extends Model {
+public final class Discount implements Model {
 
     @ToString
     public enum Type {

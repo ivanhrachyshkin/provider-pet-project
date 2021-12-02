@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.service.impl;
 
 import by.hrachyshkin.provider.dao.*;
+import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Bill;
 import by.hrachyshkin.provider.service.BillService;
 import by.hrachyshkin.provider.service.ServiceException;
@@ -11,6 +12,12 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.ResourceBundle;
 
+
+/**
+ * Represents operations for Bill.
+ *
+ * @see Bill
+ */
 @RequiredArgsConstructor
 public class BillServiceImpl implements BillService {
 

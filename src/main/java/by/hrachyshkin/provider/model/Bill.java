@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @ToString
 @EqualsAndHashCode
 @AllArgsConstructor
-public final class Bill extends Model {
+public final class Bill implements Model {
 
     private final Integer subscriptionId;
     private final Float value;

@@ -1,11 +1,12 @@
 package by.hrachyshkin.provider.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-public class Promotion extends Model {
+public class Promotion implements Model {
 
     private final Integer tariffId;
     private final Integer discountId;

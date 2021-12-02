@@ -29,7 +29,7 @@ public class SecurityFilter implements Filter {
                 && session.getAttribute("accountRole") == null
                 && !path.startsWith("/login")) {
             httpRequest
-                    .getRequestDispatcher("/login.jsp")
+                    .getRequestDispatcher("/jsp/login.jsp")
                     .forward(request, response);
         }
 

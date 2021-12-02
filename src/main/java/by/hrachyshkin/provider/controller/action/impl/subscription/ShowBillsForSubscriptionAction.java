@@ -61,6 +61,6 @@ public class ShowBillsForSubscriptionAction extends BaseAction {
                 | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/bills-for-subscription.jsp";
+        return "/jsp/bills-for-subscription.jsp";
     }
 }

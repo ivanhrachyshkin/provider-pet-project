@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.service.impl;
 
 import by.hrachyshkin.provider.dao.*;
+import by.hrachyshkin.provider.model.Discount;
 import by.hrachyshkin.provider.model.Promotion;
 import by.hrachyshkin.provider.service.PromotionService;
 import by.hrachyshkin.provider.service.ServiceException;
@@ -11,6 +12,11 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Represents operations for Promotion.
+ *
+ * @see Promotion
+ */
 @RequiredArgsConstructor
 public class PromotionServiceImpl implements PromotionService {
 
@@ -112,6 +118,14 @@ public class PromotionServiceImpl implements PromotionService {
                 + ".delete.unsupported.exception"));
     }
 
+    /**
+     * Delete promotion by tariff id and discount id.
+     *
+     * @param tariffId tariff's id
+     * @param discountId discount's id
+     * @throws ServiceException in case of transaction or dao exception,
+     * or promotion doesn't exist.
+     */
     @Override
     public void deleteByTariffAndDiscount(final Integer tariffId,
                                           final Integer discountId)

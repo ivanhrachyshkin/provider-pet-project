@@ -1,6 +1,7 @@
 package by.hrachyshkin.provider.service.impl;
 
 import by.hrachyshkin.provider.dao.*;
+import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Discount;
 import by.hrachyshkin.provider.model.Promotion;
 import by.hrachyshkin.provider.service.DiscountService;
@@ -13,6 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Represents operations for Discount.
+ *
+ * @see Discount
+ */
 @RequiredArgsConstructor
 public class DiscountServiceImpl implements DiscountService {
 
@@ -84,8 +90,8 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     @Override
-    public List<Discount> findAndFilterByType(final Discount.Type type,
-                                              final int offset)
+    public List<Discount> findAndFilterByTypeOffset(final Discount.Type type,
+                                                    final int offset)
             throws ServiceException, TransactionException {
 
         try {
@@ -157,6 +163,12 @@ public class DiscountServiceImpl implements DiscountService {
         }
     }
 
+    /**
+     * Find all discounts which are connected with tariffs in promotion.
+     *
+     * @param tariffId tariff's id
+     * @throws ServiceException in case of transaction or dao exception.
+     */
     @Override
     public List<Discount> findDiscountsForPromotion(final Integer tariffId)
             throws ServiceException, TransactionException {

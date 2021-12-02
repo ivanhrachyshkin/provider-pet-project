@@ -13,6 +13,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
+/**
+ * Represents operations for Account.
+ *
+ * @see Account
+ */
 @RequiredArgsConstructor
 public class AccountServiceImpl implements AccountService {
 
@@ -239,6 +244,16 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    /**
+     * Deposit to account's balance by card information.
+     *
+     * @param accountId account id
+     * @param card card number
+     * @param deposit deposit
+     * @param validity validity
+     * @throws ServiceException in case of empty value, invalid card number,
+     * expired card, negative deposit.
+     */
     @Override
     public void deposit(final Integer accountId,
                         final String card,
@@ -256,8 +271,7 @@ public class AccountServiceImpl implements AccountService {
                     || validity == null) {
                 transactionImpl.rollback();
                 LOGGER.error(rb.getString("account.deposit.empty.input"
-                        +
-                        ".exception"));
+                        + ".exception"));
                 throw new ServiceException(rb.getString("account.deposit"
                         + ".empty.input.exception"));
             }

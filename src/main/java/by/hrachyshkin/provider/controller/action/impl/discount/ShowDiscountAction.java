@@ -36,7 +36,7 @@ public class ShowDiscountAction extends BaseAction {
             } else {
                 final Discount.Type type = Discount.Type.valueOf(rawType
                         .toUpperCase());
-                discounts = discountService.findAndFilterByType(type, offset);
+                discounts = discountService.findAndFilterByTypeOffset(type, offset);
 
                 setTotalPagesAttribute(request, discountService
                         .findAndFilterByTypeAndSortByValue(type));
@@ -46,9 +46,9 @@ public class ShowDiscountAction extends BaseAction {
             request.setAttribute("discounts", discounts);
 
             if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
-                path = "all-discounts-for-admin.jsp";
+                path = "/jsp/all-discounts-for-admin.jsp";
             } else {
-                path = "all-discounts-for-user.jsp";
+                path = "/jsp/all-discounts-for-user.jsp";
             }
 
         } catch (ServiceException | TransactionException e) {

@@ -39,6 +39,6 @@ public class ShowSubscriptionsForAccountAction extends BaseAction {
                 | TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
-        return "/subscriptions-for-account.jsp";
+        return "/jsp/subscriptions-for-account.jsp";
     }
 }

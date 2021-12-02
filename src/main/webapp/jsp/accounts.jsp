@@ -46,28 +46,40 @@
             </tr>
             <c:forEach var="account" items="${accounts}">
                 <tr>
-                    <form action="${url}/cabinet/accounts/update-list" method="POST">
-                        <td><input name="email" type="email" value="${account.email}"
+                    <form action="${url}/cabinet/accounts/update-list"
+                          method="POST">
+                        <td><input name="email" type="email"
+                                   value="${account.email}"
                                    placeholder="${account.email}"/></td>
                         <td><select name="role">
-                            <c:set var="roles" value="<%=Account.Role.values()%>"/>
+                            <c:set var="roles"
+                                   value="<%=Account.Role.values()%>"/>
                             <c:forEach var="role" items="${roles}">
                                 <option value="${role.name()}" ${account.role.name()==role ?'selected':''}>${role.name()}</option>
                             </c:forEach>
                         </select></td>
-                        <td><input name="name" type="text" value="${account.name}" placeholder="${account.name}"/>
+                        <td><input name="name" type="text"
+                                   value="${account.name}"
+                                   placeholder="${account.name}"/>
                         </td>
-                        <td><input name="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}" value="${account.phone}"
+                        <td><input name="phone" type="tel"
+                                   pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}"
+                                   value="${account.phone}"
                                    placeholder="${account.phone}"/></td>
-                        <td><input name="address" type="text" value="${account.address}"
+                        <td><input name="address" type="text"
+                                   value="${account.address}"
                                    placeholder="${account.address}"/></td>
                         <td>${account.balance}</td>
                         <td>
-                            <button type="submit" class="btn btn-info btn-sm"><fmt:message key="updateLabel"/></button>
+                            <button type="submit" class="btn btn-info btn-sm">
+                                <fmt:message key="updateLabel"/></button>
                         </td>
-                        <input name="accountId" type="hidden" value="${account.id}">
-                        <input name="balance" type="hidden" value="${account.balance}">
-                        <input name="page" type="hidden" value="${requestScope.page}">
+                        <input name="accountId" type="hidden"
+                               value="${account.id}">
+                        <input name="balance" type="hidden"
+                               value="${account.balance}">
+                        <input name="page" type="hidden"
+                               value="${requestScope.page}">
                     </form>
                 </tr>
             </c:forEach>
@@ -78,19 +90,25 @@
         <div class="col-md-2"></div>
         <div class="col-md-8">
             <form action="${url}/cabinet/accounts/create" method="POST">
-                <input name="email" type="email" placeholder="<fmt:message key="emailLabel"/>"/>
-                <input name="password" type="password" placeholder="<fmt:message key="passwordLabel"/>"/>
+                <input name="email" type="email"
+                       placeholder="<fmt:message key="emailLabel"/>"/>
+                <input name="password" type="password"
+                       placeholder="<fmt:message key="passwordLabel"/>"/>
                 <select name="role">
                     <c:set var="roles" value="<%=Account.Role.values()%>"/>
                     <c:forEach var="role" items="${roles}">
                         <option value="${role.name()}">${role.name()}</option>
                     </c:forEach>
                 </select>
-                <input name="name" type="text" placeholder="<fmt:message key="nameLabel"/>"/>
-                <input name="phone" type="tel" pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}"
+                <input name="name" type="text"
+                       placeholder="<fmt:message key="nameLabel"/>"/>
+                <input name="phone" type="tel"
+                       pattern="[0-9]{3}-[0-9]{2}-[0-9]{2}"
                        placeholder="<fmt:message key="telephoneLabel"/>"/>
-                <input name="address" type="text" placeholder="<fmt:message key="addressLabel"/>"/>
-                <button type="submit" class="btn btn-info btn-sm"><fmt:message key="createLabel"/></button>
+                <input name="address" type="text"
+                       placeholder="<fmt:message key="addressLabel"/>"/>
+                <button type="submit" class="btn btn-info btn-sm"><fmt:message
+                        key="createLabel"/></button>
                 <input name="page" type="hidden" value="${requestScope.page}">
             </form>
         </div>

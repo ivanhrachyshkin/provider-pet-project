@@ -11,6 +11,6 @@ public class MainPageAction extends BaseAction {
     public String execute(final HttpServletRequest request,
                           final HttpServletResponse response) {
 
-        return "/main.jsp";
+        return "/jsp/main.jsp";
     }
 }
