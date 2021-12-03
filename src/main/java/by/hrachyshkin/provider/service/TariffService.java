@@ -13,7 +13,7 @@ public interface TariffService extends Service<Tariff> {
     List<Tariff> findAndSortBySpeedAndPrice(Integer offset)
             throws ServiceException, TransactionException;
 
-    List<Tariff> findAndFilterByType(Tariff.Type type, int offset)
+    List<Tariff> findAndFilterByTypeOffset(Tariff.Type type, int offset)
             throws ServiceException, TransactionException;
 
     List<Tariff> findTariffsForSubscription(Integer accountId)

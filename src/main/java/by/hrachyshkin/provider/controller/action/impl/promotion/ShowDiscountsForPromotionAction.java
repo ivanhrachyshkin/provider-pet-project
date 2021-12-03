@@ -42,6 +42,8 @@ public class ShowDiscountsForPromotionAction extends BaseAction {
             request.setAttribute("tariffDiscounts", tariffDiscounts);
             request.setAttribute("discounts", discounts);
 
+            removeAttribute(request, "page");
+
         } catch (TransactionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }

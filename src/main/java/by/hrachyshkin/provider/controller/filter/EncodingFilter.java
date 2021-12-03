@@ -19,7 +19,7 @@ public class EncodingFilter implements Filter {
             throws IOException, ServletException {
 
         request.setCharacterEncoding("UTF-8");
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        final HttpServletResponse httpResponse = (HttpServletResponse) response;
         httpResponse.setCharacterEncoding("UTF-8");
 
         httpResponse.setHeader("Cache-Control", "no-cache");

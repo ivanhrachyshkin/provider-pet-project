@@ -22,8 +22,7 @@ public class SecurityFilter implements Filter {
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         final HttpSession session = httpRequest.getSession(true);
 
-        final String path = httpRequest.getRequestURI()
-                .substring(httpRequest.getContextPath().length());
+        final String path = httpRequest.getServletPath();
 
         if (session.getAttribute("accountId") == null
                 && session.getAttribute("accountRole") == null
@@ -38,6 +37,14 @@ public class SecurityFilter implements Filter {
                     .getRequestDispatcher("/cabinet")
                     .forward(request, response);
         }
+
+        if (path.contains(".jsp")) {
+            httpRequest
+                    .getRequestDispatcher("/main")
+                    .forward(request, response);
+        }
+
+
         chain.doFilter(request, response);
     }
 

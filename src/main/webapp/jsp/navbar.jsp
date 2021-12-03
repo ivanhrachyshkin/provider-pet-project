@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setLocale value="${cookie['lang'].value}"/>
 <fmt:setBundle basename="langs"/>
 <c:set var="url">${pageContext.request.contextPath}</c:set>
 
@@ -20,8 +20,8 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false"> &#127760;<fmt:message key="languageLabel"/> <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="?sessionLocale=en_US">eng</a></li>
-                    <li><a href="?sessionLocale=ru_RU">rus</a></li>
+                    <li><a href="${url}/lang?cookieLocale=en_US">eng</a></li>
+                    <li><a href="${url}/lang?cookieLocale=ru_RU">rus</a></li>
                 </ul>
             </li>
             <li><a href="${url}/logout"><span class="glyphicon glyphicon-user"><fmt:message

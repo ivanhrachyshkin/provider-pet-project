@@ -162,7 +162,7 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public List<Tariff> findAndSortBySpeedAndPrice(final int offset)
+    public List<Tariff> findAndSortBySpeedAndPriceOffset(final int offset)
             throws DaoException {
 
         try (final PreparedStatement statement = connection
@@ -186,8 +186,8 @@ public class TariffDaoImpl implements TariffDao {
     }
 
     @Override
-    public List<Tariff> findAndFilterByType(final Tariff.Type type,
-                                            final int offset)
+    public List<Tariff> findAndFilterByTypeOffset(final Tariff.Type type,
+                                                  final int offset)
             throws DaoException {
 
         try (final PreparedStatement statement = connection

@@ -2,16 +2,23 @@ package by.hrachyshkin.provider.dao.impl;
 
 import by.hrachyshkin.provider.dao.AccountDao;
 import by.hrachyshkin.provider.dao.DaoException;
+import by.hrachyshkin.provider.dao.pool.ConnectionPool;
 import by.hrachyshkin.provider.model.Account;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AccountDaoImpl implements AccountDao {
 
@@ -145,7 +152,7 @@ public class AccountDaoImpl implements AccountDao {
                 return resultSet.getBoolean(1);
             }
 
-        } catch (SQLException e) {
+        } catch (SQLException | IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new DaoException(
                     rb.getString("account.exist.by.email.and."
                             + "password.exception"), e);
@@ -269,7 +276,7 @@ public class AccountDaoImpl implements AccountDao {
 
             statement.executeUpdate();
 
-        } catch (SQLException e) {
+        } catch (SQLException | IOException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new DaoException(
                     rb.getString("account.add.exception"), e);
         }
@@ -327,8 +334,20 @@ public class AccountDaoImpl implements AccountDao {
         }
     }
 
-    private String encrypt(final String password) {
-        return DigestUtils.md5Hex(password);
+    private String encrypt(final String password) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+
+        final Properties properties = new Properties();
+        properties
+                .load(getClass()
+                        .getClassLoader()
+                        .getResourceAsStream("salt.properties"));
+
+        final byte[] salt = properties.getProperty("salt").getBytes(StandardCharsets.UTF_8);
+        final KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 128);
+        final SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+
+        final byte[] hash = factory.generateSecret(spec).getEncoded();
+        return Hex.encodeHexString(hash);
     }
 
     private Account buildAccount(final ResultSet resultSet)

@@ -67,10 +67,12 @@
             <version>9.0.55</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.9</version>
+        </dependency>
     </dependencies>
-
-
     <build>
         <finalName>training-java-project-provider</finalName>
         <plugins>

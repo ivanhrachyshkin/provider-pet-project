@@ -1,7 +1,6 @@
 package by.hrachyshkin.provider.service.impl;
 
 import by.hrachyshkin.provider.dao.*;
-import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Discount;
 import by.hrachyshkin.provider.model.Promotion;
 import by.hrachyshkin.provider.service.DiscountService;
@@ -99,7 +98,7 @@ public class DiscountServiceImpl implements DiscountService {
             final DiscountDao discountDao =
                     transactionImpl.createDao(DaoKeys.DISCOUNT);
             final List<Discount> discounts =
-                    discountDao.findAndFilterByType(type, offset);
+                    discountDao.findAndFilterByTypeOffset(type, offset);
             LOGGER.debug("method findAndFilterByType finish ");
             transactionImpl.commit();
             return discounts;

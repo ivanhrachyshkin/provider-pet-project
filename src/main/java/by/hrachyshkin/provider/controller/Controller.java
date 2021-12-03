@@ -30,8 +30,7 @@ public class Controller extends HttpServlet {
     private void processRequest(final HttpServletRequest request,
                                 final HttpServletResponse response) {
 
-        final String commandName = request.getRequestURI()
-                .substring(request.getContextPath().length());
+        final String commandName = request.getServletPath();
 
         final ActionFactory actionFactory = ActionFactory.getINSTANCE();
         final Action command = actionFactory.getCommand(commandName);

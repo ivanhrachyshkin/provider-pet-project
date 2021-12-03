@@ -13,10 +13,6 @@
     </listener>
 
     <filter>
-        <filter-name>SessionLocaleFilter</filter-name>
-        <filter-class>by.hrachyshkin.provider.controller.filter.SessionLocaleFilter</filter-class>
-    </filter>
-    <filter>
         <filter-name>EncodingFilter</filter-name>
         <filter-class>by.hrachyshkin.provider.controller.filter.EncodingFilter</filter-class>
     </filter>
@@ -31,10 +27,6 @@
     </filter>
 
     <filter-mapping>
-        <filter-name>SessionLocaleFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
@@ -47,14 +39,13 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
 
     <jsp-config>
         <taglib>
-            <taglib-uri>customtags</taglib-uri>
+            <taglib-uri>customTags</taglib-uri>
             <taglib-location>/WEB-INF/custom.tld</taglib-location>
         </taglib>
     </jsp-config>

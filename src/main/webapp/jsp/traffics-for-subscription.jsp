@@ -5,7 +5,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ page isELIgnored="false" %>
 
-<fmt:setLocale value="${sessionScope.lang}"/>
+<fmt:setLocale value="${cookie['lang'].value}"/>
 <fmt:setBundle basename="langs"/>
 <c:set var="url">${pageContext.request.contextPath}</c:set>
 

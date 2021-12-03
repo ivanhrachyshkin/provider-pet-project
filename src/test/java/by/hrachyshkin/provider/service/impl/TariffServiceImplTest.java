@@ -59,7 +59,7 @@ public class TariffServiceImplTest {
         final List<Tariff> tariffs = new ArrayList<>();
         tariffs.add(tariff1);
         tariffs.add(tariff2);
-        Assert.assertEquals(tariffService.findAndFilterByType(Tariff.Type.TRAFFICKED, 0), tariffs);
+        Assert.assertEquals(tariffService.findAndFilterByTypeOffset(Tariff.Type.TRAFFICKED, 0), tariffs);
     }
 
     @Test

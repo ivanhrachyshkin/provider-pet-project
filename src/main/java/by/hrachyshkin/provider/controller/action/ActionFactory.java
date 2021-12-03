@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action;
 
+import by.hrachyshkin.provider.controller.action.impl.LocalizationAction;
 import by.hrachyshkin.provider.controller.action.impl.WelcomeAction;
 import by.hrachyshkin.provider.controller.action.impl.MainPageAction;
 import by.hrachyshkin.provider.controller.action.impl.account.*;
@@ -74,6 +75,9 @@ public class ActionFactory {
             put(DeleteTariffAction.DELETE_TARIFF, new DeleteTariffAction());
             put(ShowTariffsAction.TARIFFS, new ShowTariffsAction());
             put(UpdateTariffAction.UPDATE_TARIFF, new UpdateTariffAction());
+            put(UpdateTariffAction.UPDATE_TARIFF, new UpdateTariffAction());
+
+            put(LocalizationAction.LOCALIZATION_ACTION, new LocalizationAction());
         }
     };
 

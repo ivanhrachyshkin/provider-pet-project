@@ -39,7 +39,7 @@ public abstract class BaseAction implements Action {
 
         int offset = 0;
 
-        final HttpSession session = request.getSession();
+        final HttpSession session = request.getSession(false);
 
         if (session.getAttribute("page") != null) {
             String value = (String) session.getAttribute("page");
@@ -63,7 +63,7 @@ public abstract class BaseAction implements Action {
 
     protected void setPageNumber(final HttpServletRequest request) {
 
-        final HttpSession session = request.getSession();
+        final HttpSession session = request.getSession(false);
 
         String pageNumber;
 
@@ -80,7 +80,7 @@ public abstract class BaseAction implements Action {
     protected void setPageNumberAttributeToSession(
             final HttpServletRequest request) {
 
-        final HttpSession session = request.getSession();
+        final HttpSession session = request.getSession(false);
         session.setAttribute("page", request.getParameter("page"));
     }
 
@@ -117,7 +117,7 @@ public abstract class BaseAction implements Action {
     protected void removeAttribute(final HttpServletRequest request,
                                    final String value) {
 
-        final HttpSession session = request.getSession();
+        final HttpSession session = request.getSession(false);
         session.removeAttribute(value);
     }
 }

@@ -45,6 +45,8 @@ public class ShowDiscountAction extends BaseAction {
             setPageNumber(request);
             request.setAttribute("discounts", discounts);
 
+            removeAttribute(request, "page");
+
             if (getRole(request).equals(Account.Role.ADMINISTRATOR)) {
                 path = "/jsp/all-discounts-for-admin.jsp";
             } else {

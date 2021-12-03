@@ -40,7 +40,7 @@ public class ShowTariffsAction extends BaseAction {
             } else {
                 final Tariff.Type type =
                         Tariff.Type.valueOf(rawType.toUpperCase());
-                tariffs = tariffService.findAndFilterByType(type, offset);
+                tariffs = tariffService.findAndFilterByTypeOffset(type, offset);
 
                 setTotalPagesAttribute(request,
                         tariffService.findAndFilterAndSort(type));

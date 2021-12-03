@@ -187,7 +187,7 @@ public class DiscountDaoImpl implements DiscountDao {
     }
 
     @Override
-    public List<Discount> findAndFilterByType(
+    public List<Discount> findAndFilterByTypeOffset(
             final Discount.Type type, final int offset) throws DaoException {
 
         try (final PreparedStatement statement = connection

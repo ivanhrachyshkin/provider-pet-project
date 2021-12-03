@@ -182,6 +182,15 @@ public class AccountServiceImpl implements AccountService {
                         rb.getString("account.add.password.exception"));
             }
 
+            if (!Pattern.matches("[0-9]{3}-[0-9]{2}-[0-9]{2}",
+                    account.getPhone())) {
+                LOGGER.error(
+                        rb.getString("account.add.phone.exception"));
+                transactionImpl.rollback();
+                throw new ServiceException(
+                        rb.getString("account.add.phone.exception"));
+            }
+
             accountDao.add(account);
             LOGGER.debug("method add finish ");
             transactionImpl.commit();
@@ -231,6 +240,15 @@ public class AccountServiceImpl implements AccountService {
                         + ".exception"));
                 throw new ServiceException(rb.getString("account.update"
                         + ".used.email.exception"));
+            }
+
+            if (!Pattern.matches("[0-9]{3}-[0-9]{2}-[0-9]{2}",
+                    account.getPhone())) {
+                LOGGER.error(
+                        rb.getString("account.add.phone.exception"));
+                transactionImpl.rollback();
+                throw new ServiceException(
+                        rb.getString("account.add.phone.exception"));
             }
 
             accountDao.update(account);

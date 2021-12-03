@@ -45,6 +45,7 @@ public class CreateDiscountAction extends BaseAction {
 
         } catch (ServiceException | NumberFormatException
                 | TransactionException e) {
+            setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }
         return ShowDiscountAction.DISCOUNTS;

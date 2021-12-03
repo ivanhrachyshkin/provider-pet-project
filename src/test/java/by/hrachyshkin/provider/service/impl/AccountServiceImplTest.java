@@ -25,7 +25,7 @@ public class AccountServiceImplTest {
             "a@outlook.com",
             Account.Role.ADMINISTRATOR,
             "Jack White",
-            "+1-993-631-7614",
+            "111-11-11",
             "1619 New Hampshire Avenue., N.W. Washington, DC 20009",
             0.0f);
 
@@ -33,7 +33,7 @@ public class AccountServiceImplTest {
             "b@outlook.com",
             Account.Role.BLOCKED,
             "Edgar Allan Poe",
-            "+1-727-456-7504",
+            "222-22-22",
             "321 Mia Field Apt. 340 New Lilianfort, NE 72310",
             500.0f);
 
@@ -41,7 +41,7 @@ public class AccountServiceImplTest {
             "c@outlook.com",
             Account.Role.USER,
             "Charles Palahniuk",
-            "+1-914-733-7350",
+            "333-33-33",
             "60441 Piper Inlet Wilfredton, GA 46024",
             9500.0f));
 
@@ -50,7 +50,7 @@ public class AccountServiceImplTest {
             "9372273Aaa",
             Account.Role.USER,
             "Added name",
-            "+1-914-733-7350",
+            "444-44-44",
             "60441 Piper Inlet Wilfredton, GA 46024",
             100.0f);
 
@@ -260,7 +260,7 @@ public class AccountServiceImplTest {
                 "9372273Aaa",
                 Account.Role.USER,
                 "Updated name",
-                "+1-914-733-7350",
+                "123-33-22",
                 "60441 Piper Inlet Wilfredton, GA 46024",
                 100.0f);
         accountService.update(updated);
@@ -278,7 +278,7 @@ public class AccountServiceImplTest {
                 "9372273Aaa",
                 Account.Role.USER,
                 "Updated name",
-                "+1-914-733-7350",
+                "223-43-23",
                 "60441 Piper Inlet Wilfredton, GA 46024",
                 100.0f);
         accountService.update(testAccount);
