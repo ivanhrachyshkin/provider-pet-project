@@ -1,12 +1,14 @@
 package by.hrachyshkin.provider.dao.pool;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -48,11 +50,12 @@ public class ConnectionPool {
                     .collect(Collectors.toList());
 
         } catch (ClassNotFoundException e) {
-           throw new PoolException(e.getMessage());
+            throw new PoolException(e.getMessage());
         }
     }
 
-    public Connection getConnection() throws PoolException {
+    public Connection getConnection(final ResourceBundle rb)
+            throws PoolException {
 
         try {
             lock.lock();
@@ -60,8 +63,8 @@ public class ConnectionPool {
                 if (usedConnections.size() < poolMaxSize) {
                     freeConnections.add(createConnection(url, user, password));
                 } else {
-                    throw new PoolException("Maximum pool size reached,"
-                            + " no available connections!");
+                    throw new PoolException(rb.getString(
+                            "pool.maximum.exception"));
                 }
             }
 

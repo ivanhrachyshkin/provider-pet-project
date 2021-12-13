@@ -110,7 +110,7 @@ public abstract class BaseAction implements Action {
             throws ServletException {
 
         if (request.getMethod().equals("GET")) {
-            throw new ServletException("Unsupported get operation");
+            throw new UnsupportedOperationException();
         }
     }
 

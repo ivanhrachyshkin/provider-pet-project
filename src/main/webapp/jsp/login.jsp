@@ -25,16 +25,6 @@
             <li><a href="${url}/discounts"><b><fmt:message key="discountsLabel"/></b></a></li>
             <li><a href="${url}/cabinet"><b><fmt:message key="cabinetLabel"/></b></a></li>
         </ul>
-        <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false"> &#127760;<fmt:message key="languageLabel"/><span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="?sessionLocale=en_US">eng</a></li>
-                    <li><a href="?sessionLocale=ru_RU">rus</a></li>
-                </ul>
-            </li>
-        </ul>
     </div>
 </nav>
 

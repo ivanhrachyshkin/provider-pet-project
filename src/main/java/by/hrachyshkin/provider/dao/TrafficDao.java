@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface TrafficDao extends Dao<Traffic> {
 
-
     boolean isExists(Traffic traffic) throws DaoException;
 
     List<Traffic> findAndSortByDate() throws DaoException;

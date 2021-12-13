@@ -49,4 +49,14 @@
             <taglib-location>/WEB-INF/custom.tld</taglib-location>
         </taglib>
     </jsp-config>
+
+    <error-page>
+        <exception-type>java.lang.UnsupportedOperationException</exception-type>
+        <location>/jsp/error.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>java.lang.NullPointerException</exception-type>
+        <location>/jsp/error.jsp</location>
+    </error-page>
+
 </web-app>

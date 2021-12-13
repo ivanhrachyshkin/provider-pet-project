@@ -18,6 +18,6 @@ public class TransactionFactory {
 
         return new TransactionImpl(ConnectionPool
                 .getINSTANCE()
-                .getConnection(), rb);
+                .getConnection(rb), rb);
     }
 }

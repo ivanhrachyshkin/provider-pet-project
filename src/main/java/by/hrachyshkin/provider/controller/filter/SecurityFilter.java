@@ -44,7 +44,6 @@ public class SecurityFilter implements Filter {
                     .forward(request, response);
         }
 
-
         chain.doFilter(request, response);
     }
 

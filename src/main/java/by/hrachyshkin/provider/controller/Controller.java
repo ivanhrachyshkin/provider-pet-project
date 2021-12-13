@@ -14,21 +14,21 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doGet(final HttpServletRequest request,
-                         final HttpServletResponse response) {
-        processRequest(request, response);
+                         final HttpServletResponse response)  {
+        service(request, response);
     }
 
     @Override
     protected void doPost(final HttpServletRequest request,
-                          final HttpServletResponse response) {
+                          final HttpServletResponse response)  {
 
-        processRequest(request, response);
+        service(request, response);
     }
 
-
     @SneakyThrows
-    private void processRequest(final HttpServletRequest request,
-                                final HttpServletResponse response) {
+    @Override
+    protected void service(final HttpServletRequest request,
+                           final HttpServletResponse response) {
 
         final String commandName = request.getServletPath();
 
