@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.subscription;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Subscription;
@@ -29,13 +30,11 @@ public class CreateSubscriptionAction extends BaseAction {
                     .getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
 
             final Integer accountId = getAccountId(request);
-            final Integer tariffId =
-                    Integer.valueOf(request.getParameter("tariffId"));
+            final Integer tariffId = getIntParameter(request, "tariffId");
 
             subscriptionService.add(new Subscription(accountId, tariffId));
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return ShowSubscriptionsForAccountAction.SUBSCRIPTIONS;

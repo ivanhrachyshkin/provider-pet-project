@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.discount;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Discount;
@@ -28,24 +29,23 @@ public class UpdateDiscountAction extends BaseAction {
             final DiscountService discountService = ServiceFactory.getINSTANCE()
                     .getService(ServiceKeys.DISCOUNT);
 
-            final Integer id = Integer.valueOf(request.getParameter("id"));
-            final String name = request.getParameter("name");
-            final Discount.Type type = Discount.Type.valueOf(request
-                    .getParameter("type").toUpperCase());
+            final Integer id = getIntParameter(request, "id");
+            final String name = getStringParameter(request, "name");
+            final Discount.Type type = Discount.Type.valueOf(
+                    getStringParameter(request, "type").toUpperCase());
             final Integer value =
-                    Integer.valueOf(request.getParameter("value"));
+                    getIntParameter(request, "value");
             final LocalDate dateFrom =
-                    LocalDate.parse(request.getParameter("dateFrom"));
-            final LocalDate dateTo =
-                    LocalDate.parse(request.getParameter("dateTo"));
+                    getDateParameter(request, "dateFrom");
+            final LocalDate dateTo = getDateParameter(request, "dateTo");
 
             discountService.update(
                     new Discount(id, name, type, value, dateFrom, dateTo));
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
+
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }

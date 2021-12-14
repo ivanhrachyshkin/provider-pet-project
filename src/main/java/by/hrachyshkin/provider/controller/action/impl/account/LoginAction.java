@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.account;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.controller.action.impl.WelcomeAction;
 import by.hrachyshkin.provider.dao.TransactionException;
@@ -31,8 +32,8 @@ public class LoginAction extends BaseAction {
             final AccountService accountService = ServiceFactory.getINSTANCE()
                     .getService(ServiceKeys.ACCOUNT);
 
-            final String email = request.getParameter("email");
-            final String password = request.getParameter("password");
+            final String email = getStringParameter(request, "email");
+            final String password = getStringParameter(request, "password");
 
             if (accountService.isExistByEmailAndPassword(email, password)) {
                 final Account account = accountService.findOneByEmail(email);
@@ -49,8 +50,7 @@ public class LoginAction extends BaseAction {
                 path = WelcomeAction.WELCOME;
             }
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             path = WelcomeAction.WELCOME;
         }

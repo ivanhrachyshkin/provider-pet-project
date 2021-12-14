@@ -98,34 +98,10 @@ public class TariffServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Add_EmptyName_Exception() throws ServiceException, TransactionException {
-
-        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
-        Tariff addedTariff = new Tariff("", Tariff.Type.TRAFFICKED, 10000, 20.0f);
-        tariffService.add(addedTariff);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Add_ExistName_Exception() throws ServiceException, TransactionException {
 
         final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
         Tariff addedTariff = new Tariff("Work 6", Tariff.Type.TRAFFICKED, 10000, 20.0f);
-        tariffService.add(addedTariff);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Add_NullType_Exception() throws ServiceException, TransactionException {
-
-        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
-        Tariff addedTariff = new Tariff("Work", null, 10000, 20.0f);
-        tariffService.add(addedTariff);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Add_NullSpeed_Exception() throws ServiceException, TransactionException {
-
-        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
-        Tariff addedTariff = new Tariff("Work", Tariff.Type.TRAFFICKED, null, 20.0f);
         tariffService.add(addedTariff);
     }
 
@@ -138,27 +114,11 @@ public class TariffServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Add_NullPrice_Exception() throws ServiceException, TransactionException {
-
-        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
-        Tariff addedTariff = new Tariff("Work", Tariff.Type.TRAFFICKED, 10, null);
-        tariffService.add(addedTariff);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Add_NegativePrice_Exception() throws ServiceException, TransactionException {
 
         final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
         Tariff addedTariff = new Tariff("Work", Tariff.Type.TRAFFICKED, 10, -20.0f);
         tariffService.add(addedTariff);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Update_EmptyName_Exception() throws ServiceException, TransactionException {
-
-        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
-        Tariff updatedTariff = new Tariff("", Tariff.Type.TRAFFICKED, 10000, 20.0f);
-        tariffService.update(updatedTariff);
     }
 
     @Test(expectedExceptions = ServiceException.class)
@@ -170,34 +130,10 @@ public class TariffServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Update_NullType_Exception() throws ServiceException, TransactionException {
-
-        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
-        Tariff updatedTariff = new Tariff("Work", null, 10000, 20.0f);
-        tariffService.update(updatedTariff);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Update_NullSpeed_Exception() throws ServiceException, TransactionException {
-
-        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
-        Tariff updatedTariff = new Tariff("Work", Tariff.Type.TRAFFICKED, null, 20.0f);
-        tariffService.update(updatedTariff);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Update_NegativeSpeed_Exception() throws ServiceException, TransactionException {
 
         final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
         Tariff updatedTariff = new Tariff(1,"Work", Tariff.Type.TRAFFICKED, -10, 20.0f);
-        tariffService.update(updatedTariff);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Update_NullPrice_Exception() throws ServiceException, TransactionException {
-
-        final TariffService tariffService = ServiceFactory.getINSTANCE().getService(ServiceKeys.TARIFF);
-        Tariff updatedTariff = new Tariff("Work", Tariff.Type.TRAFFICKED, 10, null);
         tariffService.update(updatedTariff);
     }
 

@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.account;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
@@ -27,13 +28,14 @@ public class CreateAccountAction extends BaseAction {
             final AccountService accountService = ServiceFactory.getINSTANCE()
                     .getService(ServiceKeys.ACCOUNT);
 
-            final String email = request.getParameter("email");
-            final String password = request.getParameter("password");
-            final Account.Role role =
-                    Account.Role.valueOf(request.getParameter("role"));
-            final String name = request.getParameter("name");
-            final String phone = request.getParameter("phone");
-            final String address = request.getParameter("address");
+            final String email = getStringParameter(request, "email");
+            final String password =
+                    getStringParameter(request, "password");
+            final Account.Role role = Account.Role.valueOf(
+                    getStringParameter(request, "role"));
+            final String name = getStringParameter(request, "name");
+            final String phone = getStringParameter(request, "phone");
+            final String address = getStringParameter(request, "address");
             final Float balance = 0.0f;
 
             accountService.add(new Account(email, password, role, name,
@@ -41,7 +43,7 @@ public class CreateAccountAction extends BaseAction {
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }

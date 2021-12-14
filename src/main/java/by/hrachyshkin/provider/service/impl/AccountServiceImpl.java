@@ -151,20 +151,6 @@ public class AccountServiceImpl implements AccountService {
             final AccountDao accountDao =
                     transactionImpl.createDao(DaoKeys.ACCOUNT);
 
-            if (account.getEmail().isEmpty()
-                    || account.getPassword().isEmpty()
-                    || account.getRole() == null
-                    || account.getName() == null
-                    || account.getName().isEmpty()
-                    || account.getPhone().isEmpty()
-                    || account.getAddress().isEmpty()) {
-                LOGGER.error(rb.getString("account.add.empty.input"
-                        + ".exception"));
-                transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.add"
-                        + ".empty.input.exception"));
-            }
-
             if (accountDao.isExistByEmail(account.getEmail())) {
                 LOGGER.error(rb.getString("account.add.exist.exception"));
                 transactionImpl.rollback();
@@ -210,20 +196,6 @@ public class AccountServiceImpl implements AccountService {
             LOGGER.debug("method update starts ");
             final AccountDao accountDao =
                     transactionImpl.createDao(DaoKeys.ACCOUNT);
-
-            if (account.getId() == null
-                    || account.getEmail().isEmpty()
-                    || account.getRole() == null
-                    || account.getName() == null
-                    || account.getName().isEmpty()
-                    || account.getPhone().isEmpty()
-                    || account.getAddress().isEmpty()) {
-                LOGGER.error(rb.getString("account.update.empty.input"
-                        + ".exception"));
-                transactionImpl.rollback();
-                throw new ServiceException(rb.getString("account.update"
-                        + ".empty.input.exception"));
-            }
 
             if (!accountDao.isExistById(account.getId())) {
                 transactionImpl.rollback();
@@ -283,16 +255,6 @@ public class AccountServiceImpl implements AccountService {
             LOGGER.debug("method deposit starts ");
             final AccountDao accountDao =
                     transactionImpl.createDao(DaoKeys.ACCOUNT);
-
-            if (card.isEmpty()
-                    || deposit == null
-                    || validity == null) {
-                transactionImpl.rollback();
-                LOGGER.error(rb.getString("account.deposit.empty.input"
-                        + ".exception"));
-                throw new ServiceException(rb.getString("account.deposit"
-                        + ".empty.input.exception"));
-            }
 
             if (!accountDao.isExistById(accountId)) {
                 LOGGER.error(rb.getString("account.deposit.not"

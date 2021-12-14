@@ -31,7 +31,6 @@ public class LocalizationAction extends BaseAction {
                             final HttpServletResponse response,
                             final String path)
             throws ServletException, IOException, ServiceException {
-
         response.sendRedirect(path);
     }
 }

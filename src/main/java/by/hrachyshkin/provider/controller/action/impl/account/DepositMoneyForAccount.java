@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.account;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.service.AccountService;
@@ -28,16 +29,14 @@ public class DepositMoneyForAccount extends BaseAction {
                     .getService(ServiceKeys.ACCOUNT);
 
             final Integer accountId = getAccountId(request);
-            final String card = request.getParameter("card");
-            final Float deposit =
-                    Float.valueOf(request.getParameter("sum"));
+            final String card = getStringParameter(request, "card");
+            final Float deposit = getFloatParameter(request, "sum");
             final LocalDate validity =
-                    LocalDate.parse(request.getParameter("validity"));
+                    getDateParameter(request, "validity");
 
             accountService.deposit(accountId, card, deposit, validity);
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return CabinetAction.CABINET;

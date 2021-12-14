@@ -1,7 +1,7 @@
 package by.hrachyshkin.provider.controller.action.impl.promotion;
 
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
-import by.hrachyshkin.provider.service.*;
+import by.hrachyshkin.provider.service.ServiceException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;

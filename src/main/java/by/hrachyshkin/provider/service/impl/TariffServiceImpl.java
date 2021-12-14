@@ -210,17 +210,6 @@ public class TariffServiceImpl implements TariffService {
             final TariffDao tariffDao =
                     transactionImpl.createDao(DaoKeys.TARIFF);
 
-            if (tariff.getName().isEmpty()
-                    || tariff.getType() == null
-                    || tariff.getSpeed() == null
-                    || tariff.getPrice() == null) {
-                LOGGER.error(rb.getString("tariff.add.empty.input"
-                        + ".exception"));
-                transactionImpl.rollback();
-                throw new ServiceException(rb.getString("tariff.add"
-                        + ".empty.input.exception"));
-            }
-
             if (tariffDao.isExistByName(tariff.getName())) {
                 LOGGER.error(rb.getString("tariff.add.exist.exception"));
                 transactionImpl.rollback();
@@ -261,17 +250,6 @@ public class TariffServiceImpl implements TariffService {
             LOGGER.debug("method update starts ");
             final TariffDao tariffDao =
                     transactionImpl.createDao(DaoKeys.TARIFF);
-
-            if (tariff.getName().isEmpty()
-                    || tariff.getType() == null
-                    || tariff.getSpeed() == null
-                    || tariff.getPrice() == null) {
-                LOGGER.error(rb.getString("tariff.update.empty.input"
-                        + ".exception"));
-                transactionImpl.rollback();
-                throw new ServiceException(rb.getString("tariff.update"
-                        + ".empty.input.exception"));
-            }
 
             if (!tariffDao.isExistById(tariff.getId())) {
                 LOGGER.error(rb.getString("tariff.update.exist.exception"));

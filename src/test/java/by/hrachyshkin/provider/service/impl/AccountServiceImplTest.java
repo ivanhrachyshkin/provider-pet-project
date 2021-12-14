@@ -270,21 +270,6 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Update_IdNull_Exception() throws ServiceException, TransactionException {
-
-        final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT);
-        final Account testAccount = new Account(null,
-                "updated@outlook.com",
-                "9372273Aaa",
-                Account.Role.USER,
-                "Updated name",
-                "223-43-23",
-                "60441 Piper Inlet Wilfredton, GA 46024",
-                100.0f);
-        accountService.update(testAccount);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Update_EmptyEmail_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT);
@@ -395,24 +380,10 @@ public class AccountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Deposit_NullDeposit_Exception() throws ServiceException, TransactionException {
-
-        final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT);
-        accountService.deposit(1, "4496550182593597", null, LocalDate.of(2040, 10, 10));
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
     public void ShouldThrowException_On_Deposit_NegativeDeposit_Exception() throws ServiceException, TransactionException {
 
         final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT);
         accountService.deposit(1, "4496550182593597", -10.0f, LocalDate.of(2040, 10, 10));
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldThrowException_On_Deposit_NullValidity_Exception() throws ServiceException, TransactionException {
-
-        final AccountService accountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.ACCOUNT);
-        accountService.deposit(1, "4496550182593597", 10.0f, null);
     }
 
     @Test(expectedExceptions = ServiceException.class)

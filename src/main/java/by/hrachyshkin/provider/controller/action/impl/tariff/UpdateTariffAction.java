@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.tariff;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Tariff;
@@ -28,21 +29,18 @@ public class UpdateTariffAction extends BaseAction {
             final TariffService tariffService = ServiceFactory.getINSTANCE()
                     .getService(ServiceKeys.TARIFF);
 
-            final Integer id =
-                    Integer.valueOf(request.getParameter("tariffId"));
-            final String name = request.getParameter("name");
+            final Integer id = getIntParameter(request, "tariffId");
+            final String name = getStringParameter(request, "name");
             final Tariff.Type type = Tariff.Type.valueOf(
-                    request.getParameter("type").toUpperCase());
-            final Integer speed =
-                    Integer.valueOf(request.getParameter("speed"));
-            final Float price = Float.valueOf(request.getParameter("price"));
+                    getStringParameter(request, "type").toUpperCase());
+            final Integer speed = getIntParameter(request, "speed");
+            final Float price = getFloatParameter(request, "price");
 
             tariffService.update(new Tariff(id, name, type, speed, price));
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }

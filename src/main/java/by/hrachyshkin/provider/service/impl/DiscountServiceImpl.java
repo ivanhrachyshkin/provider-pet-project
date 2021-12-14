@@ -210,18 +210,6 @@ public class DiscountServiceImpl implements DiscountService {
             final DiscountDao discountDao =
                     transactionImpl.createDao(DaoKeys.DISCOUNT);
 
-            if (discount.getName().isEmpty()
-                    || discount.getType() == null
-                    || discount.getValue() == null
-                    || discount.getDateFrom() == null
-                    || discount.getDateTo() == null) {
-                LOGGER.error(rb.getString("discount.add.empty.input"
-                        + ".exception"));
-                transactionImpl.rollback();
-                throw new ServiceException(rb.getString("discount.add"
-                        + ".empty.input.exception"));
-            }
-
             if (discountDao.isExistByName(discount.getName())) {
                 LOGGER.error(rb.getString("discount.add.exist.exception"));
                 transactionImpl.rollback();
@@ -263,17 +251,6 @@ public class DiscountServiceImpl implements DiscountService {
         try {
             final DiscountDao discountDao =
                     transactionImpl.createDao(DaoKeys.DISCOUNT);
-
-            if (discount.getName().isEmpty()
-                    || discount.getType() == null
-                    || discount.getValue() == null
-                    || discount.getDateFrom() == null
-                    || discount.getDateTo() == null) {
-                LOGGER.debug("method update starts ");
-                transactionImpl.rollback();
-                throw new ServiceException(rb.getString("discount.update"
-                        + ".empty.input.exception"));
-            }
 
             if (!discountDao.isExistById(discount.getId())) {
                 LOGGER.error(rb.getString("discount.update.exist"

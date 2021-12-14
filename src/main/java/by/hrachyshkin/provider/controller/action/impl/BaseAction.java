@@ -1,19 +1,24 @@
 package by.hrachyshkin.provider.controller.action.impl;
 
+import by.hrachyshkin.provider.ResourceBundleFactory;
 import by.hrachyshkin.provider.controller.action.Action;
 import by.hrachyshkin.provider.model.Account;
 import by.hrachyshkin.provider.model.Model;
 import by.hrachyshkin.provider.service.ServiceException;
+import org.apache.commons.lang3.Validate;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.ResourceBundle;
 
 public abstract class BaseAction implements Action {
 
+    private final ResourceBundle rb = ResourceBundleFactory.getINSTANCE().getRb();
 
     public void postExecute(final HttpServletRequest request,
                             final HttpServletResponse response,
@@ -119,5 +124,69 @@ public abstract class BaseAction implements Action {
 
         final HttpSession session = request.getSession(false);
         session.removeAttribute(value);
+    }
+
+    protected Integer getIntParameter(final HttpServletRequest request,
+                                   final String value) throws ActionException {
+
+        try {
+            Validate.notEmpty(request.getParameter(value));
+            return Integer.valueOf(request.getParameter(value));
+
+        } catch (NumberFormatException e) {
+            throw new ActionException(rb.getString(
+                    "check.input.number.exception"));
+        } catch (IllegalArgumentException e) {
+            throw new ActionException(rb.getString(
+                    "check.input.empty.exception"));
+        }
+    }
+
+    protected String getStringParameter(final HttpServletRequest request,
+                                      final String value)
+            throws ActionException {
+
+        try {
+            Validate.notEmpty(request.getParameter(value));
+            return request.getParameter(value);
+
+        } catch (IllegalArgumentException e) {
+            throw new ActionException(rb.getString(
+                    "check.input.empty.exception"));
+        }
+    }
+
+    protected LocalDate getDateParameter(final HttpServletRequest request,
+                                         final String value)
+            throws ActionException {
+
+        try {
+            Validate.notEmpty(request.getParameter(value));
+            return LocalDate.parse(request.getParameter(value));
+
+        } catch (NumberFormatException e) {
+            throw new ActionException(rb.getString(
+                    "check.input.date.exception"));
+        } catch (IllegalArgumentException e) {
+            throw new ActionException(rb.getString(
+                    "check.input.empty.exception"));
+        }
+    }
+
+    protected Float getFloatParameter(final HttpServletRequest request,
+                                         final String value)
+            throws ActionException {
+
+        try {
+            Validate.notEmpty(request.getParameter(value));
+            return Float.valueOf(request.getParameter(value));
+
+        } catch (NumberFormatException e) {
+            throw new ActionException(
+                    rb.getString("check.input.number.exception"));
+        } catch (IllegalArgumentException e) {
+            throw new ActionException(
+                    rb.getString("check.input.empty.exception"));
+        }
     }
 }

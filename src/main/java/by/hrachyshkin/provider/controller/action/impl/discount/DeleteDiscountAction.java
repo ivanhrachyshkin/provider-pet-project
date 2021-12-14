@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.discount;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.service.DiscountService;
@@ -27,13 +28,12 @@ public class DeleteDiscountAction extends BaseAction {
                     .getService(ServiceKeys.DISCOUNT);
 
             final Integer discountId =
-                    Integer.valueOf(request.getParameter("discountId"));
+                    getIntParameter(request, "discountId");
             discountService.delete(discountId);
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }

@@ -170,7 +170,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
             final BillDao billDao =
                     transactionImpl.createDao(DaoKeys.BILL);
 
-            if (accountId == null || !accountDao.isExistById(accountId)) {
+            if (!accountDao.isExistById(accountId)) {
                 LOGGER.error(rb.getString("subscription.payBill.account"
                         + ".exist.exception"));
                 transactionImpl.rollback();
@@ -178,8 +178,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
                         + ".payBill.account.exist.exception"));
             }
 
-            if (subscriptionIdForBill == null
-                    || !billDao.isExists(subscriptionIdForBill, value, date)) {
+            if (!billDao.isExists(subscriptionIdForBill, value, date)) {
                 LOGGER.error(rb.getString("subscription.payBill.bill"
                         + ".exist.exception"));
                 transactionImpl.rollback();

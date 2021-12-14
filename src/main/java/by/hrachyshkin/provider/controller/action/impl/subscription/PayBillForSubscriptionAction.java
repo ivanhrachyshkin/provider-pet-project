@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.subscription;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.service.ServiceException;
@@ -30,18 +31,16 @@ public class PayBillForSubscriptionAction extends BaseAction {
 
             final Integer accountId = getAccountId(request);
             final Integer subscriptionId =
-                    Integer.valueOf(request.getParameter("subscriptionId"));
-            final Float value = Float.valueOf(request.getParameter("value"));
-            final LocalDate date =
-                    LocalDate.parse(request.getParameter("date"));
+                    getIntParameter(request, "subscriptionId");
+            final Float value = getFloatParameter(request, "value");
+            final LocalDate date = getDateParameter(request, "date");
 
             subscriptionService.payBillForSubscription(
                     accountId, subscriptionId, value, date);
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }

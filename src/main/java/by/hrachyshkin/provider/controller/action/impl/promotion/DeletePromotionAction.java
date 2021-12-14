@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.promotion;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.service.PromotionService;
@@ -26,17 +27,17 @@ public class DeletePromotionAction extends BaseAction {
             final PromotionService promotionService = ServiceFactory
                     .getINSTANCE().getService(ServiceKeys.PROMOTION);
 
-            final String tariffId = request.getParameter("tariffId");
+            final Integer tariffId = getIntParameter(request, "tariffId");
             final Integer discountId =
-                    Integer.valueOf(request.getParameter("discountId"));
+                    getIntParameter(request, "discountId");
 
             promotionService.deleteByTariffAndDiscount(
                     Integer.valueOf(tariffId), discountId);
 
-            setTariffIdAttributeToSession(request, tariffId);
+            setTariffIdAttributeToSession(request,
+                    getStringParameter(request, "tariffId"));
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return ShowDiscountsForPromotionAction.SHOW_DISCOUNTS_FOR_PROMOTION;

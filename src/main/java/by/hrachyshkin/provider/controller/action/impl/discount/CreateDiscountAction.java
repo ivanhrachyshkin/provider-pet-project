@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.discount;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Discount;
@@ -28,23 +29,20 @@ public class CreateDiscountAction extends BaseAction {
             final DiscountService discountService = ServiceFactory.getINSTANCE()
                     .getService(ServiceKeys.DISCOUNT);
 
-            final String name = request.getParameter("name");
-            final Discount.Type type = Discount.Type.valueOf(request
-                    .getParameter("type").toUpperCase());
-            final Integer value = Integer.valueOf(request
-                    .getParameter("value"));
-            final LocalDate dateFrom = LocalDate.parse(request
-                    .getParameter("dateFrom"));
-            final LocalDate dateTo = LocalDate.parse(request
-                    .getParameter("dateTo"));
+            final String name = getStringParameter(request, "name");
+            final Discount.Type type = Discount.Type.valueOf(
+                    getStringParameter(request, "type").toUpperCase());
+            final Integer value = getIntParameter(request, "value");
+            final LocalDate dateFrom =
+                    getDateParameter(request, "dateFrom");
+            final LocalDate dateTo = getDateParameter(request, "dateTo");
 
             discountService.add(new Discount(name, type, value, dateFrom,
                     dateTo));
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }

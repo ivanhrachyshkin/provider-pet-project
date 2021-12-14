@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.discount;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
@@ -36,7 +37,8 @@ public class ShowDiscountAction extends BaseAction {
             } else {
                 final Discount.Type type = Discount.Type.valueOf(rawType
                         .toUpperCase());
-                discounts = discountService.findAndFilterByTypeOffset(type, offset);
+                discounts = discountService
+                        .findAndFilterByTypeOffset(type, offset);
 
                 setTotalPagesAttribute(request, discountService
                         .findAndFilterByTypeAndSortByValue(type));

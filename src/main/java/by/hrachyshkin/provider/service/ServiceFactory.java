@@ -1,23 +1,20 @@
 package by.hrachyshkin.provider.service;
 
+import by.hrachyshkin.provider.ResourceBundleFactory;
 import by.hrachyshkin.provider.dao.Transaction;
 import by.hrachyshkin.provider.dao.TransactionFactory;
 import by.hrachyshkin.provider.service.impl.*;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
-import java.util.Locale;
 import java.util.ResourceBundle;
 
-@RequiredArgsConstructor
 public class ServiceFactory {
 
     @Getter
     private static final ServiceFactory INSTANCE = new ServiceFactory();
-    private final ResourceBundle rb = ResourceBundle
-            .getBundle("langs", new Locale("en", "US"));
 
     private final TransactionFactory factory = TransactionFactory.getINSTANCE();
+    private final ResourceBundle rb = ResourceBundleFactory.getINSTANCE().getRb();
 
     @SuppressWarnings("unchecked")
     public <T extends Service> T getService(final ServiceKeys serviceKeys)

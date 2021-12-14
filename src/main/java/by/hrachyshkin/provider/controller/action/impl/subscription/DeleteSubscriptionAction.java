@@ -1,9 +1,13 @@
 package by.hrachyshkin.provider.controller.action.impl.subscription;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Subscription;
-import by.hrachyshkin.provider.service.*;
+import by.hrachyshkin.provider.service.ServiceException;
+import by.hrachyshkin.provider.service.ServiceFactory;
+import by.hrachyshkin.provider.service.ServiceKeys;
+import by.hrachyshkin.provider.service.SubscriptionService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,15 +30,13 @@ public class DeleteSubscriptionAction extends BaseAction {
                     .getINSTANCE().getService(ServiceKeys.SUBSCRIPTION);
 
             final Integer accountId = getAccountId(request);
-            final Integer tariffId =
-                    Integer.valueOf(request.getParameter("tariffId"));
+            final Integer tariffId = getIntParameter(request, "tariffId");
             final Subscription subscription = subscriptionService.
                     findOneByAccountIdAndTariffId(accountId, tariffId);
 
             subscriptionService.delete(subscription);
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
         }
         return ShowSubscriptionsForAccountAction.SUBSCRIPTIONS;

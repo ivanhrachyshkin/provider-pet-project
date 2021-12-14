@@ -1,5 +1,6 @@
 package by.hrachyshkin.provider.controller.action.impl.account;
 
+import by.hrachyshkin.provider.controller.action.impl.ActionException;
 import by.hrachyshkin.provider.controller.action.impl.BaseAction;
 import by.hrachyshkin.provider.dao.TransactionException;
 import by.hrachyshkin.provider.model.Account;
@@ -30,25 +31,22 @@ public class UpdateAccountAction extends BaseAction {
             final AccountService accountService = ServiceFactory.getINSTANCE()
                     .getService(ServiceKeys.ACCOUNT);
 
-            final Integer accountId = Integer.valueOf(request
-                    .getParameter("accountId"));
-            final String email = request.getParameter("email");
-            final String password = request.getParameter("password");
-            final Account.Role role =
-                    Account.Role.valueOf(request.getParameter("role"));
-            final String name = request.getParameter("name");
-            final String phone = request.getParameter("phone");
-            final String address = request.getParameter("address");
-            final Float balance =
-                    Float.valueOf(request.getParameter("balance"));
+            final Integer accountId =
+                    getIntParameter(request, "accountId");
+            final String email = getStringParameter(request, "email");
+            final Account.Role role = Account.Role.valueOf(
+                    getStringParameter(request, "role"));
+            final String name = getStringParameter(request, "name");
+            final String phone = getStringParameter(request, "phone");
+            final String address = getStringParameter(request, "address");
+            final Float balance = getFloatParameter(request, "balance");
 
-            accountService.update(new Account(accountId, email, password, role,
+            accountService.update(new Account(accountId, email, role,
                     name, phone, address, balance));
 
             setPageNumberAttributeToSession(request);
 
-        } catch (ServiceException | NumberFormatException
-                | TransactionException e) {
+        } catch (ServiceException | TransactionException | ActionException e) {
             setErrorAttributeToSession(request, e.getMessage());
             setPageNumberAttributeToSession(request);
         }

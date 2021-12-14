@@ -126,51 +126,6 @@ public class DiscountServiceImplTest {
     }
 
     @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddDiscount_On_Add_EmptyName_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount added = new Discount("", Discount.Type.COEFFICIENT, 10,
-                LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
-        discountService.add(added);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddDiscount_On_Add_NullType_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount added = new Discount("Added Name", null, 10,
-                LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
-        discountService.add(added);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddDiscount_On_Add_NullValue_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, null,
-                LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
-        discountService.add(added);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddDiscount_On_Add_NullDateFrom_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
-                null, LocalDate.of(2023, 1, 10));
-        discountService.add(added);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldAddDiscount_On_Add_NullDateTo_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount added = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
-                LocalDate.of(2022, 1, 10), null);
-        discountService.add(added);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
     public void ShouldAddDiscount_On_Add_Exists_Exception() throws ServiceException, TransactionException {
 
         final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
@@ -212,51 +167,6 @@ public class DiscountServiceImplTest {
 
         Assert.assertTrue(discountService.isExistByName("Updated Name"));
         discountService.delete(discountService.findAndFilterByTypeOffset(Discount.Type.COEFFICIENT, 0).get(0).getId());
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateDiscount_On_Add_EmptyName_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount updated = new Discount("", Discount.Type.COEFFICIENT, 10,
-                LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
-        discountService.update(updated);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateDiscount_On_Add_NullType_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount updated = new Discount("Added Name", null, 10,
-                LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
-        discountService.update(updated);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateDiscount_On_Add_NullValue_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount updated = new Discount("Added Name", Discount.Type.COEFFICIENT, null,
-                LocalDate.of(2022, 1, 10), LocalDate.of(2023, 1, 10));
-        discountService.update(updated);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateDiscount_On_Add_NullDateFrom_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount updated = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
-                null, LocalDate.of(2023, 1, 10));
-        discountService.update(updated);
-    }
-
-    @Test(expectedExceptions = ServiceException.class)
-    public void ShouldUpdateDiscount_On_Add_NullDateTo_Exception() throws ServiceException, TransactionException {
-
-        final DiscountService discountService = ServiceFactory.getINSTANCE().getService(ServiceKeys.DISCOUNT);
-        final Discount updated = new Discount("Added Name", Discount.Type.COEFFICIENT, 10,
-                LocalDate.of(2022, 1, 10), null);
-        discountService.update(updated);
     }
 
     @Test(expectedExceptions = ServiceException.class)
